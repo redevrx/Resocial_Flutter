@@ -1,0 +1,9 @@
+export '../screen/create_new_post.dart';
+export '../bloc/event_post.dart';
+export '../bloc/post_bloc.dart';
+export '../bloc/state_post.dart';
+export '../repository/post_repository.dart';
+export '../widget/widget_app_bar_post.dart';
+export '../widget/widget_get_message.dart';
+export '../widget/widget_show_image.dart';
+export '../widget/widget_show_user_detail.dart';

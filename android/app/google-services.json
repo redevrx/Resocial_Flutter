@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "726744695574",
+    "firebase_url": "https://flutter-resocial.firebaseio.com",
+    "project_id": "flutter-resocial",
+    "storage_bucket": "flutter-resocial.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726744695574:android:1922bdfb4cc777a7430637",
+        "android_client_info": {
+          "package_name": "com.redev.socialapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726744695574-gl94u16ut30j1ela5hde1e62djd4ghf3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAd644zDSF5xTV22sJo9IXB2cWymdseaRQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726744695574-gl94u16ut30j1ela5hde1e62djd4ghf3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
