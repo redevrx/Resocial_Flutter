@@ -1,4 +1,4 @@
-#Fri Oct 02 15:06:10 ICT 2020
+#Fri Oct 02 19:51:11 ICT 2020
 base.2=D\:\\Tutorials\\Flutter\\Tutorial\\flutter_social_app\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\out\\classes2.dex
 base.1=D\:\\Tutorials\\Flutter\\Tutorial\\flutter_social_app\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\out\\classes.dex
 base.0=D\:\\Tutorials\\Flutter\\Tutorial\\flutter_social_app\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\out\\classes.dex
