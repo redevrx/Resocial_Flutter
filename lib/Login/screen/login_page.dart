@@ -1,3 +1,4 @@
+import 'package:flutter/scheduler.dart';
 import 'package:socialapp/Login/bloc/login_bloc.dart';
 import 'package:socialapp/Login/bloc/states/login_state.dart';
 import 'package:socialapp/Login/screen/register_user.dart';
@@ -7,7 +8,7 @@ import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+// import 'package:flutter/foundation.dart' show kIsWeb;
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -36,9 +37,23 @@ class _loginScreen extends State<loginScreen> {
   final txtPassword = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      print("Create UI Success");
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
     _checkUserLogin(context);
     print("Current Page Login");
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final LoginBloc loginBloc = BlocProvider.of<LoginBloc>(context);
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -72,49 +87,49 @@ class _loginScreen extends State<loginScreen> {
                       cardShape(),
                       Column(
                         children: <Widget>[
-                          (kIsWeb)
-                              ? Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.38,
-                                  child: textEmail(
-                                    txtEmail: txtEmail,
-                                  ),
-                                )
-                              : textEmail(txtEmail: txtEmail),
-                          (kIsWeb)
-                              ? Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.38,
-                                  child: textPassword(
-                                    txtPassword: txtPassword,
-                                    email: txtEmail.text,
-                                    loginBloc: loginBloc,
-                                  ),
-                                )
-                              : textPassword(
-                                  txtPassword: txtPassword,
-                                  email: txtEmail.text,
-                                  loginBloc: loginBloc,
-                                ),
-                          (kIsWeb)
-                              ? Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.38,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 46.0, vertical: 43.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      buttonToSignUp(loginBloc: loginBloc),
-                                      buttonLogin(
-                                          txtEmail: txtEmail,
-                                          txtPassword: txtPassword,
-                                          loginBloc: loginBloc)
-                                    ],
-                                  ),
-                                )
-                              : _buildPaddingButton(loginBloc),
+                          // (kIsWeb)
+                          //     ? Container(
+                          //         width:
+                          //             MediaQuery.of(context).size.width * 0.38,
+                          //         child: textEmail(
+                          //           txtEmail: txtEmail,
+                          //         ),
+                          //       )
+                          textEmail(txtEmail: txtEmail),
+                          // (kIsWeb)
+                          //     ? Container(
+                          //         width:
+                          //             MediaQuery.of(context).size.width * 0.38,
+                          //         child: textPassword(
+                          //           txtPassword: txtPassword,
+                          //           email: txtEmail.text,
+                          //           loginBloc: loginBloc,
+                          //         ),
+                          //       )
+                          textPassword(
+                            txtPassword: txtPassword,
+                            email: txtEmail.text,
+                            loginBloc: loginBloc,
+                          ),
+                          // (kIsWeb)
+                          //     ? Container(
+                          //         width:
+                          //             MediaQuery.of(context).size.width * 0.38,
+                          //         padding: const EdgeInsets.symmetric(
+                          //             horizontal: 46.0, vertical: 43.0),
+                          //         child: Row(
+                          //           mainAxisAlignment:
+                          //               MainAxisAlignment.spaceBetween,
+                          //           children: <Widget>[
+                          //             buttonToSignUp(loginBloc: loginBloc),
+                          //             buttonLogin(
+                          //                 txtEmail: txtEmail,
+                          //                 txtPassword: txtPassword,
+                          //                 loginBloc: loginBloc)
+                          //           ],
+                          //         ),
+                          //       )
+                          _buildPaddingButton(loginBloc),
                           BlocListener<LoginBloc, LoginState>(
                             cubit: loginBloc,
                             listener: (context, state) {

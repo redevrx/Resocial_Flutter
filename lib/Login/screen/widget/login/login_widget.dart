@@ -3,7 +3,7 @@ import 'package:socialapp/Login/bloc/events/login_evevt.dart';
 import 'package:socialapp/Login/bloc/login_bloc.dart';
 import 'package:socialapp/Login/bloc/models/login_model.dart';
 import 'package:socialapp/widgets/cardBackground/item_card_shape_v2.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+// import 'package:flutter/foundation.dart' show kIsWeb;
 
 class buttonLogin extends StatelessWidget {
   const buttonLogin({
@@ -170,12 +170,14 @@ class cardShape extends StatelessWidget {
           child: Hero(
             tag: "background",
             child: Container(
-              width: (kIsWeb)
-                  ? MediaQuery.of(context).size.width * 0.41
-                  : MediaQuery.of(context).size.width * 0.9,
-              height: (kIsWeb)
-                  ? MediaQuery.of(context).size.height * 0.84
-                  : MediaQuery.of(context).size.height * 0.75,
+              width:
+                  //(kIsWeb)
+                  //     ? MediaQuery.of(context).size.width * 0.41
+                  MediaQuery.of(context).size.width * 0.9,
+              height:
+                  // (kIsWeb)
+                  //     ? MediaQuery.of(context).size.height * 0.84
+                  MediaQuery.of(context).size.height * 0.75,
               decoration: BoxDecoration(
                   gradient: LinearGradient(
                 colors: [Colors.green, Color(0xFF0D8E53).withOpacity(.78)],

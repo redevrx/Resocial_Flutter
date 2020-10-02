@@ -8,7 +8,7 @@ import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'package:socialapp/widgets/cardBackground/item_card_shape_v2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+// import 'package:flutter/foundation.dart' show kIsWeb;
 
 class SignUpScreen extends StatelessWidget {
   @override
@@ -103,98 +103,97 @@ class _signUpScreen extends State<signUpScreen> {
                       Column(
                         children: <Widget>[
                           SizedBox(
-                            height: (kIsWeb) ? 8.0 : 0.0,
+                            height: 0.0,
                           ),
-                          (kIsWeb)
-                              ? Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.38,
-                                  child: textEmail(
-                                    email: txtEmail,
-                                  ),
-                                )
-                              : textEmail(
-                                  email: txtEmail,
-                                ),
-                          (kIsWeb)
-                              ? Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.38,
-                                  child: textUserName(
-                                    userName: txtUserName,
-                                  ),
-                                )
-                              : textUserName(
-                                  userName: txtUserName,
-                                ),
-                          (kIsWeb)
-                              ? Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.38,
-                                  child: textPassword(
-                                    password: txtPass,
-                                  ),
-                                )
-                              : textPassword(
-                                  password: txtPass,
-                                ),
+                          // (kIsWeb)
+                          //     ? Container(
+                          //         width:
+                          //             MediaQuery.of(context).size.width * 0.38,
+                          //         child: textEmail(
+                          //           email: txtEmail,
+                          //         ),
+                          //       )
+                          textEmail(
+                            email: txtEmail,
+                          ),
+                          // (kIsWeb)
+                          //     ? Container(
+                          //         width:
+                          //             MediaQuery.of(context).size.width * 0.38,
+                          //         child: textUserName(
+                          //           userName: txtUserName,
+                          //         ),
+                          //       )
+                          textUserName(
+                            userName: txtUserName,
+                          ),
+                          // (kIsWeb)
+                          //     ? Container(
+                          //         width:
+                          //             MediaQuery.of(context).size.width * 0.38,
+                          //         child: textPassword(
+                          //           password: txtPass,
+                          //         ),
+                          //       )
+                          textPassword(
+                            password: txtPass,
+                          ),
 
-                          (kIsWeb)
-                              ? Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.38,
-                                  child: textPasswordCm(
-                                    passwordCm: textPassCm,
-                                  ),
-                                )
-                              : textPasswordCm(
-                                  passwordCm: textPassCm,
-                                ),
+                          // (kIsWeb)
+                          //     ? Container(
+                          //         width:
+                          //             MediaQuery.of(context).size.width * 0.38,
+                          //         child: textPasswordCm(
+                          //           passwordCm: textPassCm,
+                          //         ),
+                          //       )
+                          textPasswordCm(
+                            passwordCm: textPassCm,
+                          ),
 
                           // create button action
-                          (kIsWeb)
-                              ? Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.38,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 46.0, vertical: 43.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      buttonToLogin(
-                                        bloc: loginBloc,
-                                      ),
-                                      buttonSignUp(
-                                        bloc: loginBloc,
-                                        email: txtEmail.text,
-                                        userName: txtUserName.text,
-                                        password: txtPass.text,
-                                        passwordCm: textPassCm.text,
-                                      )
-                                    ],
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 62.0, horizontal: 42.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      buttonToLogin(
-                                        bloc: loginBloc,
-                                      ),
-                                      buttonSignUp(
-                                        bloc: loginBloc,
-                                        email: txtEmail.text,
-                                        userName: txtUserName.text,
-                                        password: txtPass.text,
-                                        passwordCm: textPassCm.text,
-                                      )
-                                    ],
-                                  ),
+                          // (kIsWeb)
+                          //     ? Container(
+                          //         width:
+                          //             MediaQuery.of(context).size.width * 0.38,
+                          //         padding: const EdgeInsets.symmetric(
+                          //             horizontal: 46.0, vertical: 43.0),
+                          //         child: Row(
+                          //           mainAxisAlignment:
+                          //               MainAxisAlignment.spaceBetween,
+                          //           children: <Widget>[
+                          //             buttonToLogin(
+                          //               bloc: loginBloc,
+                          //             ),
+                          //             buttonSignUp(
+                          //               bloc: loginBloc,
+                          //               email: txtEmail.text,
+                          //               userName: txtUserName.text,
+                          //               password: txtPass.text,
+                          //               passwordCm: textPassCm.text,
+                          //             )
+                          //           ],
+                          //         ),
+                          //       )
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 62.0, horizontal: 42.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                buttonToLogin(
+                                  bloc: loginBloc,
                                 ),
+                                buttonSignUp(
+                                  bloc: loginBloc,
+                                  email: txtEmail.text,
+                                  userName: txtUserName.text,
+                                  password: txtPass.text,
+                                  passwordCm: textPassCm.text,
+                                )
+                              ],
+                            ),
+                          ),
                           BlocListener<LoginBloc, LoginState>(
                             cubit: loginBloc,
                             listener: (context, state) {
@@ -226,12 +225,14 @@ class _signUpScreen extends State<signUpScreen> {
         child: Hero(
             tag: 'background',
             child: Container(
-              width: (kIsWeb)
-                  ? MediaQuery.of(context).size.width * 0.41
-                  : MediaQuery.of(context).size.width * 0.9,
-              height: (kIsWeb)
-                  ? MediaQuery.of(context).size.height * 0.84
-                  : MediaQuery.of(context).size.height * 0.75,
+              width:
+                  //  (kIsWeb)
+                  //     ? MediaQuery.of(context).size.width * 0.41
+                  MediaQuery.of(context).size.width * 0.9,
+              height:
+                  // (kIsWeb)
+                  //     ? MediaQuery.of(context).size.height * 0.84
+                  MediaQuery.of(context).size.height * 0.75,
               decoration: BoxDecoration(
                   gradient: LinearGradient(
                 colors: [Colors.orange, Colors.deepOrangeAccent],

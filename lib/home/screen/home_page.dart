@@ -52,24 +52,39 @@ class _fechPage extends State<HomePage> {
                     child: BlocProvider(
                         create: (context) => PostBloc(new PostRepository()),
                         child: BlocProvider(
-                          create: (context) => EditProfileBloc(),
-                          child: selectedBar == 0
-                              ? homePage(
+                            create: (context) => EditProfileBloc(),
+                            child: IndexedStack(
+                              index: selectedBar,
+                              children: [
+                                homePage(
                                   bodyColor: barIitems[selectedBar].color,
-                                )
-                              : selectedBar == 1
-                                  ? homePage(
-                                      bodyColor: barIitems[selectedBar].color,
-                                    )
-                                  : selectedBar == 2
-                                      ? UserProfile(
-                                          bodyColor:
-                                              barIitems[selectedBar].color,
-                                        ) //AllFriends()
-                                      : selectedBar == 3
-                                          ? SettingApp()
-                                          : Container(),
-                        ))))),
+                                ),
+                                homePage(
+                                  bodyColor: barIitems[selectedBar].color,
+                                ),
+                                UserProfile(
+                                  bodyColor: barIitems[selectedBar].color,
+                                ),
+                                SettingApp()
+                              ],
+                            )
+                            // selectedBar == 0
+                            //     ? homePage(
+                            //         bodyColor: barIitems[selectedBar].color,
+                            //       )
+                            //     : selectedBar == 1
+                            //         ? homePage(
+                            //             bodyColor: barIitems[selectedBar].color,
+                            //           )
+                            //         : selectedBar == 2
+                            //             ? UserProfile(
+                            //                 bodyColor:
+                            //                     barIitems[selectedBar].color,
+                            //               ) //AllFriends()
+                            //             : selectedBar == 3
+                            //                 ? SettingApp()
+                            //                 : Container(),
+                            ))))),
         bottomNavigationBar: AnimationBottomBar(
             barItems: barIitems,
             animationDuration: const Duration(microseconds: 4000),

@@ -19,7 +19,7 @@ import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'dart:async';
 import 'package:socialapp/widgets/models/choice.dart';
 import 'package:socialapp/shared/shared_app.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+// import 'package:flutter/foundation.dart' show kIsWeb;
 
 class homePage extends StatefulWidget {
   final Color bodyColor;
@@ -81,7 +81,7 @@ class _homePageState extends State<homePage> {
       print('new feed data loading');
       likeBloc.add(onLikeResultPostClick());
       setState(() {
-        bottonNavSize = (kIsWeb) ? 80 : 150;
+        bottonNavSize = 150;
       });
     });
 
@@ -135,9 +135,10 @@ class _homePageState extends State<homePage> {
                       //load user detail success
                       return Container(
                           height: 580.0,
-                          width: (kIsWeb)
-                              ? MediaQuery.of(context).size.width * .55
-                              : double.infinity,
+                          width:
+                              //  (kIsWeb)
+                              //     ? MediaQuery.of(context).size.width * .55
+                              double.infinity,
                           color: Color(0XFFFAFAFA),
                           child: InkWell(
                               onDoubleTap: () {},
@@ -249,7 +250,7 @@ class postWithImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: (kIsWeb) ? 4.5 : 22.0,
+      elevation: 22.0,
       color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
