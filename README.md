@@ -1,7 +1,7 @@
-# socialapp
+# ReSocialapp
 
 A new Flutter application.
-
+  -[My Web Support][https://re-storys.web.app/blog-overview]
 ## Getting Started
 
 This project is a starting point for a Flutter application.

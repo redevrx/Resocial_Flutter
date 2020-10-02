@@ -1,0 +1,36 @@
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:25
+-keep class androidx.core.app.CoreComponentFactory { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:206
+-keep class com.google.android.datatransport.runtime.backends.TransportBackendDiscovery { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:219
+-keep class com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:213
+-keep class com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:191
+-keep class com.google.android.gms.common.api.GoogleApiActivity { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:157
+-keep class com.google.android.gms.measurement.AppMeasurementJobService { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:147
+-keep class com.google.android.gms.measurement.AppMeasurementReceiver { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:153
+-keep class com.google.android.gms.measurement.AppMeasurementService { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:163
+-keep class com.google.firebase.auth.internal.FederatedSignInActivity { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:76
+-keep class com.google.firebase.components.ComponentDiscoveryService { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:182
+-keep class com.google.firebase.iid.FirebaseInstanceIdReceiver { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:174
+-keep class com.google.firebase.messaging.FirebaseMessagingService { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:196
+-keep class com.google.firebase.provider.FirebaseInitProvider { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:30
+-keep class com.redev.socialapp.MainActivity { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:25
+-keep class io.flutter.app.FlutterApplication { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:131
+-keep class io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:121
+-keep class io.flutter.plugins.imagepicker.ImagePickerFileProvider { <init>(); }
+# Referenced at D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\app\intermediates\merged_manifests\release\AndroidManifest.xml:137
+-keep class io.flutter.plugins.share.ShareFileProvider { <init>(); }
