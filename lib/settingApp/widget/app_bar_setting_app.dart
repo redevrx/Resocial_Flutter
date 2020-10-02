@@ -15,9 +15,8 @@ class _appBarSettingState extends State<appBarSetting> {
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
-
     size = widget.changeSize;
+    super.initState();
   }
 
   @override
@@ -39,28 +38,59 @@ class _appBarSettingState extends State<appBarSetting> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    InkWell(
-                      child: Icon(
-                        Icons.settings,
-                        size: 30.0,
+                    AnimatedContainer(
+                      // padding: EdgeInsets.all(4),
+                      duration: Duration(milliseconds: 800),
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 27,
+                                offset: Offset(.5, .5),
+                                spreadRadius: .1)
+                          ]),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.settings,
+                          size: 30.0,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            size = !size;
+                          });
+                        },
                       ),
-                      onTap: () {
-                        setState(() {
-                          size = !size;
-                        });
-                      },
                     ),
                     Text(
                       'Setting App',
                       style: Theme.of(context).textTheme.headline4,
                     ),
-                   InkWell
-                   (
-                     child: Icon(Icons.search , size: 30.0,),
-                     onTap: (){
-                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllUser(),));
-                     },
-                   )
+                    AnimatedContainer(
+                        // padding: EdgeInsets.all(4),
+                        duration: Duration(milliseconds: 800),
+                        decoration: BoxDecoration(
+                            color: Colors.grey,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 27,
+                                  offset: Offset(.5, .5),
+                                  spreadRadius: .1)
+                            ]),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.search,
+                            size: 30.0,
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => AllUser(),
+                            ));
+                          },
+                        )),
                   ],
                 ),
               ),

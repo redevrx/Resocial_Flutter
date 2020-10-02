@@ -218,8 +218,8 @@ class __CreatePostState extends State<_CreatePost> {
   @override
   void dispose() {
     _enableRatation();
-    super.dispose();
     txtMessage.dispose();
+    super.dispose();
   }
 
   Container _buildContainerBottonNav() {

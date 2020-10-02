@@ -39,6 +39,8 @@ class _homePageState extends State<homePage> {
   PostBloc postBloc;
   EditProfileBloc editProfileBloc;
   bool refreshPage = false;
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
 
   Future<void> checkUserlogin(BuildContext context) async {
     FirebaseAuth.instance.authStateChanges().listen((user) {
@@ -55,35 +57,45 @@ class _homePageState extends State<homePage> {
 
   @override
   void initState() {
-    getUid();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     //bloc initial
     myFeedBloc = BlocProvider.of<MyFeedBloc>(context);
     textMoreBloc = BlocProvider.of<TextMoreBloc>(context);
     likeBloc = BlocProvider.of<LikeBloc>(context);
     postBloc = BlocProvider.of<PostBloc>(context);
     editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
+    //
+    getUid();
+    // initailMyFedd();
+    checkUserlogin(context);
 
-    final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-        new GlobalKey<RefreshIndicatorState>();
-    setState(() {
-      // initailMyFedd();
-      checkUserlogin(context);
+    //event load my feed
+    // myFeedBloc.add(onLoadMyFeedClick());
+    //likeBloc.add(onLikeResultPostClick());
+    settingloadFeed(myFeedBloc);
+    print('new feed data loading');
+    likeBloc.add(onLikeResultPostClick());
+    // setState(() {
+    bottonNavSize = 150;
+    // });
+    super.initState();
+  }
 
-      //event load my feed
-      // myFeedBloc.add(onLoadMyFeedClick());
-      //likeBloc.add(onLikeResultPostClick());
-      settingloadFeed(myFeedBloc);
-      print('new feed data loading');
-      likeBloc.add(onLikeResultPostClick());
-      setState(() {
-        bottonNavSize = 150;
-      });
-    });
+  @override
+  Widget build(BuildContext context) {
+    // setState(() {
+    //   // initailMyFedd();
+    //   checkUserlogin(context);
+
+    //   //event load my feed
+    //   // myFeedBloc.add(onLoadMyFeedClick());
+    //   //likeBloc.add(onLikeResultPostClick());
+    //   settingloadFeed(myFeedBloc);
+    //   print('new feed data loading');
+    //   likeBloc.add(onLikeResultPostClick());
+    //   setState(() {
+    //     bottonNavSize = 150;
+    //   });
+    // });
 
     return LayoutBuilder(
       builder: (context, constraints) {

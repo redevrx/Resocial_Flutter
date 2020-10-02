@@ -150,7 +150,7 @@ class PostRepository {
     final _mRefFile =
         FirebaseStorage().ref().child("Post Image").child("Images");
 
-    final key = _mRef.collection("PostP").id;
+    final key = _mRef.collection("Post").doc().id;
     Map mapBody = HashMap<String, dynamic>();
 
     //get date time

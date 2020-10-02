@@ -31,10 +31,21 @@ class _fechPage extends State<HomePage> {
     BarItem("Setting", Icons.menu, Colors.black)
   ];
   int selectedBar = 0;
-
+  List<Widget> pageItem = [];
   @override
   void initState() {
-    // TODO: implement initState
+    pageItem = [
+      homePage(
+        bodyColor: barIitems[selectedBar].color,
+      ),
+      homePage(
+        bodyColor: Colors.pinkAccent,
+      ),
+      UserProfile(
+        bodyColor: barIitems[selectedBar].color,
+      ),
+      SettingApp()
+    ];
     super.initState();
     selectedBar = widget.pageNumber;
   }
@@ -55,18 +66,7 @@ class _fechPage extends State<HomePage> {
                             create: (context) => EditProfileBloc(),
                             child: IndexedStack(
                               index: selectedBar,
-                              children: [
-                                homePage(
-                                  bodyColor: barIitems[selectedBar].color,
-                                ),
-                                homePage(
-                                  bodyColor: barIitems[selectedBar].color,
-                                ),
-                                UserProfile(
-                                  bodyColor: barIitems[selectedBar].color,
-                                ),
-                                SettingApp()
-                              ],
+                              children: pageItem,
                             )
                             // selectedBar == 0
                             //     ? homePage(
@@ -87,7 +87,7 @@ class _fechPage extends State<HomePage> {
                             ))))),
         bottomNavigationBar: AnimationBottomBar(
             barItems: barIitems,
-            animationDuration: const Duration(microseconds: 4000),
+            animationDuration: const Duration(milliseconds: 550),
             barStyle: BarStyle(
                 fointSize: 20.0, fontWeight: FontWeight.w400, iconSize: 30.0),
             onBarTab: (index) {

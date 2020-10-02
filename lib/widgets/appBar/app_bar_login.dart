@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socialapp/findFriends/screens/show_lis_friends.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+// import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AppBarCustom extends StatelessWidget {
   final String title;
@@ -29,38 +29,68 @@ class AppBarCustom extends StatelessWidget {
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(50.0),
                 bottomRight: Radius.circular(50.0))), // Yellow
-        height: (kIsWeb) ? 90 : widgetSize,
+        height: widgetSize,
+        // (kIsWeb) ? 90 : widgetSize,
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.only(top: (kIsWeb) ? 6.0 : 36.0),
+          padding: const EdgeInsets.only(top: 36.0, left: 4.0, right: 4.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               status == "home page"
-                  ? IconButton(
-                      icon: Icon(
-                        Icons.search,
-                        size: 32,
+                  ? AnimatedContainer(
+                      // padding: EdgeInsets.all(4),
+                      duration: Duration(milliseconds: 800),
+                      decoration: BoxDecoration(
+                          color: titleColor.withOpacity(.2),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                                color: titleColor,
+                                blurRadius: 24,
+                                offset: Offset(.5, .5),
+                                spreadRadius: .1)
+                          ]),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.search,
+                          size: 32,
+                        ),
+                        color: titleColor,
+                        onPressed: () {
+                          //
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AllUser(),
+                          ));
+                        },
                       ),
-                      color: titleColor,
-                      onPressed: () {
-                        //
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AllUser(),
-                        ));
-                      },
                     )
-                  : IconButton(
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        size: 32,
+                  : AnimatedContainer(
+                      // padding: EdgeInsets.all(4),
+                      duration: Duration(milliseconds: 800),
+                      decoration: BoxDecoration(
+                          color: titleColor.withOpacity(.4),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                                color: titleColor,
+                                blurRadius: 24,
+                                offset: Offset(.5, .5),
+                                spreadRadius: .1)
+                          ]),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          size: 32,
+                        ),
+                        color: titleColor,
+                        onPressed: () {
+                          if (status == "register") {
+                            Navigator.of(context)
+                                .pop(context); //pushNamed("/");
+                          }
+                        },
                       ),
-                      color: titleColor,
-                      onPressed: () {
-                        if (status == "register") {
-                          Navigator.of(context).pop(context); //pushNamed("/");
-                        }
-                      },
                     ),
               Text(
                 '${title}',
@@ -71,12 +101,25 @@ class AppBarCustom extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
               status == "home page"
-                  ? IconButton(
-                      icon: Icon(
-                        Icons.chat,
-                        color: titleColor,
-                      ),
-                      onPressed: () async {})
+                  ? AnimatedContainer(
+                      // padding: EdgeInsets.all(4),
+                      duration: Duration(milliseconds: 800),
+                      decoration: BoxDecoration(
+                          color: titleColor.withOpacity(.4),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                                color: titleColor,
+                                blurRadius: 24,
+                                offset: Offset(.5, .5),
+                                spreadRadius: .1)
+                          ]),
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.chat,
+                            color: titleColor,
+                          ),
+                          onPressed: () async {}))
                   : status == "register"
                       ? Opacity(
                           opacity: 0.0,

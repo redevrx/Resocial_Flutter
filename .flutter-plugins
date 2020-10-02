@@ -1,16 +1,17 @@
 # This is a generated file; do not edit or check into version control.
-cloud_firestore=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\cloud_firestore-0.14.0+2\\
-cloud_firestore_web=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\cloud_firestore_web-0.2.0+1\\
-firebase_auth=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_auth-0.18.0+1\\
-firebase_auth_web=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_auth_web-0.3.0+1\\
+cloud_firestore=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\cloud_firestore-0.14.1+2\\
+cloud_firestore_web=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\cloud_firestore_web-0.2.0+3\\
+firebase_auth=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_auth-0.18.1+1\\
+firebase_auth_web=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_auth_web-0.3.1\\
 firebase_core=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core-0.5.0\\
 firebase_core_web=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core_web-0.2.0\\
-firebase_messaging=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_messaging-6.0.16\\
-firebase_storage=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_storage-4.0.0\\
+firebase_messaging=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_messaging-7.0.2\\
+firebase_storage=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_storage-4.0.1\\
 flutter_plugin_android_lifecycle=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\flutter_plugin_android_lifecycle-1.0.8\\
 image_picker=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\image_picker-0.6.7+7\\
-path_provider=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider-1.6.14\\
+path_provider=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider-1.6.18\\
 path_provider_linux=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider_linux-0.0.1+2\\
 path_provider_macos=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider_macos-0.0.4+3\\
+path_provider_windows=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider_windows-0.0.4+1\\
 permission_handler=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\permission_handler-5.0.1+1\\
 share=D:\\Programs\\dart-sdk\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\share-0.6.5\\
