@@ -32,11 +32,13 @@ dependencies:
   firebase_storage: ^4.0.1
   image_picker: ^0.6.7+7
   intl: ^0.16.1
-  shimmer: ^1.1.1
   http: ^0.12.2
   share: ^0.6.5
   firebase_messaging: ^7.0.2
+  flutter_local_notifications: ^1.4.4+5
   path_provider: ^1.6.18
+  workmanager: ^0.2.0
+  # background_fetch: ^0.6.0
 
 
   # The following adds the Cupertino Icons font to your application.

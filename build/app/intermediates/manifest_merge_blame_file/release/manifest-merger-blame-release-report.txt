@@ -29,8 +29,8 @@
 16-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:26:5-110
 16-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:26:22-107
 17    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-17-->[com.google.firebase:firebase-iid:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\68ae507af1d52d7bd0c28da38feed90a\firebase-iid-20.1.7\AndroidManifest.xml:26:5-82
-17-->[com.google.firebase:firebase-iid:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\68ae507af1d52d7bd0c28da38feed90a\firebase-iid-20.1.7\AndroidManifest.xml:26:22-79
+17-->[com.google.firebase:firebase-iid:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\15e27f388fa6d874488dbe33bfb5f19c\firebase-iid-20.3.0\AndroidManifest.xml:26:5-82
+17-->[com.google.firebase:firebase-iid:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\15e27f388fa6d874488dbe33bfb5f19c\firebase-iid-20.3.0\AndroidManifest.xml:26:22-79
 18    <!--
 19 io.flutter.app.FlutterApplication is an android.app.Application that
 20         calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -39,29 +39,29 @@
 23         FlutterApplication and put your custom class here.
 24    -->
 25    <application
-25-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:8:5-48:19
+25-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:9:5-64:19
 26        android:name="io.flutter.app.FlutterApplication"
-26-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:9:9-57
+26-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:10:9-57
 27        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 27-->[androidx.core:core:1.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\20524ebcfbfb226395d832f3856e6cf1\core-1.3.1\AndroidManifest.xml:24:18-86
 28        android:icon="@mipmap/ic_launcher"
-28-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:11:9-43
+28-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:12:5-39
 29        android:label="socialapp" >
-29-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:10:9-34
+29-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:11:5-30
 30        <activity
-30-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:12:9-42:20
+30-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:13:9-47:20
 31            android:name="com.redev.socialapp.MainActivity"
-31-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:13:13-41
+31-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:14:13-41
 32            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-32-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:16:13-163
+32-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:17:13-163
 33            android:hardwareAccelerated="true"
-33-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:17:13-47
+33-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:18:13-47
 34            android:launchMode="singleTop"
-34-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:14:13-43
+34-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:15:13-43
 35            android:theme="@style/LaunchTheme"
-35-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:15:13-47
+35-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:16:13-47
 36            android:windowSoftInputMode="adjustResize" >
-36-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:18:13-55
+36-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:19:13-55
 37
 38            <!--
 39                 Specifies an Android theme to apply to this Activity as soon as
@@ -70,11 +70,11 @@
 42                 to determine the Window background behind the Flutter UI.
 43            -->
 44            <meta-data
-44-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:23:13-26:17
+44-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:24:13-27:17
 45                android:name="io.flutter.embedding.android.NormalTheme"
-45-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:24:15-70
+45-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:25:15-70
 46                android:resource="@style/NormalTheme" />
-46-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:25:15-52
+46-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:26:15-52
 47            <!--
 48                 Displays an Android View that continues showing the launch screen
 49                 Drawable until Flutter paints its first frame, then this splash
@@ -83,310 +83,333 @@
 52                 Flutter's first frame.
 53            -->
 54            <meta-data
-54-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:32:13-35:17
+54-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:33:13-36:17
 55                android:name="io.flutter.embedding.android.SplashScreenDrawable"
-55-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:33:15-79
+55-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:34:15-79
 56                android:resource="@drawable/launch_background" />
-56-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:34:15-61
+56-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:35:15-61
 57
 58            <intent-filter>
-58-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:36:13-41:29
+58-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:37:13-40:29
 59                <action android:name="android.intent.action.MAIN" />
-59-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:37:17-68
-59-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:37:25-66
+59-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:38:17-68
+59-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:38:25-66
 60
 61                <category android:name="android.intent.category.LAUNCHER" />
-61-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:38:17-76
-61-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:38:27-74
-62
-63                <action android:name="FLUTTER_NOTIFICATION_CLICK" />
-63-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:39:17-69
-63-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:39:25-66
-64
-65                <category android:name="android.intent.category.DEFAULT" />
-65-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:40:17-76
-65-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:40:27-73
-66            </intent-filter>
-67        </activity>
-68        <!--
-69             Don't delete the meta-data below.
-70             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
-71        -->
-72        <meta-data
-72-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:45:9-47:33
-73            android:name="flutterEmbedding"
-73-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:46:13-44
-74            android:value="2" />
-74-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:47:13-30
-75
-76        <service
-76-->[:firebase_storage] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_storage\intermediates\library_manifest\release\AndroidManifest.xml:8:9-12:19
-77            android:name="com.google.firebase.components.ComponentDiscoveryService"
-77-->[:firebase_storage] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_storage\intermediates\library_manifest\release\AndroidManifest.xml:8:18-89
-78            android:directBootAware="true"
-78-->[com.google.firebase:firebase-common:19.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\b02cac60af6f6a0cd6fcdef763252fb6\jetified-firebase-common-19.3.0\AndroidManifest.xml:34:13-43
-79            android:exported="false" >
-79-->[com.google.android.gms:play-services-measurement-api:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\e7e3f6b3c80c9791e54cce31183a2eb2\play-services-measurement-api-17.4.1\AndroidManifest.xml:29:13-37
-80            <meta-data
-80-->[:firebase_storage] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_storage\intermediates\library_manifest\release\AndroidManifest.xml:9:13-11:85
-81                android:name="com.google.firebase.components:io.flutter.plugins.firebase.storage.FlutterFirebaseAppRegistrar"
-81-->[:firebase_storage] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_storage\intermediates\library_manifest\release\AndroidManifest.xml:10:17-126
-82                android:value="com.google.firebase.components.ComponentRegistrar" />
-82-->[:firebase_storage] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_storage\intermediates\library_manifest\release\AndroidManifest.xml:11:17-82
-83            <meta-data
-83-->[:cloud_firestore] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\cloud_firestore\intermediates\library_manifest\release\AndroidManifest.xml:9:13-11:85
-84                android:name="com.google.firebase.components:io.flutter.plugins.firebase.firestore.FlutterFirebaseFirestoreRegistrar"
-84-->[:cloud_firestore] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\cloud_firestore\intermediates\library_manifest\release\AndroidManifest.xml:10:17-134
-85                android:value="com.google.firebase.components.ComponentRegistrar" />
-85-->[:cloud_firestore] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\cloud_firestore\intermediates\library_manifest\release\AndroidManifest.xml:11:17-82
-86            <meta-data
-86-->[:firebase_auth] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_auth\intermediates\library_manifest\release\AndroidManifest.xml:9:13-11:85
-87                android:name="com.google.firebase.components:io.flutter.plugins.firebase.auth.FlutterFirebaseAuthRegistrar"
-87-->[:firebase_auth] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_auth\intermediates\library_manifest\release\AndroidManifest.xml:10:17-124
-88                android:value="com.google.firebase.components.ComponentRegistrar" />
-88-->[:firebase_auth] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_auth\intermediates\library_manifest\release\AndroidManifest.xml:11:17-82
-89            <meta-data
-89-->[:firebase_core] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_core\intermediates\library_manifest\release\AndroidManifest.xml:9:13-11:85
-90                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
-90-->[:firebase_core] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_core\intermediates\library_manifest\release\AndroidManifest.xml:10:17-124
-91                android:value="com.google.firebase.components.ComponentRegistrar" />
-91-->[:firebase_core] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_core\intermediates\library_manifest\release\AndroidManifest.xml:11:17-82
+61-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:39:17-76
+61-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:39:27-74
+62            </intent-filter>
+63            <intent-filter>
+63-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:42:15-45:30
+64                <action android:name="FLUTTER_NOTIFICATION_CLICK" />
+64-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:43:14-66
+64-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:43:22-63
+65
+66                <category android:name="android.intent.category.DEFAULT" />
+66-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:44:17-76
+66-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:44:27-73
+67            </intent-filter>
+68        </activity>
+69        <!--
+70             Don't delete the meta-data below.
+71             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+72        -->
+73        <meta-data
+73-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:50:9-52:33
+74            android:name="flutterEmbedding"
+74-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:51:13-44
+75            android:value="2" />
+75-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:52:13-30
+76        <meta-data
+76-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:53:13-55:62
+77            android:name="com.google.firebase.messaging.default_notification_channel_id"
+77-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:54:5-81
+78            android:value="@string/default_notification_channel_id" />
+78-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:55:5-60
+79
+80        <receiver android:name="com.redev.socialapp.ScheduledNotificationReceiver" />
+80-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:57:14-91
+80-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:57:24-88
+81        <receiver android:name="com.redev.socialapp.ScheduledNotificationBootReceiver" >
+81-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:58:16-63:20
+81-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:58:26-94
+82            <intent-filter>
+82-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:59:13-62:29
+83                <action android:name="android.intent.action.BOOT_COMPLETED" >
+83-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:60:17-61:26
+83-->D:\Tutorials\Flutter\Tutorial\flutter_social_app\android\app\src\main\AndroidManifest.xml:60:25-76
+84                </action>
+85            </intent-filter>
+86        </receiver>
+87
+88        <service
+88-->[:firebase_storage] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_storage\intermediates\library_manifest\release\AndroidManifest.xml:8:9-12:19
+89            android:name="com.google.firebase.components.ComponentDiscoveryService"
+89-->[:firebase_storage] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_storage\intermediates\library_manifest\release\AndroidManifest.xml:8:18-89
+90            android:directBootAware="true"
+90-->[com.google.firebase:firebase-common:19.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\b02cac60af6f6a0cd6fcdef763252fb6\jetified-firebase-common-19.3.0\AndroidManifest.xml:34:13-43
+91            android:exported="false" >
+91-->[com.google.firebase:firebase-messaging:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\db111011c9815b8d76bd6cc0947f3a79\jetified-firebase-messaging-20.3.0\AndroidManifest.xml:38:13-37
 92            <meta-data
-92-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:14:13-16:85
-93                android:name="com.google.firebase.components:io.flutter.plugins.firebasemessaging.FlutterFirebaseAppRegistrar"
-93-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:15:17-127
+92-->[:firebase_storage] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_storage\intermediates\library_manifest\release\AndroidManifest.xml:9:13-11:85
+93                android:name="com.google.firebase.components:io.flutter.plugins.firebase.storage.FlutterFirebaseAppRegistrar"
+93-->[:firebase_storage] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_storage\intermediates\library_manifest\release\AndroidManifest.xml:10:17-126
 94                android:value="com.google.firebase.components.ComponentRegistrar" />
-94-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:16:17-82
+94-->[:firebase_storage] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_storage\intermediates\library_manifest\release\AndroidManifest.xml:11:17-82
 95            <meta-data
-95-->[com.google.android.gms:play-services-measurement-api:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\e7e3f6b3c80c9791e54cce31183a2eb2\play-services-measurement-api-17.4.1\AndroidManifest.xml:30:13-32:85
-96                android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar"
-96-->[com.google.android.gms:play-services-measurement-api:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\e7e3f6b3c80c9791e54cce31183a2eb2\play-services-measurement-api-17.4.1\AndroidManifest.xml:31:17-139
+95-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:14:13-16:85
+96                android:name="com.google.firebase.components:io.flutter.plugins.firebasemessaging.FlutterFirebaseAppRegistrar"
+96-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:15:17-127
 97                android:value="com.google.firebase.components.ComponentRegistrar" />
-97-->[com.google.android.gms:play-services-measurement-api:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\e7e3f6b3c80c9791e54cce31183a2eb2\play-services-measurement-api-17.4.1\AndroidManifest.xml:32:17-82
+97-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:16:17-82
 98            <meta-data
-98-->[com.google.firebase:firebase-storage:19.1.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\3ed8519e9abe4e7cb39c076a2d2afc20\firebase-storage-19.1.1\AndroidManifest.xml:33:13-35:85
-99                android:name="com.google.firebase.components:com.google.firebase.storage.StorageRegistrar"
-99-->[com.google.firebase:firebase-storage:19.1.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\3ed8519e9abe4e7cb39c076a2d2afc20\firebase-storage-19.1.1\AndroidManifest.xml:34:17-107
+98-->[:cloud_firestore] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\cloud_firestore\intermediates\library_manifest\release\AndroidManifest.xml:9:13-11:85
+99                android:name="com.google.firebase.components:io.flutter.plugins.firebase.firestore.FlutterFirebaseFirestoreRegistrar"
+99-->[:cloud_firestore] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\cloud_firestore\intermediates\library_manifest\release\AndroidManifest.xml:10:17-134
 100                android:value="com.google.firebase.components.ComponentRegistrar" />
-100-->[com.google.firebase:firebase-storage:19.1.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\3ed8519e9abe4e7cb39c076a2d2afc20\firebase-storage-19.1.1\AndroidManifest.xml:35:17-82
+100-->[:cloud_firestore] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\cloud_firestore\intermediates\library_manifest\release\AndroidManifest.xml:11:17-82
 101            <meta-data
-101-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:36:13-38:85
-102                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
-102-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:37:17-109
+101-->[:firebase_auth] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_auth\intermediates\library_manifest\release\AndroidManifest.xml:9:13-11:85
+102                android:name="com.google.firebase.components:io.flutter.plugins.firebase.auth.FlutterFirebaseAuthRegistrar"
+102-->[:firebase_auth] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_auth\intermediates\library_manifest\release\AndroidManifest.xml:10:17-124
 103                android:value="com.google.firebase.components.ComponentRegistrar" />
-103-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:38:17-82
+103-->[:firebase_auth] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_auth\intermediates\library_manifest\release\AndroidManifest.xml:11:17-82
 104            <meta-data
-104-->[com.google.firebase:firebase-messaging:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\7e4874776282c5f5063b8a668c725e28\jetified-firebase-messaging-20.1.7\AndroidManifest.xml:38:13-40:85
-105                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
-105-->[com.google.firebase:firebase-messaging:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\7e4874776282c5f5063b8a668c725e28\jetified-firebase-messaging-20.1.7\AndroidManifest.xml:39:17-119
+104-->[:firebase_core] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_core\intermediates\library_manifest\release\AndroidManifest.xml:9:13-11:85
+105                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
+105-->[:firebase_core] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_core\intermediates\library_manifest\release\AndroidManifest.xml:10:17-124
 106                android:value="com.google.firebase.components.ComponentRegistrar" />
-106-->[com.google.firebase:firebase-messaging:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\7e4874776282c5f5063b8a668c725e28\jetified-firebase-messaging-20.1.7\AndroidManifest.xml:40:17-82
+106-->[:firebase_core] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_core\intermediates\library_manifest\release\AndroidManifest.xml:11:17-82
 107            <meta-data
-107-->[com.google.firebase:firebase-iid:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\68ae507af1d52d7bd0c28da38feed90a\firebase-iid-20.1.7\AndroidManifest.xml:32:13-34:85
-108                android:name="com.google.firebase.components:com.google.firebase.iid.Registrar"
-108-->[com.google.firebase:firebase-iid:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\68ae507af1d52d7bd0c28da38feed90a\firebase-iid-20.1.7\AndroidManifest.xml:33:17-96
+107-->[com.google.firebase:firebase-messaging:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\db111011c9815b8d76bd6cc0947f3a79\jetified-firebase-messaging-20.3.0\AndroidManifest.xml:39:13-41:85
+108                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+108-->[com.google.firebase:firebase-messaging:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\db111011c9815b8d76bd6cc0947f3a79\jetified-firebase-messaging-20.3.0\AndroidManifest.xml:40:17-119
 109                android:value="com.google.firebase.components.ComponentRegistrar" />
-109-->[com.google.firebase:firebase-iid:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\68ae507af1d52d7bd0c28da38feed90a\firebase-iid-20.1.7\AndroidManifest.xml:34:17-82
+109-->[com.google.firebase:firebase-messaging:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\db111011c9815b8d76bd6cc0947f3a79\jetified-firebase-messaging-20.3.0\AndroidManifest.xml:41:17-82
 110            <meta-data
-110-->[com.google.firebase:firebase-firestore:21.4.3] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\ef3ac7f4eb738f587542093b5620d0ca\jetified-firebase-firestore-21.4.3\AndroidManifest.xml:20:13-22:85
-111                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
-111-->[com.google.firebase:firebase-firestore:21.4.3] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\ef3ac7f4eb738f587542093b5620d0ca\jetified-firebase-firestore-21.4.3\AndroidManifest.xml:21:17-111
+110-->[com.google.android.gms:play-services-measurement-api:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\e7e3f6b3c80c9791e54cce31183a2eb2\play-services-measurement-api-17.4.1\AndroidManifest.xml:30:13-32:85
+111                android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar"
+111-->[com.google.android.gms:play-services-measurement-api:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\e7e3f6b3c80c9791e54cce31183a2eb2\play-services-measurement-api-17.4.1\AndroidManifest.xml:31:17-139
 112                android:value="com.google.firebase.components.ComponentRegistrar" />
-112-->[com.google.firebase:firebase-firestore:21.4.3] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\ef3ac7f4eb738f587542093b5620d0ca\jetified-firebase-firestore-21.4.3\AndroidManifest.xml:22:17-82
+112-->[com.google.android.gms:play-services-measurement-api:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\e7e3f6b3c80c9791e54cce31183a2eb2\play-services-measurement-api-17.4.1\AndroidManifest.xml:32:17-82
 113            <meta-data
-113-->[com.google.firebase:firebase-datatransport:17.0.3] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34a0e5d53ae61e749f2724a77a7fa61b\firebase-datatransport-17.0.3\AndroidManifest.xml:28:13-30:85
-114                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
-114-->[com.google.firebase:firebase-datatransport:17.0.3] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34a0e5d53ae61e749f2724a77a7fa61b\firebase-datatransport-17.0.3\AndroidManifest.xml:29:17-115
+113-->[com.google.firebase:firebase-iid:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\15e27f388fa6d874488dbe33bfb5f19c\firebase-iid-20.3.0\AndroidManifest.xml:32:13-34:85
+114                android:name="com.google.firebase.components:com.google.firebase.iid.Registrar"
+114-->[com.google.firebase:firebase-iid:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\15e27f388fa6d874488dbe33bfb5f19c\firebase-iid-20.3.0\AndroidManifest.xml:33:17-96
 115                android:value="com.google.firebase.components.ComponentRegistrar" />
-115-->[com.google.firebase:firebase-datatransport:17.0.3] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34a0e5d53ae61e749f2724a77a7fa61b\firebase-datatransport-17.0.3\AndroidManifest.xml:30:17-82
+115-->[com.google.firebase:firebase-iid:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\15e27f388fa6d874488dbe33bfb5f19c\firebase-iid-20.3.0\AndroidManifest.xml:34:17-82
 116            <meta-data
-116-->[com.google.firebase:firebase-installations:16.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\5af5554169c23e49f46a023707d74956\firebase-installations-16.3.0\AndroidManifest.xml:17:13-19:85
-117                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
-117-->[com.google.firebase:firebase-installations:16.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\5af5554169c23e49f46a023707d74956\firebase-installations-16.3.0\AndroidManifest.xml:18:17-127
+116-->[com.google.firebase:firebase-datatransport:17.0.3] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34a0e5d53ae61e749f2724a77a7fa61b\firebase-datatransport-17.0.3\AndroidManifest.xml:28:13-30:85
+117                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+117-->[com.google.firebase:firebase-datatransport:17.0.3] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34a0e5d53ae61e749f2724a77a7fa61b\firebase-datatransport-17.0.3\AndroidManifest.xml:29:17-115
 118                android:value="com.google.firebase.components.ComponentRegistrar" />
-118-->[com.google.firebase:firebase-installations:16.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\5af5554169c23e49f46a023707d74956\firebase-installations-16.3.0\AndroidManifest.xml:19:17-82
-119        </service>
-120
-121        <provider
-121-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:11:9-19:20
-122            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
-122-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:12:13-82
-123            android:authorities="com.redev.socialapp.flutter.image_provider"
-123-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:13:13-74
-124            android:exported="false"
-124-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:14:13-37
-125            android:grantUriPermissions="true" >
-125-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:15:13-47
-126            <meta-data
-126-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:16:13-18:75
-127                android:name="android.support.FILE_PROVIDER_PATHS"
-127-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:17:17-67
-128                android:resource="@xml/flutter_image_picker_file_paths" />
-128-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:18:17-72
-129        </provider>
-130
-131        <service android:name="io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService" >
-131-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:8:9-12:19
-131-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:8:18-101
-132            <intent-filter>
-132-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:9:13-11:29
-133                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-133-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:10:17-78
-133-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:10:25-75
-134            </intent-filter>
-135        </service>
-136
-137        <provider
-137-->[:share] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\share\intermediates\library_manifest\release\AndroidManifest.xml:8:9-16:20
-138            android:name="io.flutter.plugins.share.ShareFileProvider"
-138-->[:share] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\share\intermediates\library_manifest\release\AndroidManifest.xml:9:13-70
-139            android:authorities="com.redev.socialapp.flutter.share_provider"
-139-->[:share] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\share\intermediates\library_manifest\release\AndroidManifest.xml:10:13-74
-140            android:exported="false"
-140-->[:share] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\share\intermediates\library_manifest\release\AndroidManifest.xml:11:13-37
-141            android:grantUriPermissions="true" >
-141-->[:share] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\share\intermediates\library_manifest\release\AndroidManifest.xml:12:13-47
-142            <meta-data
-142-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:16:13-18:75
-143                android:name="android.support.FILE_PROVIDER_PATHS"
-143-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:17:17-67
-144                android:resource="@xml/flutter_share_file_paths" />
-144-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:18:17-72
-145        </provider>
-146
-147        <receiver
-147-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:29:9-33:20
-148            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
-148-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:30:13-85
-149            android:enabled="true"
-149-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:31:13-35
-150            android:exported="false" >
-150-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:32:13-37
-151        </receiver>
-152
-153        <service
-153-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:35:9-38:40
-154            android:name="com.google.android.gms.measurement.AppMeasurementService"
-154-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:36:13-84
-155            android:enabled="true"
-155-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:37:13-35
-156            android:exported="false" />
-156-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:38:13-37
-157        <service
-157-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:39:9-43:72
-158            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
-158-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:40:13-87
-159            android:enabled="true"
-159-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:41:13-35
-160            android:exported="false"
-160-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:42:13-37
-161            android:permission="android.permission.BIND_JOB_SERVICE" />
-161-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:43:13-69
-162
-163        <activity
-163-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:24:9-31:50
-164            android:name="com.google.firebase.auth.internal.FederatedSignInActivity"
-164-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:25:13-85
-165            android:excludeFromRecents="true"
-165-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:26:13-46
-166            android:exported="true"
-166-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:27:13-36
-167            android:launchMode="singleTask"
-167-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:28:13-44
-168            android:permission="com.google.firebase.auth.api.gms.permission.LAUNCH_FEDERATED_SIGN_IN"
-168-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:29:13-102
-169            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-169-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:30:13-72
-170        <!--
-171             FirebaseMessagingService performs security checks at runtime,
-172             but set to not exported to explicitly avoid allowing another app to call it.
-173        -->
-174        <service
-174-->[com.google.firebase:firebase-messaging:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\7e4874776282c5f5063b8a668c725e28\jetified-firebase-messaging-20.1.7\AndroidManifest.xml:28:9-34:19
-175            android:name="com.google.firebase.messaging.FirebaseMessagingService"
-175-->[com.google.firebase:firebase-messaging:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\7e4874776282c5f5063b8a668c725e28\jetified-firebase-messaging-20.1.7\AndroidManifest.xml:29:13-82
-176            android:exported="false" >
-176-->[com.google.firebase:firebase-messaging:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\7e4874776282c5f5063b8a668c725e28\jetified-firebase-messaging-20.1.7\AndroidManifest.xml:30:13-37
-177            <intent-filter android:priority="-500" >
-177-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:9:13-11:29
-178                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-178-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:10:17-78
-178-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:10:25-75
-179            </intent-filter>
-180        </service>
-181
-182        <receiver
-182-->[com.google.firebase:firebase-iid:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\68ae507af1d52d7bd0c28da38feed90a\firebase-iid-20.1.7\AndroidManifest.xml:37:9-44:20
-183            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
-183-->[com.google.firebase:firebase-iid:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\68ae507af1d52d7bd0c28da38feed90a\firebase-iid-20.1.7\AndroidManifest.xml:38:13-78
-184            android:exported="true"
-184-->[com.google.firebase:firebase-iid:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\68ae507af1d52d7bd0c28da38feed90a\firebase-iid-20.1.7\AndroidManifest.xml:39:13-36
-185            android:permission="com.google.android.c2dm.permission.SEND" >
-185-->[com.google.firebase:firebase-iid:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\68ae507af1d52d7bd0c28da38feed90a\firebase-iid-20.1.7\AndroidManifest.xml:40:13-73
-186            <intent-filter>
-186-->[com.google.firebase:firebase-iid:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\68ae507af1d52d7bd0c28da38feed90a\firebase-iid-20.1.7\AndroidManifest.xml:41:13-43:29
-187                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-187-->[com.google.firebase:firebase-iid:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\68ae507af1d52d7bd0c28da38feed90a\firebase-iid-20.1.7\AndroidManifest.xml:42:17-81
-187-->[com.google.firebase:firebase-iid:20.1.7] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\68ae507af1d52d7bd0c28da38feed90a\firebase-iid-20.1.7\AndroidManifest.xml:42:25-78
-188            </intent-filter>
-189        </receiver>
-190
-191        <activity
-191-->[com.google.android.gms:play-services-base:17.1.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\6eb14f512292913515d869914807ad40\play-services-base-17.1.0\AndroidManifest.xml:23:9-26:75
-192            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-192-->[com.google.android.gms:play-services-base:17.1.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\6eb14f512292913515d869914807ad40\play-services-base-17.1.0\AndroidManifest.xml:24:13-79
-193            android:exported="false"
-193-->[com.google.android.gms:play-services-base:17.1.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\6eb14f512292913515d869914807ad40\play-services-base-17.1.0\AndroidManifest.xml:25:13-37
-194            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-194-->[com.google.android.gms:play-services-base:17.1.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\6eb14f512292913515d869914807ad40\play-services-base-17.1.0\AndroidManifest.xml:26:13-72
-195
-196        <provider
-196-->[com.google.firebase:firebase-common:19.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\b02cac60af6f6a0cd6fcdef763252fb6\jetified-firebase-common-19.3.0\AndroidManifest.xml:26:9-30:39
-197            android:name="com.google.firebase.provider.FirebaseInitProvider"
-197-->[com.google.firebase:firebase-common:19.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\b02cac60af6f6a0cd6fcdef763252fb6\jetified-firebase-common-19.3.0\AndroidManifest.xml:27:13-77
-198            android:authorities="com.redev.socialapp.firebaseinitprovider"
-198-->[com.google.firebase:firebase-common:19.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\b02cac60af6f6a0cd6fcdef763252fb6\jetified-firebase-common-19.3.0\AndroidManifest.xml:28:13-72
-199            android:exported="false"
-199-->[com.google.firebase:firebase-common:19.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\b02cac60af6f6a0cd6fcdef763252fb6\jetified-firebase-common-19.3.0\AndroidManifest.xml:29:13-37
-200            android:initOrder="100" />
-200-->[com.google.firebase:firebase-common:19.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\b02cac60af6f6a0cd6fcdef763252fb6\jetified-firebase-common-19.3.0\AndroidManifest.xml:30:13-36
+118-->[com.google.firebase:firebase-datatransport:17.0.3] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34a0e5d53ae61e749f2724a77a7fa61b\firebase-datatransport-17.0.3\AndroidManifest.xml:30:17-82
+119            <meta-data
+119-->[com.google.firebase:firebase-installations:16.3.3] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\657a4170ad1fbb28863aa99d484eaa8d\firebase-installations-16.3.3\AndroidManifest.xml:17:13-19:85
+120                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+120-->[com.google.firebase:firebase-installations:16.3.3] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\657a4170ad1fbb28863aa99d484eaa8d\firebase-installations-16.3.3\AndroidManifest.xml:18:17-127
+121                android:value="com.google.firebase.components.ComponentRegistrar" />
+121-->[com.google.firebase:firebase-installations:16.3.3] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\657a4170ad1fbb28863aa99d484eaa8d\firebase-installations-16.3.3\AndroidManifest.xml:19:17-82
+122            <meta-data
+122-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:36:13-38:85
+123                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+123-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:37:17-109
+124                android:value="com.google.firebase.components.ComponentRegistrar" />
+124-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:38:17-82
+125            <meta-data
+125-->[com.google.firebase:firebase-storage:19.1.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\3ed8519e9abe4e7cb39c076a2d2afc20\firebase-storage-19.1.1\AndroidManifest.xml:33:13-35:85
+126                android:name="com.google.firebase.components:com.google.firebase.storage.StorageRegistrar"
+126-->[com.google.firebase:firebase-storage:19.1.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\3ed8519e9abe4e7cb39c076a2d2afc20\firebase-storage-19.1.1\AndroidManifest.xml:34:17-107
+127                android:value="com.google.firebase.components.ComponentRegistrar" />
+127-->[com.google.firebase:firebase-storage:19.1.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\3ed8519e9abe4e7cb39c076a2d2afc20\firebase-storage-19.1.1\AndroidManifest.xml:35:17-82
+128            <meta-data
+128-->[com.google.firebase:firebase-firestore:21.4.3] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\ef3ac7f4eb738f587542093b5620d0ca\jetified-firebase-firestore-21.4.3\AndroidManifest.xml:20:13-22:85
+129                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+129-->[com.google.firebase:firebase-firestore:21.4.3] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\ef3ac7f4eb738f587542093b5620d0ca\jetified-firebase-firestore-21.4.3\AndroidManifest.xml:21:17-111
+130                android:value="com.google.firebase.components.ComponentRegistrar" />
+130-->[com.google.firebase:firebase-firestore:21.4.3] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\ef3ac7f4eb738f587542093b5620d0ca\jetified-firebase-firestore-21.4.3\AndroidManifest.xml:22:17-82
+131        </service>
+132        <service android:name="io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService" >
+132-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:8:9-12:19
+132-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:8:18-101
+133            <intent-filter>
+133-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:9:13-11:29
+134                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+134-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:10:17-78
+134-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:10:25-75
+135            </intent-filter>
+136        </service>
+137        <!--
+138             FirebaseMessagingService performs security checks at runtime,
+139             but set to not exported to explicitly avoid allowing another app to call it.
+140        -->
+141        <service
+141-->[com.google.firebase:firebase-messaging:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\db111011c9815b8d76bd6cc0947f3a79\jetified-firebase-messaging-20.3.0\AndroidManifest.xml:28:9-35:19
+142            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+142-->[com.google.firebase:firebase-messaging:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\db111011c9815b8d76bd6cc0947f3a79\jetified-firebase-messaging-20.3.0\AndroidManifest.xml:29:13-82
+143            android:directBootAware="true"
+143-->[com.google.firebase:firebase-messaging:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\db111011c9815b8d76bd6cc0947f3a79\jetified-firebase-messaging-20.3.0\AndroidManifest.xml:30:13-43
+144            android:exported="false" >
+144-->[com.google.firebase:firebase-messaging:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\db111011c9815b8d76bd6cc0947f3a79\jetified-firebase-messaging-20.3.0\AndroidManifest.xml:31:13-37
+145            <intent-filter android:priority="-500" >
+145-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:9:13-11:29
+146                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+146-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:10:17-78
+146-->[:firebase_messaging] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\firebase_messaging\intermediates\library_manifest\release\AndroidManifest.xml:10:25-75
+147            </intent-filter>
+148        </service>
+149
+150        <provider
+150-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:11:9-19:20
+151            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+151-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:12:13-82
+152            android:authorities="com.redev.socialapp.flutter.image_provider"
+152-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:13:13-74
+153            android:exported="false"
+153-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:14:13-37
+154            android:grantUriPermissions="true" >
+154-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:15:13-47
+155            <meta-data
+155-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:16:13-18:75
+156                android:name="android.support.FILE_PROVIDER_PATHS"
+156-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:17:17-67
+157                android:resource="@xml/flutter_image_picker_file_paths" />
+157-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:18:17-72
+158        </provider>
+159        <provider
+159-->[:share] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\share\intermediates\library_manifest\release\AndroidManifest.xml:8:9-16:20
+160            android:name="io.flutter.plugins.share.ShareFileProvider"
+160-->[:share] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\share\intermediates\library_manifest\release\AndroidManifest.xml:9:13-70
+161            android:authorities="com.redev.socialapp.flutter.share_provider"
+161-->[:share] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\share\intermediates\library_manifest\release\AndroidManifest.xml:10:13-74
+162            android:exported="false"
+162-->[:share] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\share\intermediates\library_manifest\release\AndroidManifest.xml:11:13-37
+163            android:grantUriPermissions="true" >
+163-->[:share] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\share\intermediates\library_manifest\release\AndroidManifest.xml:12:13-47
+164            <meta-data
+164-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:16:13-18:75
+165                android:name="android.support.FILE_PROVIDER_PATHS"
+165-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:17:17-67
+166                android:resource="@xml/flutter_share_file_paths" />
+166-->[:image_picker] D:\Tutorials\Flutter\Tutorial\flutter_social_app\build\image_picker\intermediates\library_manifest\release\AndroidManifest.xml:18:17-72
+167        </provider>
+168
+169        <receiver
+169-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:29:9-33:20
+170            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+170-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:30:13-85
+171            android:enabled="true"
+171-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:31:13-35
+172            android:exported="false" >
+172-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:32:13-37
+173        </receiver>
+174
+175        <service
+175-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:35:9-38:40
+176            android:name="com.google.android.gms.measurement.AppMeasurementService"
+176-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:36:13-84
+177            android:enabled="true"
+177-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:37:13-35
+178            android:exported="false" />
+178-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:38:13-37
+179        <service
+179-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:39:9-43:72
+180            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
+180-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:40:13-87
+181            android:enabled="true"
+181-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:41:13-35
+182            android:exported="false"
+182-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:42:13-37
+183            android:permission="android.permission.BIND_JOB_SERVICE" />
+183-->[com.google.android.gms:play-services-measurement:17.4.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\76c05ba4f7e9122f3787bc7627889336\play-services-measurement-17.4.1\AndroidManifest.xml:43:13-69
+184
+185        <receiver
+185-->[com.google.firebase:firebase-iid:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\15e27f388fa6d874488dbe33bfb5f19c\firebase-iid-20.3.0\AndroidManifest.xml:37:9-44:20
+186            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+186-->[com.google.firebase:firebase-iid:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\15e27f388fa6d874488dbe33bfb5f19c\firebase-iid-20.3.0\AndroidManifest.xml:38:13-78
+187            android:exported="true"
+187-->[com.google.firebase:firebase-iid:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\15e27f388fa6d874488dbe33bfb5f19c\firebase-iid-20.3.0\AndroidManifest.xml:39:13-36
+188            android:permission="com.google.android.c2dm.permission.SEND" >
+188-->[com.google.firebase:firebase-iid:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\15e27f388fa6d874488dbe33bfb5f19c\firebase-iid-20.3.0\AndroidManifest.xml:40:13-73
+189            <intent-filter>
+189-->[com.google.firebase:firebase-iid:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\15e27f388fa6d874488dbe33bfb5f19c\firebase-iid-20.3.0\AndroidManifest.xml:41:13-43:29
+190                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+190-->[com.google.firebase:firebase-iid:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\15e27f388fa6d874488dbe33bfb5f19c\firebase-iid-20.3.0\AndroidManifest.xml:42:17-81
+190-->[com.google.firebase:firebase-iid:20.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\15e27f388fa6d874488dbe33bfb5f19c\firebase-iid-20.3.0\AndroidManifest.xml:42:25-78
+191            </intent-filter>
+192        </receiver>
+193
+194        <activity
+194-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:24:9-31:50
+195            android:name="com.google.firebase.auth.internal.FederatedSignInActivity"
+195-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:25:13-85
+196            android:excludeFromRecents="true"
+196-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:26:13-46
+197            android:exported="true"
+197-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:27:13-36
+198            android:launchMode="singleTask"
+198-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:28:13-44
+199            android:permission="com.google.firebase.auth.api.gms.permission.LAUNCH_FEDERATED_SIGN_IN"
+199-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:29:13-102
+200            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+200-->[com.google.firebase:firebase-auth:19.3.1] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\82681f3c0761d655651a14f400b32223\firebase-auth-19.3.1\AndroidManifest.xml:30:13-72
 201
-202        <meta-data
-202-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\4cf8fdcb337fdbe88203c3ca0a64a3a2\jetified-play-services-basement-17.0.0\AndroidManifest.xml:23:9-25:69
-203            android:name="com.google.android.gms.version"
-203-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\4cf8fdcb337fdbe88203c3ca0a64a3a2\jetified-play-services-basement-17.0.0\AndroidManifest.xml:24:13-58
-204            android:value="@integer/google_play_services_version" />
-204-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\4cf8fdcb337fdbe88203c3ca0a64a3a2\jetified-play-services-basement-17.0.0\AndroidManifest.xml:25:13-66
-205
-206        <service
-206-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\96b48096cc6858db55ff0b9cadbfdd91\transport-backend-cct-2.2.0\AndroidManifest.xml:29:9-35:19
-207            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
-207-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\96b48096cc6858db55ff0b9cadbfdd91\transport-backend-cct-2.2.0\AndroidManifest.xml:30:13-103
-208            android:exported="false" >
-208-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\96b48096cc6858db55ff0b9cadbfdd91\transport-backend-cct-2.2.0\AndroidManifest.xml:31:13-37
-209            <meta-data
-209-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\96b48096cc6858db55ff0b9cadbfdd91\transport-backend-cct-2.2.0\AndroidManifest.xml:32:13-34:39
-210                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
-210-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\96b48096cc6858db55ff0b9cadbfdd91\transport-backend-cct-2.2.0\AndroidManifest.xml:33:17-94
-211                android:value="cct" />
-211-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\96b48096cc6858db55ff0b9cadbfdd91\transport-backend-cct-2.2.0\AndroidManifest.xml:34:17-36
-212        </service>
-213        <service
-213-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34066712d6449b2703aaeeeb718baf20\transport-runtime-2.2.0\AndroidManifest.xml:26:9-30:19
-214            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
-214-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34066712d6449b2703aaeeeb718baf20\transport-runtime-2.2.0\AndroidManifest.xml:27:13-117
-215            android:exported="false"
-215-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34066712d6449b2703aaeeeb718baf20\transport-runtime-2.2.0\AndroidManifest.xml:28:13-37
-216            android:permission="android.permission.BIND_JOB_SERVICE" >
-216-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34066712d6449b2703aaeeeb718baf20\transport-runtime-2.2.0\AndroidManifest.xml:29:13-69
-217        </service>
-218
-219        <receiver
-219-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34066712d6449b2703aaeeeb718baf20\transport-runtime-2.2.0\AndroidManifest.xml:32:9-34:40
-220            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
-220-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34066712d6449b2703aaeeeb718baf20\transport-runtime-2.2.0\AndroidManifest.xml:33:13-132
-221            android:exported="false" />
-221-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34066712d6449b2703aaeeeb718baf20\transport-runtime-2.2.0\AndroidManifest.xml:34:13-37
-222    </application>
-223
-224</manifest>
+202        <provider
+202-->[com.google.firebase:firebase-common:19.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\b02cac60af6f6a0cd6fcdef763252fb6\jetified-firebase-common-19.3.0\AndroidManifest.xml:26:9-30:39
+203            android:name="com.google.firebase.provider.FirebaseInitProvider"
+203-->[com.google.firebase:firebase-common:19.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\b02cac60af6f6a0cd6fcdef763252fb6\jetified-firebase-common-19.3.0\AndroidManifest.xml:27:13-77
+204            android:authorities="com.redev.socialapp.firebaseinitprovider"
+204-->[com.google.firebase:firebase-common:19.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\b02cac60af6f6a0cd6fcdef763252fb6\jetified-firebase-common-19.3.0\AndroidManifest.xml:28:13-72
+205            android:exported="false"
+205-->[com.google.firebase:firebase-common:19.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\b02cac60af6f6a0cd6fcdef763252fb6\jetified-firebase-common-19.3.0\AndroidManifest.xml:29:13-37
+206            android:initOrder="100" />
+206-->[com.google.firebase:firebase-common:19.3.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\b02cac60af6f6a0cd6fcdef763252fb6\jetified-firebase-common-19.3.0\AndroidManifest.xml:30:13-36
+207
+208        <activity
+208-->[com.google.android.gms:play-services-base:17.1.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\6eb14f512292913515d869914807ad40\play-services-base-17.1.0\AndroidManifest.xml:23:9-26:75
+209            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+209-->[com.google.android.gms:play-services-base:17.1.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\6eb14f512292913515d869914807ad40\play-services-base-17.1.0\AndroidManifest.xml:24:13-79
+210            android:exported="false"
+210-->[com.google.android.gms:play-services-base:17.1.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\6eb14f512292913515d869914807ad40\play-services-base-17.1.0\AndroidManifest.xml:25:13-37
+211            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+211-->[com.google.android.gms:play-services-base:17.1.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\6eb14f512292913515d869914807ad40\play-services-base-17.1.0\AndroidManifest.xml:26:13-72
+212
+213        <meta-data
+213-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\4cf8fdcb337fdbe88203c3ca0a64a3a2\jetified-play-services-basement-17.0.0\AndroidManifest.xml:23:9-25:69
+214            android:name="com.google.android.gms.version"
+214-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\4cf8fdcb337fdbe88203c3ca0a64a3a2\jetified-play-services-basement-17.0.0\AndroidManifest.xml:24:13-58
+215            android:value="@integer/google_play_services_version" />
+215-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\4cf8fdcb337fdbe88203c3ca0a64a3a2\jetified-play-services-basement-17.0.0\AndroidManifest.xml:25:13-66
+216
+217        <service
+217-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\96b48096cc6858db55ff0b9cadbfdd91\transport-backend-cct-2.2.0\AndroidManifest.xml:29:9-35:19
+218            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+218-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\96b48096cc6858db55ff0b9cadbfdd91\transport-backend-cct-2.2.0\AndroidManifest.xml:30:13-103
+219            android:exported="false" >
+219-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\96b48096cc6858db55ff0b9cadbfdd91\transport-backend-cct-2.2.0\AndroidManifest.xml:31:13-37
+220            <meta-data
+220-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\96b48096cc6858db55ff0b9cadbfdd91\transport-backend-cct-2.2.0\AndroidManifest.xml:32:13-34:39
+221                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+221-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\96b48096cc6858db55ff0b9cadbfdd91\transport-backend-cct-2.2.0\AndroidManifest.xml:33:17-94
+222                android:value="cct" />
+222-->[com.google.android.datatransport:transport-backend-cct:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\96b48096cc6858db55ff0b9cadbfdd91\transport-backend-cct-2.2.0\AndroidManifest.xml:34:17-36
+223        </service>
+224        <service
+224-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34066712d6449b2703aaeeeb718baf20\transport-runtime-2.2.0\AndroidManifest.xml:26:9-30:19
+225            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+225-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34066712d6449b2703aaeeeb718baf20\transport-runtime-2.2.0\AndroidManifest.xml:27:13-117
+226            android:exported="false"
+226-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34066712d6449b2703aaeeeb718baf20\transport-runtime-2.2.0\AndroidManifest.xml:28:13-37
+227            android:permission="android.permission.BIND_JOB_SERVICE" >
+227-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34066712d6449b2703aaeeeb718baf20\transport-runtime-2.2.0\AndroidManifest.xml:29:13-69
+228        </service>
+229
+230        <receiver
+230-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34066712d6449b2703aaeeeb718baf20\transport-runtime-2.2.0\AndroidManifest.xml:32:9-34:40
+231            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+231-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34066712d6449b2703aaeeeb718baf20\transport-runtime-2.2.0\AndroidManifest.xml:33:13-132
+232            android:exported="false" />
+232-->[com.google.android.datatransport:transport-runtime:2.2.0] C:\Users\kasem\.gradle\caches\transforms-2\files-2.1\34066712d6449b2703aaeeeb718baf20\transport-runtime-2.2.0\AndroidManifest.xml:34:13-37
+233    </application>
+234
+235</manifest>

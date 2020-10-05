@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android.iml" filepath="$PROJECT_DIR$/.idea/modules/android.iml" group="android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="android/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1974934150/cloud_firestore.iml" filepath="$PROJECT_DIR$/.idea/modules/1974934150/cloud_firestore.iml" group="android/cloud_firestore" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1083940712/cloud_firestore_web.iml" filepath="$PROJECT_DIR$/.idea/modules/-1083940712/cloud_firestore_web.iml" group="android/cloud_firestore_web" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-545332950/firebase_auth.iml" filepath="$PROJECT_DIR$/.idea/modules/-545332950/firebase_auth.iml" group="android/firebase_auth" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1742048911/firebase_auth_web.iml" filepath="$PROJECT_DIR$/.idea/modules/-1742048911/firebase_auth_web.iml" group="android/firebase_auth_web" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/862370900/firebase_core.iml" filepath="$PROJECT_DIR$/.idea/modules/862370900/firebase_core.iml" group="android/firebase_core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-130797082/firebase_core_web.iml" filepath="$PROJECT_DIR$/.idea/modules/-130797082/firebase_core_web.iml" group="android/firebase_core_web" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1597639925/firebase_messaging.iml" filepath="$PROJECT_DIR$/.idea/modules/-1597639925/firebase_messaging.iml" group="android/firebase_messaging" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1318243970/firebase_storage.iml" filepath="$PROJECT_DIR$/.idea/modules/-1318243970/firebase_storage.iml" group="android/firebase_storage" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/582666076/flutter_local_notifications.iml" filepath="$PROJECT_DIR$/.idea/modules/582666076/flutter_local_notifications.iml" group="android/flutter_local_notifications" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/698515848/flutter_plugin_android_lifecycle.iml" filepath="$PROJECT_DIR$/.idea/modules/698515848/flutter_plugin_android_lifecycle.iml" group="android/flutter_plugin_android_lifecycle" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1221210058/image_picker.iml" filepath="$PROJECT_DIR$/.idea/modules/-1221210058/image_picker.iml" group="android/image_picker" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/2040185037/path_provider.iml" filepath="$PROJECT_DIR$/.idea/modules/2040185037/path_provider.iml" group="android/path_provider" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-342413600/path_provider_linux.iml" filepath="$PROJECT_DIR$/.idea/modules/-342413600/path_provider_linux.iml" group="android/path_provider_linux" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1656122972/path_provider_macos.iml" filepath="$PROJECT_DIR$/.idea/modules/-1656122972/path_provider_macos.iml" group="android/path_provider_macos" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-2133565327/path_provider_windows.iml" filepath="$PROJECT_DIR$/.idea/modules/-2133565327/path_provider_windows.iml" group="android/path_provider_windows" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1190497916/permission_handler.iml" filepath="$PROJECT_DIR$/.idea/modules/1190497916/permission_handler.iml" group="android/permission_handler" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/363716617/share.iml" filepath="$PROJECT_DIR$/.idea/modules/363716617/share.iml" group="android/share" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-997026503/workmanager.iml" filepath="$PROJECT_DIR$/.idea/modules/-997026503/workmanager.iml" group="android/workmanager" />
+    </modules>
+  </component>
+</project>

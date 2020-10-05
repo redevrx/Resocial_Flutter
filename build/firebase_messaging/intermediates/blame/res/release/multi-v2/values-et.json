@@ -4,23 +4,6 @@
             "outputFile": "D:\\Tutorials\\Flutter\\Tutorial\\flutter_social_app\\build\\firebase_messaging\\intermediates\\res\\merged\\release\\values-et\\values-et.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\kasem\\.gradle\\caches\\transforms-2\\files-2.1\\14ee3d13e867740341b867994e7d541a\\jetified-firebase-messaging-20.0.1\\res\\values-et\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "207",
-                        "endColumns": "97",
-                        "endOffsets": "304"
-                    },
-                    "to": {
-                        "startLines": "20",
-                        "startColumns": "4",
-                        "startOffsets": "2812",
-                        "endColumns": "101",
-                        "endOffsets": "2909"
-                    }
-                },
-                {
                     "source": "C:\\Users\\kasem\\.gradle\\caches\\transforms-2\\files-2.1\\4c0b774c09d5393feb013f0dbe753af3\\play-services-base-17.0.0\\res\\values-et\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
@@ -69,6 +52,23 @@
                         "startOffsets": "2914",
                         "endColumns": "100",
                         "endOffsets": "3010"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\kasem\\.gradle\\caches\\transforms-2\\files-2.1\\7e4874776282c5f5063b8a668c725e28\\jetified-firebase-messaging-20.1.7\\res\\values-et\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "207",
+                        "endColumns": "97",
+                        "endOffsets": "304"
+                    },
+                    "to": {
+                        "startLines": "20",
+                        "startColumns": "4",
+                        "startOffsets": "2812",
+                        "endColumns": "101",
+                        "endOffsets": "2909"
                     }
                 }
             ]
@@ -77,23 +77,6 @@
             "outputFile": "D:\\Tutorials\\Flutter\\Tutorial\\flutter_social_app\\build\\firebase_messaging\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-et\\values-et.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\kasem\\.gradle\\caches\\transforms-2\\files-2.1\\14ee3d13e867740341b867994e7d541a\\jetified-firebase-messaging-20.0.1\\res\\values-et\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "207",
-                        "endColumns": "97",
-                        "endOffsets": "304"
-                    },
-                    "to": {
-                        "startLines": "20",
-                        "startColumns": "4",
-                        "startOffsets": "2812",
-                        "endColumns": "101",
-                        "endOffsets": "2909"
-                    }
-                },
-                {
                     "source": "C:\\Users\\kasem\\.gradle\\caches\\transforms-2\\files-2.1\\4c0b774c09d5393feb013f0dbe753af3\\play-services-base-17.0.0\\res\\values-et\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
@@ -142,6 +125,23 @@
                         "startOffsets": "2914",
                         "endColumns": "100",
                         "endOffsets": "3010"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\kasem\\.gradle\\caches\\transforms-2\\files-2.1\\7e4874776282c5f5063b8a668c725e28\\jetified-firebase-messaging-20.1.7\\res\\values-et\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "207",
+                        "endColumns": "97",
+                        "endOffsets": "304"
+                    },
+                    "to": {
+                        "startLines": "20",
+                        "startColumns": "4",
+                        "startOffsets": "2812",
+                        "endColumns": "101",
+                        "endOffsets": "2909"
                     }
                 }
             ]
