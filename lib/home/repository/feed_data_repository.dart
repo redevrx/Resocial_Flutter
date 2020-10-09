@@ -99,7 +99,7 @@ class FeedRepository {
 
     final _mRef = FirebaseFirestore.instance;
 
-    await _mRef.collection("Post").get().then((value) {
+    await _mRef.collection("Post").limit(4).get().then((value) {
       // print('map Value :'+value.documents[0].data['likeResult']['${value.documents[0].data['uid'].toString()}'].toString());
       //print('map Value :${value.documents.length}');
       // for (int i = 0; i < value.documents.length; i++) {

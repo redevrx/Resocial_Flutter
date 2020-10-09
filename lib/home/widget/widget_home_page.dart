@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,8 @@ import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'dart:async';
 import 'package:socialapp/widgets/models/choice.dart';
 import 'package:socialapp/shared/shared_app.dart';
+import 'package:workmanager/workmanager.dart';
+
 // import 'package:flutter/foundation.dart' show kIsWeb;
 
 class homePage extends StatefulWidget {
@@ -50,9 +53,15 @@ class _homePageState extends State<homePage> {
     });
   }
 
-  Future<void> settingloadFeed(MyFeedBloc myFeedBloc) async {
+  // Future<void> settingloadFeed(MyFeedBloc myFeedBloc) async {
+  //   //event load my feed
+  //   myFeedBloc.add(onLoadMyFeedClick());
+  // }
+
+  void _settingloadFeed(MyFeedBloc myFeedBloc, LikeBloc likeBloc) {
     //event load my feed
     myFeedBloc.add(onLoadMyFeedClick());
+    likeBloc.add(onLikeResultPostClick());
   }
 
   @override
@@ -71,32 +80,15 @@ class _homePageState extends State<homePage> {
     //event load my feed
     // myFeedBloc.add(onLoadMyFeedClick());
     //likeBloc.add(onLikeResultPostClick());
-    settingloadFeed(myFeedBloc);
+    // _initialBackgound(myFeedBloc, likeBloc);
+    _settingloadFeed(myFeedBloc, likeBloc);
     print('new feed data loading');
-    likeBloc.add(onLikeResultPostClick());
-    // setState(() {
     bottonNavSize = 150;
-    // });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // setState(() {
-    //   // initailMyFedd();
-    //   checkUserlogin(context);
-
-    //   //event load my feed
-    //   // myFeedBloc.add(onLoadMyFeedClick());
-    //   //likeBloc.add(onLikeResultPostClick());
-    //   settingloadFeed(myFeedBloc);
-    //   print('new feed data loading');
-    //   likeBloc.add(onLikeResultPostClick());
-    //   setState(() {
-    //     bottonNavSize = 150;
-    //   });
-    // });
-
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
@@ -1272,4 +1264,24 @@ class postWithMessage extends StatelessWidget {
       ),
     );
   }
+}
+
+void _initialBackgound() {
+  if (Platform.isIOS) {
+    // ios setting task
+  } else {
+    // android setting task
+    Workmanager.initialize(_callbackDispatcher, isInDebugMode: true);
+    Workmanager.registerPeriodicTask("home_page_feed", "onLoadFeed",
+        initialDelay: Duration(minutes: 2), frequency: Duration(minutes: 15));
+  }
+}
+
+void _callbackDispatcher() {
+  Workmanager.executeTask((taskName, inputData) async {
+    print('start service load user feed ');
+    final feed = new FeedRepository();
+    feed.getFeed();
+    return Future.value(true);
+  });
 }

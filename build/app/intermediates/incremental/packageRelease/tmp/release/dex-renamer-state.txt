@@ -1,4 +1,0 @@
-#Sun Oct 04 17:47:29 ICT 2020
-base.0=D\:\\Tutorials\\Flutter\\Tutorial\\flutter_social_app\\build\\app\\intermediates\\transforms\\r8\\release\\0\\classes.dex
-path.0=classes.dex
-renamed.0=classes.dex

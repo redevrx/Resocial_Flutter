@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/Login/screen/login_page.dart';
 import 'package:socialapp/Login/screen/register_user.dart';
 import 'package:socialapp/Profile/AddProfile/screen/add_info_profile.dart';
@@ -16,11 +15,12 @@ import 'package:socialapp/notifications/exportNotify.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart' show kIsWeb;
-// import 'package:workmanager/workmanager.dart';
+import 'package:workmanager/workmanager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp()
+      .whenComplete(() => {print('Firebase Initial Complete')});
   if (kIsWeb) {
     // Disable persistence on web platforms
     await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
@@ -47,15 +47,9 @@ void main() async {
 bool USE_FIRESTORE_EMULATOR = false;
 
 class MyApp extends StatelessWidget {
-  MyFeedBloc myFeedBloc;
-  LikeBloc likeBloc;
   @override
   Widget build(BuildContext context) {
-    // myFeedBloc = BlocProvider.of<MyFeedBloc>(context);
-    // likeBloc = BlocProvider.of<LikeBloc>(context);
-    //on work backgroun feed data
-    // _settingloadFeed(myFeedBloc, likeBloc);
-    // _initialBackgound(myFeedBloc, likeBloc);
+    // _initialBackgound();
     return MaterialApp(
       routes: {
         "/": (context) => LoginScreen(),
@@ -74,22 +68,24 @@ class MyApp extends StatelessWidget {
   }
 }
 
-void _initialBackgound(MyFeedBloc myFeedBloc, LikeBloc likeBloc) {
+void _initialBackgound() {
   if (Platform.isIOS) {
     // ios setting task
   } else {
     // android setting task
-  //   Workmanager.initialize(_callbackDispatcher, isInDebugMode: false);
-  //   Workmanager.registerPeriodicTask("1", "onLoadFeed",
-  //       frequency: Duration(minutes: 15));
-   }
+    Workmanager.initialize(_callbackDispatcher, isInDebugMode: true);
+    Workmanager.registerPeriodicTask("6", "onLoadFeed",
+        frequency: Duration(minutes: 15));
+  }
 }
 
-void _callbackDispatcher(MyFeedBloc myFeedBloc, LikeBloc likeBloc) {
-  // Workmanager.executeTask((taskName, inputData) {
-  //   _settingloadFeed(myFeedBloc, likeBloc);
-  //   return Future.value(true);
-  // });
+void _callbackDispatcher() {
+  Workmanager.executeTask((taskName, inputData) async {
+    print('start service load user feed ');
+    // final feed = new FeedRepository();
+    // await feed.getFeed();
+    return Future.value(true);
+  });
 }
 
 void _settingloadFeed(MyFeedBloc myFeedBloc, LikeBloc likeBloc) async {
