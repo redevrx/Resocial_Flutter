@@ -20,7 +20,7 @@ import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'dart:async';
 import 'package:socialapp/widgets/models/choice.dart';
 import 'package:socialapp/shared/shared_app.dart';
-import 'package:workmanager/workmanager.dart';
+// import 'package:workmanager/workmanager.dart';
 
 // import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -1266,22 +1266,22 @@ class postWithMessage extends StatelessWidget {
   }
 }
 
-void _initialBackgound() {
-  if (Platform.isIOS) {
-    // ios setting task
-  } else {
-    // android setting task
-    Workmanager.initialize(_callbackDispatcher, isInDebugMode: true);
-    Workmanager.registerPeriodicTask("home_page_feed", "onLoadFeed",
-        initialDelay: Duration(minutes: 2), frequency: Duration(minutes: 15));
-  }
-}
+// void _initialBackgound() {
+//   if (Platform.isIOS) {
+//     // ios setting task
+//   } else {
+//     // android setting task
+//     Workmanager.initialize(_callbackDispatcher, isInDebugMode: true);
+//     Workmanager.registerPeriodicTask("home_page_feed", "onLoadFeed",
+//         initialDelay: Duration(minutes: 2), frequency: Duration(minutes: 15));
+//   }
+// }
 
-void _callbackDispatcher() {
-  Workmanager.executeTask((taskName, inputData) async {
-    print('start service load user feed ');
-    final feed = new FeedRepository();
-    feed.getFeed();
-    return Future.value(true);
-  });
-}
+// void _callbackDispatcher() {
+//   Workmanager.executeTask((taskName, inputData) async {
+//     print('start service load user feed ');
+//     final feed = new FeedRepository();
+//     feed.getFeed();
+//     return Future.value(true);
+//   });
+// }

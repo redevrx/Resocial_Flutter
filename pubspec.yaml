@@ -37,7 +37,7 @@ dependencies:
   firebase_messaging: ^7.0.2
   flutter_local_notifications: ^1.4.4+5
   path_provider: ^1.6.18
-  workmanager: ^0.2.0
+  # workmanager: ^0.2.0
   # background_fetch: ^0.6.0
 
 

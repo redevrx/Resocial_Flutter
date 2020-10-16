@@ -15,7 +15,7 @@ import 'package:socialapp/notifications/exportNotify.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:workmanager/workmanager.dart';
+// import 'package:workmanager/workmanager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,28 +68,28 @@ class MyApp extends StatelessWidget {
   }
 }
 
-void _initialBackgound() {
-  if (Platform.isIOS) {
-    // ios setting task
-  } else {
-    // android setting task
-    Workmanager.initialize(_callbackDispatcher, isInDebugMode: true);
-    Workmanager.registerPeriodicTask("6", "onLoadFeed",
-        frequency: Duration(minutes: 15));
-  }
-}
+// void _initialBackgound() {
+//   if (Platform.isIOS) {
+//     // ios setting task
+//   } else {
+//     // android setting task
+//     Workmanager.initialize(_callbackDispatcher, isInDebugMode: true);
+//     Workmanager.registerPeriodicTask("6", "onLoadFeed",
+//         frequency: Duration(minutes: 15));
+//   }
+// }
 
-void _callbackDispatcher() {
-  Workmanager.executeTask((taskName, inputData) async {
-    print('start service load user feed ');
-    // final feed = new FeedRepository();
-    // await feed.getFeed();
-    return Future.value(true);
-  });
-}
+// void _callbackDispatcher() {
+//   Workmanager.executeTask((taskName, inputData) async {
+//     print('start service load user feed ');
+//     // final feed = new FeedRepository();
+//     // await feed.getFeed();
+//     return Future.value(true);
+//   });
+// }
 
-void _settingloadFeed(MyFeedBloc myFeedBloc, LikeBloc likeBloc) async {
-  //event load my feed
-  myFeedBloc.add(onLoadMyFeedClick());
-  likeBloc.add(onLikeResultPostClick());
-}
+// void _settingloadFeed(MyFeedBloc myFeedBloc, LikeBloc likeBloc) async {
+//   //event load my feed
+//   myFeedBloc.add(onLoadMyFeedClick());
+//   likeBloc.add(onLikeResultPostClick());
+// }
