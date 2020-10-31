@@ -40,6 +40,18 @@ class PostModel {
         type = json.get("type"),
         uid = json.get("uid");
 
+  PostModel.fromJson2(QueryDocumentSnapshot json)
+      : body = json.get("body"),
+        commentCount = json.get("commentCount"),
+        date = json.get("date"),
+        time = json.get("time"),
+        image = json.get("image"),
+        likeResults = json.get("likeResult"),
+        likesCount = json.get("likesCount"),
+        postId = json.get("postId"),
+        type = json.get("type"),
+        uid = json.get("uid");
+
   Future<String> getUID() async {
     try {
       final _mAuth = await FirebaseAuth.instance.currentUser;
@@ -57,7 +69,9 @@ class PostModel {
     final _mRef = FirebaseFirestore.instance;
     await _mRef.collection('user info').doc(this.uid).get().then((value) {
       doc = value;
-    }).catchError((e) {});
+    }).catchError((e) {
+      print(e);
+    });
 
     return doc;
   }

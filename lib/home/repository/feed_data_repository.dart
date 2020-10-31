@@ -93,39 +93,43 @@ class FeedRepository {
     return result;
   }
 
-  Future<List<PostModel>> getFeed() async {
-    List<PostModel> models = List();
+  Stream<List<PostModel>> getFeed() {
+    // List<PostModel> models = List();
     // List<DocumentSnapshot> likeModel;
 
     final _mRef = FirebaseFirestore.instance;
 
-    await _mRef.collection("Post").limit(4).get().then((value) {
-      // print('map Value :'+value.documents[0].data['likeResult']['${value.documents[0].data['uid'].toString()}'].toString());
-      //print('map Value :${value.documents.length}');
-      // for (int i = 0; i < value.documents.length; i++) {
-
-      //   likeModel.add(new LiekModel
-      //   (
-      //     user: value.documents[i].data['likeResult']['${value.documents[i].data['uid'].toString()}']
-      //   ));
-
-      //   models.add(new PostModel(
-      //       body: value.documents[i].data['body'].toString(),
-      //       commentCount: value.documents[i].data['commentCount'].toString(),
-      //       date: value.documents[i].data['date'].toString(),
-      //       image: value.documents[i].data['image'].toString(),
-      //       likeResult:  likeModel,
-      //       likesCount: value.documents[i].data['likesCount'].toString(),
-      //       postId: value.documents[i].data['postId'],
-      //       time: value.documents[i].data['time'].toString(),
-      //       type: value.documents[i].data['type'].toString(),
-      //       uid: value.documents[i].data['uid'].toString(),));
-      // }
-      models = value.docs.map((model) => PostModel.fromJson(model)).toList();
+    return _mRef.collection("Post").snapshots().map((snapshot) {
+      return snapshot.docs.map((model) => PostModel.fromJson(model)).toList();
     });
 
-    print('map Value :${models.length}');
-    return models;
+    // await _mRef.collection("Post").get().then((value) {
+    //   // print('map Value :'+value.documents[0].data['likeResult']['${value.documents[0].data['uid'].toString()}'].toString());
+    //   //print('map Value :${value.documents.length}');
+    //   // for (int i = 0; i < value.documents.length; i++) {
+
+    //   //   likeModel.add(new LiekModel
+    //   //   (
+    //   //     user: value.documents[i].data['likeResult']['${value.documents[i].data['uid'].toString()}']
+    //   //   ));
+
+    //   //   models.add(new PostModel(
+    //   //       body: value.documents[i].data['body'].toString(),
+    //   //       commentCount: value.documents[i].data['commentCount'].toString(),
+    //   //       date: value.documents[i].data['date'].toString(),
+    //   //       image: value.documents[i].data['image'].toString(),
+    //   //       likeResult:  likeModel,
+    //   //       likesCount: value.documents[i].data['likesCount'].toString(),
+    //   //       postId: value.documents[i].data['postId'],
+    //   //       time: value.documents[i].data['time'].toString(),
+    //   //       type: value.documents[i].data['type'].toString(),
+    //   //       uid: value.documents[i].data['uid'].toString(),));
+    //   // }
+    //   models = value.docs.map((model) => PostModel.fromJson(model)).toList();
+    // });
+
+    // print('map Value :${models.length}');
+    // return models;
   }
 
   Future<List<EditProfileModel>> getUserDetail() async {

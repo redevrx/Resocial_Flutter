@@ -8,9 +8,37 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="5c30520a-dc2b-44cf-959d-9a124e4aee58" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.packages" beforeDir="false" afterPath="$PROJECT_DIR$/.packages" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_social_app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_social_app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/home/models/post_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/models/post_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/home/repository/feed_data_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/repository/feed_data_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/userPost/repository/post_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/userPost/repository/post_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,11 +64,13 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../Programs/ProgrammingLanguage/dart-sdk/bin" />
+    <property name="settings.editor.selected.configurable" value="dart.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
@@ -61,6 +91,18 @@
     </task>
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="490" y="250" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1601708957217">
       <screen x="0" y="0" width="1280" height="720" />
@@ -74,34 +116,36 @@
       <screen x="0" y="0" width="1280" height="720" />
     </state>
     <state x="393" y="25" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog/0.0.1280.720@0.0.1280.720" timestamp="1601721673198" />
-    <state x="93" y="93" width="1095" height="535" key="AVDManager" timestamp="1602849621701">
+    <state x="93" y="93" width="1095" height="535" key="AVDManager" timestamp="1603366343115">
       <screen x="0" y="0" width="1280" height="720" />
     </state>
-    <state x="93" y="93" width="1095" height="535" key="AVDManager/0.0.1280.720@0.0.1280.720" timestamp="1602849621701" />
-    <state x="421" y="116" key="FileChooserDialogImpl" timestamp="1601809923372">
-      <screen x="0" y="0" width="1280" height="720" />
+    <state x="93" y="93" width="1095" height="535" key="AVDManager/0.0.1280.720@0.0.1280.720" timestamp="1603366343115" />
+    <state x="421" y="110" key="FileChooserDialogImpl" timestamp="1603444362444">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state x="421" y="110" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1603444362444" />
     <state x="421" y="116" key="FileChooserDialogImpl/0.0.1280.720@0.0.1280.720" timestamp="1601809923372" />
-    <state width="1236" height="157" key="GridCell.Tab.0.bottom" timestamp="1602850018291">
+    <state width="1220" height="172" key="GridCell.Tab.0.bottom" timestamp="1603391989412">
       <screen x="0" y="0" width="1280" height="720" />
     </state>
-    <state width="1236" height="157" key="GridCell.Tab.0.bottom/0.0.1280.720@0.0.1280.720" timestamp="1602850018291" />
-    <state width="1236" height="157" key="GridCell.Tab.0.center" timestamp="1602850018291">
+    <state width="1220" height="172" key="GridCell.Tab.0.bottom/0.0.1280.720@0.0.1280.720" timestamp="1603391989412" />
+    <state width="1220" height="172" key="GridCell.Tab.0.center" timestamp="1603391989412">
       <screen x="0" y="0" width="1280" height="720" />
     </state>
-    <state width="1236" height="157" key="GridCell.Tab.0.center/0.0.1280.720@0.0.1280.720" timestamp="1602850018291" />
-    <state width="1236" height="157" key="GridCell.Tab.0.left" timestamp="1602850018291">
+    <state width="1220" height="172" key="GridCell.Tab.0.center/0.0.1280.720@0.0.1280.720" timestamp="1603391989412" />
+    <state width="1220" height="172" key="GridCell.Tab.0.left" timestamp="1603391989411">
       <screen x="0" y="0" width="1280" height="720" />
     </state>
-    <state width="1236" height="157" key="GridCell.Tab.0.left/0.0.1280.720@0.0.1280.720" timestamp="1602850018291" />
-    <state width="1236" height="157" key="GridCell.Tab.0.right" timestamp="1602850018291">
+    <state width="1220" height="172" key="GridCell.Tab.0.left/0.0.1280.720@0.0.1280.720" timestamp="1603391989411" />
+    <state width="1220" height="172" key="GridCell.Tab.0.right" timestamp="1603391989412">
       <screen x="0" y="0" width="1280" height="720" />
     </state>
-    <state width="1236" height="157" key="GridCell.Tab.0.right/0.0.1280.720@0.0.1280.720" timestamp="1602850018291" />
-    <state x="142" y="6" key="SettingsEditor" timestamp="1602850015295">
-      <screen x="0" y="0" width="1280" height="720" />
+    <state width="1220" height="172" key="GridCell.Tab.0.right/0.0.1280.720@0.0.1280.720" timestamp="1603391989412" />
+    <state x="142" y="0" key="SettingsEditor" timestamp="1603444397074">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="142" y="6" key="SettingsEditor/0.0.1280.720@0.0.1280.720" timestamp="1602850015295" />
+    <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1603444397074" />
+    <state x="142" y="6" key="SettingsEditor/0.0.1280.720@0.0.1280.720" timestamp="1603367667942" />
     <state x="93" y="93" width="1095" height="535" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1601719780186">
       <screen x="0" y="0" width="1280" height="720" />
     </state>

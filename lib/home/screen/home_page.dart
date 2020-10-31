@@ -5,6 +5,7 @@ import 'package:socialapp/Profile/EditPtofile/screen/user_profile.dart';
 import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/likes/bloc/likes_bloc.dart';
 import 'package:socialapp/likes/export/export_like.dart';
+import 'package:socialapp/notifications/exportNotify.dart';
 import 'package:socialapp/textMore/bloc/text_more_bloc.dart';
 import 'package:socialapp/userPost/bloc/post_bloc.dart';
 import 'package:socialapp/userPost/repository/post_repository.dart';
@@ -38,7 +39,7 @@ class _fechPage extends State<HomePage> {
       homePage(
         bodyColor: barIitems[selectedBar].color,
       ),
-      homePage(
+      NotifyScreen(
         bodyColor: Colors.pinkAccent,
       ),
       UserProfile(
@@ -64,9 +65,12 @@ class _fechPage extends State<HomePage> {
                         create: (context) => PostBloc(new PostRepository()),
                         child: BlocProvider(
                             create: (context) => EditProfileBloc(),
-                            child: IndexedStack(
-                              index: selectedBar,
-                              children: pageItem,
+                            child: BlocProvider(
+                              create: (context) => NotifyBloc(NotifyLoading()),
+                              child: IndexedStack(
+                                index: selectedBar,
+                                children: pageItem,
+                              ),
                             )
                             // selectedBar == 0
                             //     ? homePage(
@@ -85,18 +89,21 @@ class _fechPage extends State<HomePage> {
                             //                 ? SettingApp()
                             //                 : Container(),
                             ))))),
-        bottomNavigationBar: AnimationBottomBar(
-            barItems: barIitems,
-            animationDuration: const Duration(milliseconds: 550),
-            barStyle: BarStyle(
-                fointSize: 20.0, fontWeight: FontWeight.w400, iconSize: 30.0),
-            onBarTab: (index) {
-              setState(() {
-                selectedBar = index;
-                print('position selected page :$selectedBar');
-                //chage color page use index bottom bar -> barItems[selectedBar]
-              });
-            }),
+        bottomNavigationBar: BlocProvider(
+          create: (context) => NotifyBloc(NotifyLoading()),
+          child: AnimationBottomBar(
+              barItems: barIitems,
+              animationDuration: const Duration(milliseconds: 550),
+              barStyle: BarStyle(
+                  fointSize: 20.0, fontWeight: FontWeight.w400, iconSize: 30.0),
+              onBarTab: (index) {
+                setState(() {
+                  selectedBar = index;
+                  print('position selected page :$selectedBar');
+                  //chage color page use index bottom bar -> barItems[selectedBar]
+                });
+              }),
+        ),
       ),
       onWillPop: () {
         // _onBackPressed();

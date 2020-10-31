@@ -53,27 +53,26 @@ class _Comments extends StatefulWidget {
 }
 
 class _CommentsState extends State<_Comments> {
+  TextMoreBloc textMoreBloc;
+  LikeBloc likeBloc;
+  CommentBloc commentBloc;
+  var message = '';
+
   @override
   void initState() {
+    //initial bloc
+    textMoreBloc = BlocProvider.of<TextMoreBloc>(context);
+    likeBloc = BlocProvider.of<LikeBloc>(context);
+    commentBloc = BlocProvider.of<CommentBloc>(context);
+    //commentCount = int.parse(widget.postModels.commentCount);
+    likeBloc.add(onLikeResultPostClick());
+    commentBloc.add(onLoadComments(postId: widget.postModels[widget.i].postId));
+    // print(message.length);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    //initial bloc
-    TextMoreBloc textMoreBloc = BlocProvider.of<TextMoreBloc>(context);
-    LikeBloc likeBloc = BlocProvider.of<LikeBloc>(context);
-    CommentBloc commentBloc = BlocProvider.of<CommentBloc>(context);
-    var message = '';
-
-    setState(() {
-      //commentCount = int.parse(widget.postModels.commentCount);
-      likeBloc.add(onLikeResultPostClick());
-      commentBloc
-          .add(onLoadComments(postId: widget.postModels[widget.i].postId));
-      // print(message.length);
-    });
-
     return SafeArea(
       child: LayoutBuilder(
         builder: (context, constraints) {

@@ -52,7 +52,9 @@ class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
     //  List<EditProfileModel> details;
     //  List<String> likeResult;
 
-    models = await repository.getFeed();
+    // models = await repository.getFeed();
+    final model = repository.getFeed();
+    models = await model.first;
     //print('get User like :${models[0].getUserLikePost()}');
     // details = await repository.getUserDetail();
 

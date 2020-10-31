@@ -4,8 +4,14 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:workmanager/workmanager.dart';
 
 class PostRepository {
+  //update user post
+  //step 1 check post have image ?
+  //if yes gave remove image
+  //step 2 check post not have image
+  //step 3 re post with content
   Future<String> onUpdatePost(
       String uid,
       String message,
@@ -113,6 +119,9 @@ class PostRepository {
     return result;
   }
 
+//remove post
+//1 remove image from firebase storegae if have ?
+//2 remove post from firestore
   Future<void> removePost(String postId) async {
     final _mRef = FirebaseFirestore.instance;
     final _mRefFile =
@@ -124,24 +133,30 @@ class PostRepository {
           .delete()
           .then((value) => print('remove image success'))
           .catchError((e) => print(e));
+
+      await _mRef
+          .collection('Post')
+          .doc(postId)
+          .delete()
+          .then((value) => print('remove post success'))
+          .catchError((e) => print(e));
+
+      await _mRef
+          .collection('comments')
+          .doc(postId)
+          .delete()
+          .then((value) => print('remove comments success'))
+          .catchError((e) => print(e));
     } catch (e) {
       print(e);
     }
-    await _mRef
-        .collection('Post')
-        .doc(postId)
-        .delete()
-        .then((value) => print('remove post success'))
-        .catchError((e) => print(e));
-
-    await _mRef
-        .collection('comments')
-        .doc(postId)
-        .delete()
-        .then((value) => print('remove comments success'))
-        .catchError((e) => print(e));
   }
 
+//create new post
+//post with image |check|
+// post wuth message not image |check|
+//if there is giav upload image to firebase storage before
+//and make save content post to firestore
   Future<String> onCreatePost(String uid, String message, File image) async {
     bool va = false;
     String result = "";
@@ -212,10 +227,138 @@ class PostRepository {
     //check value and return
     if (va) {
       result = 'successful';
+
+      /*
+      if post create success give create notify data  
+      Notifications {
+IdPOST:{
+date:,
+message:"",
+time:'',
+uid:'',
+type:'' 
+}
+}
+      */
+
+      createNotificaionsPost(key, uid, date, time, message, "new feed");
     } else {
       result = 'faield';
     }
 
     return result;
   }
+
+//craete notification of user post
+  Future createNotificaionsPost(String key, String uid, String date,
+      String time, String message, String type) async {
+    print('init create notify post of user');
+    final _mRef = FirebaseFirestore.instance;
+    var name = '';
+
+    // map keep  detail notification
+    final notifyData = Map<String, String>();
+    notifyData['date'] = date;
+    notifyData['time'] = time;
+    notifyData['uid'] = uid;
+    notifyData['onwerId'] = uid;
+    notifyData['type'] = type;
+    notifyData['postID'] = key;
+    notifyData['message'] = message;
+    notifyData['profileUrl'] =
+        await _mRef.collection("user info").doc(uid).get().then((info) {
+      name = info.get("user").toString();
+      return info.get('imageProfile').toString();
+    });
+    notifyData['name'] = '${name}';
+
+    await _mRef
+        .collection("friends")
+        .doc(uid)
+        .collection("status")
+        .get()
+        .then((user) async {
+      for (int i = 0; i < user.docs.length; i++) {
+        final friendId = user.docs[i].id.toString();
+        // //create firebase firestore instand
+        // //save
+        _mRef
+            .collection("Notifications")
+            .doc(friendId)
+            .collection("notify")
+            .doc(key)
+            .set(notifyData)
+            .then((value) {
+          print("create notify success..");
+          counterNotifyChange(friendId);
+        });
+      }
+    });
+  }
+
+//increment notify counter
+  Future counterNotifyChange(String friendId) async {
+    final _mRef = FirebaseFirestore.instance;
+    //load counter notification and + 1
+    try {
+      await _mRef
+          .collection("Notifications")
+          .doc(friendId)
+          .collection("counter")
+          .doc("counter")
+          .get()
+          .then((counterNotify) {
+        if (counterNotify.data() == null) {
+          //new counter 0
+          int c = 0;
+          _mRef
+              .collection("Notifications")
+              .doc(friendId)
+              .collection("counter")
+              .doc('counter')
+              .set({'counter': c += 1});
+        } else {
+//current + = 1
+          int c = 0;
+          c = int.parse(counterNotify.get('counter').toString());
+          _mRef
+              .collection("Notifications")
+              .doc(friendId)
+              .collection("counter")
+              .doc('counter')
+              .set({'counter': c += 1});
+        }
+      });
+    } catch (e) {
+      //new counter 0
+      print(e);
+      // int c = 0;
+      // _mRef
+      //     .collection("Notifications")
+      //     .doc(friendId)
+      //     .collection("notify")
+      //     .doc("counter")
+      //     .set({'counter': c += 1});
+    }
+  }
+
+  // void _initialBackgound(String uid) {
+  //   if (Platform.isIOS) {
+  //     // ios setting task
+  //   } else {
+  //     // android setting task
+  //     Workmanager.initialize(_callbackDispatcher, isInDebugMode: true);
+  //     Workmanager.registerPeriodicTask("sendNotifyToFriend", "PostNotify",
+  //         initialDelay: Duration(minutes: 2), frequency: Duration(minutes: 15));
+  //   }
+  // }
+
+  // void _callbackDispatcher() {
+  //   Workmanager.executeTask((taskName, inputData) async {
+  //     print('start service send notify post ');
+  //     final _mRef = FirebaseFirestore.instance;
+  //     _mRef.collection("friends").doc(userId).get().then((user) {});
+  //     return Future.value(true);
+  //   });
+  // }
 }

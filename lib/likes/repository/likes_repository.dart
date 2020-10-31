@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 import 'package:socialapp/home/export/export_file.dart';
 
 class LikeRepository {
@@ -71,7 +72,7 @@ class LikeRepository {
     return result;
   }
 
-  Future<bool> onLike(String postId, String status) async {
+  Future<bool> onLike(String postId, String status, String onwerId) async {
     bool result;
     final _mAuth = await FirebaseAuth.instance.currentUser;
     final uid = await _mAuth.uid.toString();
@@ -101,7 +102,7 @@ class LikeRepository {
     } else {
       // user like
       print('like working');
-      await like(postId, uid);
+      await like(postId, uid, onwerId);
       await incrementLikeCount(postId, uid);
       //user like success
       return result;
@@ -142,12 +143,12 @@ class LikeRepository {
   }
 
 // like method
-  Future<bool> like(String postId, String uid) async {
+  Future<bool> like(String postId, String uid, String onwerId) async {
     bool result;
     Map<String, Object> map = HashMap();
 
     final _mRef = FirebaseFirestore.instance;
-    await _mRef.collection("Post").document(postId).get().then((value) async {
+    await _mRef.collection("Post").doc(postId).get().then((value) async {
       map = value.data()["likeResult"];
       map[uid] = uid;
 //read old data like and save new like
@@ -159,6 +160,9 @@ class LikeRepository {
           .catchError((e) => result = false);
     }).catchError((e) {});
     //get data in path
+
+    // create like notification
+    createNotificaionsLike(uid, "Like Notify", onwerId, postId);
 
     return result;
   }
@@ -211,5 +215,104 @@ class LikeRepository {
     });
 
     return result;
+  }
+
+  //create notification if have to user click like give onwer post
+  Future<void> createNotificaionsLike(
+      String uid, String type, String onwerId, String postId) async {
+    print('init create notify post of user');
+
+    //get time now
+    var now = DateTime.now();
+    //date format
+    var date = DateFormat("yyyy-MM-dd").format(now);
+    // String mDate = date.format(dateTime);
+
+    // time format
+    var time = DateFormat("H:m:s").format(now);
+
+    final _mRef = FirebaseFirestore.instance;
+    final key = _mRef.collection("notifications").doc().id.toString();
+
+    //load user name that like this post
+    await _mRef.collection("user info").doc(uid).get().then((info) async {
+      final name = info.get("user").toString();
+
+      //
+
+      // map keep  detail notification
+      final notifyData = Map<String, String>();
+      notifyData['date'] = date;
+      notifyData['time'] = time;
+      notifyData['uid'] = uid;
+      notifyData['onwerId'] = onwerId;
+      notifyData['type'] = type;
+      notifyData["name"] = name;
+      notifyData['postID'] = postId;
+      notifyData['message'] = 'like notification';
+      notifyData['profileUrl'] =
+          await _mRef.collection("user info").doc(uid).get().then((info) {
+        return info.get('imageProfile').toString();
+      });
+
+      // //create firebase firestore instand
+      // //save
+      _mRef
+          .collection("Notifications")
+          .doc(onwerId)
+          .collection("notify")
+          .doc(key)
+          .set(notifyData)
+          .then((value) {
+        print("create notify like success..");
+        counterNotifyChange(onwerId);
+      });
+    });
+  }
+
+//increment value + 1 if click like
+  Future counterNotifyChange(String onwerId) async {
+    final _mRef = FirebaseFirestore.instance;
+    //load counter notification and + 1
+    try {
+      await _mRef
+          .collection("Notifications")
+          .doc(onwerId)
+          .collection("counter")
+          .doc('counter')
+          .get()
+          .then((counterNotify) {
+        if (counterNotify.data() == null) {
+          //new counter 0
+          int c = 0;
+          _mRef
+              .collection("Notifications")
+              .doc(onwerId)
+              .collection("counter")
+              .doc('counter')
+              .set({'counter': c += 1});
+        } else {
+//current + = 1
+          int c = 0;
+          c = int.parse(counterNotify.get("counter").toString());
+          _mRef
+              .collection("Notifications")
+              .doc(onwerId)
+              .collection("counter")
+              .doc('counter')
+              .set({'counter': c += 1});
+        }
+      });
+    } catch (e) {
+      //new counter 0
+      print(e);
+      // int c = 0;
+      // _mRef
+      //     .collection("Notifications")
+      //     .doc(onwerId)
+      //     .collection("notify")
+      //     .doc("counter")
+      //     .set({'counter': c += 1});
+    }
   }
 }

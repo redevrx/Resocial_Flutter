@@ -16,6 +16,7 @@ import 'package:socialapp/likes/export/export_like.dart';
 import 'package:socialapp/textMore/export/export.dart';
 import 'package:socialapp/userPost/bloc/event_post.dart';
 import 'package:socialapp/userPost/bloc/post_bloc.dart';
+import 'package:socialapp/userPost/export/export_new_post.dart';
 import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'dart:async';
 import 'package:socialapp/widgets/models/choice.dart';
@@ -685,15 +686,19 @@ class _make_like_ui extends StatelessWidget {
         print('like result post :${i}');
         if (modelsPost[i].getUserLikePost(uid)) {
           //unlike
-          await likeBloc
-              .add(onLikeClick(postId: modelsPost[i].postId, statusLike: 'un'));
+          await likeBloc.add(onLikeClick(
+              postId: modelsPost[i].postId,
+              statusLike: 'un',
+              onwerId: modelsPost[i].uid));
           modelsPost[i].likesCount =
               (int.parse(modelsPost[i].likesCount) - 1).toString();
           modelsPost[i].likeResults['${uid}'] = null;
         } else {
           //like
-          await likeBloc.add(
-              onLikeClick(postId: modelsPost[i].postId, statusLike: 'like'));
+          await likeBloc.add(onLikeClick(
+              postId: modelsPost[i].postId,
+              statusLike: 'like',
+              onwerId: modelsPost[i].uid));
           modelsPost[i].likesCount =
               (int.parse(modelsPost[i].likesCount) + 1).toString();
           modelsPost[i].likeResults['${uid}'] = uid;

@@ -26,10 +26,12 @@ dependencies:
   firebase_auth: ^0.18.1+1
   firebase_core: ^0.5.0
   flutter_bloc: ^6.0.5
-  cloud_firestore: ^0.14.1+2
+  cloud_firestore: ^0.14.2
   clay_containers: ^0.2.2
   permission_handler: ^5.0.1+1
   firebase_storage: ^4.0.1
+  equatable: ^1.2.5
+  rxdart: ^0.24.1
   image_picker: ^0.6.7+7
   intl: ^0.16.1
   http: ^0.12.2
@@ -37,7 +39,8 @@ dependencies:
   firebase_messaging: ^7.0.2
   flutter_local_notifications: ^1.4.4+5
   path_provider: ^1.6.18
-  # workmanager: ^0.2.0
+  workmanager: ^0.2.0
+  badges: ^1.1.4
   # background_fetch: ^0.6.0
 
 

@@ -20,7 +20,8 @@ class LikeBloc extends Bloc<LikeEvent, LikeState> {
       yield onLikesResult(likeResult: false);
 
       bool result;
-      result = await repository.onLike(event.postId, event.statusLike);
+      result = await repository.onLike(
+          event.postId, event.statusLike, event.onwerId);
 
       if (result != null) {
         //true is user click action unlike success

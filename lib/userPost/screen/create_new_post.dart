@@ -107,17 +107,24 @@ class __CreatePostState extends State<_CreatePost> {
     }
   }
 
+  EditProfileBloc editProfileBloc;
+  PostBloc postBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
+    postBloc = BlocProvider.of<PostBloc>(context);
+
+    _portraitModeOnly();
+    // get user detail
+    editProfileBloc.add(EditProfileLoadUserInfo());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    EditProfileBloc editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
-    PostBloc postBloc = BlocProvider.of<PostBloc>(context);
-
-    setState(() {
-      _portraitModeOnly();
-      // get user detail
-      editProfileBloc.add(EditProfileLoadUserInfo());
-    });
-
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
@@ -175,7 +182,8 @@ class __CreatePostState extends State<_CreatePost> {
                 BlocListener<PostBloc, StatePost>(
                   listener: (context, state) {
                     if (state is onPostSuccessful) {
-                      Navigator.of(context).pushNamed('/home');
+                      // Navigator.of(context).pushNamed('/home');
+                      Navigator.of(context).pop();
                     }
                   },
                   child: Container(),

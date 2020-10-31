@@ -41,11 +41,25 @@ class __EditPostState extends State<_EditPost> {
   TextEditingController txtMessage = TextEditingController();
   String url = '';
   File _image;
+
+  EditProfileBloc editProfileBloc;
+  PostBloc postBloc;
+
   @override
   void initState() {
+    editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
+    postBloc = BlocProvider.of<PostBloc>(context);
     //set message body to edit text
     txtMessage.text = widget.postModel.body;
     url = widget.postModel.image;
+
+    _checkUserPost();
+    //_portraitModeOnly();
+    // get user detail
+    editProfileBloc.add(EditProfileLoadUserInfo(uid: widget.postModel.uid));
+    print(txtMessage.text.toString());
+    _portraitModeOnly();
+
     super.initState();
   }
 
@@ -123,17 +137,6 @@ class __EditPostState extends State<_EditPost> {
 
   @override
   Widget build(BuildContext context) {
-    EditProfileBloc editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
-    PostBloc postBloc = BlocProvider.of<PostBloc>(context);
-
-    setState(() {
-      _checkUserPost();
-      //_portraitModeOnly();
-      // get user detail
-      editProfileBloc.add(EditProfileLoadUserInfo(uid: widget.postModel.uid));
-      print(txtMessage.text.toString());
-      _portraitModeOnly();
-    });
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
@@ -192,7 +195,8 @@ class __EditPostState extends State<_EditPost> {
                 BlocListener<PostBloc, StatePost>(
                   listener: (context, state) {
                     if (state is onPostSuccessful) {
-                      Navigator.of(context).pushNamed('/home');
+                      // Navigator.of(context).pushNamed('/home');
+                      Navigator.of(context).pop();
                     }
                   },
                   child: Container(),
