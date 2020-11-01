@@ -209,6 +209,7 @@ class _homePageState extends State<homePage> {
 
   @override
   void dispose() {
+    myFeedBloc.add(DisponseFeed());
     super.dispose();
   }
 }
@@ -695,6 +696,7 @@ class _make_like_ui extends StatelessWidget {
           modelsPost[i].likeResults['${uid}'] = null;
         } else {
           //like
+          print("post id :${modelsPost[i].postId}");
           await likeBloc.add(onLikeClick(
               postId: modelsPost[i].postId,
               statusLike: 'like',

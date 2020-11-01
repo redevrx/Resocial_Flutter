@@ -1,26 +1,28 @@
+import 'package:socialapp/notifications/exportNotify.dart';
+
 abstract class NotifyEvent {}
 
-class LoadNotifications extends NotifyEvent {
-  final String uid;
+class LoadNotifications extends NotifyEvent {}
 
-  LoadNotifications({this.uid});
+class LoadedNotifications extends NotifyEvent {
+  final List<NotifyModel> notifyItems;
+
+  LoadedNotifications(this.notifyItems);
 }
 
-class LoadCounter extends NotifyEvent {
-  final String uid;
+class LoadCounter extends NotifyEvent {}
 
-  LoadCounter({this.uid});
+class LoadedCounter extends NotifyEvent {
+  final String counter;
+  LoadedCounter({this.counter});
 }
 
 class RemoveNotify extends NotifyEvent {
-  final uid;
   final postId;
 
-  RemoveNotify({this.uid, this.postId});
+  RemoveNotify({this.postId});
 }
 
-class ClearCounterNotify extends NotifyEvent {
-  final String uid;
+class Disponse extends NotifyEvent {}
 
-  ClearCounterNotify({this.uid});
-}
+class ClearCounterNotify extends NotifyEvent {}

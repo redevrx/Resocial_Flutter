@@ -6,6 +6,14 @@ abstract class EventMyFeed {}
 
 class onLoadMyFeedClick extends EventMyFeed {}
 
+class onLoadedMyFeedClick extends EventMyFeed {
+  final List<PostModel> models;
+
+  onLoadedMyFeedClick(this.models);
+}
+
+class DisponseFeed extends EventMyFeed {}
+
 class onLoadUserPostClick extends EventMyFeed {}
 
 class onLoadUserFeedClick extends EventMyFeed {

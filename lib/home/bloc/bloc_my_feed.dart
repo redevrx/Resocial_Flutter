@@ -8,6 +8,7 @@ import 'package:socialapp/home/export/export_file.dart';
 
 class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
   FeedRepository repository;
+  StreamSubscription _streamSubscription;
 
   MyFeedBloc(FeedRepository repository) : super(onFeedProgress()) {
     this.repository = repository;
@@ -19,12 +20,22 @@ class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
       // load my feed all user post
       yield* onLoadFeed();
     }
+    if (event is onLoadedMyFeedClick) {
+      if (event.models != null) {
+        yield onFeedSuccessful(models: event.models);
+      } else {
+        yield onFeedFaield();
+      }
+    }
     if (event is onLoadUserPostClick) {
       // load post of user show in user profile
       yield* onLoadPost();
     }
     if (event is onRemoveItemUpdateUI) {
       yield onFeedSuccessful(models: event.postModel, detail: event.details);
+    }
+    if (event is DisponseFeed) {
+      _streamSubscription.cancel();
     }
     if (event is onLoadUserFeedClick) {
       yield* onLoadUserFeed(event);
@@ -46,25 +57,9 @@ class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
 
   @override
   Stream<StateMyFeed> onLoadFeed() async* {
-    yield onFeedProgress();
-
-    List<PostModel> models = List();
-    //  List<EditProfileModel> details;
-    //  List<String> likeResult;
-
-    // models = await repository.getFeed();
-    final model = repository.getFeed();
-    models = await model.first;
-    //print('get User like :${models[0].getUserLikePost()}');
-    // details = await repository.getUserDetail();
-
-    //likeResult = await repository.onCheckUserLikePost(models);
-
-    if (models != null) {
-      yield onFeedSuccessful(models: models);
-    } else {
-      yield onFeedFaield();
-    }
+    _streamSubscription?.cancel();
+    _streamSubscription =
+        repository.getFeed().listen((items) => add(onLoadedMyFeedClick(items)));
   }
 
   @override

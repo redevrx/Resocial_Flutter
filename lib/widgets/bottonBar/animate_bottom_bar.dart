@@ -1,10 +1,12 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/notifications/bloc/notifyBloc.dart';
 import 'package:socialapp/notifications/bloc/notifyEvent.dart';
 import 'package:socialapp/notifications/bloc/notifyState.dart';
+import 'dart:async';
 
 class AnimationBottomBar extends StatefulWidget {
   final List<BarItem> barItems;
@@ -33,8 +35,14 @@ class _AnimationBottomBarState extends State<AnimationBottomBar>
   void initState() {
     // TODO: implement initState
     notifyBloc = BlocProvider.of<NotifyBloc>(context);
-    notifyBloc.add(LoadCounter(uid: uid));
+    notifyBloc.add(LoadCounter());
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    notifyBloc.add(Disponse());
+    super.dispose();
   }
 
   @override
@@ -60,8 +68,13 @@ class _AnimationBottomBarState extends State<AnimationBottomBar>
       if (i == 1) {
         _barItems.add(InkWell(
           splashColor: Colors.transparent,
-          onTap: () {
+          onTap: () async {
+            SharedPreferences _sharedPreferences =
+                await SharedPreferences.getInstance();
             setState(() {
+              //if i as 1 is click page notify
+              //if clear notify counter number
+              (i == 1) ? notifyBloc.add(ClearCounterNotify()) : null;
               selectedBarIndex = i;
               widget.onBarTab(selectedBarIndex);
             });

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/home/export/export_file.dart';
@@ -20,9 +19,7 @@ class NotifyScreen extends StatelessWidget {
     final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
         new GlobalKey<RefreshIndicatorState>();
     NotifyBloc notifyBloc = BlocProvider.of<NotifyBloc>(context);
-
-    notifyBloc.add(LoadNotifications(uid: uid));
-    notifyBloc.add(ClearCounterNotify(uid: uid));
+    notifyBloc.add(LoadNotifications());
     return LayoutBuilder(
       builder: (context, constraints) {
         return ConstrainedBox(
@@ -49,6 +46,8 @@ class NotifyScreen extends StatelessWidget {
                     }
                     if (state is LoadNotifySuccess) {
                       // print('load success');
+                      //clear stream
+                      notifyBloc.add(Disponse());
                       return RefreshIndicator(
                         color: Colors.pinkAccent,
                         key: _refreshIndicatorKey,
@@ -58,7 +57,7 @@ class NotifyScreen extends StatelessWidget {
                             notifyBloc: notifyBloc),
                         onRefresh: () async {
                           print('refresh notify');
-                          notifyBloc.add(LoadNotifications(uid: uid));
+                          notifyBloc.add(LoadNotifications());
                         },
                       );
                     }
@@ -108,13 +107,12 @@ class build_card_notify extends StatelessWidget {
   }) : super(key: key);
   final NotifyModel model;
   final NotifyBloc notifyBloc;
-
   @override
   Widget build(BuildContext context) {
     return Dismissible(
       key: Key('${model}'),
       onDismissed: (direction) {
-        notifyBloc.add(RemoveNotify(uid: uid, postId: model.postID));
+        notifyBloc.add(RemoveNotify(postId: model.postID));
       },
       child: Container(
         width: double.infinity,

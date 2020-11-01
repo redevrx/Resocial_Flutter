@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 import 'package:workmanager/workmanager.dart';
 
 class PostRepository {
@@ -280,6 +281,8 @@ type:''
         .then((user) async {
       for (int i = 0; i < user.docs.length; i++) {
         final friendId = user.docs[i].id.toString();
+
+        await sendNotifyTOFriend(friendId, name);
         // //create firebase firestore instand
         // //save
         _mRef
@@ -296,7 +299,7 @@ type:''
     });
   }
 
-//increment notify counter
+  //increment notify counter
   Future counterNotifyChange(String friendId) async {
     final _mRef = FirebaseFirestore.instance;
     //load counter notification and + 1
@@ -318,7 +321,7 @@ type:''
               .doc('counter')
               .set({'counter': c += 1});
         } else {
-//current + = 1
+          //current + = 1
           int c = 0;
           c = int.parse(counterNotify.get('counter').toString());
           _mRef
@@ -340,6 +343,34 @@ type:''
       //     .doc("counter")
       //     .set({'counter': c += 1});
     }
+  }
+
+  Future sendNotifyTOFriend(String friendId, String friendName) async {
+    final _mRef = FirebaseFirestore.instance;
+    _mRef.collection("user info").doc(friendId).get().then((info) async {
+      final token =
+          "AAAAqTVcAxY:APA91bFEdF2P_svKU7oOJ__XdVI6jTfjI-fP_2x0tpWEW9Z-xut891GBLAmTIYv4S5LwGtEc1Jn3_tMAoRiX5SVShXHOIvopdCBEHDM6IjZ7dQ9UnhXhikr_rZD7fl7cOAuGkb_iyQE0";
+      final deviceToken = info.get("deviceToken").toString();
+
+      //create notify data
+      Map<String, Object> notifyData = HashMap();
+      notifyData['body'] = friendName + " give crate new post now";
+      notifyData['title'] = "New Post";
+      notifyData['icon'] = "";
+
+      //create notify head
+      Map<String, Object> notifyHead = HashMap();
+      notifyHead['to'] = deviceToken;
+      notifyHead['notification'] = notifyData;
+
+      //http post to FCM
+      await http.post('https://fcm.googleapis.com/fcm/send',
+          headers: {
+            'Authorization': 'key=$token',
+            'Content-Type': 'application/json'
+          },
+          body: notifyHead);
+    });
   }
 
   // void _initialBackgound(String uid) {

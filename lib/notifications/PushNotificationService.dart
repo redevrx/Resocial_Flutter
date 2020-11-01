@@ -1,7 +1,13 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'dart:async';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PushNotificationService {
   final FirebaseMessaging _fcm = FirebaseMessaging();
@@ -60,6 +66,7 @@ class PushNotificationService {
   getDeviceToken() async {
     return await _fcm.getToken().then((token) {
       assert(token != null);
+      saveTokenUser(token);
       print('my Device TOken : ' + token);
       return token;
     });
@@ -71,6 +78,27 @@ class PushNotificationService {
 
   Future unSubscribe(String topic) {
     _fcm.unsubscribeFromTopic(topic);
+  }
+
+  Future<void> saveTokenUser(String token) async {
+    final _mRef = FirebaseFirestore.instance;
+    final _mAuth = FirebaseAuth.instance;
+
+    //shared preference
+    Future<SharedPreferences> _pref = SharedPreferences.getInstance();
+    final pref = await _pref;
+
+    //get uid your current user
+    _mAuth.authStateChanges().listen((user) {
+      // print(user.uid);
+      pref.setString("uid", user.uid);
+      _mRef
+          .collection("user info")
+          .doc(user.uid)
+          .update({'deviceToken': '${token}'})
+          .then((value) => print("save device token success"))
+          .catchError((e) => print(e));
+    });
   }
 }
 
@@ -125,7 +153,7 @@ class ShowNotifyService {
 
     //show notify
     //id notify_post 1
-    await flutterNotify.show(1, "" + message["notification"]['title'] + "NK",
+    await flutterNotify.show(1, "" + message["notification"]['title'],
         message["notification"]['body'], platformChannelSpecifics,
         payload: 'FLUTTER_NOTIFICATION_CLICK');
   }

@@ -28,15 +28,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c30520a-dc2b-44cf-959d-9a124e4aee58" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.packages" beforeDir="false" afterPath="$PROJECT_DIR$/.packages" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_social_app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_social_app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/home/models/post_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/models/post_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/home/repository/feed_data_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/repository/feed_data_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Profile/AddProfile/bloc/add_profile_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Profile/AddProfile/bloc/add_profile_bloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/home/bloc/bloc_my_feed.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/bloc/bloc_my_feed.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/home/bloc/event_my_feed.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/bloc/event_my_feed.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/home/screen/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/screen/home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/home/widget/widget_home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/widget/widget_home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/likes/repository/likes_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/likes/repository/likes_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/notifications/PushNotificationService.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/notifications/PushNotificationService.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/notifications/bloc/notifyBloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/notifications/bloc/notifyBloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/notifications/bloc/notifyEvent.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/notifications/bloc/notifyEvent.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/notifications/repositorys/notifyRepository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/notifications/repositorys/notifyRepository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/notifications/repositorys/notifyRepositoryFirestore.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/notifications/repositorys/notifyRepositoryFirestore.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/notifications/screen/notify_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/notifications/screen/notify_screen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/userPost/repository/post_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/userPost/repository/post_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/bottonBar/animate_bottom_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/bottonBar/animate_bottom_bar.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>

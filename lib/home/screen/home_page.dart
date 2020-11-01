@@ -35,6 +35,7 @@ class _fechPage extends State<HomePage> {
   List<Widget> pageItem = [];
   @override
   void initState() {
+    super.initState();
     pageItem = [
       homePage(
         bodyColor: barIitems[selectedBar].color,
@@ -47,7 +48,6 @@ class _fechPage extends State<HomePage> {
       ),
       SettingApp()
     ];
-    super.initState();
     selectedBar = widget.pageNumber;
   }
 

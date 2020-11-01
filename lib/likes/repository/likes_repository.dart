@@ -232,7 +232,6 @@ class LikeRepository {
     var time = DateFormat("H:m:s").format(now);
 
     final _mRef = FirebaseFirestore.instance;
-    final key = _mRef.collection("notifications").doc().id.toString();
 
     //load user name that like this post
     await _mRef.collection("user info").doc(uid).get().then((info) async {
@@ -261,7 +260,7 @@ class LikeRepository {
           .collection("Notifications")
           .doc(onwerId)
           .collection("notify")
-          .doc(key)
+          .doc(postId)
           .set(notifyData)
           .then((value) {
         print("create notify like success..");

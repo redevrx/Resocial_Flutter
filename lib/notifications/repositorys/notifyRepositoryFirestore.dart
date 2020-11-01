@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/notifications/models/notificationModel.dart';
 import 'package:socialapp/notifications/repositorys/notifyRepository.dart';
 import 'dart:async';
@@ -6,27 +7,30 @@ import 'dart:async';
 class NotifyRepositoryFirestore implements NotifyRepository {
   final _mRefNotify = FirebaseFirestore.instance;
   final _mRefCounter = FirebaseFirestore.instance;
+  var uid = '';
+  Future<void> initialNotify() async {
+    //shared preference
+    Future<SharedPreferences> _pref = SharedPreferences.getInstance();
+    final pref = await _pref;
+    uid = pref.getString('uid');
+  }
 
   @override
-  Future<String> getCounterNotify(String uid) async {
-    print('load counter notify uid:${uid}');
-    var counter = '';
-    await _mRefCounter
+  Stream<String> getCounterNotify() {
+    print("load counter notify uid:${uid}");
+    return _mRefCounter
         .collection("Notifications")
         .doc("${uid}")
         .collection("counter")
         .doc("counter")
-        .get()
-        .then((value) {
-      counter = value.get("counter").toString();
-      print(counter);
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.get("counter").toString();
     });
-
-    return counter;
   }
 
   @override
-  Stream<List<NotifyModel>> getNotifys(String uid) {
+  Stream<List<NotifyModel>> getNotifys() {
     print('start loading notify');
     return _mRefNotify
         .collection("Notifications")
@@ -41,11 +45,11 @@ class NotifyRepositoryFirestore implements NotifyRepository {
   }
 
   @override
-  Future<void> removeNotify(String uid, String postID) async {
+  Future<void> removeNotify(String postID) async {
     print("remove notify list UID: ${uid} , postID: ${postID}");
     final _mRef = FirebaseFirestore.instance;
 
-    _mRef
+    await _mRef
         .collection("Notifications")
         .doc('${uid}')
         .collection("notify")
@@ -58,7 +62,7 @@ class NotifyRepositoryFirestore implements NotifyRepository {
   }
 
   @override
-  Future<void> clearCounter(String uid) {
+  Future<void> clearCounter() {
     final _mRef = FirebaseFirestore.instance;
     _mRef
         .collection("Notifications")

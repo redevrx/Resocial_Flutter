@@ -60,6 +60,7 @@ class AddProfileBloc extends Bloc<AddProfileEvent, AddProfileState> {
     map["imageProfile"] = url;
     map["userStatus"] = status;
     map["nickName"] = nickName;
+    map['deviceToken'] = '';
 
     return await mRef
         .collection("user info")
