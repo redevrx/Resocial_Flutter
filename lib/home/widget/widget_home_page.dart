@@ -46,10 +46,10 @@ class _homePageState extends State<homePage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
 
-  Future<void> checkUserlogin(BuildContext context) async {
+  Future<void> checkUserlogin() async {
     FirebaseAuth.instance.authStateChanges().listen((user) {
-      if (user.uid == null) {
-        Navigator.of(context).pushNamed("/");
+      if (user == null) {
+        Navigator.of(context).pushNamed("/login");
       }
     });
   }
@@ -67,6 +67,9 @@ class _homePageState extends State<homePage> {
 
   @override
   void initState() {
+    // initailMyFedd();
+    checkUserlogin();
+
     //bloc initial
     myFeedBloc = BlocProvider.of<MyFeedBloc>(context);
     textMoreBloc = BlocProvider.of<TextMoreBloc>(context);
@@ -75,13 +78,8 @@ class _homePageState extends State<homePage> {
     editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
     //
     getUid();
-    // initailMyFedd();
-    checkUserlogin(context);
 
     //event load my feed
-    // myFeedBloc.add(onLoadMyFeedClick());
-    //likeBloc.add(onLikeResultPostClick());
-    // _initialBackgound(myFeedBloc, likeBloc);
     _settingloadFeed(myFeedBloc, likeBloc);
     print('new feed data loading');
     bottonNavSize = 150;

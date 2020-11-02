@@ -198,7 +198,7 @@ class _signUpScreen extends State<signUpScreen> {
                             cubit: loginBloc,
                             listener: (context, state) {
                               if (state is onToLogin) {
-                                Navigator.of(context).pushNamed('/');
+                                Navigator.of(context).pushNamed('/login');
                               } else if (state is onCreateAccountSuccessfully) {
                                 print("onLogin :" + state.data.toString());
                                 Navigator.of(context).pushNamed("/addProfile");

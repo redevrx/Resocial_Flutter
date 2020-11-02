@@ -87,7 +87,7 @@ class build_list_notify extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: constraints.maxHeight,
+      height: MediaQuery.of(context).size.height * .75,
       width: double.infinity,
       child: new ListView(
         children: itemsNotify.map((model) {

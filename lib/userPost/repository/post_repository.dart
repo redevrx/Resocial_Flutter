@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -353,13 +354,13 @@ type:''
       final deviceToken = info.get("deviceToken").toString();
 
       //create notify data
-      Map<String, Object> notifyData = HashMap();
-      notifyData['body'] = friendName + " give crate new post now";
+      Map<Object, Object> notifyData = HashMap();
+      notifyData['body'] = friendName + " give create new post now";
       notifyData['title'] = "New Post";
       notifyData['icon'] = "";
 
       //create notify head
-      Map<String, Object> notifyHead = HashMap();
+      Map<Object, Object> notifyHead = HashMap();
       notifyHead['to'] = deviceToken;
       notifyHead['notification'] = notifyData;
 
@@ -369,7 +370,7 @@ type:''
             'Authorization': 'key=$token',
             'Content-Type': 'application/json'
           },
-          body: notifyHead);
+          body: jsonEncode(notifyHead));
     });
   }
 

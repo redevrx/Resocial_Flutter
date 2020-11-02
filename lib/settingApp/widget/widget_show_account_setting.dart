@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:socialapp/home/screen/home_page.dart';
 
-
 class widgetShowAccountSetting extends StatefulWidget {
   final BoxConstraints constraints;
 
@@ -141,10 +140,10 @@ class _widgetShowAccountSettingState extends State<widgetShowAccountSetting> {
                       color: Colors.black.withOpacity(.55),
                     ),
                     onTap: () async {
-                      final _mAuth = await FirebaseAuth.instance;
-                      _mAuth.signOut();
+                      final _mAuth = FirebaseAuth.instance;
+                      await _mAuth.signOut();
 
-                      Navigator.of(context).pushNamed("/");
+                      Navigator.of(context).pushNamed("/login");
                     },
                   )
                 ],
