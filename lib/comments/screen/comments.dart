@@ -1,24 +1,23 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/comments/export/export_comment.dart';
 import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/comments/widget/widget_card_comments.dart';
 import 'package:socialapp/likes/bloc/likes_bloc.dart';
-import 'package:socialapp/likes/bloc/likes_state.dart';
 import 'package:socialapp/likes/export/export_like.dart';
 import 'package:socialapp/textMore/bloc/text_more_bloc.dart';
-import 'package:socialapp/textMore/bloc/text_more_state.dart';
 import 'package:socialapp/textMore/export/export.dart';
 
 class Comments extends StatelessWidget {
   final List<PostModel> postModels;
   final int i;
+  final String uid;
 
   const Comments({
     Key key,
     this.postModels,
     this.i,
+    this.uid,
   }) : super(key: key);
 
   @override
@@ -31,6 +30,7 @@ class Comments extends StatelessWidget {
           child: BlocProvider(
             create: (context) => CommentBloc(new CommentRepository()),
             child: _Comments(
+              uid: uid,
               postModels: postModels,
               i: i,
             ),
@@ -42,11 +42,13 @@ class Comments extends StatelessWidget {
 class _Comments extends StatefulWidget {
   final List<PostModel> postModels;
   final int i;
+  final String uid;
 
   const _Comments({
     Key key,
     this.postModels,
     this.i,
+    this.uid,
   }) : super(key: key);
   @override
   _CommentsState createState() => _CommentsState();
@@ -88,6 +90,7 @@ class _CommentsState extends State<_Comments> {
                     height: 16.0,
                   ),
                   widget_card_comemt_detail(
+                      uid: widget.uid,
                       i: widget.i,
                       postModels: widget.postModels,
                       constraints: constraints,

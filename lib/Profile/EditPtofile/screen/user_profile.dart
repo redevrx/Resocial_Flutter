@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/event/edit_profile_event.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/models/colors_model.dart';
@@ -53,21 +55,33 @@ class __UserProfileState extends State<_UserProfile> {
   bool _showTextMore = false;
   bool _fromTap = false;
   MyFeedBloc myFeedBloc;
+  EditProfileBloc editProfileBloc;
   final txtStatus = TextEditingController();
   final textUserName = TextEditingController();
+  var uid = '';
+  SharedPreferences _pref;
+
+  void _getUserID() async {
+    _pref = await SharedPreferences.getInstance();
+    uid = _pref.getString("uid");
+  }
+
+  @override
+  void initState() {
+    _getUserID();
+
+    editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
+    myFeedBloc = BlocProvider.of<MyFeedBloc>(context);
+
+    // print("${bodyPost.length}");
+    editProfileBloc.add(EditProfileLoadUserInfo());
+    myFeedBloc.add(onLoadUserFeedClick());
+    _portraitModeOnly();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final EditProfileBloc editProfileBloc =
-        BlocProvider.of<EditProfileBloc>(context);
-    myFeedBloc = BlocProvider.of<MyFeedBloc>(context);
-
-    setState(() {
-      // print("${bodyPost.length}");
-      editProfileBloc.add(EditProfileLoadUserInfo());
-      myFeedBloc.add(onLoadUserFeedClick());
-      _portraitModeOnly();
-    });
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
@@ -121,6 +135,7 @@ class __UserProfileState extends State<_UserProfile> {
                           ),
                         ),
                         stackUserPost(
+                          uid: uid,
                           constraints: constraints,
                           editProfileBloc: editProfileBloc,
                           myFeedBloc: myFeedBloc,
@@ -195,8 +210,13 @@ class stackUserPost extends StatelessWidget {
   final BoxConstraints constraints;
   final EditProfileBloc editProfileBloc;
   final MyFeedBloc myFeedBloc;
+  final String uid;
   const stackUserPost(
-      {Key key, this.constraints, this.editProfileBloc, this.myFeedBloc})
+      {Key key,
+      this.constraints,
+      this.editProfileBloc,
+      this.myFeedBloc,
+      this.uid})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -265,6 +285,7 @@ class stackUserPost extends StatelessWidget {
                         //user post with image
                         print(state.models[i].uid.toString());
                         return postWithImage(
+                          uid: uid,
                           textMoreBloc: textMoreBloc,
                           constraints: constraints,
                           i: i,
@@ -1002,27 +1023,27 @@ Future<void> _checkGalleryPermission(
 }
 
 Future<void> _pickCamera(EditProfileBloc editProfileBloc, int type) async {
-  var image = await ImagePicker.pickImage(source: ImageSource.camera);
+  var image = await ImagePicker().getImage(source: ImageSource.camera);
 
   // 0 -> image 1-> image background
   if (type == 1) {
     //print('image background');
-    editProfileBloc.add(EditProfileBackgroundClik(image));
+    editProfileBloc.add(EditProfileBackgroundClik(File(image.path)));
   } else {
-    editProfileBloc.add(EditProfileImageClick(image));
+    editProfileBloc.add(EditProfileImageClick(File(image.path)));
   }
 }
 
 Future<void> _pickGallery(EditProfileBloc editProfileBloc, int type) async {
-  var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  var image = await ImagePicker().getImage(source: ImageSource.gallery);
 
   // 0 -> image 1-> image background
 
   if (type == 1) {
     //print('image background');
-    editProfileBloc.add(EditProfileBackgroundClik(image));
+    editProfileBloc.add(EditProfileBackgroundClik(File(image.path)));
   } else {
-    editProfileBloc.add(EditProfileImageClick(image));
+    editProfileBloc.add(EditProfileImageClick(File(image.path)));
   }
 }
 

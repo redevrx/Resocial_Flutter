@@ -162,21 +162,10 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
   @override
   Stream<EditProfileState> loadUserProfile(
       EditProfileLoadUserInfo event) async* {
-    final _mAuth = await FirebaseAuth.instance.currentUser;
+    final _mAuth = FirebaseAuth.instance;
     final _mRef = FirebaseFirestore.instance;
-    final uid = _mAuth.uid.toString();
-
-    var userInfo = await _mRef
-        .collection("user info")
-        .doc(event.uid.isEmpty ? uid : event.uid)
-        .get();
-    //  final map = Map<String, Object>();
-    // map["email"] = userInfo["email"].toString();
-    // map["user"] = userInfo["user"].toString();
-    // map["uid"] = userInfo["uid"].toString();
-    // map["imageProfile"] = userInfo["imageProfile"].toString();
-    // map["userStaus"] = userInfo["userStaus"].toString();
-    // map["nickName"] = userInfo["nickName"].toString();
+    final uid = _mAuth.currentUser.uid;
+    var userInfo = await _mRef.collection("user info").doc(uid).get();
 
     final userModel = EditProfileModel(
         email: userInfo.get("email").toString(),
@@ -186,6 +175,14 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
         userStatus: userInfo.get("userStatus").toString(),
         nickName: userInfo.get("nickName").toString(),
         backgroundImage: userInfo.get("imageBackground").toString());
+
+    //  final map = Map<String, Object>();
+    // map["email"] = userInfo["email"].toString();
+    // map["user"] = userInfo["user"].toString();
+    // map["uid"] = userInfo["uid"].toString();
+    // map["imageProfile"] = userInfo["imageProfile"].toString();
+    // map["userStaus"] = userInfo["userStaus"].toString();
+    // map["nickName"] = userInfo["nickName"].toString();
 
     yield onLoadUserSuccessfully(userModel);
   }

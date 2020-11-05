@@ -44,8 +44,8 @@ class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
 
   @override
   Stream<StateMyFeed> onLoadUserFeed(onLoadUserFeedClick event) async* {
-    yield onFeedProgress();
     List<PostModel> models = List();
+
     models = await repository.getMyFeed(event.uid);
 
     if (models != null) {

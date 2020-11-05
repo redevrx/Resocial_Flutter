@@ -16,8 +16,12 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp()
-      .whenComplete(() => {print('Firebase Initial Complete')});
+  await Firebase.initializeApp().whenComplete(() {
+    print('Firebase Initial Complete');
+    final notifyService = PushNotificationService();
+    notifyService.initialise();
+    notifyService.getDeviceToken();
+  });
   if (kIsWeb) {
     // Disable persistence on web platforms
     await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
@@ -25,9 +29,6 @@ void main() async {
   if (USE_FIRESTORE_EMULATOR) {
     FirebaseFirestore.instance.settings = Settings(persistenceEnabled: true);
   }
-  final notifyService = PushNotificationService();
-  notifyService.initialise();
-  notifyService.getDeviceToken();
   runApp(MyApp());
 }
 

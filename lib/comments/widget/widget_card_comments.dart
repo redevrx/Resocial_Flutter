@@ -16,6 +16,7 @@ class widget_card_comemt_detail extends StatelessWidget {
     this.constraints,
     this.postModels,
     this.i,
+    this.uid,
   }) : super(key: key);
 
   final TextMoreBloc textMoreBloc;
@@ -23,6 +24,7 @@ class widget_card_comemt_detail extends StatelessWidget {
   final BoxConstraints constraints;
   final List<PostModel> postModels;
   final int i;
+  final String uid;
 
   @override
   Widget build(BuildContext context) {
@@ -196,19 +198,31 @@ class widget_card_comemt_detail extends StatelessWidget {
                   builder: (context, state) {
                     if (state is onCheckLikesResult) {
                       return widget_like_ui(
-                          postModels: postModels, i: i, likeBloc: likeBloc);
+                          uid: uid,
+                          postModels: postModels,
+                          i: i,
+                          likeBloc: likeBloc);
                     }
                     if (state is onLikesResult) {
                       return widget_like_ui(
-                          postModels: postModels, i: i, likeBloc: likeBloc);
+                          uid: uid,
+                          postModels: postModels,
+                          i: i,
+                          likeBloc: likeBloc);
                     }
                     if (state is onLikeProgress) {
                       return widget_like_ui(
-                          postModels: postModels, i: i, likeBloc: likeBloc);
+                          uid: uid,
+                          postModels: postModels,
+                          i: i,
+                          likeBloc: likeBloc);
                     }
                     if (state is onLikeResultPost) {
                       return widget_like_ui(
-                          postModels: postModels, i: i, likeBloc: likeBloc);
+                          uid: uid,
+                          postModels: postModels,
+                          i: i,
+                          likeBloc: likeBloc);
                     }
                     return Container();
                   },

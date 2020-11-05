@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/settingApp/export/setting_export.dart';
 
 class SettingApp extends StatefulWidget {
@@ -9,7 +10,7 @@ class SettingApp extends StatefulWidget {
 
 class _SettingAppState extends State<SettingApp> {
   bool changeSize = false;
-  bool _lights = true;
+  // bool _lights = true;
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +44,18 @@ class _SettingAppState extends State<SettingApp> {
                       ),
                       _showText("Notifications"),
                       widgetShowNotifySetting(
-                        lights: _lights,
                         constraints: constraints,
                       ),
                       SizedBox(
                         height: 12.0,
                       ),
                       _showText("Friends"),
-                      widgetShowFriendsSetting(constraints: constraints,),
-                      SizedBox(height: 12.0,)
+                      widgetShowFriendsSetting(
+                        constraints: constraints,
+                      ),
+                      SizedBox(
+                        height: 12.0,
+                      )
                     ],
                   ),
                 )

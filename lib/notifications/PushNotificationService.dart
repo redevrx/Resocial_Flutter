@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:async';
@@ -72,12 +71,28 @@ class PushNotificationService {
     });
   }
 
-  Future onSubscribe(String topic) {
-    _fcm.subscribeToTopic(topic);
+  Future<void> onSubscribe(String topic, String type) async {
+    Future<SharedPreferences> _pref = SharedPreferences.getInstance();
+    final pref = await _pref;
+
+    await _fcm.subscribeToTopic(topic).then((value) {
+      //shared preference
+      pref.remove(type);
+      pref.setBool(type, true);
+      print('subscribeToTopic :$topic success');
+    });
   }
 
-  Future unSubscribe(String topic) {
-    _fcm.unsubscribeFromTopic(topic);
+  Future<void> unSubscribe(String topic, String type) async {
+    Future<SharedPreferences> _pref = SharedPreferences.getInstance();
+    final pref = await _pref;
+
+    await _fcm.unsubscribeFromTopic(topic).then((value) {
+//shared preference
+      pref.remove(type);
+      pref.setBool(type, false);
+      print('unsubscribeFromTopic :$topic success');
+    });
   }
 
   Future<void> saveTokenUser(String token) async {

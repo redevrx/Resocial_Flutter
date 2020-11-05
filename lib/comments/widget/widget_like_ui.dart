@@ -8,11 +8,13 @@ class widget_like_ui extends StatelessWidget {
     @required this.postModels,
     @required this.i,
     @required this.likeBloc,
+    this.uid,
   }) : super(key: key);
 
   final List<PostModel> postModels;
   final int i;
   final LikeBloc likeBloc;
+  final String uid;
 
   @override
   Widget build(BuildContext context) {
