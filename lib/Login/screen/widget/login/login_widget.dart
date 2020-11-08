@@ -1,20 +1,19 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:socialapp/Login/bloc/events/login_evevt.dart';
 import 'package:socialapp/Login/bloc/login_bloc.dart';
 import 'package:socialapp/Login/bloc/models/login_model.dart';
+import 'package:socialapp/Login/bloc/states/login_state.dart';
 import 'package:socialapp/widgets/cardBackground/item_card_shape_v2.dart';
 // import 'package:flutter/foundation.dart' show kIsWeb;
 
 class buttonLogin extends StatelessWidget {
   const buttonLogin({
     Key key,
-    @required this.txtEmail,
-    @required this.txtPassword,
     @required this.loginBloc,
   }) : super(key: key);
 
-  final TextEditingController txtEmail;
-  final TextEditingController txtPassword;
   final LoginBloc loginBloc;
 
   @override
@@ -31,9 +30,9 @@ class buttonLogin extends StatelessWidget {
         borderRadius: new BorderRadius.circular(30.0),
       ),
       onPressed: () {
-        final data = LoginModel(txtEmail.text, txtPassword.text);
+        // final data = LoginModel(txtEmail.text, txtPassword.text);
 
-        loginBloc.add(onLogin(data));
+        loginBloc.add(onLogin(null));
       },
     );
   }
@@ -67,13 +66,10 @@ class buttonToSignUp extends StatelessWidget {
 class textPassword extends StatelessWidget {
   const textPassword({
     Key key,
-    @required this.txtPassword,
-    this.email,
+    @required this.state,
     this.loginBloc,
   }) : super(key: key);
-
-  final TextEditingController txtPassword;
-  final String email;
+  final onPasswordStateChange state;
   final LoginBloc loginBloc;
 
   @override
@@ -82,14 +78,20 @@ class textPassword extends StatelessWidget {
       padding: const EdgeInsets.only(top: 33.0, right: 46.0, left: 46.0),
       child: Container(
         child: TextField(
+          onChanged: (password) =>
+              loginBloc.add(onPasswordChange(password: password)),
           onSubmitted: (value) {
-            final data = LoginModel(email, txtPassword.text);
-            loginBloc.add(onLogin(data));
+            // final data = LoginModel(state.email.value, state.password.value);
+            loginBloc.add(onLogin(null));
           },
-          controller: txtPassword,
           autofocus: false,
           obscureText: true,
           decoration: InputDecoration(
+              errorText: (state == null)
+                  ? null
+                  : state.password.invalid
+                      ? 'invalid password en 2 and number 6'
+                      : null,
               prefixIcon: Icon(Icons.vpn_key, color: Colors.white),
               filled: true,
               hintStyle: TextStyle(color: Colors.white),
@@ -118,10 +120,12 @@ class textPassword extends StatelessWidget {
 class textEmail extends StatelessWidget {
   const textEmail({
     Key key,
-    @required this.txtEmail,
+    @required this.loginBloc,
+    this.state,
   }) : super(key: key);
 
-  final TextEditingController txtEmail;
+  final LoginBloc loginBloc;
+  final onEmailStateChange state;
 
   @override
   Widget build(BuildContext context) {
@@ -129,10 +133,17 @@ class textEmail extends StatelessWidget {
       padding: const EdgeInsets.only(left: 36.0, right: 36.0, top: 220.0),
       child: Container(
         child: TextField(
-          controller: txtEmail,
+          onChanged: (email) => loginBloc.add(onEmailChange(email: email)),
+          keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
               prefixIcon: Icon(Icons.alternate_email, color: Colors.white),
               filled: true,
+              helperText: '',
+              errorText: (state == null)
+                  ? null
+                  : state.email.invalid
+                      ? 'invalid email'
+                      : null,
               hintStyle: TextStyle(color: Colors.white),
               hintText: "Email",
               focusedBorder: OutlineInputBorder(

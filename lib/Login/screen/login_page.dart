@@ -1,9 +1,7 @@
-import 'package:flutter/scheduler.dart';
 import 'package:socialapp/Login/bloc/login_bloc.dart';
 import 'package:socialapp/Login/bloc/states/login_state.dart';
 import 'package:socialapp/Login/screen/register_user.dart';
 import 'package:socialapp/Login/screen/widget/login/login_widget.dart';
-import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,34 +25,29 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-class loginScreen extends StatefulWidget {
-  @override
-  _loginScreen createState() => _loginScreen();
-}
+class loginScreen extends StatelessWidget {
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+  //     print("Create UI Success");
+  //   });
+  // }
 
-class _loginScreen extends State<loginScreen> {
-  final txtEmail = TextEditingController();
-  final txtPassword = TextEditingController();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      print("Create UI Success");
-    });
-  }
-
-  @override
-  void didChangeDependencies() {
-    _checkUserLogin(context);
-    print("Current Page Login");
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   _checkUserLogin(context);
+  //   print("Current Page Login");
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    _checkUserLogin(context);
+    print("Current Page Login");
     final LoginBloc loginBloc = BlocProvider.of<LoginBloc>(context);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
@@ -95,7 +88,33 @@ class _loginScreen extends State<loginScreen> {
                           //           txtEmail: txtEmail,
                           //         ),
                           //       )
-                          textEmail(txtEmail: txtEmail),
+                          BlocBuilder<LoginBloc, LoginState>(
+                            buildWhen: (previous, current) =>
+                                previous.email != current.email,
+                            cubit: loginBloc,
+                            builder: (context, state) {
+                              if (state is onEmailStateChange) {
+                                return textEmail(
+                                    loginBloc: loginBloc, state: state);
+                              }
+                              return textEmail(
+                                  loginBloc: loginBloc, state: null);
+                            },
+                          ),
+
+                          BlocBuilder<LoginBloc, LoginState>(
+                            buildWhen: (previous, current) =>
+                                previous.password != current.password,
+                            cubit: loginBloc,
+                            builder: (context, state) {
+                              if (state is onPasswordStateChange) {
+                                return textPassword(
+                                    loginBloc: loginBloc, state: state);
+                              }
+                              return textPassword(
+                                  loginBloc: loginBloc, state: null);
+                            },
+                          ),
                           // (kIsWeb)
                           //     ? Container(
                           //         width:
@@ -106,11 +125,7 @@ class _loginScreen extends State<loginScreen> {
                           //           loginBloc: loginBloc,
                           //         ),
                           //       )
-                          textPassword(
-                            txtPassword: txtPassword,
-                            email: txtEmail.text,
-                            loginBloc: loginBloc,
-                          ),
+
                           // (kIsWeb)
                           //     ? Container(
                           //         width:
@@ -140,7 +155,8 @@ class _loginScreen extends State<loginScreen> {
                                 }));
                               } else if (state is onLoginSuccessfully) {
                                 print(state.toString());
-                                Navigator.of(context).pushNamed("/home");
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, "/home", (r) => false);
                               }
                             },
                             child: Container(),
@@ -164,21 +180,21 @@ class _loginScreen extends State<loginScreen> {
         children: <Widget>[
           buttonToSignUp(loginBloc: loginBloc),
           buttonLogin(
-              txtEmail: txtEmail,
-              txtPassword: txtPassword,
+              // txtEmail: txtEmail,
+              // txtPassword: txtPassword,
               loginBloc: loginBloc)
         ],
       ),
     );
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    txtEmail.dispose();
-    txtPassword.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // TODO: implement dispose
+  //   txtEmail.dispose();
+  //   txtPassword.dispose();
+  //   super.dispose();
+  // }
 }
 
 Future _checkUserLogin(BuildContext context) async {

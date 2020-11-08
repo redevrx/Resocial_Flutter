@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/Login/screen/login_page.dart';
 import 'package:socialapp/Login/screen/register_user.dart';
 import 'package:socialapp/Profile/AddProfile/screen/add_info_profile.dart';
@@ -29,6 +30,8 @@ void main() async {
   if (USE_FIRESTORE_EMULATOR) {
     FirebaseFirestore.instance.settings = Settings(persistenceEnabled: true);
   }
+
+  // Bloc.observer = SimpleBlocObserver();
   runApp(MyApp());
 }
 

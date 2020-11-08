@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialapp/Profile/EditPtofile/bloc/models/EditProfileModel.dart';
 import 'package:socialapp/home/bloc/event_my_feed.dart';
 import 'package:socialapp/home/bloc/state_my_feed.dart';
 import 'dart:async';

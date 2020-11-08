@@ -1,5 +1,10 @@
 import 'dart:collection';
+import 'package:formz/formz.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Login/bloc/events/login_evevt.dart';
+import 'package:socialapp/Login/bloc/models/emailModel.dart';
+import 'package:socialapp/Login/bloc/models/login_model.dart';
+import 'package:socialapp/Login/bloc/models/passwordModel.dart';
 import 'package:socialapp/Login/bloc/models/signUpModel.dart';
 import 'package:socialapp/Login/bloc/states/login_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +15,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class LoginBloc extends Bloc<LoginEvevt, LoginState> {
   LoginBloc() : super(onInitialState());
 
+  SharedPreferences _sharedPreferences;
+  var _email1;
   @override
   Stream<LoginState> mapEventToState(LoginEvevt event) async* {
     if (event is onLogin) {
@@ -20,6 +27,24 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
       yield* openToLoginPage(event);
     } else if (event is onSignUp) {
       yield* userRegister(event);
+    } else if (event is onEmailChange) {
+      _sharedPreferences = await SharedPreferences.getInstance();
+
+      final _email = Email.dirty(event.email);
+      _email1 = _email;
+      _sharedPreferences.remove("email");
+      await _sharedPreferences.setString("email", _email.value);
+
+      yield onEmailStateChange()
+          .copyWith(email: _email, status: Formz.validate([_email]));
+    } else if (event is onPasswordChange) {
+      _sharedPreferences = await SharedPreferences.getInstance();
+
+      final _password = Password.dirty(event.password);
+      _sharedPreferences.remove("password");
+      await _sharedPreferences.setString("password", _password.value);
+      yield onPasswordStateChange().copyWith(
+          password: _password, status: Formz.validate([_password, _password]));
     }
   }
 
@@ -59,14 +84,21 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
 
   @override
   Stream<LoginState> checkLogin(onLogin evevt) async* {
-    final data = evevt.data;
-    final _auth = FirebaseAuth.instance;
+    _sharedPreferences = await SharedPreferences.getInstance();
 
     yield onShowProgressDialog();
+
+    final data = LoginModel(_sharedPreferences.getString("email"),
+        _sharedPreferences.getString("password"));
+
+    final _auth = FirebaseAuth.instance;
 
     var it = await onUserLogin(_auth, data.email, data.password);
 
     if (it) {
+      //remove email and password login
+      _sharedPreferences.remove("email");
+      _sharedPreferences.remove("password");
       yield onLoginSuccessfully("Login Successfully..");
     } else {
       yield onLoingFaield("Password invalid");
@@ -108,6 +140,7 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
 
   Future<bool> onUserLogin(
       FirebaseAuth auth, String email, String password) async {
+    print("email :${email} : password : ${password}");
     return await auth
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
@@ -115,5 +148,11 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
     }).catchError((e) {
       return false;
     });
+  }
+
+  @override
+  Future<void> close() {
+    // TODO: implement close
+    return super.close();
   }
 }

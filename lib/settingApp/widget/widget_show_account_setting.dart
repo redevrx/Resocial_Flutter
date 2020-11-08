@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/home/screen/home_page.dart';
 
 class widgetShowAccountSetting extends StatefulWidget {
@@ -140,10 +141,13 @@ class _widgetShowAccountSettingState extends State<widgetShowAccountSetting> {
                       color: Colors.black.withOpacity(.55),
                     ),
                     onTap: () async {
+                      final _ref = await SharedPreferences.getInstance();
+                      _ref.remove("uid");
                       final _mAuth = FirebaseAuth.instance;
                       await _mAuth.signOut();
 
-                      Navigator.of(context).pushNamed("/login");
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, "/login", (r) => false);
                     },
                   )
                 ],

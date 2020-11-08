@@ -52,7 +52,7 @@ class _homePageState extends State<homePage> {
   Future<void> checkUserlogin() async {
     FirebaseAuth.instance.authStateChanges().listen((user) async {
       if (user == null) {
-        Navigator.of(context).pushNamed("/login");
+        Navigator.pushNamedAndRemoveUntil(context, "/login", (r) => false);
       }
       //
     });
@@ -71,8 +71,10 @@ class _homePageState extends State<homePage> {
 
   void _settingloadFeed(MyFeedBloc myFeedBloc, LikeBloc likeBloc) {
     //event load my feed
+    // if (uid.isNotEmpty) {
     myFeedBloc.add(onLoadMyFeedClick());
     likeBloc.add(onLikeResultPostClick());
+    // }
   }
 
   @override
