@@ -100,6 +100,7 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
           _sharedPreferences.remove("userName");
           _sharedPreferences.remove("password");
           _sharedPreferences.remove("cmPassword");
+          print("craete account success");
           yield onCreateAccountSuccessfully("${use.uid.toString()}");
         }
       } else {

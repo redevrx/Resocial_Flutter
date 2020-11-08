@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/event/edit_profile_event.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/models/EditProfileModel.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/state/edit_profile_state.dart';
@@ -12,7 +13,11 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
   @override
   Stream<EditProfileState> mapEventToState(EditProfileEvent event) async* {
     if (event is EditProfileLoadUserInfo) {
-      yield* loadUserProfile(event);
+      try {
+        yield* loadUserProfile(event);
+      } catch (e) {
+        print(e);
+      }
     }
     if (event is EditProfileImageClick) {
       yield* updateImageProfile(event);
@@ -29,10 +34,18 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     }
 
     if (event is loadFriendProfile) {
-      yield* loadedFriendProfile(event);
+      try {
+        yield* loadedFriendProfile(event);
+      } catch (e) {
+        print(e);
+      }
     }
     if (event is loadFriendProfilePost) {
-      yield onLoadUserSuccessfully(null);
+      try {
+        yield onLoadUserSuccessfully(null);
+      } catch (e) {
+        print(e);
+      }
     }
   }
 
@@ -162,9 +175,12 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
   @override
   Stream<EditProfileState> loadUserProfile(
       EditProfileLoadUserInfo event) async* {
-    final _mAuth = FirebaseAuth.instance;
     final _mRef = FirebaseFirestore.instance;
-    final uid = _mAuth.currentUser.uid;
+    final _pref = await SharedPreferences.getInstance();
+    final uid = _pref.getString("uid");
+
+    print("uid load profile :${uid}");
+
     var userInfo = await _mRef.collection("user info").doc(uid).get();
 
     final userModel = EditProfileModel(

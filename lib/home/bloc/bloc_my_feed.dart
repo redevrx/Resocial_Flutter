@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/home/bloc/event_my_feed.dart';
 import 'package:socialapp/home/bloc/state_my_feed.dart';
 import 'dart:async';
@@ -38,19 +39,36 @@ class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
     if (event is onLoadUserFeedClick) {
       yield* onLoadUserFeed(event);
     }
+    if (event is onLoadUserFeeded) {
+      if (event.model != null) {
+        yield onUserFeedSuccess(models: event.model);
+      } else {
+        yield onFeedFaield();
+      }
+    }
   }
 
   @override
   Stream<StateMyFeed> onLoadUserFeed(onLoadUserFeedClick event) async* {
-    List<PostModel> models = List();
+    final _pref = await SharedPreferences.getInstance();
+    final uid = _pref.getString("uid");
+    print("start load user feed");
 
-    models = await repository.getMyFeed(event.uid);
+    _streamSubscription?.cancel();
+    _streamSubscription = repository
+        .getMyFeed(uid)
+        .listen((model) => add(onLoadUserFeeded(model: model)));
 
-    if (models != null) {
-      yield onUserFeedSuccess(models: models);
-    } else {
-      yield onFeedFaield();
-    }
+    // try {
+    //   models = await repository.getMyFeed(uid);
+    // } catch (e) {
+    //   print(e.toString());
+    // }
+    // if (models != null) {
+    //   yield onUserFeedSuccess(models: models);
+    // } else {
+    //   yield onFeedFaield();
+    // }
   }
 
   @override
@@ -69,5 +87,12 @@ class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
     } else {
       yield onFeedFaield();
     }
+  }
+
+  @override
+  Future<void> close() {
+    // TODO: implement close
+    _streamSubscription?.cancel();
+    return super.close();
   }
 }

@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/screen/user_profile.dart';
 import 'package:socialapp/home/export/export_file.dart';
@@ -34,8 +36,22 @@ class _fechPage extends State<HomePage> {
   int selectedBar = 0;
   List<Widget> pageItem = [];
 
+  //check user login
+  Future<void> checkUserlogin() async {
+    FirebaseAuth.instance.authStateChanges().listen((user) async {
+      if (user == null) {
+        Navigator.pushNamedAndRemoveUntil(context, "/login", (r) => false);
+      }
+      //
+      final _pref = await SharedPreferences.getInstance();
+      await _pref.setString("uid", user.uid);
+    });
+  }
+
   @override
   void initState() {
+    checkUserlogin();
+
     pageItem = [
       homePage(
         bodyColor: barIitems[selectedBar].color,

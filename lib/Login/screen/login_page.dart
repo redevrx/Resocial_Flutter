@@ -45,7 +45,7 @@ class loginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //check user login app
-    _checkUserLogin(context);
+    // _checkUserLogin(context);
     print("Current Page Login");
 
     //new instances Login bloc
@@ -172,8 +172,7 @@ class loginScreen extends StatelessWidget {
                                 }));
                               } else if (state is onLoginSuccessfully) {
                                 print(state.toString());
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, "/home", (r) => false);
+                                Navigator.of(context).pushNamed("/home");
                               }
                             },
                             child: Container(),
@@ -216,15 +215,15 @@ class loginScreen extends StatelessWidget {
 
 //user login
 //check uid
-Future _checkUserLogin(BuildContext context) async {
-  FirebaseAuth.instance.authStateChanges().listen((user) {
-    if (user != null) {
-      Navigator.pushNamedAndRemoveUntil(context, "/home", (r) => false);
-      print("Login ..." + user.uid);
-    } else {
-      print("yet Login.." + user.uid);
-    }
-  });
-  // final user = auth.currentUser;
-}
+// Future _checkUserLogin(BuildContext context) async {
+//   FirebaseAuth.instance.authStateChanges().listen((user) {
+//     if (user != null) {
+//       Navigator.pushNamedAndRemoveUntil(context, "/home", (r) => false);
+//       print("Login ..." + user.uid);
+//     } else {
+//       print("yet Login.." + user.uid);
+//     }
+//   });
+//   // final user = auth.currentUser;
+// }
 // ItemCardShaps(MediaQuery.of(context).size.width * 064, MediaQuery.of(context).size.height * 0.36)

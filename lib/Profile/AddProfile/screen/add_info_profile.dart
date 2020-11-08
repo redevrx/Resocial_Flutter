@@ -4,7 +4,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:socialapp/Profile/AddProfile/bloc/add_profile_bloc.dart';
 import 'package:socialapp/Profile/AddProfile/bloc/event/add_profile_event.dart';
-import 'package:socialapp/Profile/AddProfile/bloc/models/add_profile_model.dart';
 import 'package:socialapp/Profile/AddProfile/bloc/state/add_profile_state.dart';
 import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'package:socialapp/widgets/cardBackground/item_card_shape_v2.dart';
@@ -22,24 +21,22 @@ class AddProfile extends StatelessWidget {
   }
 }
 
-class addProfile extends StatefulWidget {
-  @override
-  _addProfileState createState() => _addProfileState();
-}
-
-class _addProfileState extends State<addProfile> {
-  final txtUserStatus = TextEditingController();
-  final txtNickName = TextEditingController();
-
+class addProfile extends StatelessWidget {
+//check user permisstion by use map value
   Future<void> checkPermission() async {
+    //check permission isUndetermined
+    //it is user yet not grant permission
     if (await Permission.camera.status.isUndetermined &&
         await Permission.storage.status.isUndetermined) {
       // user grant permission yet ?
       print("user not grant permission");
+
+      //make request permission camera and storage
       Map<Permission, PermissionStatus> statuses =
           await [Permission.camera, Permission.storage].request();
 
       print(statuses[Permission.camera]);
+      //if camara and storage grant
       if (await statuses[Permission.camera].isGranted &&
           await statuses[Permission.storage].isGranted) {
         //fi yet give request permission
@@ -59,27 +56,29 @@ class _addProfileState extends State<addProfile> {
     }
   }
 
-  File _image;
+  //file keep image path from user select as category picture
 
   //image picker from gallery
-  Future<void> getImageGallery() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  Future<void> getImageGallery(AddProfileBloc profileBloc) async {
+    var image = await ImagePicker().getImage(source: ImageSource.gallery);
 
-    setState(() {
-      _image = image;
-    });
+    //call onImageProfileChange for keep path image as shared pref
+    profileBloc.add(onImageProfileChange(imagePath: image.path));
   }
 
-  Future<void> getImageCamera() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+//get picture from camara
+  Future<void> getImageCamera(AddProfileBloc profileBloc) async {
+    var image = await ImagePicker().getImage(source: ImageSource.camera);
 
-    setState(() {
-      _image = image;
-    });
+    //call onImageProfileChange for keep path image as shared pref
+    profileBloc.add(onImageProfileChange(imagePath: image.path));
   }
 
-  Future<void> checkCameraPermission() async {
-    var status = await Permission.camera;
+//check camara permission
+  Future<void> checkCameraPermission(
+      BuildContext context, AddProfileBloc profileBloc) async {
+    //get varialble permission camera
+    var status = Permission.camera;
 
     if (await status.status.isUndetermined) {
       //request permission
@@ -101,11 +100,13 @@ class _addProfileState extends State<addProfile> {
       print("user graint camera permission");
       Navigator.pop(context);
       //open camera
-      getImageCamera();
+      await getImageCamera(profileBloc);
     }
   }
 
-  Future<void> checkGalleryPermission() async {
+//check gallery permisson
+  Future<void> checkGalleryPermission(
+      BuildContext context, AddProfileBloc profileBloc) async {
     var status = await Permission.storage;
 
     if (await status.status.isUndetermined) {
@@ -128,15 +129,17 @@ class _addProfileState extends State<addProfile> {
       print("user graint storage permission");
       Navigator.pop(context);
       //open gallery
-      getImageGallery();
+      await getImageGallery(profileBloc);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    bool _fromTop = false;
+//bloc add profile use manager profile data
+    AddProfileBloc profileBloc = BlocProvider.of<AddProfileBloc>(context);
 
-    final AddProfileBloc profileBloc = BlocProvider.of<AddProfileBloc>(context);
+    //varialble animation show ture ? top : buttom
+    bool _fromTop = false;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -151,6 +154,7 @@ class _addProfileState extends State<addProfile> {
                   titleColor: Color(0xFFFF2D55),
                   status: "profile",
                 ),
+                //bloc profile show status
                 BlocBuilder<AddProfileBloc, AddProfileState>(
                   builder: (context, state) {
                     if (state is onSaveAddprofileDialog) {
@@ -161,6 +165,8 @@ class _addProfileState extends State<addProfile> {
                     return Container();
                   },
                 ),
+                //bloc chcek status and
+                //if save success give og to home page
                 BlocListener<AddProfileBloc, AddProfileState>(
                   listener: (context, state) {
                     if (state is onSaveAddProfileFailed) {
@@ -169,7 +175,8 @@ class _addProfileState extends State<addProfile> {
                       print(state.toString());
                     } else if (state is onSaveAddProfileSuccessfully) {
                       print(state.data);
-                      Navigator.of(context).pushNamed("/home");
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, "/home", (r) => false);
                     }
                   },
                   child: Container(),
@@ -185,31 +192,47 @@ class _addProfileState extends State<addProfile> {
                                 vertical: 32.0, horizontal: 150.0),
                             child: InkWell(
                                 onTap: () {
-                                  _customDialog(context, _fromTop);
+                                  //show dialog get images from gallery or camara
+                                  _customDialog(context, _fromTop, profileBloc);
                                   //  customDialog(context: context,btnOk: "Camera",btnCancel: "Gallery",description: "Selected Camera or Gallery image",image: null, title: "Selected Image",);
                                 },
-                                child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                                  child: _image == null
-                                      ? Image.network(
-                                          "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
-                                          height: 150,
-                                          width: 150,
-                                          fit: BoxFit.fill,
-                                        )
-                                      : Image.file(
-                                          _image,
-                                          height: 150,
-                                          width: 150,
-                                          fit: BoxFit.cover,
-                                        ),
+                                //use bloc return image path when user select image success
+                                // make image box show image that user select
+                                //if user not select if show default image
+                                child: BlocBuilder<AddProfileBloc,
+                                    AddProfileState>(
+                                  cubit: profileBloc,
+                                  builder: (context, state) {
+                                    if (state is onSelecImageSuccess) {
+                                      return buildImageBox(state);
+                                    }
+                                    return buildImageBox(null);
+                                  },
                                 ))),
-                        textUserStatus(status: txtUserStatus),
-                        textNickName(nickName: txtNickName),
+                        //make bloc track user name and keep as shared pref
+                        //
+                        BlocBuilder<AddProfileBloc, AddProfileState>(
+                          cubit: profileBloc,
+                          builder: (context, state) {
+                            return textUserStatus(
+                              profileBloc: profileBloc,
+                            );
+                          },
+                        ),
+                        //make bloc track nick name and keep as shared pref
+                        //
+                        BlocBuilder<AddProfileBloc, AddProfileState>(
+                          cubit: profileBloc,
+                          builder: (context, state) {
+                            return textNickName(
+                              profileBloc: profileBloc,
+                            );
+                          },
+                        ),
+                        // make button save data
                         buttonSaveAddprofile(
-                            data: AddProfileModel(
-                                _image, txtNickName.text, txtUserStatus.text),
-                            bloc: profileBloc)
+                          bloc: profileBloc,
+                        )
                       ],
                     )
                   ],
@@ -222,7 +245,28 @@ class _addProfileState extends State<addProfile> {
     );
   }
 
-  Future _customDialog(BuildContext context, bool _fromTop) {
+  ClipRRect buildImageBox(onSelecImageSuccess state) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20.0),
+      child: state == null
+          ? Image.network(
+              "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
+              height: 150,
+              width: 150,
+              fit: BoxFit.fill,
+            )
+          : Image.file(
+              File(state.imagePath),
+              height: 150,
+              width: 150,
+              fit: BoxFit.cover,
+            ),
+    );
+  }
+
+// show dialog for select picture
+  Future _customDialog(
+      BuildContext context, bool _fromTop, AddProfileBloc profileBloc) {
     return showGeneralDialog(
       barrierLabel: "Select Images",
       barrierDismissible: true,
@@ -266,7 +310,8 @@ class _addProfileState extends State<addProfile> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0)),
                           onPressed: () {
-                            checkCameraPermission();
+                            //call
+                            checkCameraPermission(context, profileBloc);
                           },
                           child: Text(
                             "Camera",
@@ -282,7 +327,8 @@ class _addProfileState extends State<addProfile> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0)),
                           onPressed: () {
-                            checkGalleryPermission();
+                            //call
+                            checkGalleryPermission(context, profileBloc);
                           },
                           child: Text(
                             "Gallery",
@@ -317,12 +363,10 @@ class _addProfileState extends State<addProfile> {
 }
 
 class buttonSaveAddprofile extends StatelessWidget {
-  final AddProfileModel data;
   final AddProfileBloc bloc;
 
   const buttonSaveAddprofile({
     Key key,
-    this.data,
     this.bloc,
   }) : super(key: key);
 
@@ -341,8 +385,9 @@ class buttonSaveAddprofile extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
               onPressed: () {
-                print(data.nickName + " : " + data.status);
-                bloc.add(onSaveAddprofile(data));
+                // print(data.nickName + " : " + data.status);
+                //call  onSaveAddprofile for save user info data
+                bloc.add(onSaveAddprofile(null));
               },
               child: Text(
                 "Save",
@@ -358,10 +403,10 @@ class buttonSaveAddprofile extends StatelessWidget {
 }
 
 class textNickName extends StatelessWidget {
-  final TextEditingController nickName;
+  final AddProfileBloc profileBloc;
   const textNickName({
     Key key,
-    this.nickName,
+    this.profileBloc,
   }) : super(key: key);
 
   @override
@@ -370,7 +415,9 @@ class textNickName extends StatelessWidget {
       padding: const EdgeInsets.only(left: 32.0, right: 32.0),
       child: Container(
         child: TextField(
-          controller: nickName,
+          onSubmitted: (value) => profileBloc.add(onSaveAddprofile(null)),
+          onChanged: (nickName) =>
+              profileBloc.add(onNickNameChange(nickName: nickName)),
           decoration: InputDecoration(
               hintText: "Nick Name",
               focusedBorder: OutlineInputBorder(
@@ -398,10 +445,10 @@ class textNickName extends StatelessWidget {
 }
 
 class textUserStatus extends StatelessWidget {
-  final TextEditingController status;
+  final AddProfileBloc profileBloc;
   const textUserStatus({
     Key key,
-    this.status,
+    this.profileBloc,
   }) : super(key: key);
 
   @override
@@ -410,8 +457,9 @@ class textUserStatus extends StatelessWidget {
       padding: const EdgeInsets.only(left: 32.0, right: 32.0),
       child: Container(
         child: TextField(
+          onChanged: (userStatus) =>
+              profileBloc.add(onUserStatusChange(userStatus: userStatus)),
           keyboardType: TextInputType.multiline,
-          controller: status,
           maxLengthEnforced: true,
           maxLength: 50,
           decoration: InputDecoration(

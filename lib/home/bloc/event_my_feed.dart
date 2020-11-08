@@ -12,6 +12,12 @@ class onLoadedMyFeedClick extends EventMyFeed {
   onLoadedMyFeedClick(this.models);
 }
 
+class onLoadUserFeeded extends EventMyFeed {
+  final List<PostModel> model;
+
+  onLoadUserFeeded({this.model});
+}
+
 class DisponseFeed extends EventMyFeed {}
 
 class onLoadUserPostClick extends EventMyFeed {}

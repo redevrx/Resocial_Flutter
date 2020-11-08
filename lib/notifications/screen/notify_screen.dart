@@ -20,6 +20,7 @@ class NotifyScreen extends StatelessWidget {
         new GlobalKey<RefreshIndicatorState>();
     NotifyBloc notifyBloc = BlocProvider.of<NotifyBloc>(context);
     notifyBloc.add(LoadNotifications());
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return ConstrainedBox(

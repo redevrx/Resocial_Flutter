@@ -5,26 +5,20 @@ import 'package:socialapp/Profile/EditPtofile/bloc/models/EditProfileModel.dart'
 import 'package:socialapp/home/export/export_file.dart';
 
 class FeedRepository {
-  Future<List<PostModel>> getMyFeed(String uid) async {
-    List<PostModel> models = List();
-
-    final _mAuth = await FirebaseAuth.instance.currentUser;
-    String userID;
-    if (uid.isEmpty) {
-      userID = await _mAuth.uid.toString();
-    } else {
-      userID = uid;
-    }
-
+  Stream<List<PostModel>> getMyFeed(String uid) {
     //firebase data path
+    print("uid load feed :$uid");
     final _mRef = FirebaseFirestore.instance.collection("Post");
-    await _mRef.where("uid", isEqualTo: userID).get().then((value) {
-      models = value.docs.map((model) => PostModel.fromJson(model)).toList();
-    }).catchError((e) {
-      print(e);
+    return _mRef.where("uid", isEqualTo: uid).snapshots().map((snapshot) {
+      return snapshot.docs.map((e) => PostModel.fromJson2(e)).toList();
     });
+    // await _mRef.where("uid", isEqualTo: userID).get().then((value) {
+    //   models = value.docs.map((model) => PostModel.fromJson(model)).toList();
+    // }).catchError((e) {
+    //   print(e);
+    // });
 
-    return models;
+    // return models;
   }
 
   Future<List<String>> onCheckUserLikePost(

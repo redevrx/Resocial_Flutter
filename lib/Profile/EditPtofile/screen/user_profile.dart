@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -58,24 +59,16 @@ class __UserProfileState extends State<_UserProfile> {
   EditProfileBloc editProfileBloc;
   final txtStatus = TextEditingController();
   final textUserName = TextEditingController();
-  var uid = '';
-  SharedPreferences _pref;
-
-  void _getUserID() async {
-    _pref = await SharedPreferences.getInstance();
-    uid = _pref.getString("uid");
-  }
 
   @override
   void initState() {
-    _getUserID();
-
     editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
     myFeedBloc = BlocProvider.of<MyFeedBloc>(context);
 
-    // print("${bodyPost.length}");
+    // _getUserID();
     editProfileBloc.add(EditProfileLoadUserInfo());
     myFeedBloc.add(onLoadUserFeedClick());
+
     _portraitModeOnly();
     super.initState();
   }
@@ -135,7 +128,6 @@ class __UserProfileState extends State<_UserProfile> {
                           ),
                         ),
                         stackUserPost(
-                          uid: uid,
                           constraints: constraints,
                           editProfileBloc: editProfileBloc,
                           myFeedBloc: myFeedBloc,
@@ -206,18 +198,27 @@ class __UserProfileState extends State<_UserProfile> {
   }
 }
 
+// keep uid
+var uid = "";
+
 class stackUserPost extends StatelessWidget {
   final BoxConstraints constraints;
   final EditProfileBloc editProfileBloc;
   final MyFeedBloc myFeedBloc;
-  final String uid;
-  const stackUserPost(
-      {Key key,
-      this.constraints,
-      this.editProfileBloc,
-      this.myFeedBloc,
-      this.uid})
-      : super(key: key);
+
+  const stackUserPost({
+    Key key,
+    this.constraints,
+    this.editProfileBloc,
+    this.myFeedBloc,
+  }) : super(key: key);
+
+  //get user id from shared pref
+  void _getUId() async {
+    final _preF = await SharedPreferences.getInstance();
+    uid = _preF.getString("uid");
+  }
+
   @override
   Widget build(BuildContext context) {
     LikeBloc likeBloc;
@@ -227,6 +228,8 @@ class stackUserPost extends StatelessWidget {
     likeBloc = BlocProvider.of<LikeBloc>(context);
     textMoreBloc = BlocProvider.of<TextMoreBloc>(context);
     postBloc = BlocProvider.of<PostBloc>(context);
+
+    _getUId();
 
     final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
         new GlobalKey<RefreshIndicatorState>();
@@ -243,12 +246,84 @@ class stackUserPost extends StatelessWidget {
         if (state is onFeedProgress) {
           // return LoadingAnimation();
           return Container(
+            width: double.infinity,
             child: Center(
-              child: CircularProgressIndicator(),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 8.0,
+                  ),
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 22.0,
+                  ),
+                  //make material button
+                  InkWell(
+                    onTap: () {
+                      myFeedBloc.add(onLoadUserFeedClick());
+                      print('refresh my feed');
+                    },
+                    child: Container(
+                      width: 120.0,
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                offset: Offset(0.5, .5),
+                                blurRadius: 12.0,
+                                spreadRadius: .1,
+                                color: Colors.green)
+                          ],
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(22.0),
+                              topLeft: Radius.circular(42.0),
+                              bottomRight: Radius.circular(22.0),
+                              bottomLeft: Radius.circular(42.0))),
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+                            height: 50.0,
+                            width: 90.0,
+                            alignment: Alignment.center,
+                            //padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+                            child: Text(
+                              'Refresh',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  .apply(color: Colors.white),
+                            ),
+                            decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(42.0),
+                                    topLeft: Radius.circular(42.0),
+                                    bottomRight: Radius.circular(200))),
+                          ),
+                          Positioned(
+                            right: 0,
+                            top: 4.0,
+                            bottom: 4.0,
+                            child: Icon(
+                              Icons.refresh,
+                              size: 40.0,
+                              color: Colors.green,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           );
         }
         if (state is onUserFeedSuccess) {
+          //free memory from stream StreamSubscription
+          //alter load data success
+          myFeedBloc.add(DisponseFeed());
+          //
           return Container(
               height: 580.0,
               width: double.infinity,
@@ -268,15 +343,7 @@ class stackUserPost extends StatelessWidget {
                     },
                     child: ListView.builder(
                       physics: ScrollPhysics(),
-                      // reverse: true,
-                      cacheExtent: 102,
-                      semanticChildCount: state.models.length,
                       itemCount: state.models.length,
-                      shrinkWrap: true,
-                      addSemanticIndexes: true,
-                      addRepaintBoundaries: true,
-                      primary: true,
-                      addAutomaticKeepAlives: true,
                       itemBuilder: (context, i) {
                         //load feed successful
                         // check post type
@@ -588,26 +655,9 @@ class _userNameWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => HomePage(
-                          pageNumber: 0,
-                        ),
-                      ));
-                      //print('Click');
-                    },
-                    focusColor: Colors.red,
-                    highlightColor: Colors.red,
-                    hoverColor: Colors.red,
-                    splashColor: Colors.red,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        size: 30.0,
-                        color: Colors.white,
-                      ),
-                    ),
+                  Opacity(
+                    opacity: 0.0,
+                    child: Container(),
                   ),
                   Text(
                     "${userName}",

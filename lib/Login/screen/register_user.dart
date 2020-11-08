@@ -27,15 +27,15 @@ class signUpScreen extends StatelessWidget {
   if user there value is null
   represend user not login 
   */
-  void checkUserLogin(BuildContext context) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      Navigator.pushNamedAndRemoveUntil(context, "/addProfile", (r) => false);
-      print("register ...");
-    } else {
-      print("yet register..");
-    }
-  }
+  // void checkUserLogin(BuildContext context) async {
+  //   final user = FirebaseAuth.instance.currentUser;
+  //   if (user != null) {
+  //     Navigator.pushNamedAndRemoveUntil(context, "/addProfile", (r) => false);
+  //     print("register ...");
+  //   } else {
+  //     print("yet register..");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class signUpScreen extends StatelessWidget {
         BlocProvider.of<LoginBloc>(context); //context.bloc<LoginBloc>();
 
     //call checkUserLogin
-    checkUserLogin(context);
+    // checkUserLogin(context);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -234,10 +234,14 @@ class signUpScreen extends StatelessWidget {
                             cubit: loginBloc,
                             listener: (context, state) {
                               if (state is onToLogin) {
-                                Navigator.of(context).pushNamed('/login');
-                              } else if (state is onCreateAccountSuccessfully) {
+                                print("onLogin :to login page");
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, '/login', (r) => false);
+                              }
+                              if (state is onCreateAccountSuccessfully) {
                                 print("onLogin :" + state.data.toString());
-                                Navigator.of(context).pushNamed("/addProfile");
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, "/addProfile", (r) => false);
                               }
                             },
                             child: Container(),

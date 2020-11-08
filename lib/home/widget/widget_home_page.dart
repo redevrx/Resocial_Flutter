@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -49,14 +48,17 @@ class _homePageState extends State<homePage> {
   SharedPreferences _pref;
   var uid = '';
 
-  Future<void> checkUserlogin() async {
-    FirebaseAuth.instance.authStateChanges().listen((user) async {
-      if (user == null) {
-        Navigator.pushNamedAndRemoveUntil(context, "/login", (r) => false);
-      }
-      //
-    });
-  }
+  // Future<void> checkUserlogin() async {
+  //   FirebaseAuth.instance.authStateChanges().listen((user) async {
+  //     if (user == null) {
+  //       Navigator.pushNamedAndRemoveUntil(context, "/login", (r) => false);
+  //     }
+  //     //
+  //     _pref = await SharedPreferences.getInstance();
+  //     uid = user.uid;
+  //     await _pref.setString("uid", user.uid);
+  //   });
+  // }
 
   // Future<void> settingloadFeed(MyFeedBloc myFeedBloc) async {
   //   //event load my feed
@@ -79,10 +81,11 @@ class _homePageState extends State<homePage> {
 
   @override
   void initState() {
-    super.initState();
     // initailMyFedd();
-    checkUserlogin();
+    // checkUserlogin();
     getUserId();
+
+    super.initState();
 
     //bloc initial
     myFeedBloc = BlocProvider.of<MyFeedBloc>(context);
@@ -91,10 +94,16 @@ class _homePageState extends State<homePage> {
     postBloc = BlocProvider.of<PostBloc>(context);
     editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
 
+    bottonNavSize = 150;
+  }
+
+  @override
+  void didChangeDependencies() {
     //event load my feed
     _settingloadFeed(myFeedBloc, likeBloc);
     print('new feed data loading');
-    bottonNavSize = 150;
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
   }
 
   @override
