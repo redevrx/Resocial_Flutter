@@ -59,6 +59,26 @@ class onLoingFaield extends LoginState {
   String toString() => "${data}";
 }
 
+class onCmPasswordStateChange extends LoginState {
+  final Email email;
+  final Password password;
+  final FormzStatus status;
+
+  onCmPasswordStateChange({this.email, this.password, this.status});
+
+  onCmPasswordStateChange copyWith({
+    Email email,
+    Password password,
+    FormzStatus status,
+  }) {
+    return onCmPasswordStateChange(
+      email: email ?? this.email,
+      password: password ?? this.password,
+      status: status ?? this.status,
+    );
+  }
+}
+
 class onEmailStateChange extends LoginState {
   final Email email;
   final Password password;

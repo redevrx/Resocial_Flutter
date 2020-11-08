@@ -15,8 +15,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class LoginBloc extends Bloc<LoginEvevt, LoginState> {
   LoginBloc() : super(onInitialState());
 
+//shared keep user data such as user name email pass
+//alter use success if remove all that keep
   SharedPreferences _sharedPreferences;
   var _email1;
+
   @override
   Stream<LoginState> mapEventToState(LoginEvevt event) async* {
     if (event is onLogin) {
@@ -27,6 +30,10 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
       yield* openToLoginPage(event);
     } else if (event is onSignUp) {
       yield* userRegister(event);
+    } else if (event is onUserNameChange) {
+      _sharedPreferences = await SharedPreferences.getInstance();
+      await _sharedPreferences.remove("userName");
+      await _sharedPreferences.setString("userName", event.userName);
     } else if (event is onEmailChange) {
       _sharedPreferences = await SharedPreferences.getInstance();
 
@@ -45,20 +52,42 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
       await _sharedPreferences.setString("password", _password.value);
       yield onPasswordStateChange().copyWith(
           password: _password, status: Formz.validate([_password, _password]));
+    } else if (event is onCmPasswordChange) {
+      _sharedPreferences = await SharedPreferences.getInstance();
+
+      final _password = Password.dirty(event.cmPassword);
+      await _sharedPreferences.remove("cmPassword");
+      await _sharedPreferences.setString("cmPassword", _password.value);
+      yield onCmPasswordStateChange().copyWith(
+          password: _password, status: Formz.validate([_password, _password]));
     }
   }
 
   @override
   Stream<LoginState> userRegister(onSignUp event) async* {
-    final data = event.data;
+    _sharedPreferences = await SharedPreferences.getInstance();
+
+    //firebaser instances
     final _auth = FirebaseAuth.instance;
     final _db = FirebaseFirestore.instance;
 
+//add data that there in data shared pref as model
+    final data = SignUpModel(
+        _sharedPreferences.getString("email"),
+        _sharedPreferences.getString("userName"),
+        _sharedPreferences.getString("password"),
+        _sharedPreferences.getString("cmPassword"));
+
+// show dialog
     yield onShowProgressDialog();
 
+    // data have to > 8
+    //will change stable as version
     if (data.password == data.passwordCm && data.password.length >= 6) {
       //user create account
       //print(data.email+" : "+data.passwordCm);
+      // print(
+      //     "email :${data.email} user :${data.userName} passw : ${data.password} cmPass : ${data.passwordCm}");
       final it = await onCreateAccount(
           _auth, data.email.toString(), data.password.toString());
       if (it) {
@@ -66,14 +95,19 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
         final it2 = await onSaveData(_db, data, use.uid.toString());
         if (it2) {
           //use.uid.toString()
+          //remove all data user register in shared preferace
+          _sharedPreferences.remove("email");
+          _sharedPreferences.remove("userName");
+          _sharedPreferences.remove("password");
+          _sharedPreferences.remove("cmPassword");
           yield onCreateAccountSuccessfully("${use.uid.toString()}");
         }
       } else {
-        yield onLoingFaield("Create Account Failed.. password 6 char");
+        yield onLoingFaield("Create Account Failed.. password 8 char");
       }
     } else {
       // password invaid return failed
-      yield onLoingFaield("Password invalid");
+      yield onLoingFaield("Create Account Failed.. password 8 char");
     }
   }
 
@@ -88,11 +122,15 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
 
     yield onShowProgressDialog();
 
+//add data to login model
+//data from shared pref
     final data = LoginModel(_sharedPreferences.getString("email"),
         _sharedPreferences.getString("password"));
 
     final _auth = FirebaseAuth.instance;
 
+//call on userLogin will retrun
+//true if login success
     var it = await onUserLogin(_auth, data.email, data.password);
 
     if (it) {
@@ -113,6 +151,7 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
 
   Future<bool> onCreateAccount(
       FirebaseAuth auth, String email, String password) async {
+    // alter create account success return true
     return await auth
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) {
@@ -125,8 +164,13 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
     });
   }
 
+//alter create account success
+//keep user info in database
   Future<bool> onSaveData(
       FirebaseFirestore db, SignUpModel data, String uid) async {
+    //fi save user info success give return true
+
+    //crate map data
     Map<String, Object> mapBody = HashMap();
     mapBody["email"] = data.email;
     mapBody["user"] = data.userName;
@@ -138,6 +182,8 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
     });
   }
 
+//register with fireabser auth
+//register with email password
   Future<bool> onUserLogin(
       FirebaseAuth auth, String email, String password) async {
     print("email :${email} : password : ${password}");

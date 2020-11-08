@@ -44,8 +44,14 @@ class loginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //check user login app
     _checkUserLogin(context);
     print("Current Page Login");
+
+    //new instances Login bloc
+    //use it manager user lgin or register
+    //and event text change such as
+    // - email -password
     final LoginBloc loginBloc = BlocProvider.of<LoginBloc>(context);
 
     return LayoutBuilder(
@@ -55,6 +61,7 @@ class loginScreen extends StatelessWidget {
               constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: Column(
                 children: <Widget>[
+                  //make app bar title login app
                   AppBarCustom(
                     title: 'Sign in',
                     titleColor: Color(0xFF0D8E53),
@@ -63,6 +70,8 @@ class loginScreen extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
+
+                  // login bloc show status from event login
                   BlocBuilder<LoginBloc, LoginState>(
                     builder: (context, state) {
                       if (state is onShowProgressDialog) {
@@ -77,6 +86,7 @@ class loginScreen extends StatelessWidget {
                   ),
                   Stack(
                     children: <Widget>[
+                      //make background login page
                       cardShape(),
                       Column(
                         children: <Widget>[
@@ -88,6 +98,8 @@ class loginScreen extends StatelessWidget {
                           //           txtEmail: txtEmail,
                           //         ),
                           //       )
+
+                          //make bloc login track email change and keep it as shared pref
                           BlocBuilder<LoginBloc, LoginState>(
                             buildWhen: (previous, current) =>
                                 previous.email != current.email,
@@ -102,6 +114,7 @@ class loginScreen extends StatelessWidget {
                             },
                           ),
 
+                          //make bloc login track password and keep
                           BlocBuilder<LoginBloc, LoginState>(
                             buildWhen: (previous, current) =>
                                 previous.password != current.password,
@@ -144,7 +157,11 @@ class loginScreen extends StatelessWidget {
                           //           ],
                           //         ),
                           //       )
+                          //build button
                           _buildPaddingButton(loginBloc),
+
+                          //make bloc login check status from event login
+                          //and make navigator
                           BlocListener<LoginBloc, LoginState>(
                             cubit: loginBloc,
                             listener: (context, state) {
@@ -197,10 +214,12 @@ class loginScreen extends StatelessWidget {
   // }
 }
 
+//user login
+//check uid
 Future _checkUserLogin(BuildContext context) async {
   FirebaseAuth.instance.authStateChanges().listen((user) {
     if (user != null) {
-      Navigator.of(context).pushNamed("/home");
+      Navigator.pushNamedAndRemoveUntil(context, "/home", (r) => false);
       print("Login ..." + user.uid);
     } else {
       print("yet Login.." + user.uid);

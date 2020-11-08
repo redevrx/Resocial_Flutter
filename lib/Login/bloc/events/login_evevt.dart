@@ -15,6 +15,18 @@ class onSignUp extends LoginEvevt {
   onSignUp(this.data);
 }
 
+class onUserNameChange extends LoginEvevt {
+  final String userName;
+
+  onUserNameChange({this.userName});
+}
+
+class onCmPasswordChange extends LoginEvevt {
+  final String cmPassword;
+
+  onCmPasswordChange({this.cmPassword});
+}
+
 class onEmailChange extends LoginEvevt {
   final String email;
 

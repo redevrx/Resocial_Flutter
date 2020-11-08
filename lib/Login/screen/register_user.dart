@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:socialapp/Login/bloc/events/login_evevt.dart';
 import 'package:socialapp/Login/bloc/login_bloc.dart';
-import 'package:socialapp/Login/bloc/models/signUpModel.dart';
 import 'package:socialapp/Login/bloc/states/login_state.dart';
+import 'package:socialapp/Login/screen/widget/login/login_widget.dart';
 import 'package:socialapp/Login/screen/widget/register/register_widget.dart';
 import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'package:socialapp/widgets/cardBackground/item_card_shape_v2.dart';
@@ -21,41 +21,16 @@ class SignUpScreen extends StatelessWidget {
   }
 }
 
-class signUpScreen extends StatefulWidget {
-  @override
-  _signUpScreen createState() => _signUpScreen();
-}
-
-class _signUpScreen extends State<signUpScreen> {
-  final txtEmail = TextEditingController();
-  final txtUserName = TextEditingController();
-  final txtPass = TextEditingController();
-  final textPassCm = TextEditingController();
-
-  @override
-  void dispose() {
-    txtEmail.dispose();
-    txtUserName.dispose();
-    txtPass.dispose();
-    textPassCm.dispose();
-
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-
-    super.initState();
-
-    checkUserLogin(context);
-  }
-
+class signUpScreen extends StatelessWidget {
+  /*
+  method check user login app 
+  if user there value is null
+  represend user not login 
+  */
   void checkUserLogin(BuildContext context) async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      Navigator.of(context).pushNamed("/addProfile");
+      Navigator.pushNamedAndRemoveUntil(context, "/addProfile", (r) => false);
       print("register ...");
     } else {
       print("yet register..");
@@ -64,8 +39,17 @@ class _signUpScreen extends State<signUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /*
+    make new instance Login bloc
+    for use manager register such as
+     - register user 
+     - to login page
+     */
     final LoginBloc loginBloc =
         BlocProvider.of<LoginBloc>(context); //context.bloc<LoginBloc>();
+
+    //call checkUserLogin
+    checkUserLogin(context);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -85,6 +69,9 @@ class _signUpScreen extends State<signUpScreen> {
                   SizedBox(
                     height: 33,
                   ),
+
+                  //bloc login show status user register
+                  //
                   BlocBuilder<LoginBloc, LoginState>(
                     builder: (context, state) {
                       if (state is onShowProgressDialog) {
@@ -99,6 +86,7 @@ class _signUpScreen extends State<signUpScreen> {
                   ),
                   Stack(
                     children: <Widget>[
+                      //card background
                       cardShape(context),
                       Column(
                         children: <Widget>[
@@ -113,8 +101,24 @@ class _signUpScreen extends State<signUpScreen> {
                           //           email: txtEmail,
                           //         ),
                           //       )
-                          textEmail(
-                            email: txtEmail,
+                          //make bloc check text email change
+                          //
+                          BlocBuilder<LoginBloc, LoginState>(
+                            buildWhen: (previous, current) =>
+                                previous.email != current.email,
+                            cubit: loginBloc,
+                            builder: (context, state) {
+                              if (state is onEmailStateChange) {
+                                textEmail(
+                                  loginBloc: loginBloc,
+                                  state: state,
+                                );
+                              }
+                              return textEmail(
+                                loginBloc: loginBloc,
+                                state: null,
+                              );
+                            },
                           ),
                           // (kIsWeb)
                           //     ? Container(
@@ -124,9 +128,12 @@ class _signUpScreen extends State<signUpScreen> {
                           //           userName: txtUserName,
                           //         ),
                           //       )
+
+                          //make login bloc for track data that change
                           textUserName(
-                            userName: txtUserName,
+                            loginBloc: loginBloc,
                           ),
+
                           // (kIsWeb)
                           //     ? Container(
                           //         width:
@@ -135,8 +142,23 @@ class _signUpScreen extends State<signUpScreen> {
                           //           password: txtPass,
                           //         ),
                           //       )
-                          textPassword(
-                            password: txtPass,
+                          //make bloc password change
+                          BlocBuilder<LoginBloc, LoginState>(
+                            buildWhen: (previous, current) =>
+                                previous.password != current.password,
+                            cubit: loginBloc,
+                            builder: (context, state) {
+                              if (state is onPasswordStateChange) {
+                                return txtPassword(
+                                  loginBloc: loginBloc,
+                                  state: state,
+                                );
+                              }
+                              return txtPassword(
+                                loginBloc: loginBloc,
+                                state: null,
+                              );
+                            },
                           ),
 
                           // (kIsWeb)
@@ -147,8 +169,21 @@ class _signUpScreen extends State<signUpScreen> {
                           //           passwordCm: textPassCm,
                           //         ),
                           //       )
-                          textPasswordCm(
-                            passwordCm: textPassCm,
+                          //password change
+                          BlocBuilder<LoginBloc, LoginState>(
+                            cubit: loginBloc,
+                            builder: (context, state) {
+                              if (state is onCmPasswordStateChange) {
+                                return textPasswordCm(
+                                  loginBloc: loginBloc,
+                                  state: state,
+                                );
+                              }
+                              return textPasswordCm(
+                                loginBloc: loginBloc,
+                                state: null,
+                              );
+                            },
                           ),
 
                           // create button action
@@ -175,9 +210,11 @@ class _signUpScreen extends State<signUpScreen> {
                           //           ],
                           //         ),
                           //       )
+                          //create  button
+                          //btn to login and btn sing up
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                vertical: 62.0, horizontal: 42.0),
+                                vertical: 22.0, horizontal: 42.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
@@ -186,14 +223,13 @@ class _signUpScreen extends State<signUpScreen> {
                                 ),
                                 buttonSignUp(
                                   bloc: loginBloc,
-                                  email: txtEmail.text,
-                                  userName: txtUserName.text,
-                                  password: txtPass.text,
-                                  passwordCm: textPassCm.text,
                                 )
                               ],
                             ),
                           ),
+
+                          //bloc listener
+                          //check status register
                           BlocListener<LoginBloc, LoginState>(
                             cubit: loginBloc,
                             listener: (context, state) {
@@ -246,20 +282,10 @@ class _signUpScreen extends State<signUpScreen> {
 }
 
 class buttonSignUp extends StatelessWidget {
-  final String email;
-  final String userName;
-  final String password;
-  final String passwordCm;
-
   final LoginBloc bloc;
-
   const buttonSignUp({
     Key key,
     this.bloc,
-    this.email,
-    this.userName,
-    this.password,
-    this.passwordCm,
   }) : super(key: key);
 
   @override
@@ -272,9 +298,10 @@ class buttonSignUp extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
         // print("on Register on work");
-        final data = SignUpModel(email, userName, password, passwordCm);
-        print("Password :" + data.password + passwordCm);
-        bloc.add(onSignUp(data));
+        // final data = SignUpModel(email, userName, password, passwordCm);
+        // print("Password :" + data.password + passwordCm);
+        //user register click
+        bloc.add(onSignUp(null));
       },
     );
   }

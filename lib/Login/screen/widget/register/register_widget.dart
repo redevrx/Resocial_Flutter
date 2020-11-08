@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:socialapp/Login/bloc/events/login_evevt.dart';
 import 'package:socialapp/Login/bloc/login_bloc.dart';
+import 'package:socialapp/Login/bloc/states/login_state.dart';
 
 class buttonToLogin extends StatelessWidget {
   final LoginBloc bloc;
-  
+
   const buttonToLogin({
-    Key key, this.bloc,
+    Key key,
+    this.bloc,
   }) : super(key: key);
 
   @override
@@ -32,10 +34,13 @@ class buttonToLogin extends StatelessWidget {
 }
 
 class textPasswordCm extends StatelessWidget {
-  final TextEditingController passwordCm;
-  
+  final LoginBloc loginBloc;
+  final onCmPasswordStateChange state;
+
   const textPasswordCm({
-    Key key, this.passwordCm,
+    Key key,
+    this.loginBloc,
+    this.state,
   }) : super(key: key);
 
   @override
@@ -49,11 +54,18 @@ class textPasswordCm extends StatelessWidget {
                       borderSide: BorderSide(color: Colors.white)))),
           child: Container(
             child: TextField(
-              controller: passwordCm,
+              onSubmitted: (value) => loginBloc.add(onSignUp(null)),
+              onChanged: (cmPassword) =>
+                  loginBloc.add(onCmPasswordChange(cmPassword: cmPassword)),
               autofocus: false,
               obscureText: true,
               decoration: InputDecoration(
-                  hintText: "Password",
+                  errorText: (state == null)
+                      ? null
+                      : state.password.invalid
+                          ? "password invaid en 2 and number 6"
+                          : null,
+                  hintText: "Confrim Password",
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20.0),
@@ -77,11 +89,13 @@ class textPasswordCm extends StatelessWidget {
   }
 }
 
-class textPassword extends StatelessWidget {
-  final TextEditingController password;
-  
-  const textPassword({
-    Key key, this.password,
+class txtPassword extends StatelessWidget {
+  final LoginBloc loginBloc;
+  final onPasswordStateChange state;
+  const txtPassword({
+    Key key,
+    this.loginBloc,
+    this.state,
   }) : super(key: key);
 
   @override
@@ -95,9 +109,15 @@ class textPassword extends StatelessWidget {
                       borderSide: BorderSide(color: Colors.white)))),
           child: Container(
             child: TextField(
-              controller: password,
+              onChanged: (password) =>
+                  loginBloc.add(onPasswordChange(password: password)),
               obscureText: true,
               decoration: InputDecoration(
+                  errorText: (state == null)
+                      ? null
+                      : state.password.invalid
+                          ? "password invaid en 2 and number 6"
+                          : null,
                   hintText: "Password",
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.only(
@@ -123,10 +143,11 @@ class textPassword extends StatelessWidget {
 }
 
 class textUserName extends StatelessWidget {
-  final TextEditingController userName;
-  
+  final LoginBloc loginBloc;
+
   const textUserName({
-    Key key, this.userName,
+    Key key,
+    this.loginBloc,
   }) : super(key: key);
 
   @override
@@ -140,7 +161,8 @@ class textUserName extends StatelessWidget {
                       borderSide: BorderSide(color: Colors.white)))),
           child: Container(
             child: TextField(
-              controller: userName,
+              onChanged: (name) =>
+                  loginBloc.add(onUserNameChange(userName: name)),
               decoration: InputDecoration(
                   hintText: "User Name",
                   focusedBorder: OutlineInputBorder(
@@ -154,9 +176,7 @@ class textUserName extends StatelessWidget {
                           topLeft: Radius.circular(20.0),
                           bottomRight: Radius.circular(20.0)),
                       borderSide:
-                          BorderSide(color: Colors.red.withOpacity(.3)
-                          )
-                          ),
+                          BorderSide(color: Colors.red.withOpacity(.3))),
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                       borderRadius: BorderRadius.only(
@@ -168,38 +188,38 @@ class textUserName extends StatelessWidget {
   }
 }
 
-class textEmail extends StatelessWidget {
-  final TextEditingController email;
-  const textEmail({
-    Key key, this.email,
-  }) : super(key: key);
+// class textEmail extends StatelessWidget {
+//   final TextEditingController email;
+//   const textEmail({
+//     Key key, this.email,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-        return Padding(
-          padding: const EdgeInsets.only(left: 46.0, right: 46.0, top: 146.0),
-          child: Container(
-            child: TextField(
-              controller: email,
-          decoration: InputDecoration(
-              hintText: "Email",
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    bottomRight: Radius.circular(20.0)),
-                borderSide: BorderSide(width: 1, color: Colors.red),
-              ),
-              enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      bottomRight: Radius.circular(20.0)),
-                  borderSide: BorderSide(color: Colors.red.withOpacity(.3))),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      bottomRight: Radius.circular(20.0)))),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//         return Padding(
+//           padding: const EdgeInsets.only(left: 46.0, right: 46.0, top: 146.0),
+//           child: Container(
+//             child: TextField(
+//               controller: email,
+//           decoration: InputDecoration(
+//               hintText: "Email",
+//               focusedBorder: OutlineInputBorder(
+//                 borderRadius: BorderRadius.only(
+//                     topLeft: Radius.circular(20.0),
+//                     bottomRight: Radius.circular(20.0)),
+//                 borderSide: BorderSide(width: 1, color: Colors.red),
+//               ),
+//               enabledBorder: OutlineInputBorder(
+//                   borderRadius: BorderRadius.only(
+//                       topLeft: Radius.circular(20.0),
+//                       bottomRight: Radius.circular(20.0)),
+//                   borderSide: BorderSide(color: Colors.red.withOpacity(.3))),
+//               border: OutlineInputBorder(
+//                   borderRadius: BorderRadius.only(
+//                       topLeft: Radius.circular(20.0),
+//                       bottomRight: Radius.circular(20.0)))),
+//         ),
+//       ),
+//     );
+//   }
+// }
