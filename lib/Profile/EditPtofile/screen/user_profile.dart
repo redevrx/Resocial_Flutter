@@ -398,10 +398,10 @@ class _stackImageProfile extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: imageBackground.length != null
-                    ? NetworkImage("${imageBackground}")
+                image: imageBackground != null
+                    ? NetworkImage("${imageBackground.trim()}")
                     : NetworkImage(
-                        "https://wallpapersite.com/images/pages/pic_w/18610.jpg"),
+                        "https://visme.co/blog/wp-content/uploads/2017/07/50-Beautiful-and-Minimalist-Presentation-Backgrounds-031.jpg"),
                 fit: BoxFit.cover),
             color: bodyColor.withOpacity(.15),
             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(55.0))),

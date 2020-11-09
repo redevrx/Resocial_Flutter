@@ -10,9 +10,12 @@ class NotifyRepositoryFirestore implements NotifyRepository {
   var uid = '';
   Future<void> initialNotify() async {
     //shared preference
-    Future<SharedPreferences> _pref = SharedPreferences.getInstance();
-    final pref = await _pref;
-    uid = pref.getString('uid');
+    final _pref = await SharedPreferences.getInstance();
+    try {
+      uid = _pref.getString('uid');
+    } catch (e) {
+      print("error from initial notify for load notify :$e");
+    }
   }
 
   @override

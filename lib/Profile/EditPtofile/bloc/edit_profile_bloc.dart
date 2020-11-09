@@ -10,6 +10,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
   EditProfileBloc() : super(onEditFailed(data: ""));
+
+  StreamSubscription _streamSubscription;
+
   @override
   Stream<EditProfileState> mapEventToState(EditProfileEvent event) async* {
     if (event is EditProfileLoadUserInfo) {
@@ -40,32 +43,60 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
         print(e);
       }
     }
-    if (event is loadFriendProfilePost) {
+    if (event is EditProfileLoadedUserInfo) {
       try {
-        yield onLoadUserSuccessfully(null);
+        if (event.model != null) yield onLoadUserSuccessfully(event.model);
       } catch (e) {
         print(e);
       }
     }
+    if (event is loadedFriendProfileSuccess) {
+      try {
+        if (event.model != null) yield onLoadUserSuccessfully(event.model);
+      } catch (e) {
+        print(e);
+      }
+    }
+    if (event is onDisponscEditProfile) {
+      _streamSubscription?.cancel();
+    }
+    if (event is loadFriendProfilePost) {
+      yield onLoadUserSuccessfully(null);
+    }
   }
 
+//load friend profile
+//show in friend profile page
+//show info name status other
+//user profile return result onLoadUserSuccessfully
+//and it will working in page friend profile
   @override
   Stream<EditProfileState> loadedFriendProfile(loadFriendProfile event) async* {
     final _mRef = FirebaseFirestore.instance;
-    var userInfo = await _mRef.collection("user info").doc(event.uid).get();
+    final userInfo =
+        _mRef.collection("user info").doc(event.uid).snapshots().map((event) {
+      return EditProfileModel.fromJson(event.data());
+    });
 
-    final userModel = EditProfileModel(
-        email: userInfo.get("email").toString(),
-        userName: userInfo.get("user").toString(),
-        uid: userInfo.get("uid").toString(),
-        imageProfile: userInfo.get("imageProfile").toString(),
-        userStatus: userInfo.get("userStatus").toString(),
-        nickName: userInfo.get("nickName").toString(),
-        backgroundImage: userInfo.get("imageBackground").toString());
+    _streamSubscription?.cancel();
+    _streamSubscription = userInfo.listen((model) {
+      add(loadedFriendProfileSuccess(model: model));
+    });
 
-    yield onLoadUserSuccessfully(userModel);
+    // final userModel = EditProfileModel(
+    //     email: userInfo.get("email").toString(),
+    //     userName: userInfo.get("user").toString(),
+    //     uid: userInfo.get("uid").toString(),
+    //     imageProfile: userInfo.get("imageProfile").toString(),
+    //     userStatus: userInfo.get("userStatus").toString(),
+    //     nickName: userInfo.get("nickName").toString(),
+    //     backgroundImage: userInfo.get("imageBackground").toString());
+
+    // yield onLoadUserSuccessfully(userModel);
   }
 
+//update user name
+//update 1 field is user name
   @override
   Stream<EditProfileState> updateUserName(EditProfileNameClik event) async* {
     yield onShowDialog();
@@ -96,6 +127,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     }
   }
 
+//update user status update 1 field
   @override
   Stream<EditProfileState> onUpdateUserStatus(
       EditProfileStstusClick event) async* {
@@ -127,6 +159,11 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     }
   }
 
+// update image background
+//remove old image in data storage
+//and upload new image as storage
+//send url to update that filed image background
+//in cloud firestore
   @override
   Stream<EditProfileState> onUpdateImageBackground(
       EditProfileBackgroundClik event) async* {
@@ -150,6 +187,10 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     }
   }
 
+//update image profile
+//remove old image and upload new imaae
+//to storage
+//and send image url to colud firetsore
   @override
   Stream<EditProfileState> updateImageProfile(
       EditProfileImageClick event) async* {
@@ -172,6 +213,12 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     }
   }
 
+//load user info
+//show in page my profile
+//if alter get data give send data from
+//stream to event EditProfileLoadedUserInfo and update ui
+//user profile return result onLoadUserSuccessfully
+//and it will working in page my profile
   @override
   Stream<EditProfileState> loadUserProfile(
       EditProfileLoadUserInfo event) async* {
@@ -181,16 +228,25 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
 
     print("uid load profile :${uid}");
 
-    var userInfo = await _mRef.collection("user info").doc(uid).get();
+    // var userInfo = await
+    final userInfo =
+        _mRef.collection("user info").doc(uid).snapshots().map((snapshot) {
+      return EditProfileModel.fromJson(snapshot.data());
+    });
 
-    final userModel = EditProfileModel(
-        email: userInfo.get("email").toString(),
-        userName: userInfo.get("user").toString(),
-        uid: userInfo.get("uid").toString(),
-        imageProfile: userInfo.get("imageProfile").toString(),
-        userStatus: userInfo.get("userStatus").toString(),
-        nickName: userInfo.get("nickName").toString(),
-        backgroundImage: userInfo.get("imageBackground").toString());
+    _streamSubscription?.cancel();
+    _streamSubscription = userInfo.listen((model) {
+      add(EditProfileLoadedUserInfo(model: model));
+    });
+
+    // final userModel = EditProfileModel(
+    //     email: userInfo.get("email").toString(),
+    //     userName: userInfo.get("user").toString(),
+    //     uid: userInfo.get("uid").toString(),
+    //     imageProfile: userInfo.get("imageProfile").toString(),
+    //     userStatus: userInfo.get("userStatus").toString(),
+    //     nickName: userInfo.get("nickName").toString(),
+    //     backgroundImage: userInfo.get("imageBackground").toString());
 
     //  final map = Map<String, Object>();
     // map["email"] = userInfo["email"].toString();
@@ -199,10 +255,11 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     // map["imageProfile"] = userInfo["imageProfile"].toString();
     // map["userStaus"] = userInfo["userStaus"].toString();
     // map["nickName"] = userInfo["nickName"].toString();
-
-    yield onLoadUserSuccessfully(userModel);
   }
 
+//update imahe url of image profile
+//update 1 field
+//if update success if return true
   Future<bool> updateUserinfo(String uid, String url) async {
     final _mRef = await FirebaseFirestore.instance;
     // final getData = await _mRef.collection("user info").document(uid).get();
@@ -223,9 +280,12 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     });
   }
 
+//update image url image bacground
+//update 1 field
+//if update success if return true
   Future<bool> updateUserImageBackground(String uid, String url) async {
     final _mRef = FirebaseFirestore.instance;
-    var data = _mRef.collection("user info").doc(uid).get();
+    // var data = _mRef.collection("user info").doc(uid).get();
 
     final mapBody = Map<String, Object>();
     mapBody["imageBackground"] = url.toString();

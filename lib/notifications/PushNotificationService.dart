@@ -104,15 +104,17 @@ class PushNotificationService {
     final pref = await _pref;
 
     //get uid your current user
-    _mAuth.authStateChanges().listen((user) {
+    _mAuth.authStateChanges().listen((user) async {
       // print(user.uid);
-      pref.setString("uid", user.uid);
-      _mRef
-          .collection("user info")
-          .doc(user.uid)
-          .update({'deviceToken': '${token}'})
-          .then((value) => print("save device token success"))
-          .catchError((e) => print(e));
+      if (user != null) {
+        pref.setString("uid", user.uid);
+        await _mRef
+            .collection("user info")
+            .doc(user.uid)
+            .update({'deviceToken': '${token}'})
+            .then((value) => print("save device token success"))
+            .catchError((e) => print(e));
+      }
     });
   }
 }

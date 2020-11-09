@@ -36,35 +36,27 @@ class homePage extends StatefulWidget {
 }
 
 class _homePageState extends State<homePage> {
+  //size appbar
   double bottonNavSize = 128;
   MyFeedBloc myFeedBloc;
   LikeBloc likeBloc;
   TextMoreBloc textMoreBloc;
   PostBloc postBloc;
   EditProfileBloc editProfileBloc;
+
+  //check refiresh load feed
   bool refreshPage = false;
+
+  //key refresh page
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   SharedPreferences _pref;
   var uid = '';
 
-  // Future<void> checkUserlogin() async {
-  //   FirebaseAuth.instance.authStateChanges().listen((user) async {
-  //     if (user == null) {
-  //       Navigator.pushNamedAndRemoveUntil(context, "/login", (r) => false);
-  //     }
-  //     //
-  //     _pref = await SharedPreferences.getInstance();
-  //     uid = user.uid;
-  //     await _pref.setString("uid", user.uid);
-  //   });
-  // }
-
-  // Future<void> settingloadFeed(MyFeedBloc myFeedBloc) async {
-  //   //event load my feed
-  //   myFeedBloc.add(onLoadMyFeedClick());
-  // }
-
+//load user id
+//auth page
+//if null if go to login page
+//if there give keep as shared pref
   void getUserId() async {
     //get install shared preferences
     _pref = await SharedPreferences.getInstance();
@@ -154,9 +146,12 @@ class _homePageState extends State<homePage> {
 
                       //getLikeResult(state.models);
                       // getUserDetails(state.models);
+                      //-----------------------------
+                      //load loadFriendProfilePost for give user info of
+                      //post show detail in card
                       editProfileBloc.add(loadFriendProfilePost());
                       //load user detail success
-                      return (uid.isNotEmpty)
+                      return (uid != null)
                           ? Container(
                               height: 580.0,
                               width:
@@ -196,19 +191,22 @@ class _homePageState extends State<homePage> {
                                         // likeBloc.add(onCehckOneLike(
                                         //     id: state.models[i].postId));
                                         //user post with image
-                                        print(state.models[i].uid.toString());
-                                        return postWithImage(
-                                          parent: this,
-                                          textMoreBloc: textMoreBloc,
-                                          constraints: constraints,
-                                          uid: uid,
-                                          i: i,
-                                          likeBloc: likeBloc,
-                                          modelsPost: state.models,
-                                          myFeedBloc: myFeedBloc,
-                                          postBloc: postBloc,
-                                          editProfileBloc: editProfileBloc,
-                                        );
+                                        // print(state.models[i].uid.toString());
+                                        return (state.models == null)
+                                            ? Container()
+                                            : postWithImage(
+                                                parent: this,
+                                                textMoreBloc: textMoreBloc,
+                                                constraints: constraints,
+                                                uid: uid,
+                                                i: i,
+                                                likeBloc: likeBloc,
+                                                modelsPost: state.models,
+                                                myFeedBloc: myFeedBloc,
+                                                postBloc: postBloc,
+                                                editProfileBloc:
+                                                    editProfileBloc,
+                                              );
                                       },
                                     ),
                                   )))

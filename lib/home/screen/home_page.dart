@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/screen/user_profile.dart';
+import 'package:socialapp/home/bloc/bloc_pageChange.dart';
+import 'package:socialapp/home/bloc/state_pageChange.dart';
 import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/likes/bloc/likes_bloc.dart';
 import 'package:socialapp/likes/export/export_like.dart';
@@ -26,6 +28,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _fechPage extends State<HomePage> {
+  //Bar Item use in bittin bar naviagator
   final List<BarItem> barIitems = [
     BarItem("Home", Icons.home, Color(0xFF498AEF)),
     BarItem("Notify", Icons.notifications_active, Colors.pinkAccent),
@@ -33,25 +36,40 @@ class _fechPage extends State<HomePage> {
     BarItem("Profile", Icons.person_outline, Colors.teal),
     BarItem("Setting", Icons.menu, Colors.black)
   ];
+
+  PageNaviagtorChageBloc pageBloc;
+  //initial value page
+  //0 is home page
   int selectedBar = 0;
+  //initial page object
   List<Widget> pageItem = [];
 
   //check user login
   Future<void> checkUserlogin() async {
-    FirebaseAuth.instance.authStateChanges().listen((user) async {
-      if (user == null) {
-        Navigator.pushNamedAndRemoveUntil(context, "/login", (r) => false);
-      }
-      //
-      final _pref = await SharedPreferences.getInstance();
-      await _pref.setString("uid", user.uid);
-    });
+    try {
+      FirebaseAuth.instance.authStateChanges().listen((user) async {
+        if (user == null) {
+          Navigator.pushNamedAndRemoveUntil(context, "/login", (r) => false);
+        } else {
+          //
+          final _pref = await SharedPreferences.getInstance();
+          await _pref.setString("uid", user.uid.toString());
+        }
+      });
+    } catch (e) {
+      print("error from home page get User id :$e");
+    }
   }
 
   @override
   void initState() {
+    //new instance bloc page
+    pageBloc = BlocProvider.of<PageNaviagtorChageBloc>(context);
+    //check user login and
+    //keep ui as shared pref
     checkUserlogin();
 
+    //page value list
     pageItem = [
       homePage(
         bodyColor: barIitems[selectedBar].color,
@@ -64,6 +82,7 @@ class _fechPage extends State<HomePage> {
       ),
       SettingApp()
     ];
+
     selectedBar = widget.pageNumber;
 
     super.initState();
@@ -85,9 +104,21 @@ class _fechPage extends State<HomePage> {
                             create: (context) => EditProfileBloc(),
                             child: BlocProvider(
                               create: (context) => NotifyBloc(NotifyLoading()),
-                              child: IndexedStack(
-                                index: selectedBar,
-                                children: pageItem,
+                              child: BlocBuilder<PageNaviagtorChageBloc,
+                                  PageChangeState>(
+                                builder: (context, state) {
+                                  if (state is onPageChangeState) {
+                                    selectedBar = state.pageNumber;
+                                    return IndexedStack(
+                                      index: state.pageNumber,
+                                      children: pageItem,
+                                    );
+                                  }
+                                  return IndexedStack(
+                                    index: 0,
+                                    children: pageItem,
+                                  );
+                                },
                               ),
                             )
                             // selectedBar == 0
@@ -110,16 +141,17 @@ class _fechPage extends State<HomePage> {
         bottomNavigationBar: BlocProvider(
           create: (context) => NotifyBloc(NotifyLoading()),
           child: AnimationBottomBar(
+              pageBloc: pageBloc,
               barItems: barIitems,
               animationDuration: const Duration(milliseconds: 550),
               barStyle: BarStyle(
                   fointSize: 20.0, fontWeight: FontWeight.w400, iconSize: 30.0),
               onBarTab: (index) {
-                setState(() {
-                  selectedBar = index;
-                  print('position selected page :$selectedBar');
-                  //chage color page use index bottom bar -> barItems[selectedBar]
-                });
+                // setState(() {
+                // selectedBar = index;
+                //   print('position selected page :$selectedBar');
+                //   //chage color page use index bottom bar -> barItems[selectedBar]
+                // });
               }),
         ),
       ),
