@@ -26,3 +26,15 @@ class onUserFeedSuccess extends StateMyFeed {
 class onFeedUserFuccessful extends StateMyFeed {}
 
 class onFeedFaield extends StateMyFeed {}
+
+class onLoadOneFeedSuccess extends StateMyFeed {
+  final PostModel model;
+
+  onLoadOneFeedSuccess({this.model});
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "${this.model}";
+  }
+}

@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FriensManageRepo {
   Future<String> onCheckFriendInfo(String friendId) async {
     final _mRef = FirebaseFirestore.instance;
-    final _mAuth = await FirebaseAuth.instance.currentUser;
-    final uid = await _mAuth.uid.toString();
+    final _pref = await SharedPreferences.getInstance();
+
+    final uid = _pref.getString("uid");
+
     final data = await _mRef
         .collection("requests friends")
         .doc(uid)

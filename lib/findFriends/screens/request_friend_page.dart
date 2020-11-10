@@ -12,6 +12,9 @@ import 'package:socialapp/textMore/bloc/text_more_bloc.dart';
 import 'package:socialapp/userPost/bloc/post_bloc.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
 
+//this page crate bloc provider
+//and will show other user profile
+//in page ProfileRequestFriend
 class RequestFriend extends StatelessWidget {
   //FriensManageRepo friendRepo;
   final String userId;

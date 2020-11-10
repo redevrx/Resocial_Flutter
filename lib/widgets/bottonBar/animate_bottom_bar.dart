@@ -131,15 +131,15 @@ class _AnimationBottomBarState extends State<AnimationBottomBar>
       onTap: () {
         // SharedPreferences _sharedPreferences =
         //     await SharedPreferences.getInstance();
-        // setState(() {
-        //if i as 1 is click page notify
-        //if clear notify counter number
-        (i == 1) ? notifyBloc.add(ClearCounterNotify()) : null;
-        selectedBarIndex = i;
-        widget.onBarTab(selectedBarIndex);
+        setState(() {
+          //if i as 1 is click page notify
+          //if clear notify counter number
+          (i == 1) ? notifyBloc.add(ClearCounterNotify()) : null;
+          selectedBarIndex = i;
+          widget.onBarTab(selectedBarIndex);
 
-        widget.pageBloc.add(onPageChangeEvent(pageNumber: selectedBarIndex));
-        // });
+          widget.pageBloc.add(onPageChangeEvent(pageNumber: selectedBarIndex));
+        });
       },
       child: AnimatedContainer(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

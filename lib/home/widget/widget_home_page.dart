@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
@@ -9,6 +10,8 @@ import 'package:socialapp/Profile/EditPtofile/bloc/state/edit_profile_state.dart
 import 'package:socialapp/comments/screen/comments.dart';
 import 'package:socialapp/editPost/screen/edit_user_post.dart';
 import 'package:socialapp/findFriends/screens/request_friend_page.dart';
+import 'package:socialapp/home/bloc/bloc_pageChange.dart';
+import 'package:socialapp/home/bloc/event_pageChange.dart';
 import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/home/screen/home_page.dart';
 import 'package:socialapp/home/screen/look_image.dart';
@@ -28,38 +31,18 @@ import 'package:socialapp/shared/shared_app.dart';
 class homePage extends StatefulWidget {
   final Color bodyColor;
   final int pagePosition;
+
   const homePage({Key key, this.bodyColor, this.pagePosition})
       : super(key: key);
 
   @override
-  _homePageState createState() => _homePageState();
+  _homePage createState() => _homePage();
 }
 
-class _homePageState extends State<homePage> {
-  //size appbar
-  double bottonNavSize = 128;
-  MyFeedBloc myFeedBloc;
-  LikeBloc likeBloc;
-  TextMoreBloc textMoreBloc;
-  PostBloc postBloc;
-  EditProfileBloc editProfileBloc;
-
-  //check refiresh load feed
-  bool refreshPage = false;
-
-  //key refresh page
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
-  SharedPreferences _pref;
-  var uid = '';
-
-//load user id
-//auth page
-//if null if go to login page
-//if there give keep as shared pref
+class _homePage extends State<homePage> {
   void getUserId() async {
     //get install shared preferences
-    _pref = await SharedPreferences.getInstance();
+    final _pref = await SharedPreferences.getInstance();
     uid = _pref.getString("uid");
   }
 
@@ -71,22 +54,55 @@ class _homePageState extends State<homePage> {
     // }
   }
 
+  var uid = '';
+  //size appbar
+  double bottonNavSize = 128;
+  MyFeedBloc myFeedBloc;
+  LikeBloc likeBloc;
+  TextMoreBloc textMoreBloc;
+  PostBloc postBloc;
+  EditProfileBloc editProfileBloc;
+  PageNaviagtorChageBloc pageNaviagtorChageBloc;
+
+  //check refiresh load feed
+  bool refreshPage = false;
+
+  //key refresh page
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
+
   @override
   void initState() {
-    // initailMyFedd();
-    // checkUserlogin();
+    _portraitModeOnly();
+    //load user id
     getUserId();
 
-    super.initState();
+//auth page
+//if null if go to login page
+//if there give keep as shared pref
 
-    //bloc initial
+//bloc initial
     myFeedBloc = BlocProvider.of<MyFeedBloc>(context);
     textMoreBloc = BlocProvider.of<TextMoreBloc>(context);
     likeBloc = BlocProvider.of<LikeBloc>(context);
     postBloc = BlocProvider.of<PostBloc>(context);
     editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
+    pageNaviagtorChageBloc = BlocProvider.of<PageNaviagtorChageBloc>(context);
 
     bottonNavSize = 150;
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    myFeedBloc.close();
+    myFeedBloc.add(DisponseFeed());
+    editProfileBloc.add(onDisponscEditProfile());
+    _enableRotation();
+
+    super.dispose();
   }
 
   @override
@@ -94,7 +110,6 @@ class _homePageState extends State<homePage> {
     //event load my feed
     _settingloadFeed(myFeedBloc, likeBloc);
     print('new feed data loading');
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
 
@@ -195,7 +210,8 @@ class _homePageState extends State<homePage> {
                                         return (state.models == null)
                                             ? Container()
                                             : postWithImage(
-                                                parent: this,
+                                                pageNaviagtorChageBloc:
+                                                    pageNaviagtorChageBloc,
                                                 textMoreBloc: textMoreBloc,
                                                 constraints: constraints,
                                                 uid: uid,
@@ -226,11 +242,27 @@ class _homePageState extends State<homePage> {
     );
   }
 
-  @override
-  void dispose() {
-    myFeedBloc.add(DisponseFeed());
-    super.dispose();
+  void _portraitModeOnly() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
+
+  void _enableRotation() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+  }
+
+  // @override
+  // void dispose() {
+  //   myFeedBloc.add(DisponseFeed());
+  //   super.dispose();
+  // }
 }
 
 const List<Choice> choices = const <Choice>[
@@ -246,11 +278,11 @@ class postWithImage extends StatelessWidget {
     this.i,
     this.likeBloc,
     this.modelsPost,
-    this.parent,
     this.myFeedBloc,
     this.postBloc,
     this.editProfileBloc,
     this.uid,
+    this.pageNaviagtorChageBloc,
   }) : super(key: key);
 
   final TextMoreBloc textMoreBloc;
@@ -261,8 +293,8 @@ class postWithImage extends StatelessWidget {
   final PostBloc postBloc;
   final List<PostModel> modelsPost;
   final EditProfileBloc editProfileBloc;
-  final _homePageState parent;
   final String uid;
+  final PageNaviagtorChageBloc pageNaviagtorChageBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -505,12 +537,12 @@ class postWithImage extends StatelessWidget {
           InkWell(
               onTap: () {
                 if (uid == modelsPost[i].uid.toString()) {
+                  pageNaviagtorChageBloc.add(onPageChangeEvent(pageNumber: 2));
                   //current user click
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => HomePage(pageNumber: 2),
-                  ));
+                  //call page changeBloc for change page
                 } else {
                   // go to profile user that post
+                  print("other user id :${modelsPost[i].uid}");
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => RequestFriend(
                       userId: modelsPost[i].uid,

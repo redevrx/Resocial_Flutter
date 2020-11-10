@@ -8,7 +8,6 @@ import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/home/screen/home_page.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'dart:async';
-
 import 'package:socialapp/home/widget/widget_home_page.dart';
 import 'package:socialapp/likes/export/export_like.dart';
 import 'package:socialapp/textMore/export/export.dart';
@@ -22,6 +21,7 @@ class ProfileRequestFriend extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //new instances bloc provider
     final EditProfileBloc editProfileBloc =
         BlocProvider.of<EditProfileBloc>(context);
     final MyFeedBloc myFeedBloc = BlocProvider.of<MyFeedBloc>(context);
@@ -29,8 +29,12 @@ class ProfileRequestFriend extends StatelessWidget {
     final FriendManageBloc friendManageBloc =
         BlocProvider.of<FriendManageBloc>(context);
 
+    //load user profile
     editProfileBloc.add(loadFriendProfile(uid: uid));
+    //load check status
+    //
     friendManageBloc.add(onCheckStatusFrinds(uid: uid));
+    //load this user feed
     myFeedBloc.add(onLoadUserFeedClick(uid: uid));
 
     _portraitModeOnly();
@@ -38,11 +42,7 @@ class ProfileRequestFriend extends StatelessWidget {
 
     return WillPopScope(
       onWillPop: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => HomePage(
-            pageNumber: 0,
-          ),
-        ));
+        Navigator.of(context).pop();
         //new Future(()=> false);
       },
       child: Scaffold(
@@ -52,12 +52,11 @@ class ProfileRequestFriend extends StatelessWidget {
                 physics: ScrollPhysics(),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: constraints.maxHeight),
+
+                  //bloc load user info
                   child: BlocBuilder<EditProfileBloc, EditProfileState>(
                     builder: (context, state) {
                       if (state is onLoadUserSuccessfully) {
-                        //     txtStatus.text = state.data.userStatus;
-                        //   textUserName.text = state.data.userName;
-
                         return Column(
                           children: <Widget>[
                             Container(
@@ -145,6 +144,7 @@ class ProfileRequestFriend extends StatelessWidget {
     );
   }
 
+//disible rotation
   void _portraitModeOnly() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -152,6 +152,7 @@ class ProfileRequestFriend extends StatelessWidget {
     ]);
   }
 
+//enable ratation
   void _enableRotation() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -162,6 +163,7 @@ class ProfileRequestFriend extends StatelessWidget {
   }
 }
 
+//working in profile page
 class stackUserPost extends StatelessWidget {
   final BoxConstraints constraints;
   final EditProfileBloc editProfileBloc;
@@ -381,7 +383,8 @@ class _stackStatus extends StatelessWidget {
   }
 }
 
-class _friendStatus extends StatefulWidget {
+//make box show widget freind status
+class _friendStatus extends StatelessWidget {
   final String statusUser;
   final BoxConstraints constraints;
   final FriendManageBloc friendManageBloc;
@@ -394,27 +397,23 @@ class _friendStatus extends StatefulWidget {
       this.friendManageBloc,
       this.uid})
       : super(key: key);
-  @override
-  __friendStatus createState() => __friendStatus();
-}
 
-class __friendStatus extends State<_friendStatus> {
   @override
   Widget build(BuildContext context) {
-    print("Status :${widget.statusUser.length}");
     return new Positioned(
         child: SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
         children: <Widget>[
+          //build width and height follow status lenght
           Container(
-            height: widget.statusUser.length <= 45
-                ? widget.constraints.maxHeight * 0.66
-                : widget.statusUser.length <= 95
-                    ? widget.constraints.maxHeight * 0.72
-                    : widget.statusUser.length <= 25
-                        ? widget.constraints.maxHeight * .64
-                        : widget.constraints.maxHeight * 0.64,
+            height: statusUser.length <= 45
+                ? constraints.maxHeight * 0.66
+                : statusUser.length <= 95
+                    ? constraints.maxHeight * 0.72
+                    : statusUser.length <= 25
+                        ? constraints.maxHeight * .64
+                        : constraints.maxHeight * 0.64,
             child: Material(
                 color: Color(0xFF3B74D8),
                 elevation: 1.0,
@@ -425,18 +424,21 @@ class __friendStatus extends State<_friendStatus> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
+                      //change size height box show button manager friend
                       SizedBox(
-                        height: widget.statusUser.length <= 45
-                            ? widget.constraints.maxHeight * 0.56
-                            : widget.statusUser.length <= 95
-                                ? widget.constraints.maxHeight * 0.60
-                                : widget.statusUser.length <= 25
-                                    ? widget.constraints.maxHeight * .52
-                                    : widget.constraints.maxHeight * .52,
+                        height: statusUser.length <= 45
+                            ? constraints.maxHeight * 0.56
+                            : statusUser.length <= 95
+                                ? constraints.maxHeight * 0.60
+                                : statusUser.length <= 25
+                                    ? constraints.maxHeight * .52
+                                    : constraints.maxHeight * .52,
                       ),
+
+                      //box button manager friend
                       Container(
                         height: 55.0,
-                        width: widget.constraints.maxWidth,
+                        width: constraints.maxWidth,
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -463,42 +465,42 @@ class __friendStatus extends State<_friendStatus> {
                               builder: (context, state) {
                                 if (state is onShowDialogRequest) {
                                   return _widget_showDialog_friend(
-                                    friendManageBloc: widget.friendManageBloc,
+                                    friendManageBloc: friendManageBloc,
                                   );
                                 }
                                 if (state is onNewFreind) {
                                   print("on new freind");
                                   return _widget_new_friend(
-                                    uid: widget.uid,
-                                    friendManageBloc: widget.friendManageBloc,
+                                    uid: uid,
+                                    friendManageBloc: friendManageBloc,
                                   );
                                 }
                                 if (state is onShowFriend) {
                                   return _widget_as_friend(
-                                    friendManageBloc: widget.friendManageBloc,
-                                    uid: widget.uid,
+                                    friendManageBloc: friendManageBloc,
+                                    uid: uid,
                                   );
                                 }
                                 if (state is onShowRequestFrind) {
                                   return _widget_request_friend(
-                                    friendManageBloc: widget.friendManageBloc,
-                                    uid: widget.uid,
+                                    friendManageBloc: friendManageBloc,
+                                    uid: uid,
                                   );
                                 }
                                 if (state is onShowUnRequestfrind) {
                                   return _widget_new_friend(
-                                    friendManageBloc: widget.friendManageBloc,
+                                    friendManageBloc: friendManageBloc,
                                   );
                                 }
                                 if (state is onShowAcceptFriend) {
                                   return _widget_accept_friend(
-                                    friendManageBloc: widget.friendManageBloc,
-                                    uid: widget.uid,
+                                    friendManageBloc: friendManageBloc,
+                                    uid: uid,
                                   );
                                 }
                                 if (state is onShowRemoveFrind) {
                                   return _widget_new_friend(
-                                    friendManageBloc: widget.friendManageBloc,
+                                    friendManageBloc: friendManageBloc,
                                   );
                                 }
                                 return Center(
@@ -521,6 +523,7 @@ class __friendStatus extends State<_friendStatus> {
   }
 }
 
+//show accept request friend and show remove request friend
 class _widget_accept_friend extends StatelessWidget {
   final FriendManageBloc friendManageBloc;
   final String uid;
@@ -603,6 +606,7 @@ class _widget_accept_friend extends StatelessWidget {
   }
 }
 
+//show cancel request friend
 class _widget_request_friend extends StatelessWidget {
   final FriendManageBloc friendManageBloc;
   final String uid;
@@ -661,6 +665,8 @@ class _widget_request_friend extends StatelessWidget {
   }
 }
 
+//show remove freind
+//because as friend
 class _widget_as_friend extends StatelessWidget {
   final FriendManageBloc friendManageBloc;
   final String uid;
@@ -719,6 +725,8 @@ class _widget_as_friend extends StatelessWidget {
   }
 }
 
+//show request freind
+//because yet as freind
 class _widget_new_friend extends StatelessWidget {
   final FriendManageBloc friendManageBloc;
   final String uid;
@@ -778,6 +786,7 @@ class _widget_new_friend extends StatelessWidget {
   }
 }
 
+//show progress bar while that action in freind manager
 class _widget_showDialog_friend extends StatelessWidget {
   final FriendManageBloc friendManageBloc;
   const _widget_showDialog_friend({
@@ -851,13 +860,11 @@ class _stackBackground extends StatelessWidget {
 class _userNameWidget extends StatelessWidget {
   final userName;
   final EditProfileBloc editProfileBloc;
-  final TextEditingController txtUserName;
 
   const _userNameWidget({
     Key key,
     this.userName,
     this.editProfileBloc,
-    this.txtUserName,
   }) : super(key: key);
 
   @override
@@ -884,25 +891,29 @@ class _userNameWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  InkWell(
-                    onTap: () {
-                      //print('Click roback page');
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => HomePage(
-                          pageNumber: 0,
-                        ),
-                      ));
-                    },
-                    focusColor: Colors.red,
-                    highlightColor: Colors.red,
-                    hoverColor: Colors.red,
-                    splashColor: Colors.red,
+                  AnimatedContainer(
+                    margin: EdgeInsets.only(left: 8.0),
+                    duration: Duration(milliseconds: 800),
+                    decoration: BoxDecoration(
+                        color: Colors.blueAccent.withOpacity(.2),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.blueAccent,
+                              blurRadius: 24,
+                              offset: Offset(.5, .5),
+                              spreadRadius: .1)
+                        ]),
                     child: IconButton(
                       icon: Icon(
-                        Icons.arrow_back_ios,
-                        size: 30.0,
-                        color: Colors.white,
+                        Icons.arrow_back_ios_outlined,
+                        size: 32,
                       ),
+                      color: Colors.lightBlueAccent,
+                      onPressed: () {
+                        //
+                        Navigator.of(context).pop();
+                      },
                     ),
                   ),
                   Text(

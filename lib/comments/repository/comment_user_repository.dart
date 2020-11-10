@@ -1,41 +1,39 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/comments/models/comment_model.dart';
 import 'package:socialapp/home/export/export_file.dart';
+import 'package:http/http.dart' as http;
 
 class CommentRepository {
-  Future<List<CommentModel>> loadComments(String postId) async {
-    List<CommentModel> commentModel;
+  //load comment of post use post id
+  //return stream
+  Stream<List<CommentModel>> loadComments(String postId) {
     final _mRef = FirebaseFirestore.instance;
 
-    await _mRef
+    return _mRef
         .collection('comments')
         .doc(postId)
         .collection('comments')
-        .get()
-        .then((value) {
-      commentModel = value.docs
-          .map((model) => CommentModel.fromJson(model.data()))
-          .toList();
-    }).catchError((e) => print(e));
-
-    if (commentModel != null) {
-      // commentModel.reversed;
-    }
-
-    return commentModel;
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((e) => CommentModel.fromJson(e.data())).toList();
+    });
   }
 
+//user wirte comment in post
   Future<bool> addComment(PostModel postModel, String message) async {
     bool result;
     var userName = '';
     var imageProfile = '';
 
-    final _mAuth = await FirebaseAuth.instance.currentUser;
-    final uid = await _mAuth.uid.toString();
+    final _pref = await SharedPreferences.getInstance();
+
+    final uid = _pref.getString("uid");
 
     final _mRef = FirebaseFirestore.instance;
     final _mRefUser = FirebaseFirestore.instance;
@@ -73,13 +71,17 @@ class CommentRepository {
         .doc(postModel.postId)
         .collection('comments')
         .doc(uid + time + day)
-        .setData(mapBody)
+        .set(mapBody)
         .then((value) => result = true)
         .catchError((e) => result = false);
 
     if (result) {
       //add count comment one
       await addCountComment(postModel.postId, postModel.commentCount);
+
+      //create notify comment
+      createNotifyComment(postModel.postId, uid, day, time, message, userName,
+          imageProfile, "comment");
       return result;
     } else {
       return result;
@@ -92,8 +94,129 @@ class CommentRepository {
     await _mRef
         .collection('Post')
         .doc(postId)
-        .updateData({'commentCount': '${int.parse(commentCount) + 1}'})
+        .update({'commentCount': '${int.parse(commentCount) + 1}'})
         .then((value) => print('value : Comment Success'))
         .catchError((e) => print(e));
+  }
+
+//craete notification of user post
+  Future createNotifyComment(String key, String uid, String date, String time,
+      String message, String name, String imageProfile, String type) async {
+    print('init create notify post of user');
+    final _mRef = FirebaseFirestore.instance;
+
+    // map keep  detail notification
+    final notifyData = Map<String, String>();
+    notifyData['date'] = date;
+    notifyData['time'] = time;
+    notifyData['uid'] = uid;
+    notifyData['onwerId'] = uid;
+    notifyData['type'] = type;
+    notifyData['postID'] = key;
+    notifyData['message'] = message;
+    notifyData['profileUrl'] = imageProfile;
+    notifyData['name'] = '${name}';
+
+//get user all that comment this post
+//for send notify
+    await _mRef
+        .collection("comments")
+        .doc(key)
+        .collection("comments")
+        .get()
+        .then((user) async {
+      for (int i = 0; i < user.docs.length; i++) {
+        final friendId = user.docs[i].get("uid").toString();
+
+        await sendNotifyTOFriend(friendId, name, message);
+        // //create firebase firestore instand
+        // //save
+        _mRef
+            .collection("Notifications")
+            .doc(friendId)
+            .collection("notify")
+            .doc(key)
+            .set(notifyData)
+            .then((value) async {
+          print("create notify success..");
+          await counterNotifyChange(friendId);
+        });
+      }
+    });
+  }
+
+  Future sendNotifyTOFriend(
+      String friendId, String friendName, String message) async {
+    final _mRef = FirebaseFirestore.instance;
+    _mRef.collection("user info").doc(friendId).get().then((info) async {
+      final token =
+          "AAAAqTVcAxY:APA91bFEdF2P_svKU7oOJ__XdVI6jTfjI-fP_2x0tpWEW9Z-xut891GBLAmTIYv4S5LwGtEc1Jn3_tMAoRiX5SVShXHOIvopdCBEHDM6IjZ7dQ9UnhXhikr_rZD7fl7cOAuGkb_iyQE0";
+      final deviceToken = info.get("deviceToken").toString();
+
+      //create notify data
+      Map<Object, Object> notifyData = HashMap();
+      notifyData['body'] = "${message}";
+      notifyData['title'] = "${friendName} give Comment";
+      notifyData['icon'] = "";
+
+      //create notify head
+      Map<Object, Object> notifyHead = HashMap();
+      notifyHead['to'] = deviceToken;
+      notifyHead['notification'] = notifyData;
+
+      //http post to FCM
+      await http.post('https://fcm.googleapis.com/fcm/send',
+          headers: {
+            'Authorization': 'key=$token',
+            'Content-Type': 'application/json'
+          },
+          body: jsonEncode(notifyHead));
+    });
+  }
+
+  //increment notify counter
+  Future counterNotifyChange(String friendId) async {
+    final _mRef = FirebaseFirestore.instance;
+    //load counter notification and + 1
+    try {
+      await _mRef
+          .collection("Notifications")
+          .doc(friendId)
+          .collection("counter")
+          .doc("counter")
+          .get()
+          .then((counterNotify) {
+        if (counterNotify.data() == null) {
+          //new counter 0
+          int c = 0;
+          _mRef
+              .collection("Notifications")
+              .doc(friendId)
+              .collection("counter")
+              .doc('counter')
+              .set({'counter': c += 1});
+        } else {
+          //current + = 1
+          int c = 0;
+          c = int.parse(counterNotify.get('counter').toString());
+          _mRef
+              .collection("Notifications")
+              .doc(friendId)
+              .collection("counter")
+              .doc('counter')
+              .set({'counter': c += 1});
+        }
+      });
+    } catch (e) {
+      //new counter 0
+      print(e);
+      // int c = 0;
+      // _mRef
+      //     .collection("Notifications")
+      //     .doc(friendId)
+      //     .collection("notify")
+      //     .doc("counter")
+      //     .set({'counter': c += 1});
+    }
   }
 }

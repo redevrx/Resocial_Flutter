@@ -7,20 +7,35 @@ import 'package:socialapp/comments/repository/comment_user_repository.dart';
 
 class CommentBloc extends Bloc<CommentEvent, CommentState> {
   CommentRepository repository;
+  StreamSubscription _streamSubscription;
 
   CommentBloc(CommentRepository repository) : super(onCommentProgress()) {
     this.repository = repository;
   }
   @override
   Stream<CommentState> mapEventToState(CommentEvent event) async* {
+    if (event is onDisponseComment) {
+      await this.close();
+    }
     if (event is onLoadComments) {
       yield* loadUserComment(event);
     }
     if (event is onAddCommentClick) {
       yield* userAddComment(event);
     }
+    if (event is onLoadedComment) {
+      if (event.commentModel != null) {
+        print('load user comment success');
+
+        yield onLoadCommentSuccess(comments: event.commentModel);
+      } else {
+        yield onCommnetFaield(message: 'Load Comment Faield..');
+      }
+    }
   }
 
+//add comment
+//user wirte comment in post
   @override
   Stream<CommentState> userAddComment(onAddCommentClick event) async* {
     // yield onCommentProgress();
@@ -28,24 +43,29 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
     result = await repository.addComment(event.postModel, event.message);
 
     if (result) {
-      yield onAddCommentSuccess();
+      // yield onAddCommentSuccess();
     } else {
       yield onCommnetFaield(message: 'Add Comment Faield..');
     }
   }
 
+// load comment by use post id
   @override
   Stream<CommentState> loadUserComment(onLoadComments event) async* {
     yield onCommentProgress();
-    List<CommentModel> commentModel;
-    commentModel = await repository.loadComments(event.postId);
+    // List<CommentModel> commentModel;
 
-    if (commentModel != null) {
-      print('load user comment success');
+    //alter load comment give send data to event onloadedComment
+    _streamSubscription?.cancel();
+    _streamSubscription = repository.loadComments(event.postId).listen((model) {
+      add(onLoadedComment(commentModel: model));
+    });
+  }
 
-      yield onLoadCommentSuccess(comments: commentModel);
-    } else {
-      yield onCommnetFaield(message: 'Load Comment Faield..');
-    }
+  @override
+  Future<void> close() {
+    // TODO: implement close
+    _streamSubscription?.cancel();
+    return super.close();
   }
 }

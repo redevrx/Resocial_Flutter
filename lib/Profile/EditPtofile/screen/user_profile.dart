@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,6 +11,10 @@ import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/event/edit_profile_event.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/models/colors_model.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/state/edit_profile_state.dart';
+import 'package:socialapp/Profile/colorBloc/bloc_color.dart';
+import 'package:socialapp/Profile/colorBloc/event_color.dart';
+import 'package:socialapp/Profile/colorBloc/state_color.dart';
+import 'package:socialapp/home/bloc/bloc_pageChange.dart';
 import 'package:socialapp/home/export/export_file.dart';
 import 'dart:async';
 import 'package:socialapp/home/screen/home_page.dart';
@@ -20,7 +23,9 @@ import 'package:socialapp/likes/export/export_like.dart';
 import 'package:socialapp/textMore/bloc/text_more_bloc.dart';
 import 'package:socialapp/userPost/bloc/post_bloc.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
+import 'package:socialapp/widgets/materialButton/materialButton.dart';
 
+// create bloc provider
 class UserProfile extends StatelessWidget {
   final Color bodyColor;
 
@@ -52,23 +57,30 @@ class _UserProfile extends StatefulWidget {
   __UserProfileState createState() => __UserProfileState();
 }
 
+//build user info
+//ui
 class __UserProfileState extends State<_UserProfile> {
-  bool _showTextMore = false;
-  bool _fromTap = false;
   MyFeedBloc myFeedBloc;
   EditProfileBloc editProfileBloc;
-  final txtStatus = TextEditingController();
-  final textUserName = TextEditingController();
+  ColorBloc colorBloc;
+  PageNaviagtorChageBloc pageNaviagtorChageBloc;
 
   @override
   void initState() {
+    //new instanc bloc provider
     editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
     myFeedBloc = BlocProvider.of<MyFeedBloc>(context);
+    colorBloc = BlocProvider.of<ColorBloc>(context);
+    pageNaviagtorChageBloc = BlocProvider.of<PageNaviagtorChageBloc>(context);
 
     // _getUserID();
     editProfileBloc.add(EditProfileLoadUserInfo());
-    myFeedBloc.add(onLoadUserFeedClick());
+    //load this user feed
+    //
+    //load user info data
+    myFeedBloc.add(onLoadUserFeedClick(from: "profile"));
 
+    //disible ratation
     _portraitModeOnly();
     super.initState();
   }
@@ -81,12 +93,11 @@ class __UserProfileState extends State<_UserProfile> {
             physics: ScrollPhysics(),
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: constraints.maxHeight),
+
+              //bloc return load profile status
               child: BlocBuilder<EditProfileBloc, EditProfileState>(
                 builder: (context, state) {
                   if (state is onLoadUserSuccessfully) {
-                    txtStatus.text = state.data.userStatus;
-                    textUserName.text = state.data.userName;
-
                     return Column(
                       children: <Widget>[
                         Container(
@@ -103,12 +114,12 @@ class __UserProfileState extends State<_UserProfile> {
                               _stackSelectColor(
                                 statusUser: state.data.userStatus,
                                 constraints: constraints,
+                                colorBloc: colorBloc,
                               ),
 
                               _stackStatus(
                                 statusUser: state.data.userStatus,
                                 constraints: constraints,
-                                txtStatus: txtStatus,
                                 editProfileBloc: editProfileBloc,
                               ),
 
@@ -116,22 +127,21 @@ class __UserProfileState extends State<_UserProfile> {
                                 bodyColor: Colors.pinkAccent,
                                 imageProfile: state.data.imageProfile,
                                 imageBackground: state.data.backgroundImage,
-                                fromTop: _fromTap,
+                                fromTop: false,
                                 editProfileBloc: editProfileBloc,
                               ),
                               _userNameWidget(
                                 userName: state.data.userName,
                                 editProfileBloc: editProfileBloc,
-                                txtUserName: textUserName,
                               )
                             ],
                           ),
                         ),
                         stackUserPost(
-                          constraints: constraints,
-                          editProfileBloc: editProfileBloc,
-                          myFeedBloc: myFeedBloc,
-                        )
+                            constraints: constraints,
+                            editProfileBloc: editProfileBloc,
+                            myFeedBloc: myFeedBloc,
+                            pageNaviagtorChageBloc: pageNaviagtorChageBloc)
                       ],
                     );
                   }
@@ -176,8 +186,8 @@ class __UserProfileState extends State<_UserProfile> {
   void dispose() {
     // TODO: implement dispose
     _enableRotation();
-    txtStatus.dispose();
-    textUserName.dispose();
+    editProfileBloc.add(onDisponscEditProfile());
+    myFeedBloc.add(DisponseFeed());
     super.dispose();
   }
 
@@ -201,16 +211,20 @@ class __UserProfileState extends State<_UserProfile> {
 // keep uid
 var uid = "";
 
+//class make ui
+//post of current user
 class stackUserPost extends StatelessWidget {
   final BoxConstraints constraints;
   final EditProfileBloc editProfileBloc;
   final MyFeedBloc myFeedBloc;
+  final PageNaviagtorChageBloc pageNaviagtorChageBloc;
 
   const stackUserPost({
     Key key,
     this.constraints,
     this.editProfileBloc,
     this.myFeedBloc,
+    this.pageNaviagtorChageBloc,
   }) : super(key: key);
 
   //get user id from shared pref
@@ -225,6 +239,7 @@ class stackUserPost extends StatelessWidget {
     TextMoreBloc textMoreBloc;
     PostBloc postBloc;
 
+    //bloc instanc
     likeBloc = BlocProvider.of<LikeBloc>(context);
     textMoreBloc = BlocProvider.of<TextMoreBloc>(context);
     postBloc = BlocProvider.of<PostBloc>(context);
@@ -234,6 +249,7 @@ class stackUserPost extends StatelessWidget {
     final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
         new GlobalKey<RefreshIndicatorState>();
 
+    //bloc feed return result for load my feed user
     return BlocBuilder<MyFeedBloc, StateMyFeed>(
       builder: (context, state) {
         if (state is onFeedFaield) {
@@ -245,84 +261,13 @@ class stackUserPost extends StatelessWidget {
         }
         if (state is onFeedProgress) {
           // return LoadingAnimation();
-          return Container(
-            width: double.infinity,
-            child: Center(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 22.0,
-                  ),
-                  //make material button
-                  InkWell(
-                    onTap: () {
-                      myFeedBloc.add(onLoadUserFeedClick());
-                      print('refresh my feed');
-                    },
-                    child: Container(
-                      width: 120.0,
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                offset: Offset(0.5, .5),
-                                blurRadius: 12.0,
-                                spreadRadius: .1,
-                                color: Colors.green)
-                          ],
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(22.0),
-                              topLeft: Radius.circular(42.0),
-                              bottomRight: Radius.circular(22.0),
-                              bottomLeft: Radius.circular(42.0))),
-                      child: Stack(
-                        children: <Widget>[
-                          Container(
-                            height: 50.0,
-                            width: 90.0,
-                            alignment: Alignment.center,
-                            //padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
-                            child: Text(
-                              'Refresh',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6
-                                  .apply(color: Colors.white),
-                            ),
-                            decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(42.0),
-                                    topLeft: Radius.circular(42.0),
-                                    bottomRight: Radius.circular(200))),
-                          ),
-                          Positioned(
-                            right: 0,
-                            top: 4.0,
-                            bottom: 4.0,
-                            child: Icon(
-                              Icons.refresh,
-                              size: 40.0,
-                              color: Colors.green,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          );
+          //it will return progress of feeding
+          //and will show button refresh feed
+          return buildContainerRefreshFeed(context);
         }
         if (state is onUserFeedSuccess) {
           //free memory from stream StreamSubscription
           //alter load data success
-          myFeedBloc.add(DisponseFeed());
           //
           return Container(
               height: 580.0,
@@ -352,6 +297,7 @@ class stackUserPost extends StatelessWidget {
                         //user post with image
                         print(state.models[i].uid.toString());
                         return postWithImage(
+                          pageNaviagtorChageBloc: pageNaviagtorChageBloc,
                           uid: uid,
                           textMoreBloc: textMoreBloc,
                           constraints: constraints,
@@ -370,8 +316,85 @@ class stackUserPost extends StatelessWidget {
       },
     );
   }
+
+  Container buildContainerRefreshFeed(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: Center(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 8.0,
+            ),
+            CircularProgressIndicator(),
+            SizedBox(
+              height: 22.0,
+            ),
+            //make material button
+            InkWell(
+              onTap: () {
+                myFeedBloc.add(onLoadUserFeedClick());
+                print('refresh my feed');
+              },
+              child: Container(
+                width: 120.0,
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(0.5, .5),
+                          blurRadius: 12.0,
+                          spreadRadius: .1,
+                          color: Colors.green)
+                    ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(22.0),
+                        topLeft: Radius.circular(42.0),
+                        bottomRight: Radius.circular(22.0),
+                        bottomLeft: Radius.circular(42.0))),
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      height: 50.0,
+                      width: 90.0,
+                      alignment: Alignment.center,
+                      //padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+                      child: Text(
+                        'Refresh',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6
+                            .apply(color: Colors.white),
+                      ),
+                      decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(42.0),
+                              topLeft: Radius.circular(42.0),
+                              bottomRight: Radius.circular(200))),
+                    ),
+                    Positioned(
+                      right: 0,
+                      top: 4.0,
+                      bottom: 4.0,
+                      child: Icon(
+                        Icons.refresh,
+                        size: 40.0,
+                        color: Colors.green,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }
 
+//show image profile and image background profile
 class _stackImageProfile extends StatelessWidget {
   final Color bodyColor;
   final String imageProfile;
@@ -391,6 +414,9 @@ class _stackImageProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Positioned(
+
+        //when click this
+        //will show dialog select new image background
         child: InkWell(
       onTap: () => _customDialog(context, fromTop, editProfileBloc, 1),
       child: Container(
@@ -410,6 +436,8 @@ class _stackImageProfile extends StatelessWidget {
             SizedBox(
               height: 200.0,
             ),
+
+            //when click this will show dialog select image profle
             InkWell(
               onTap: () => _customDialog(context, fromTop, editProfileBloc, 0),
               child: ClipOval(
@@ -429,24 +457,23 @@ class _stackImageProfile extends StatelessWidget {
   }
 }
 
+//show user status
 class _stackStatus extends StatelessWidget {
   const _stackStatus({
     Key key,
     @required this.statusUser,
     this.constraints,
-    this.txtStatus,
     this.editProfileBloc,
   }) : super(key: key);
 
   final String statusUser;
   final BoxConstraints constraints;
-  final TextEditingController txtStatus;
   final EditProfileBloc editProfileBloc;
 
   @override
   Widget build(BuildContext context) {
-    print("Status :${statusUser.length}");
     return new Positioned(
+      //check text status lenght for change width and height of screen
       child: Container(
           height: statusUser.length <= 45
               ? constraints.maxHeight * 0.6
@@ -463,31 +490,34 @@ class _stackStatus extends StatelessWidget {
                   BorderRadius.only(bottomLeft: Radius.circular(55.0)),
               child: InkWell(
                 onLongPress: () {
+                  //click change staus of user
                   print("status click");
                   //  _showDialogEditStatus(, statusUser, txtStatus);
                   _customDialogStatus(
-                      context, false, editProfileBloc, statusUser, txtStatus);
+                      context, false, editProfileBloc, statusUser);
                 },
                 child: Center(
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(
-                        height: 350.0,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(children: [
-                              TextSpan(
-                                  text: "\n${statusUser}",
-                                  style: TextStyle(
-                                    fontSize: 22.0,
-                                    color: Colors.black,
-                                  ))
-                            ])),
-                      )
-                    ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 350.0,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(children: [
+                                TextSpan(
+                                    text: "\n${statusUser}",
+                                    style: TextStyle(
+                                      fontSize: 22.0,
+                                      color: Colors.black,
+                                    ))
+                              ])),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ))),
@@ -495,19 +525,19 @@ class _stackStatus extends StatelessWidget {
   }
 }
 
-class _stackSelectColor extends StatefulWidget {
+//show btn select color
+class _stackSelectColor extends StatelessWidget {
   final String statusUser;
   final BoxConstraints constraints;
+  final ColorBloc colorBloc;
 
-  const _stackSelectColor({Key key, this.statusUser, this.constraints})
+  const _stackSelectColor(
+      {Key key, this.statusUser, this.constraints, this.colorBloc})
       : super(key: key);
-  @override
-  _stackSelectColorState createState() => _stackSelectColorState();
-}
 
-class _stackSelectColorState extends State<_stackSelectColor> {
   @override
   Widget build(BuildContext context) {
+    //crate list colors
     List<ColoreModel> listColor = [
       ColoreModel(Colors.indigo),
       ColoreModel(Colors.pinkAccent),
@@ -517,20 +547,21 @@ class _stackSelectColorState extends State<_stackSelectColor> {
       ColoreModel(Colors.white.withOpacity(.15)),
       ColoreModel(Colors.white),
     ];
-
     return new Positioned(
         child: SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
         children: <Widget>[
           Container(
-            height: widget.statusUser.length <= 45
-                ? widget.constraints.maxHeight * 0.74
-                : widget.statusUser.length <= 95
-                    ? widget.constraints.maxHeight * 0.86
-                    : widget.statusUser.length <= 25
-                        ? widget.constraints.maxHeight * .72
-                        : widget.constraints.maxHeight * 0.72,
+            width: double.infinity,
+            //check user status for fix width and height og screen
+            height: statusUser.length <= 45
+                ? constraints.maxHeight * 0.74
+                : statusUser.length <= 95
+                    ? constraints.maxHeight * 0.86
+                    : statusUser.length <= 25
+                        ? constraints.maxHeight * .72
+                        : constraints.maxHeight * 0.72,
             child: Material(
                 color: Color(0xFF3B74D8),
                 elevation: 1.0,
@@ -542,14 +573,18 @@ class _stackSelectColorState extends State<_stackSelectColor> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       SizedBox(
-                        height: widget.statusUser.length <= 45
-                            ? widget.constraints.maxHeight * 0.62
-                            : widget.statusUser.length <= 95
-                                ? widget.constraints.maxHeight * 0.74
-                                : widget.statusUser.length <= 25
-                                    ? widget.constraints.maxHeight * .68
-                                    : widget.constraints.maxHeight * .68,
+                        //check user status for fix width and height og screen
+                        height: statusUser.length <= 45
+                            ? constraints.maxHeight * 0.62
+                            : statusUser.length <= 95
+                                ? constraints.maxHeight * 0.74
+                                : statusUser.length <= 25
+                                    ? constraints.maxHeight * .68
+                                    : constraints.maxHeight * .68,
                       ),
+
+                      //loop for represent button color
+                      //for select for change ui name color backgound
                       Container(
                           height: 55.0,
                           child: ListView.builder(
@@ -562,9 +597,10 @@ class _stackSelectColorState extends State<_stackSelectColor> {
                                     horizontal: 16.0),
                                 child: InkWell(
                                   onTap: () {
-                                    setState(() {
-                                      _cardProfileColor = listColor[i].color;
-                                    });
+                                    //click and send color to bloc
+                                    //and it will working in event name is onColorChangeState
+                                    colorBloc.add(onColorChangeEvent(
+                                        color: listColor[i].color));
                                   },
                                   child: Material(
                                     elevation: 48.0,
@@ -594,6 +630,9 @@ class _stackSelectColorState extends State<_stackSelectColor> {
   }
 }
 
+//background ui
+//starck ui
+//make ui backgound
 class _stackBackground extends StatelessWidget {
   const _stackBackground({
     Key key,
@@ -615,88 +654,108 @@ class _stackBackground extends StatelessWidget {
   }
 }
 
+//show user name
 class _userNameWidget extends StatelessWidget {
   final userName;
   final EditProfileBloc editProfileBloc;
-  final TextEditingController txtUserName;
+  final ColorBloc colorBloc;
 
   const _userNameWidget({
     Key key,
     this.userName,
     this.editProfileBloc,
-    this.txtUserName,
+    this.colorBloc,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return new Positioned(
         child: InkWell(
-      onLongPress: () {
+      onLongPress: () async {
         print("change user name");
-        _customDialogUserName(
-            context, false, editProfileBloc, userName, txtUserName);
+        //click for change user name
+        await _customDialogUserName(context, false, editProfileBloc, userName);
       },
-      child: Container(
-        height: 140.0,
-        decoration: BoxDecoration(
-            color: _cardProfileColor == null
-                ? Colors.blueAccent.withOpacity(.15)
-                : _cardProfileColor.withOpacity(0.55),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(75.0),
-            )),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 36.0),
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 16.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Opacity(
-                    opacity: 0.0,
-                    child: Container(),
-                  ),
-                  Text(
-                    "${userName}",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 32.0),
-                  ),
-                  Opacity(
-                    opacity: 0.0,
-                    child: Icon(Icons.hd),
-                  )
-                ],
-              ),
-              BlocBuilder<EditProfileBloc, EditProfileState>(
-                builder: (context, state) {
-                  if (state is onShowDialog) {
-                    return CircularProgressIndicator();
-                  }
-                  if (state is onEditImageSuccessfully) {
-                    return Container();
-                  }
-                  return Container();
-                },
-              )
-            ],
-          ),
-        ),
+      //bloc color return state of color change
+      child: BlocBuilder<ColorBloc, ColorState>(
+        builder: (context, state) {
+          if (state is onColorChangeState) {
+            return buildContainerSelectColor(state);
+          }
+          return buildContainerSelectColor(state);
+        },
       ),
     ));
   }
+
+//make ui show user name
+//and make color background follow value bloc color
+  Container buildContainerSelectColor(onColorChangeState state) {
+    return Container(
+      height: 140.0,
+      decoration: BoxDecoration(
+          color: state == null
+              ? Colors.blueAccent.withOpacity(.5)
+              : state.color.withOpacity(0.55),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(75.0),
+          )),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 36.0),
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 16.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Opacity(
+                  opacity: 0.0,
+                  child: Container(),
+                ),
+                Text(
+                  "${userName}",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 32.0),
+                ),
+                Opacity(
+                  opacity: 0.0,
+                  child: Icon(Icons.hd),
+                )
+              ],
+            ),
+            //check edit profile status
+            //and show progress
+            BlocBuilder<EditProfileBloc, EditProfileState>(
+              builder: (context, state) {
+                if (state is onShowDialog) {
+                  return CircularProgressIndicator();
+                }
+                if (state is onEditImageSuccessfully) {
+                  return Container();
+                }
+                return Container();
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }
 
+//update user name
+//call bloc edit profile
+//send value to event
 Future<void> _customDialogUserName(
-    BuildContext context,
-    bool _fromTop,
-    EditProfileBloc editProfileBloc,
-    String status,
-    TextEditingController txtUserName) async {
+  BuildContext context,
+  bool _fromTop,
+  EditProfileBloc editProfileBloc,
+  String status,
+) async {
   var textChange = "";
 
   return showGeneralDialog(
@@ -733,11 +792,11 @@ Future<void> _customDialogUserName(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: Container(
                         height: 60.0,
-                        child: TextField(
+                        child: TextFormField(
+                          initialValue: status,
                           onChanged: (value) {
                             textChange = value;
                           },
-                          controller: txtUserName,
                           maxLines: 12,
                           keyboardType: TextInputType.multiline,
                           decoration: InputDecoration(
@@ -771,25 +830,39 @@ Future<void> _customDialogUserName(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          RaisedButton(
-                              elevation: 8.0,
-                              clipBehavior: Clip.none,
-                              color: Colors.green,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              onPressed: () {
-                                print(textChange);
-                                editProfileBloc
-                                    .add(EditProfileNameClik(data: textChange));
-                                Navigator.of(context).pop();
-                              },
-                              child: Text(
-                                "Save",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    .apply(color: Colors.white),
-                              )),
+                          MaterialButtonX(
+                            color: Colors.green,
+                            height: 42.0,
+                            width: 120.0,
+                            icon: Icons.upload_rounded,
+                            iconSize: 26.0,
+                            radius: 42.0,
+                            text: "UP Now",
+                            onClick: () {
+                              editProfileBloc
+                                  .add(EditProfileNameClik(data: textChange));
+                              Navigator.of(context).pop();
+                            },
+                          )
+                          // RaisedButton(
+                          //     elevation: 8.0,
+                          //     clipBehavior: Clip.none,
+                          //     color: Colors.green,
+                          //     shape: RoundedRectangleBorder(
+                          //         borderRadius: BorderRadius.circular(30.0)),
+                          //     onPressed: () {
+                          //       print(textChange);
+                          //       editProfileBloc
+                          //           .add(EditProfileNameClik(data: textChange));
+                          //       Navigator.of(context).pop();
+                          //     },
+                          //     child: Text(
+                          //       "Save",
+                          //       style: Theme.of(context)
+                          //           .textTheme
+                          //           .headline6
+                          //           .apply(color: Colors.white),
+                          //     )),
                         ],
                       ),
                     )
@@ -810,11 +883,11 @@ Future<void> _customDialogUserName(
 }
 
 Future<void> _customDialogStatus(
-    BuildContext context,
-    bool _fromTop,
-    EditProfileBloc editProfileBloc,
-    String status,
-    TextEditingController txtStatus) async {
+  BuildContext context,
+  bool _fromTop,
+  EditProfileBloc editProfileBloc,
+  String status,
+) async {
   var textChange = "";
 
   return showGeneralDialog(
@@ -851,11 +924,11 @@ Future<void> _customDialogStatus(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: Container(
                         height: 60.0,
-                        child: TextField(
+                        child: TextFormField(
+                          initialValue: status,
                           onChanged: (value) {
                             textChange = value;
                           },
-                          controller: txtStatus,
                           maxLines: 12,
                           keyboardType: TextInputType.multiline,
                           decoration: InputDecoration(
@@ -889,25 +962,39 @@ Future<void> _customDialogStatus(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          RaisedButton(
-                              elevation: 8.0,
-                              clipBehavior: Clip.none,
-                              color: Colors.green,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              onPressed: () {
-                                print(textChange);
-                                editProfileBloc.add(
-                                    EditProfileStstusClick(data: textChange));
-                                Navigator.of(context).pop();
-                              },
-                              child: Text(
-                                "Save",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    .apply(color: Colors.white),
-                              )),
+                          MaterialButtonX(
+                            color: Colors.green,
+                            height: 50.0,
+                            width: 120,
+                            icon: Icons.upload_outlined,
+                            iconSize: 26.0,
+                            radius: 42.0,
+                            text: "UP Now",
+                            onClick: () {
+                              editProfileBloc.add(
+                                  EditProfileStstusClick(data: textChange));
+                              Navigator.of(context).pop();
+                            },
+                          )
+                          // RaisedButton(
+                          //     elevation: 8.0,
+                          //     clipBehavior: Clip.none,
+                          //     color: Colors.green,
+                          //     shape: RoundedRectangleBorder(
+                          //         borderRadius: BorderRadius.circular(30.0)),
+                          //     onPressed: () {
+                          //       print(textChange);
+                          //       editProfileBloc.add(
+                          //           EditProfileStstusClick(data: textChange));
+                          //       Navigator.of(context).pop();
+                          //     },
+                          //     child: Text(
+                          //       "Save",
+                          //       style: Theme.of(context)
+                          //           .textTheme
+                          //           .headline6
+                          //           .apply(color: Colors.white),
+                          //     )),
                         ],
                       ),
                     )
@@ -1024,6 +1111,7 @@ Future<void> _customDialog(BuildContext context, bool _fromTop,
   );
 }
 
+//chcek permission
 Future<void> _checkCamerPermission(
     BuildContext context, EditProfileBloc editProfileBloc, int type) async {
   final camera = await Permission.camera;
@@ -1050,6 +1138,7 @@ Future<void> _checkCamerPermission(
   }
 }
 
+//permission
 Future<void> _checkGalleryPermission(
     BuildContext context, EditProfileBloc editProfileBloc, int type) async {
   final gallery = await Permission.storage;
@@ -1072,6 +1161,7 @@ Future<void> _checkGalleryPermission(
   }
 }
 
+//get image from gallery
 Future<void> _pickCamera(EditProfileBloc editProfileBloc, int type) async {
   var image = await ImagePicker().getImage(source: ImageSource.camera);
 
@@ -1084,6 +1174,7 @@ Future<void> _pickCamera(EditProfileBloc editProfileBloc, int type) async {
   }
 }
 
+// get image from camara
 Future<void> _pickGallery(EditProfileBloc editProfileBloc, int type) async {
   var image = await ImagePicker().getImage(source: ImageSource.gallery);
 
@@ -1097,7 +1188,6 @@ Future<void> _pickGallery(EditProfileBloc editProfileBloc, int type) async {
   }
 }
 
-Color _cardProfileColor;
 //  Positioned(
 
 //                       child: AnimatedContainer(

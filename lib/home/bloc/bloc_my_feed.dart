@@ -46,13 +46,24 @@ class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
         yield onFeedFaield();
       }
     }
+    if (event is onLoadOneFeed) {
+      final item = await repository.getOneFeed(event.postId);
+      yield onLoadOneFeedSuccess(model: item);
+    }
   }
 
   @override
   Stream<StateMyFeed> onLoadUserFeed(onLoadUserFeedClick event) async* {
     final _pref = await SharedPreferences.getInstance();
-    final uid = _pref.getString("uid");
-    print("start load user feed");
+    var uid = '';
+
+    //check if from == profile
+    //page profile request access user profile
+    //but page request freind request access
+    //other profile
+    (event.from == "profile") ? uid = _pref.getString("uid") : uid = event.uid;
+
+    print("start load user feed :${uid}");
 
     _streamSubscription?.cancel();
     _streamSubscription = repository

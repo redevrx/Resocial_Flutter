@@ -292,9 +292,9 @@ type:''
             .collection("notify")
             .doc(key)
             .set(notifyData)
-            .then((value) {
+            .then((value) async {
           print("create notify success..");
-          counterNotifyChange(friendId);
+          await counterNotifyChange(friendId);
         });
       }
     });

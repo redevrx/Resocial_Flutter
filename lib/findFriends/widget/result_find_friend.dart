@@ -3,7 +3,7 @@ import 'package:socialapp/findFriends/eport/export_friend.dart';
 
 class ResultFindFriend extends StatefulWidget {
   final BoxConstraints constraints;
-  final FrindsModel list;
+  final List<FrindsModel> list;
   final FriendBloc friendBloc;
 
   const ResultFindFriend(
@@ -124,7 +124,7 @@ class _ResultFindFriendState extends State<ResultFindFriend> {
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => RequestFriend(
-                            userId: widget.list.uid,
+                            userId: widget.list[0].uid,
                           ),
                         ));
                       },
@@ -141,16 +141,17 @@ class _ResultFindFriendState extends State<ResultFindFriend> {
                                     height: 55.0,
                                     width: 55.0,
                                     decoration: BoxDecoration(
-                                        color: widget.list.imageProfile != null
-                                            ? Colors.black.withOpacity(.1)
-                                            : Colors.black.withOpacity(.15),
+                                        color:
+                                            widget.list[0].imageProfile != null
+                                                ? Colors.black.withOpacity(.1)
+                                                : Colors.black.withOpacity(.15),
                                         borderRadius:
                                             BorderRadius.circular(50.0),
                                         image: DecorationImage(
-                                          image: widget.list.imageProfile !=
+                                          image: widget.list[0].imageProfile !=
                                                   null
                                               ? NetworkImage(
-                                                  "${widget.list.imageProfile}")
+                                                  "${widget.list[0].imageProfile}")
                                               : NetworkImage(
                                                   "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg"),
                                           fit: BoxFit.cover,
@@ -160,7 +161,7 @@ class _ResultFindFriendState extends State<ResultFindFriend> {
                                     width: 12.0,
                                   ),
                                   Text(
-                                    "${widget.list.userName}",
+                                    "${widget.list[0].userName}",
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 ],

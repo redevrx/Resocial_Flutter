@@ -8,6 +8,7 @@ import 'package:socialapp/likes/export/export_like.dart';
 import 'package:socialapp/textMore/bloc/text_more_bloc.dart';
 import 'package:socialapp/textMore/export/export.dart';
 
+//comment post  page
 class Comments extends StatelessWidget {
   final List<PostModel> postModels;
   final int i;
@@ -59,10 +60,12 @@ class _CommentsState extends State<_Comments> {
   LikeBloc likeBloc;
   CommentBloc commentBloc;
   var message = '';
+  TextEditingController txtComment;
 
   @override
   void initState() {
-    //initial bloc
+    //initial bloc and text controller
+    txtComment = TextEditingController();
     textMoreBloc = BlocProvider.of<TextMoreBloc>(context);
     likeBloc = BlocProvider.of<LikeBloc>(context);
     commentBloc = BlocProvider.of<CommentBloc>(context);
@@ -71,6 +74,19 @@ class _CommentsState extends State<_Comments> {
     commentBloc.add(onLoadComments(postId: widget.postModels[widget.i].postId));
     // print(message.length);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    //free memory from stream connection
+    //database
+    commentBloc.add(onDisponseComment());
+
+    //freem memory from text controller
+    txtComment.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -108,195 +124,19 @@ class _CommentsState extends State<_Comments> {
                         );
                       }
                       if (state is onAddCommentSuccess) {
-                        commentBloc.add(onLoadComments(
-                            postId: widget.postModels[widget.i].postId));
+                        //if there add comment give refresh page
+                        //by call onLoadComments()
+                        //tuture will use stream for build
+                        //connect data real-time
+                        //give cut onLoadComments() out
+                        //---------------------------------
+                        // commentBloc.add(onLoadComments(
+                        //     postId: widget.postModels[widget.i].postId));
                       }
                       if (state is onLoadCommentSuccess) {
                         //print access event onLoadCommentSuccess
                         //add comment bloc
-                        return Container(
-                          height: constraints.maxHeight * .7129,
-                          child: Column(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text('Comments'),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 4.0,
-                              ),
-                              Expanded(
-                                child: ListView.builder(
-                                  reverse: false,
-                                  physics: ScrollPhysics(),
-                                  itemCount: state.comments.length,
-                                  itemBuilder: (context, index) {
-                                    return Container(
-                                        //make user detail ,user comment
-                                        child: Column(
-                                      children: <Widget>[
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0),
-                                              child: Container(
-                                                height: 35.0,
-                                                width: 35.0,
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    image: DecorationImage(
-                                                      image: NetworkImage(state
-                                                          .comments[index]
-                                                          .imageProfile),
-                                                      fit: BoxFit.cover,
-                                                    )),
-                                              ),
-                                            ),
-                                            //make user Name
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 4.0,
-                                                  top: 4.0,
-                                                  right: 0.0),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            18.0),
-                                                    color: Colors.grey
-                                                        .withOpacity(.25)),
-                                                child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 16.0,
-                                                            right: 16.0,
-                                                            top: 8.0),
-                                                    child:
-                                                        SingleChildScrollView(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Text(
-                                                            '${state.comments[index].userName}',
-                                                            textAlign:
-                                                                TextAlign.start,
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                          //message len 32 not over
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    top: 2.0,
-                                                                    bottom:
-                                                                        4.0),
-                                                            child: Text(
-                                                              '${state.comments[index].body}',
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .fade,
-                                                              softWrap: false,
-                                                              maxLines: 100,
-                                                              style: TextStyle(
-                                                                  fontSize: 16,
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    )),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ));
-                                  },
-                                ),
-                              ),
-                              //make box get message comments
-                              Material(
-                                elevation: 22.0,
-                                borderRadius: BorderRadius.circular(16.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    SizedBox(
-                                      width: 8.0,
-                                    ),
-                                    Container(
-                                      child: InkWell(
-                                        onTap: () {
-                                          print('selecte image');
-                                        },
-                                        child: Icon(Icons.image,
-                                            color: Colors.orange),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 12.0,
-                                    ),
-                                    Column(
-                                      children: <Widget>[
-                                        Container(
-                                          width: 320.0,
-                                          child: TextField(
-                                            onChanged: (value) {
-                                              message = '${value}';
-                                              print(message);
-                                            },
-                                            onSubmitted: (value) {
-                                              print(message);
-                                              //  commentCount += 1;
-
-                                              commentBloc.add(onAddCommentClick(
-                                                  message: message,
-                                                  postModel: widget
-                                                      .postModels[widget.i]));
-                                            },
-                                            keyboardType:
-                                                TextInputType.multiline,
-                                            decoration: InputDecoration(
-                                                hintText:
-                                                    'Enter Comments 32 char'),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    //make button send comments
-                                    InkWell(
-                                      onTap: () {
-                                        // commentCount += 1;
-                                        commentBloc.add(onAddCommentClick(
-                                            message: message,
-                                            postModel:
-                                                widget.postModels[widget.i]));
-                                      },
-                                      child: Icon(Icons.send,
-                                          size: 32, color: Colors.blue),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        );
+                        return buildContainerComment(constraints, state);
                       }
                       return Container();
                     },
@@ -306,6 +146,165 @@ class _CommentsState extends State<_Comments> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Container buildContainerComment(
+      BoxConstraints constraints, onLoadCommentSuccess state) {
+    return Container(
+      height: constraints.maxHeight * .7129,
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Comments'),
+            ),
+          ),
+          SizedBox(
+            height: 4.0,
+          ),
+          Expanded(
+            child: ListView.builder(
+              reverse: false,
+              physics: ScrollPhysics(),
+              itemCount: state.comments.length,
+              itemBuilder: (context, index) {
+                return Container(
+                    //make user detail ,user comment
+                    child: Column(
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Container(
+                            height: 35.0,
+                            width: 35.0,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                      state.comments[index].imageProfile),
+                                  fit: BoxFit.cover,
+                                )),
+                          ),
+                        ),
+                        //make user Name
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 4.0, top: 4.0, right: 0.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(18.0),
+                                color: Colors.grey.withOpacity(.25)),
+                            child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 16.0, right: 16.0, top: 8.0),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        '${state.comments[index].userName}',
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      //message len 32 not over
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 2.0, bottom: 4.0),
+                                        child: Text(
+                                          '${state.comments[index].body}',
+                                          overflow: TextOverflow.fade,
+                                          softWrap: false,
+                                          maxLines: 100,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ));
+              },
+            ),
+          ),
+          //make box get message comments
+          Material(
+            elevation: 22.0,
+            borderRadius: BorderRadius.circular(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SizedBox(
+                  width: 8.0,
+                ),
+                Container(
+                  child: InkWell(
+                    onTap: () {
+                      print('selecte image');
+                    },
+                    child: Icon(Icons.image, color: Colors.orange),
+                  ),
+                ),
+                SizedBox(
+                  width: 12.0,
+                ),
+                Column(
+                  children: <Widget>[
+                    Container(
+                      width: 320.0,
+                      child: TextFormField(
+                        controller: txtComment,
+                        onChanged: (value) {
+                          message = '${value}';
+                          print(message);
+                        },
+                        onFieldSubmitted: (value) {
+                          // commentCount += 1;
+                          commentBloc.add(onAddCommentClick(
+                              message: message,
+                              postModel: widget.postModels[widget.i]));
+
+                          message = "";
+                          txtComment.clear();
+                        },
+                        keyboardType: TextInputType.multiline,
+                        decoration:
+                            InputDecoration(hintText: 'Enter Comments 32 char'),
+                      ),
+                    ),
+                  ],
+                ),
+                //make button send comments
+                InkWell(
+                  onTap: () {
+                    // commentCount += 1;
+                    commentBloc.add(onAddCommentClick(
+                        message: message,
+                        postModel: widget.postModels[widget.i]));
+                    message = "";
+                    txtComment.clear();
+                  },
+                  child: Icon(Icons.send, size: 32, color: Colors.blue),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

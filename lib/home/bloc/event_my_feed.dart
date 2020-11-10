@@ -24,12 +24,19 @@ class onLoadUserPostClick extends EventMyFeed {}
 
 class onLoadUserFeedClick extends EventMyFeed {
   final String uid;
+  final String from;
 
-  onLoadUserFeedClick({this.uid = ""});
+  onLoadUserFeedClick({this.uid = "", this.from = ""});
 }
 
 class onRemoveItemUpdateUI extends EventMyFeed {
   final List<PostModel> postModel;
   final List<EditProfileModel> details;
   onRemoveItemUpdateUI({this.postModel, this.details});
+}
+
+class onLoadOneFeed extends EventMyFeed {
+  final String postId;
+
+  onLoadOneFeed({this.postId});
 }

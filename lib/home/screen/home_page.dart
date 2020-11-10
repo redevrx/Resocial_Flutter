@@ -4,6 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/screen/user_profile.dart';
+import 'package:socialapp/Profile/colorBloc/bloc_color.dart';
+import 'package:socialapp/Profile/colorBloc/event_color.dart';
+import 'package:socialapp/Profile/colorBloc/state_color.dart';
 import 'package:socialapp/home/bloc/bloc_pageChange.dart';
 import 'package:socialapp/home/bloc/state_pageChange.dart';
 import 'package:socialapp/home/export/export_file.dart';
@@ -104,21 +107,26 @@ class _fechPage extends State<HomePage> {
                             create: (context) => EditProfileBloc(),
                             child: BlocProvider(
                               create: (context) => NotifyBloc(NotifyLoading()),
-                              child: BlocBuilder<PageNaviagtorChageBloc,
-                                  PageChangeState>(
-                                builder: (context, state) {
-                                  if (state is onPageChangeState) {
-                                    selectedBar = state.pageNumber;
+                              child: BlocProvider(
+                                create: (context) => ColorBloc(
+                                    onColorChangeState(
+                                        color: Colors.blueAccent)),
+                                child: BlocBuilder<PageNaviagtorChageBloc,
+                                    PageChangeState>(
+                                  builder: (context, state) {
+                                    if (state is onPageChangeState) {
+                                      selectedBar = state.pageNumber;
+                                      return IndexedStack(
+                                        index: state.pageNumber,
+                                        children: pageItem,
+                                      );
+                                    }
                                     return IndexedStack(
-                                      index: state.pageNumber,
+                                      index: 0,
                                       children: pageItem,
                                     );
-                                  }
-                                  return IndexedStack(
-                                    index: 0,
-                                    children: pageItem,
-                                  );
-                                },
+                                  },
+                                ),
                               ),
                             )
                             // selectedBar == 0

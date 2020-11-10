@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
           "/addProfile": (context) => AddProfile(),
           "/userProfile": (context) => UserProfile(),
           "/newPost": (context) => CreatePost(),
+          // "/requestFriend":(context) => RequestFriend,
         },
         //debugShowCheckedModeBanner: false,
         title: "Social App",

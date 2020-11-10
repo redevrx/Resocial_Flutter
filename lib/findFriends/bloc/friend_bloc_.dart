@@ -76,6 +76,7 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
     }
   }
 
+//load new freind list
   @override
   Stream<FriendState> onRefreshLoaded() async* {
     List<FrindsModel> data;
@@ -89,12 +90,18 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
     }
   }
 
+//make find user follow text search
   @override
   Stream<FriendState> onSearchfriend(onSearchFriendsClick event) async* {
-    yield onLoadFrindFailed();
+    yield onShowLoadingWidget();
 
-    FrindsModel model;
-    model = await friendRepository.onFindFriend(event.data);
+    List<FrindsModel> model;
+    try {
+      model = await friendRepository.onFindFriend(event.data);
+    } catch (e) {
+      yield onLoadFrindFailed(data: "find Frinds faield");
+      print(e);
+    }
 
     if (model != null) {
       yield onFindFriendResult(list: model);
@@ -103,6 +110,7 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
     }
   }
 
+//load friend from firebase total is 4
   @override
   Stream<FriendState> onLoadingFrinedList(onLoadFriendsClick event) async* {
     List<FrindsModel> data;

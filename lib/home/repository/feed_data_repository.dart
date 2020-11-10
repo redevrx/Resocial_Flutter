@@ -5,6 +5,16 @@ import 'package:socialapp/Profile/EditPtofile/bloc/models/EditProfileModel.dart'
 import 'package:socialapp/home/export/export_file.dart';
 
 class FeedRepository {
+  Future<PostModel> getOneFeed(String postId) async {
+    // print("on click notify");
+    final _mRef = FirebaseFirestore.instance.collection("Post");
+
+    return await _mRef.doc(postId).get().then((postItem) {
+      // print(postItem.get("body"));
+      return PostModel.fromJson(postItem);
+    });
+  }
+
   Stream<List<PostModel>> getMyFeed(String uid) {
     //firebase data path
     print("uid load feed :$uid");

@@ -29,7 +29,7 @@ class onLoadFriendsSuccessfully extends FriendState {
 }
 
 class onFindFriendResult extends FriendState {
-  final FrindsModel list;
+  final List<FrindsModel> list;
 
   onFindFriendResult({this.list});
   @override

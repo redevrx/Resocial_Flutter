@@ -8,6 +8,7 @@ import 'package:socialapp/shared/shared_app.dart';
 import 'package:socialapp/textMore/export/export.dart';
 import 'package:socialapp/comments/widget/widget_like_ui.dart';
 
+//show post info
 class widget_card_comemt_detail extends StatelessWidget {
   const widget_card_comemt_detail({
     Key key,
@@ -37,6 +38,7 @@ class widget_card_comemt_detail extends StatelessWidget {
           SizedBox(
             height: 2.0,
           ),
+          //load user profile of user post
           Padding(
               padding: const EdgeInsets.all(8.0),
               child: FutureBuilder<DocumentSnapshot>(
@@ -45,6 +47,7 @@ class widget_card_comemt_detail extends StatelessWidget {
                   if (!snapshot.hasData) {
                     return CircularProgressIndicator();
                   } else {
+                    //update ui show info user that post
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -152,6 +155,10 @@ class widget_card_comemt_detail extends StatelessWidget {
               : SizedBox(
                   height: 12.0,
                 ),
+
+          //if post there is type is image
+          //if show image and click give go
+          //to LookImage() page
           Card(
               elevation: 1.5,
               shape: RoundedRectangleBorder(

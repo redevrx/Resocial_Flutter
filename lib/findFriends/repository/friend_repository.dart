@@ -25,6 +25,8 @@ class FriendRepository {
     return friendList;
   }
 
+//load status request
+//return string status
   Future<List<String>> loadRequestId() async {
     List<String> idList = List();
     final _mAuth = await FirebaseAuth.instance.currentUser;
@@ -106,11 +108,13 @@ class FriendRepository {
     return idList;
   }
 
+//load user total 4 person
+//if load success return true
   Future<List<FrindsModel>> LoadingFrindList() async {
     List<FrindsModel> frindList;
 
     final _mRef = FirebaseFirestore.instance;
-    await _mRef.collection("user info").get().then((value) {
+    await _mRef.collection("user info").limit(4).get().then((value) {
       //  value.documents.forEach((it) {
       //    it.data.forEach((key, value) {
       //      print("key :${key} , value :${value}");
@@ -129,28 +133,35 @@ class FriendRepository {
     }
   }
 
-  Future<FrindsModel> onFindFriend(String word) async {
+//search user
+//field user by texts search
+  Future<List<FrindsModel>> onFindFriend(String word) async {
     List<FrindsModel> frindList;
 
     final _mRef = FirebaseFirestore.instance;
-    print(word + " :onMethod");
+    print("word search friend :${word}");
 
-    await _mRef.collection("user info").get().then((value) {
-      frindList = value.docs
-          .map((model) => FrindsModel.fromJson(model.data()))
-          .toList();
+    await _mRef
+        .collection("user info")
+        .where("user", isEqualTo: word)
+        .get()
+        .then((value) {
+      frindList =
+          value.docs.map((e) => FrindsModel.fromJson(e.data())).toList();
     });
+    return frindList;
 
-    if (frindList != null) {
-      for (int i = 0; i < frindList.length; i++) {
-        if (word.toUpperCase() == frindList[i].userName.toUpperCase()) {
-          print(frindList[i].uid);
-          return frindList[i];
-        }
-      }
-    } else {
-      return null;
-    }
+    // if (frindList != null) {
+    //   for (int i = 0; i < frindList.length; i++) {
+    //     if (word.toUpperCase() == frindList[i].userName.toUpperCase()) {
+    //       print(frindList[i].uid);
+    //       return frindList[i];
+    //     }
+    //   }
+    // } else {
+    //   return null;
+    // }
+
     // frindList.forEach((it) {
     // //  if(word.toUpperCase() == it.userName.toUpperCase())
     // //  {
