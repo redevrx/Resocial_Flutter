@@ -1,0 +1,18 @@
+there are bug like
+ -request freind send notify
+ - fix bug like notify not send in real device
+ - setting page
+   -show request friend setting all request page 
+    
+      
+
+new feature 
+ *infinity list home page
+ -forget password
+ - login with facebook and google
+ -blok user in other profile
+ -block user in search friend page
+ *multi language Thai-Eng
+ -comment with image
+ -post multi image
+ -post vdo
