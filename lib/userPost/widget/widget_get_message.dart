@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:socialapp/userPost/bloc/post_bloc.dart';
+import 'package:socialapp/userPost/export/export_new_post.dart';
 
-class widgetGetMessage extends StatefulWidget {
-  final TextEditingController txtMessage;
+class widgetGetMessage extends StatelessWidget {
+  final PostBloc postBloc;
+  final String oldMessage;
 
-  const widgetGetMessage({Key key, this.txtMessage}) : super(key: key);
-  @override
-  _widgetGetMessageState createState() => _widgetGetMessageState();
-}
-class _widgetGetMessageState extends State<widgetGetMessage> {
+  const widgetGetMessage({Key key, this.postBloc, this.oldMessage})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -15,10 +16,12 @@ class _widgetGetMessageState extends State<widgetGetMessage> {
       child: Container(
         height: 140.0,
         child: TextFormField(
+          onChanged: (message) =>
+              postBloc.add(onMessagePostChange(message: message)),
           keyboardType: TextInputType.multiline,
           //  maxLength: 100,
           maxLines: 120,
-          controller: widget.txtMessage,
+          initialValue: oldMessage ?? "",
           showCursor: true,
           decoration: InputDecoration(
               hintText: "Messages ....",
@@ -28,10 +31,5 @@ class _widgetGetMessageState extends State<widgetGetMessage> {
         ),
       ),
     );
-  }
-  @override
-  void dispose() {
-    widget.txtMessage.dispose();
-    super.dispose();
   }
 }

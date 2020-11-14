@@ -2,8 +2,46 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:socialapp/findFriends/eport/export_friend.dart';
+import 'package:socialapp/findFriends/models/findFriendResult_model.dart';
 
 class FriensManageRepo {
+  Future<List<FindFreindResultModel>> onFindFreindListStatus(
+      List<FrindsModel> friendList) async {
+    //new instances freind model list
+    List<FindFreindResultModel> friendModel = [];
+
+    for (int i = 0; i < friendList.length; i++) {
+      //load get freind info
+      //find freind status
+      final result = await onCheckFriendInfo(friendList[i].uid);
+
+      if (result == "request") {
+        friendModel.add(new FindFreindResultModel(
+            uid: friendList[i].uid,
+            userName: friendList[i].userName,
+            imageProfile: friendList[i].imageProfile,
+            result: result));
+      } else if (result == "send") {
+        friendModel.add(new FindFreindResultModel(
+            uid: friendList[i].uid,
+            userName: friendList[i].userName,
+            imageProfile: friendList[i].imageProfile,
+            result: result));
+      } else if (result == "friends") {
+        friendModel.add(new FindFreindResultModel(
+            uid: friendList[i].uid,
+            userName: friendList[i].userName,
+            imageProfile: friendList[i].imageProfile,
+            result: result));
+      } else if (result == "new") {
+      } else {
+        print("Error : ${result}");
+      }
+    }
+    return friendModel;
+  }
+
   Future<String> onCheckFriendInfo(String friendId) async {
     final _mRef = FirebaseFirestore.instance;
     final _pref = await SharedPreferences.getInstance();

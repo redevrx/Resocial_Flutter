@@ -162,7 +162,10 @@ class LikeRepository {
     //get data in path
 
     // create like notification
-    createNotificaionsLike(uid, "Like Notify", onwerId, postId);
+    //user not like onwer post
+    (uid != onwerId)
+        ? createNotificaionsLike(uid, "Like Notify", onwerId, postId)
+        : null;
 
     return result;
   }

@@ -30,10 +30,17 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
     if (event is onLoadRequestFriendUserClick) {
       yield* loadRequestFriends();
     }
+    if (event is onRelaodAllFreindStatsu) {
+      // print("not null :${data1.length}");
+      yield onLoadRequestFriendUserSuccessfully(list: event.model);
+    }
   }
 
+// load request all ferind
   @override
   Stream<FriendState> loadRequestFriends() async* {
+    FriensManageRepo friensManageRepo = FriensManageRepo();
+
     List<String> data;
     data = await friendRepository.loadRequestId();
 
@@ -46,14 +53,19 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
       List<FrindsModel> data1;
       data1 = await friendRepository.loadRequestFriendUserInfo(data);
 
+      //load freidn status
+      final dataFreindModel =
+          await friensManageRepo.onFindFreindListStatus(data1);
+
       // print("not null :${data1.length}");
-      yield onLoadRequestFriendUserSuccessfully(list: data1);
+      yield onLoadRequestFriendUserSuccessfully(list: dataFreindModel);
     } else {
       yield onLoadFrindFailed(data: "Loaded Failed");
       print("null");
     }
   }
 
+//load feind as current user login
   @override
   Stream<FriendState> loadFriendUser(onLoadFriendUserClick event) async* {
     List<String> data;

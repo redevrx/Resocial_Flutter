@@ -28,9 +28,12 @@ class FriendManageBloc extends Bloc<FriendManageEvent, FriendMangeState> {
     if (event is onRemoveFriendClick) {
       yield* onRemoveFriend(event);
     }
+    if (event is onFindFreindStatus) {
+      yield* onFindAllFreindStatus(event);
+    }
   }
 
-//remove freind
+  //remove freind
   @override
   Stream<FriendMangeState> onRemoveFriend(onRemoveFriendClick event) async* {
     yield onShowDialogRequest();
@@ -45,8 +48,8 @@ class FriendManageBloc extends Bloc<FriendManageEvent, FriendMangeState> {
     }
   }
 
-//if there request and press accept
-//will as freind
+  //if there request and press accept
+  //will as freind
   @override
   Stream<FriendMangeState> acceptFreind(onAcceptFriendClick event) async* {
     yield onShowDialogRequest();
@@ -62,7 +65,7 @@ class FriendManageBloc extends Bloc<FriendManageEvent, FriendMangeState> {
     }
   }
 
-//cancel request to freind
+  //cancel request to freind
   @override
   Stream<FriendMangeState> unRequestFriend(
       onUnRequestFriendClick event) async* {
@@ -79,7 +82,7 @@ class FriendManageBloc extends Bloc<FriendManageEvent, FriendMangeState> {
     }
   }
 
-//send reqesut frind
+  //send reqesut frind
   @override
   Stream<FriendMangeState> RequestFriend(onRequestFriendClick event) async* {
     yield onShowDialogRequest();
@@ -96,11 +99,11 @@ class FriendManageBloc extends Bloc<FriendManageEvent, FriendMangeState> {
     }
   }
 
-//load freind status
-// -request -> wait accept
-// -send -> send request
-// -friend -> as freind
-// -new -> new frind
+  //load freind status
+  // -request -> wait accept
+  // -send -> send request
+  // -friend -> as freind
+  // -new -> new frind
   @override
   Stream<FriendMangeState> onCheckStatusFrindsLoaded(
       onCheckStatusFrinds event) async* {
@@ -121,5 +124,16 @@ class FriendManageBloc extends Bloc<FriendManageEvent, FriendMangeState> {
     } else {
       print("Error : ${result}");
     }
+  }
+
+//send list feind and
+//check status freiend
+  @override
+  Stream<FriendMangeState> onFindAllFreindStatus(
+      onFindFreindStatus event) async* {
+    final findFreindResult =
+        await friendManagerRepo.onFindFreindListStatus(event.freindList);
+
+    yield onFindFriendAllStatusState(freindModel: findFreindResult);
   }
 }

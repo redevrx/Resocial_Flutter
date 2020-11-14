@@ -17,6 +17,8 @@ import 'package:socialapp/userPost/export/export_new_post.dart';
 //in page ProfileRequestFriend
 class RequestFriend extends StatelessWidget {
   //FriensManageRepo friendRepo;
+
+  //uid this is id of post
   final String userId;
 
   const RequestFriend({Key key, this.userId}) : super(key: key);

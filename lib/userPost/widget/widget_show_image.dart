@@ -8,19 +8,23 @@ class widgetShowImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: image != null && url.isEmpty
+      child: image != null
           ? Image.file(
               image,
               fit: BoxFit.cover,
               height: 300,
               width: double.infinity,
             )
-          : Image.network(
-              url,
-              fit: BoxFit.cover,
-              height: 300,
-              width: double.infinity,
-            ),
+          : (url.isEmpty)
+              ? Container(
+                  height: 300.0,
+                )
+              : Image.network(
+                  url,
+                  fit: BoxFit.cover,
+                  height: 300,
+                  width: double.infinity,
+                ),
     );
   }
 }

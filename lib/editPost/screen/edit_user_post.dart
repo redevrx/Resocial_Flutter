@@ -12,6 +12,8 @@ import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
 import 'dart:async';
 
+import 'package:socialapp/widgets/materialButton/materialButton.dart';
+
 class EditPost extends StatelessWidget {
   final PostModel postModel;
   const EditPost({Key key, this.postModel}) : super(key: key);
@@ -38,9 +40,8 @@ class _EditPost extends StatefulWidget {
 }
 
 class __EditPostState extends State<_EditPost> {
-  TextEditingController txtMessage = TextEditingController();
+  //image url from old post
   String url = '';
-  File _image;
 
   EditProfileBloc editProfileBloc;
   PostBloc postBloc;
@@ -50,19 +51,25 @@ class __EditPostState extends State<_EditPost> {
     editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
     postBloc = BlocProvider.of<PostBloc>(context);
     //set message body to edit text
-    txtMessage.text = widget.postModel.body;
     url = widget.postModel.image;
-
-    _checkUserPost();
-    //_portraitModeOnly();
-    // get user detail
-    editProfileBloc.add(EditProfileLoadUserInfo(uid: widget.postModel.uid));
-    print(txtMessage.text.toString());
-    _portraitModeOnly();
 
     super.initState();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _checkUserPost();
+    //_portraitModeOnly();
+    // get user detail
+    editProfileBloc.add(EditProfileLoadUserInfo(uid: widget.postModel.uid));
+    _portraitModeOnly();
+  }
+
+//check user click edit post
+//if uid == uid in post model
+//onwer post else not onwer
+//give retrun home page
   Future _checkUserPost() async {
     final _mAuth = FirebaseAuth.instance.currentUser;
     final uid = _mAuth.uid.toString();
@@ -73,7 +80,7 @@ class __EditPostState extends State<_EditPost> {
   }
 
   //check camera or gallery permission grant
-  Future<void> _checkGalleryPermission() async {
+  Future<void> _checkGalleryPermission(PostBloc postBloc) async {
     var gallery = await Permission.storage;
 
     if (await gallery.status.isUndetermined) {
@@ -89,11 +96,11 @@ class __EditPostState extends State<_EditPost> {
 
     if (await gallery.status.isGranted) {
       // permission grant
-      _pickGallery();
+      _pickGallery(postBloc);
     }
   }
 
-  Future<void> _checkCameraPermission() async {
+  Future<void> _checkCameraPermission(PostBloc postBloc) async {
     var camera = await Permission.camera;
 
     if (await camera.status.isUndetermined) {
@@ -109,29 +116,27 @@ class __EditPostState extends State<_EditPost> {
 
     if (await camera.status.isGranted) {
       // permission grant
-      _pickCamera();
+      _pickCamera(postBloc);
     }
   }
 
-  Future<void> _pickGallery() async {
-    final file = await ImagePicker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickGallery(PostBloc postBloc) async {
+    final file = await ImagePicker().getImage(source: ImageSource.gallery);
 
     if (file != null) {
-      setState(() {
-        _image = file;
-        url = "";
-      });
+      // _image = File(arg.path);
+      postBloc.add(omImageFilePostChange(imageFile: File(file.path)));
+      url = "";
     }
   }
 
-  Future<void> _pickCamera() async {
-    final file = await ImagePicker.pickImage(source: ImageSource.camera);
+  Future<void> _pickCamera(PostBloc postBloc) async {
+    final file = await ImagePicker().getImage(source: ImageSource.camera);
 
     if (file != null) {
-      setState(() {
-        _image = file;
-        url = "";
-      });
+      // _image = File(arg.path);
+      postBloc.add(omImageFilePostChange(imageFile: File(file.path)));
+      url = "";
     }
   }
 
@@ -163,7 +168,7 @@ class __EditPostState extends State<_EditPost> {
                     );
                   },
                 ),
-                //3 make post bloc
+                //3 make post bloc post status
                 BlocBuilder<PostBloc, StatePost>(
                   builder: (context, state) {
                     if (state is onPostProgress) {
@@ -202,67 +207,78 @@ class __EditPostState extends State<_EditPost> {
                   child: Container(),
                 ),
                 //content screen
-                widget.postModel.type == 'image'
-                    ? Container(
-                        child: Column(
-                          children: <Widget>[
-                            //make get text from user
-                            SizedBox(
-                              height: 16.0,
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      //make get text from user
+                      SizedBox(
+                        height: 16.0,
+                      ),
+                      widgetGetMessage(
+                        postBloc: postBloc,
+                        oldMessage: widget.postModel.body,
+                        // txtMessage: txtMessage,
+                      ),
+                      //make image view
+                      SizedBox(
+                        height: 4.0,
+                      ),
+                      BlocBuilder<PostBloc, StatePost>(
+                        // buildWhen: (previous, current) => previous.imageFile != current.imageFIle,
+                        cubit: postBloc,
+                        builder: (context, state) {
+                          if (state is onImageFilePostChangeState) {
+                            return widgetShowImage(
+                              image: state.imageFile,
+                              url: "",
+                            );
+                          }
+                          return widgetShowImage(
+                            image: null,
+                            url: widget.postModel.image,
+                          );
+                        },
+                      ),
+                      //make bottom sheet
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: MaterialButtonX(
+                              text: "Edit",
+                              color: Colors.blueAccent,
+                              icon: Icons.mode_edit,
+                              iconSize: 30.0,
+                              radius: 46.0,
+                              height: 50.0,
+                              width: 150.0,
+                              onClick: () {
+                                // update user post
+                                print('updating post....');
+                                postBloc.add(onUpdatePostClick(
+                                    type: widget.postModel.type,
+                                    postId: widget.postModel.postId,
+                                    uid: widget.postModel.uid,
+                                    // message: txtMessage.text,
+                                    //url == model url
+                                    //if select new image give
+                                    //url == ""
+                                    url: url,
+                                    commentCount: widget.postModel.commentCount,
+                                    likeCount: widget.postModel.likesCount));
+                              },
+                            )
+                            //_buildFloatingActionButtonPost(postBloc),
                             ),
-                            widgetGetMessage(
-                              txtMessage: txtMessage,
-                            ),
-                            //make image view
-                            SizedBox(
-                              height: 4.0,
-                            ),
-                            widgetShowImage(
-                              image: _image,
-                              url: url,
-                            ),
-                            //make bottom sheet
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: _buildFloatingActionButtonPost(postBloc),
-                              ),
-                            ),
-                            // _buildFloatingActionButtonPost(),
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: _buildContainerBottonNav(),
-                            ),
-                          ],
-                        ),
-                      )
-                    : Container(
-                        child: Column(
-                          children: <Widget>[
-                            //make get text from user
-                            SizedBox(
-                              height: 16.0,
-                            ),
-                            widgetGetMessage(
-                              txtMessage: txtMessage,
-                            ),
-                            //make bottom sheet
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: _buildFloatingActionButtonPost(postBloc),
-                              ),
-                            ),
-                            // _buildFloatingActionButtonPost(),
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: _buildContainerBottonNav(),
-                            ),
-                          ],
-                        ),
-                      )
+                      ),
+                      // _buildFloatingActionButtonPost(),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: _buildContainerBottonNav(),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),
@@ -275,8 +291,8 @@ class __EditPostState extends State<_EditPost> {
   void dispose() {
     // _enableRatation();
     _enableRatation();
+    editProfileBloc.add(onDisponscEditProfile());
     super.dispose();
-    txtMessage.dispose();
   }
 
   _portraitModeOnly() {
@@ -313,7 +329,7 @@ class __EditPostState extends State<_EditPost> {
                       color: Colors.red.withOpacity(.85),
                     ),
                     onPressed: () {
-                      _checkCameraPermission();
+                      _checkCameraPermission(postBloc);
                     }),
                 Text(
                   'Camera',
@@ -330,7 +346,7 @@ class __EditPostState extends State<_EditPost> {
                       color: Colors.orange.withOpacity(.85),
                     ),
                     onPressed: () {
-                      _checkGalleryPermission();
+                      _checkGalleryPermission(postBloc);
                     }),
                 Text(
                   'Gallery',
@@ -348,56 +364,54 @@ class __EditPostState extends State<_EditPost> {
     );
   }
 
-  Container _buildFloatingActionButtonPost(PostBloc postBloc) {
-    return Container(
-        height: 50.0,
-        width: 150.0,
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-              blurRadius: 30.0, offset: Offset(0, 20.0), color: Colors.black12)
-        ], color: Colors.white, borderRadius: BorderRadius.circular(20.0)),
-        child: InkWell(
-          onTap: () async {
-            final _mAuth = await FirebaseAuth.instance.currentUser;
-            // update user post
-            print('updating post....');
-            postBloc.add(onUpdatePostClick(
-                type: widget.postModel.type,
-                postId: widget.postModel.postId,
-                uid: widget.postModel.uid,
-                message: txtMessage.text,
-                image: _image,
-                url: url,
-                commentCount: widget.postModel.commentCount,
-                likeCount: widget.postModel.likesCount));
-          },
-          child: Row(
-            children: <Widget>[
-              Container(
-                width: 110.0,
-                height: 50.0,
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-                decoration: BoxDecoration(
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(95.0),
-                        bottomLeft: Radius.circular(95.0),
-                        topRight: Radius.circular(0.0),
-                        bottomRight: Radius.circular(200.0))),
-                child: Text(
-                  'Edit',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      .apply(color: Colors.white),
-                ),
-              ),
-              Icon(
-                Icons.mode_edit,
-                size: 30.0,
-              )
-            ],
-          ),
-        ));
-  }
+  // Container _buildFloatingActionButtonPost(PostBloc postBloc) {
+  //   return Container(
+  //       height: 50.0,
+  //       width: 150.0,
+  //       decoration: BoxDecoration(boxShadow: [
+  //         BoxShadow(
+  //             blurRadius: 30.0, offset: Offset(0, 20.0), color: Colors.black12)
+  //       ], color: Colors.white, borderRadius: BorderRadius.circular(20.0)),
+  //       child: InkWell(
+  //         onTap: () async {
+  //           // update user post
+  //           print('updating post....');
+  //           postBloc.add(onUpdatePostClick(
+  //               type: widget.postModel.type,
+  //               postId: widget.postModel.postId,
+  //               uid: widget.postModel.uid,
+  //               // message: txtMessage.text,
+  //               url: url,
+  //               commentCount: widget.postModel.commentCount,
+  //               likeCount: widget.postModel.likesCount));
+  //         },
+  //         child: Row(
+  //           children: <Widget>[
+  //             Container(
+  //               width: 110.0,
+  //               height: 50.0,
+  //               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+  //               decoration: BoxDecoration(
+  //                   color: Colors.blueAccent,
+  //                   borderRadius: BorderRadius.only(
+  //                       topLeft: Radius.circular(95.0),
+  //                       bottomLeft: Radius.circular(95.0),
+  //                       topRight: Radius.circular(0.0),
+  //                       bottomRight: Radius.circular(200.0))),
+  //               child: Text(
+  //                 'Edit',
+  //                 style: Theme.of(context)
+  //                     .textTheme
+  //                     .headline5
+  //                     .apply(color: Colors.white),
+  //               ),
+  //             ),
+  //             Icon(
+  //               Icons.mode_edit,
+  //               size: 30.0,
+  //             )
+  //           ],
+  //         ),
+  //       ));
+  //}
 }

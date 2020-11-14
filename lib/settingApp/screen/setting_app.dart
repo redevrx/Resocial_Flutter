@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialapp/home/bloc/bloc_pageChange.dart';
 import 'package:socialapp/settingApp/export/setting_export.dart';
 
 class SettingApp extends StatefulWidget {
@@ -11,6 +12,16 @@ class SettingApp extends StatefulWidget {
 class _SettingAppState extends State<SettingApp> {
   bool changeSize = false;
   // bool _lights = true;
+
+  PageNaviagtorChageBloc pageNaviagtorChageBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    pageNaviagtorChageBloc = BlocProvider.of<PageNaviagtorChageBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +48,8 @@ class _SettingAppState extends State<SettingApp> {
                         height: 4.0,
                       ),
                       widgetShowAccountSetting(
-                        constraints: constraints,
-                      ),
+                          constraints: constraints,
+                          pageNaviagtorChageBloc: pageNaviagtorChageBloc),
                       SizedBox(
                         height: 12.0,
                       ),

@@ -1,3 +1,4 @@
+import 'package:socialapp/findFriends/models/findFriendResult_model.dart';
 import 'package:socialapp/findFriends/models/frind_model.dart';
 
 abstract class FriendState {}
@@ -5,7 +6,7 @@ abstract class FriendState {}
 class onShowLoadingWidget extends FriendState {}
 
 class onLoadRequestFriendUserSuccessfully extends FriendState {
-  final List<FrindsModel> list;
+  final List<FindFreindResultModel> list;
 
   onLoadRequestFriendUserSuccessfully({this.list});
   @override

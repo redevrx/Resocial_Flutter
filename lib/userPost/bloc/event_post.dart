@@ -1,16 +1,16 @@
 import 'dart:io';
-abstract class EventPost{}
 
-class onUserPost extends EventPost
-{
+abstract class EventPost {}
+
+class onUserPost extends EventPost {
   final String uid;
   final String message;
   final File image;
 
   onUserPost({this.message = "", this.image = null, this.uid = ""});
 }
-class onUpdatePostClick extends EventPost
-{
+
+class onUpdatePostClick extends EventPost {
   final String url;
   final String uid;
   final String postId;
@@ -20,10 +20,30 @@ class onUpdatePostClick extends EventPost
   final File image;
   final String type;
 
-  onUpdatePostClick({this.type, this.commentCount, this.likeCount, this.url = '', this.uid, this.postId, this.message, this.image = null});
+  onUpdatePostClick(
+      {this.type,
+      this.commentCount,
+      this.likeCount,
+      this.url = '',
+      this.uid,
+      this.postId,
+      this.message,
+      this.image = null});
 }
-class onRemoveItemClikc extends EventPost
-{
+
+class onRemoveItemClikc extends EventPost {
   final String postId;
   onRemoveItemClikc({this.postId});
+}
+
+class onMessagePostChange extends EventPost {
+  final String message;
+
+  onMessagePostChange({this.message});
+}
+
+class omImageFilePostChange extends EventPost {
+  final File imageFile;
+
+  omImageFilePostChange({this.imageFile});
 }

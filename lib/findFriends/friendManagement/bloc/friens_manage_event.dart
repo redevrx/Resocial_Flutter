@@ -1,38 +1,41 @@
-abstract class FriendManageEvent
-{}
+import 'package:socialapp/findFriends/eport/export_friend.dart';
 
-class onCheckStatusFrinds extends FriendManageEvent
-{
+abstract class FriendManageEvent {}
+
+class onCheckStatusFrinds extends FriendManageEvent {
   final String uid;
 
   onCheckStatusFrinds({this.uid = ""});
   @override
   String toString() => "${this..uid}";
 }
-class onRequestFriendClick extends FriendManageEvent
-{
+
+class onRequestFriendClick extends FriendManageEvent {
   final String data;
 
   onRequestFriendClick({this.data = ""});
 }
 
-class onUnRequestFriendClick extends FriendManageEvent
-{
+class onUnRequestFriendClick extends FriendManageEvent {
   final String data;
 
   onUnRequestFriendClick({this.data = ""});
 }
 
-class onAcceptFriendClick extends FriendManageEvent
-{
+class onAcceptFriendClick extends FriendManageEvent {
   final String data;
 
   onAcceptFriendClick({this.data = ""});
 }
 
-class onRemoveFriendClick extends FriendManageEvent
-{
+class onRemoveFriendClick extends FriendManageEvent {
   final String data;
 
   onRemoveFriendClick({this.data = ""});
+}
+
+class onFindFreindStatus extends FriendManageEvent {
+  final List<FrindsModel> freindList;
+
+  onFindFreindStatus({this.freindList});
 }

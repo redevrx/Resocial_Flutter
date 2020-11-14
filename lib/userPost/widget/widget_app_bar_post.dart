@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
-
 class widgetAppBarPost extends StatelessWidget {
   final String message;
   final BoxConstraints constraints;
   const widgetAppBarPost({
-    Key key, this.constraints, this.message,
+    Key key,
+    this.constraints,
+    this.message,
   }) : super(key: key);
 
   @override
@@ -13,7 +14,14 @@ class widgetAppBarPost extends StatelessWidget {
     return new Container(
       height: constraints.maxHeight * .16,
       decoration: BoxDecoration(
-          color: Colors.blue.withOpacity(.15),
+          color: Colors.blueAccent,
+          boxShadow: [
+            BoxShadow(
+                color: Colors.lightBlueAccent,
+                blurRadius: 18,
+                offset: Offset(.5, .5),
+                spreadRadius: .5)
+          ],
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50.0))),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -28,7 +36,8 @@ class widgetAppBarPost extends StatelessWidget {
               children: <Widget>[
                 InkWell(
                   child: Icon(
-                    Icons.arrow_back_ios,
+                    Icons.arrow_back_ios_outlined,
+                    color: Colors.white,
                     size: 30.0,
                   ),
                   onTap: () {
@@ -37,7 +46,10 @@ class widgetAppBarPost extends StatelessWidget {
                 ),
                 Text(
                   '${message}',
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4
+                      .copyWith(color: Colors.white),
                 ),
                 Opacity(
                   opacity: 0,

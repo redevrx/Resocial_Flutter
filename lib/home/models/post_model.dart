@@ -76,7 +76,7 @@ class PostModel {
     return doc;
   }
 
-  bool getUserLikePost(String uid) {
+  bool getUserLikePost(String currentUid) {
     //print('Current User Id:${uid}');
     bool result = false;
     if (likeResults.toString().length <= 2) {
@@ -93,13 +93,30 @@ class PostModel {
       //     //print('Not like Id:${it} userId:${uid}');
       //   }
       // });
+      // print("like result id: ${likeResults['${currentUid}']}");
 
-      if (likeResults['${uid}'].toString() == uid) {
+      //step
+      /*
+      1 data structure like :[
+        "uid":"uid", -> current user login id
+        "asjiodja":asjiodja
+      ]
+
+      on post if uid field == uid
+      current user did like this psot
+      but but uid field != user not like this post
+      //or uid field == null
+
+      if like return true else false
+      //
+       */
+      if (likeResults['${currentUid}'] == currentUid) {
         result = true;
       } else {
         result = false;
       }
     }
+    // print("like result t f:$result");
     return result;
   }
 

@@ -243,7 +243,7 @@ type:''
 }
       */
 
-      createNotificaionsPost(key, uid, date, time, message, "new feed");
+      await createNotificaionsPost(key, uid, date, time, message, "new feed");
     } else {
       result = 'faield';
     }
@@ -283,7 +283,7 @@ type:''
       for (int i = 0; i < user.docs.length; i++) {
         final friendId = user.docs[i].id.toString();
 
-        await sendNotifyTOFriend(friendId, name);
+        (friendId != uid) ? await sendNotifyTOFriend(friendId, name) : null;
         // //create firebase firestore instand
         // //save
         _mRef
@@ -294,7 +294,7 @@ type:''
             .set(notifyData)
             .then((value) async {
           print("create notify success..");
-          await counterNotifyChange(friendId);
+          (friendId != uid) ? await counterNotifyChange(friendId) : null;
         });
       }
     });
@@ -351,7 +351,14 @@ type:''
     _mRef.collection("user info").doc(friendId).get().then((info) async {
       final token =
           "AAAAqTVcAxY:APA91bFEdF2P_svKU7oOJ__XdVI6jTfjI-fP_2x0tpWEW9Z-xut891GBLAmTIYv4S5LwGtEc1Jn3_tMAoRiX5SVShXHOIvopdCBEHDM6IjZ7dQ9UnhXhikr_rZD7fl7cOAuGkb_iyQE0";
-      final deviceToken = info.get("deviceToken").toString();
+      var deviceToken = "";
+      try {
+        deviceToken = (info.get("deviceToken").toString() != null)
+            ? info.get("deviceToken").toString()
+            : "";
+      } catch (e) {
+        print("$e");
+      }
 
       //create notify data
       Map<Object, Object> notifyData = HashMap();
@@ -365,6 +372,7 @@ type:''
       notifyHead['notification'] = notifyData;
 
       //http post to FCM
+
       await http.post('https://fcm.googleapis.com/fcm/send',
           headers: {
             'Authorization': 'key=$token',

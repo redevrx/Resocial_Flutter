@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/event/edit_profile_event.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/state/edit_profile_state.dart';
 import 'package:socialapp/home/export/export_file.dart';
-import 'package:socialapp/home/screen/home_page.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'dart:async';
 import 'package:socialapp/home/widget/widget_home_page.dart';
@@ -15,6 +15,7 @@ import 'package:socialapp/userPost/export/export_new_post.dart';
 
 class ProfileRequestFriend extends StatelessWidget {
   final Color bodyColor;
+  //this uid is uid of post not uid of current user
   final String uid;
   const ProfileRequestFriend({Key key, this.bodyColor, this.uid})
       : super(key: key);
@@ -34,8 +35,6 @@ class ProfileRequestFriend extends StatelessWidget {
     //load check status
     //
     friendManageBloc.add(onCheckStatusFrinds(uid: uid));
-    //load this user feed
-    myFeedBloc.add(onLoadUserFeedClick(uid: uid));
 
     _portraitModeOnly();
     _enableRotation();
@@ -78,7 +77,7 @@ class ProfileRequestFriend extends StatelessWidget {
                                   ),
 
                                   _stackStatus(
-                                    statusUser: state.data.userStatus.isEmpty
+                                    statusUser: state.data.userStatus == null
                                         ? "empty"
                                         : state.data.userStatus,
                                     constraints: constraints,
@@ -181,13 +180,28 @@ class stackUserPost extends StatelessWidget {
     LikeBloc likeBloc;
     TextMoreBloc textMoreBloc;
     PostBloc postBloc;
+    var _uid = '';
+
+    //get current user id use for check like post
+    void _getUid() async {
+      final _pref = await SharedPreferences.getInstance();
+      _uid = _pref.getString("uid");
+    }
 
     likeBloc = BlocProvider.of<LikeBloc>(context);
     textMoreBloc = BlocProvider.of<TextMoreBloc>(context);
     postBloc = BlocProvider.of<PostBloc>(context);
 
+    //
+    _getUid();
+
     final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
         new GlobalKey<RefreshIndicatorState>();
+
+    //load like bloc
+    likeBloc.add(onLikeResultPostClick());
+    //load this user feed
+    myFeedBloc.add(onLoadUserFeedClick(uid: uid));
 
     return BlocBuilder<MyFeedBloc, StateMyFeed>(
       builder: (context, state) {
@@ -243,6 +257,10 @@ class stackUserPost extends StatelessWidget {
                         //user post with image
                         print(state.models[i].uid.toString());
                         return postWithImage(
+                          //send ui of current user
+                          //varialble uid is uid user this post
+                          //_uid is current user id
+                          uid: _uid,
                           textMoreBloc: textMoreBloc,
                           constraints: constraints,
                           i: i,
@@ -286,10 +304,10 @@ class _stackImageProfile extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: imageBackground.length != null
+                image: imageBackground != null
                     ? NetworkImage("${imageBackground}")
                     : NetworkImage(
-                        "https://wallpapersite.com/images/pages/pic_w/18610.jpg"),
+                        "https://images.squarespace-cdn.com/content/v1/565283a3e4b06ed63ea5f928/1573329464437-AYNV09QNC9AJ8LEJYKUF/ke17ZwdGBToddI8pDm48kIgmuMEC901mgcRVhwO2tjd7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UW3OvbWG8zSNfhp_QhpAPt4lu4BYsFrUKCQ_LKpfT2_FaHwHiHCbTxCLo3H57L5Cyw/blank-profile-picture-973460_1280.jpg"),
                 fit: BoxFit.cover),
             color: bodyColor.withOpacity(.15),
             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(55.0))),
@@ -443,6 +461,7 @@ class _friendStatus extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
+                            //icon person
                             Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 16.0),
@@ -562,7 +581,9 @@ class _widget_accept_friend extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: InkWell(
                 onTap: () {
-                  friendManageBloc.add(onUnRequestFriendClick(data: uid));
+                  friendManageBloc.add(onUnRequestFriendClick(
+                    data: uid,
+                  ));
                 },
                 child: Tooltip(
                   message: "Remove Request",
@@ -624,7 +645,9 @@ class _widget_request_friend extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: InkWell(
               onTap: () {
-                friendManageBloc.add(onUnRequestFriendClick(data: uid));
+                friendManageBloc.add(onUnRequestFriendClick(
+                  data: uid,
+                ));
               },
               child: Material(
                   color: Color(0xFF202632),
@@ -949,10 +972,7 @@ class _userNameWidget extends StatelessWidget {
 }
 
 Future<void> _showDiaogConfrimDel(
-  BuildContext context,
-  FriendManageBloc friendManageBloc,
-  String uid,
-) async {
+    BuildContext context, FriendManageBloc friendManageBloc, String uid) async {
   var topFrom = true;
 
   return showGeneralDialog(
@@ -1024,8 +1044,9 @@ Future<void> _showDiaogConfrimDel(
                           ),
                           RaisedButton(
                             onPressed: () {
-                              friendManageBloc
-                                  .add(onRemoveFriendClick(data: uid));
+                              friendManageBloc.add(onRemoveFriendClick(
+                                data: uid,
+                              ));
                               Navigator.of(context).pop();
                             },
                             elevation: 8.0,

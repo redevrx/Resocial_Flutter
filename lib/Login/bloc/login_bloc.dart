@@ -83,7 +83,7 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
 
     // data have to > 8
     //will change stable as version
-    if (data.password == data.passwordCm && data.password.length >= 6) {
+    if (data.password == data.passwordCm && data.password.length >= 8) {
       //user create account
       //print(data.email+" : "+data.passwordCm);
       // print(

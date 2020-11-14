@@ -1,12 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:socialapp/home/bloc/bloc_pageChange.dart';
+import 'package:socialapp/home/bloc/event_pageChange.dart';
 import 'package:socialapp/home/screen/home_page.dart';
 
 class widgetShowAccountSetting extends StatefulWidget {
   final BoxConstraints constraints;
+  final PageNaviagtorChageBloc pageNaviagtorChageBloc;
 
-  const widgetShowAccountSetting({Key key, this.constraints}) : super(key: key);
+  const widgetShowAccountSetting(
+      {Key key, this.constraints, this.pageNaviagtorChageBloc})
+      : super(key: key);
 
   @override
   _widgetShowAccountSettingState createState() =>
@@ -54,11 +59,13 @@ class _widgetShowAccountSettingState extends State<widgetShowAccountSetting> {
                       color: Colors.black.withOpacity(.55),
                     ),
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => HomePage(
-                          pageNumber: 2,
-                        ),
-                      ));
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //   builder: (context) => HomePage(
+                      //     pageNumber: 2,
+                      //   ),
+                      // ));
+                      widget.pageNaviagtorChageBloc
+                          .add(onPageChangeEvent(pageNumber: 2));
                     },
                   )
                 ],

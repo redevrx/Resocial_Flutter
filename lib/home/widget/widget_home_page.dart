@@ -338,7 +338,7 @@ class postWithImage extends StatelessWidget {
               child: Divider(),
             ),
             //make container show text more
-            modelsPost[i].body.isNotEmpty
+            (modelsPost[i].body != null)
                 ? // bloc check text more
                 BlocBuilder<TextMoreBloc, TextMoreState>(
                     builder: (context, state) {
@@ -537,17 +537,22 @@ class postWithImage extends StatelessWidget {
           InkWell(
               onTap: () {
                 if (uid == modelsPost[i].uid.toString()) {
-                  pageNaviagtorChageBloc.add(onPageChangeEvent(pageNumber: 2));
+                  if (ModalRoute.of(context).settings.name != null) {
+                    pageNaviagtorChageBloc
+                        .add(onPageChangeEvent(pageNumber: 2));
+                  }
                   //current user click
                   //call page changeBloc for change page
                 } else {
                   // go to profile user that post
                   print("other user id :${modelsPost[i].uid}");
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => RequestFriend(
-                      userId: modelsPost[i].uid,
-                    ),
-                  ));
+                  if (ModalRoute.of(context).settings.name != null) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => RequestFriend(
+                        userId: modelsPost[i].uid,
+                      ),
+                    ));
+                  }
                 }
               },
               child: FutureBuilder<DocumentSnapshot>(
