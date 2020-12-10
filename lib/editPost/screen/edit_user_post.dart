@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:material_buttonx/materialButtonX.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/event/edit_profile_event.dart';
@@ -11,8 +12,6 @@ import 'package:socialapp/Profile/EditPtofile/bloc/state/edit_profile_state.dart
 import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
 import 'dart:async';
-
-import 'package:socialapp/widgets/materialButton/materialButton.dart';
 
 class EditPost extends StatelessWidget {
   final PostModel postModel;
@@ -245,7 +244,7 @@ class __EditPostState extends State<_EditPost> {
                         child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: MaterialButtonX(
-                              text: "Edit",
+                              message: "Edit",
                               color: Colors.blueAccent,
                               icon: Icons.mode_edit,
                               iconSize: 30.0,

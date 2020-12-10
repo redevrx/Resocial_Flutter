@@ -1,13 +1,11 @@
 there are bug like
  -request freind send notify
- - fix bug like notify not send in real device
- - setting page
-   -show request friend setting all request page 
+ -remove comment
+
     
       
 
 new feature 
- *infinity list home page
  -forget password
  - login with facebook and google
  -blok user in other profile

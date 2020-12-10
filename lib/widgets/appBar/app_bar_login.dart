@@ -42,14 +42,14 @@ class AppBarCustom extends StatelessWidget {
                       // padding: EdgeInsets.all(4),
                       duration: Duration(milliseconds: 800),
                       decoration: BoxDecoration(
-                          color: titleColor.withOpacity(.2),
+                          color: titleColor.withOpacity(.46),
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                                color: titleColor,
-                                blurRadius: 24,
+                                color: titleColor.withOpacity(.4),
+                                blurRadius: 18,
                                 offset: Offset(.5, .5),
-                                spreadRadius: .1)
+                                spreadRadius: .5)
                           ]),
                       child: IconButton(
                         icon: Icon(
@@ -69,12 +69,12 @@ class AppBarCustom extends StatelessWidget {
                       // padding: EdgeInsets.all(4),
                       duration: Duration(milliseconds: 800),
                       decoration: BoxDecoration(
-                          color: titleColor.withOpacity(.4),
+                          color: titleColor.withOpacity(.46),
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                                color: titleColor,
-                                blurRadius: 24,
+                                color: titleColor.withOpacity(.4),
+                                blurRadius: 18,
                                 offset: Offset(.5, .5),
                                 spreadRadius: .1)
                           ]),
@@ -109,8 +109,8 @@ class AppBarCustom extends StatelessWidget {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                                color: titleColor,
-                                blurRadius: 24,
+                                color: titleColor.withOpacity(.46),
+                                blurRadius: 18,
                                 offset: Offset(.5, .5),
                                 spreadRadius: .1)
                           ]),

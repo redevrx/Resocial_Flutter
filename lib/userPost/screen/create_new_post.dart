@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:material_buttonx/materialButtonX.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
@@ -16,7 +17,6 @@ import 'package:socialapp/userPost/widget/widget_app_bar_post.dart';
 import 'package:socialapp/userPost/widget/widget_get_message.dart';
 import 'package:socialapp/userPost/widget/widget_show_image.dart';
 import 'package:socialapp/userPost/widget/widget_show_user_detail.dart';
-import 'package:socialapp/widgets/materialButton/materialButton.dart';
 import 'dart:async';
 
 class CreatePost extends StatelessWidget {
@@ -249,7 +249,7 @@ class __CreatePostState extends State<_CreatePost> {
                   child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: MaterialButtonX(
-                        text: "Post",
+                        message: "Post",
                         height: 50.0,
                         width: 150.0,
                         color: Colors.blueAccent,

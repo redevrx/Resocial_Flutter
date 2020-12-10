@@ -71,6 +71,11 @@ class PushNotificationService {
     });
   }
 
+  Future<void> questSendNotify() async {
+    Future<SharedPreferences> _pref = SharedPreferences.getInstance();
+    final pref = await _pref;
+  }
+
   Future<void> onSubscribe(String topic, String type) async {
     Future<SharedPreferences> _pref = SharedPreferences.getInstance();
     final pref = await _pref;

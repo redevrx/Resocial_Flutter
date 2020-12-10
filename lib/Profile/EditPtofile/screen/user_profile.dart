@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:material_buttonx/materialButtonX.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
@@ -16,14 +17,13 @@ import 'package:socialapp/Profile/colorBloc/event_color.dart';
 import 'package:socialapp/Profile/colorBloc/state_color.dart';
 import 'package:socialapp/home/bloc/bloc_pageChange.dart';
 import 'package:socialapp/home/export/export_file.dart';
+import 'package:socialapp/home/widget/post_widget.dart';
 import 'dart:async';
-import 'package:socialapp/home/screen/home_page.dart';
 import 'package:socialapp/likes/bloc/likes_bloc.dart';
 import 'package:socialapp/likes/export/export_like.dart';
 import 'package:socialapp/textMore/bloc/text_more_bloc.dart';
 import 'package:socialapp/userPost/bloc/post_bloc.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
-import 'package:socialapp/widgets/materialButton/materialButton.dart';
 
 // create bloc provider
 class UserProfile extends StatelessWidget {
@@ -78,7 +78,7 @@ class __UserProfileState extends State<_UserProfile> {
     //load this user feed
     //
     //load user info data
-    myFeedBloc.add(onLoadUserFeedClick(from: "profile"));
+    myFeedBloc.add(onLoadUserFeedClick(from: "profile", refeshPage: false));
 
     //disible ratation
     _portraitModeOnly();
@@ -213,31 +213,42 @@ var uid = "";
 
 //class make ui
 //post of current user
-class stackUserPost extends StatelessWidget {
+class stackUserPost extends StatefulWidget {
+  stackUserPost(
+      {Key key,
+      this.constraints,
+      this.editProfileBloc,
+      this.myFeedBloc,
+      this.pageNaviagtorChageBloc})
+      : super(key: key);
   final BoxConstraints constraints;
   final EditProfileBloc editProfileBloc;
   final MyFeedBloc myFeedBloc;
   final PageNaviagtorChageBloc pageNaviagtorChageBloc;
 
-  const stackUserPost({
-    Key key,
-    this.constraints,
-    this.editProfileBloc,
-    this.myFeedBloc,
-    this.pageNaviagtorChageBloc,
-  }) : super(key: key);
+  @override
+  _stackUserPost createState() => _stackUserPost();
+}
 
+class _stackUserPost extends State<stackUserPost> {
   //get user id from shared pref
   void _getUId() async {
     final _preF = await SharedPreferences.getInstance();
     uid = _preF.getString("uid");
   }
 
+  LikeBloc likeBloc;
+  TextMoreBloc textMoreBloc;
+  PostBloc postBloc;
+  GlobalKey<RefreshIndicatorState> _refreshIndicatorKey;
+  //scroll control
+  final _scrollController = ScrollController();
+  var refreshList = false;
+
   @override
-  Widget build(BuildContext context) {
-    LikeBloc likeBloc;
-    TextMoreBloc textMoreBloc;
-    PostBloc postBloc;
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
     //bloc instanc
     likeBloc = BlocProvider.of<LikeBloc>(context);
@@ -245,10 +256,37 @@ class stackUserPost extends StatelessWidget {
     postBloc = BlocProvider.of<PostBloc>(context);
 
     _getUId();
+    _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
 
-    final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-        new GlobalKey<RefreshIndicatorState>();
+    _scrollController.addListener(_onScroll);
+  }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    widget.myFeedBloc.add(DisponseFeed());
+    widget.editProfileBloc.add(onDisponscEditProfile());
+    _scrollController.dispose();
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    // if (maxScroll - currentScroll <= _scrollThreshold) {
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      widget.myFeedBloc
+          .add(onLoadUserFeedClick(from: "profile", refeshPage: refreshList));
+      // final repository = FeedRepository();
+      // repository.requestMoreData();
+      print("load feed more :${maxScroll - currentScroll}");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     //bloc feed return result for load my feed user
     return BlocBuilder<MyFeedBloc, StateMyFeed>(
       builder: (context, state) {
@@ -265,7 +303,8 @@ class stackUserPost extends StatelessWidget {
           //and will show button refresh feed
           return buildContainerRefreshFeed(context);
         }
-        if (state is onUserFeedSuccess) {
+        if (state is onUserFeedSuccessInitial) {
+          refreshList = !state.refreshList;
           //free memory from stream StreamSubscription
           //alter load data success
           //
@@ -283,7 +322,8 @@ class stackUserPost extends StatelessWidget {
                     onRefresh: () async {
                       //event load my feed
                       // GetTableList.add(true);
-                      myFeedBloc.add(onLoadUserFeedClick());
+                      widget.myFeedBloc.add(onLoadUserFeedClick(
+                          from: "profile", refeshPage: false));
                       likeBloc.add(onLikeResultPostClick());
                     },
                     child: ListView.builder(
@@ -295,18 +335,67 @@ class stackUserPost extends StatelessWidget {
                         // likeBloc.add(onCehckOneLike(
                         //     id: state.models[i].postId));
                         //user post with image
-                        print(state.models[i].uid.toString());
-                        return postWithImage(
-                          pageNaviagtorChageBloc: pageNaviagtorChageBloc,
+                        // print(state.models[i].uid.toString());
+                        return CardPost(
+                          pageNaviagtorChageBloc: widget.pageNaviagtorChageBloc,
                           uid: uid,
                           textMoreBloc: textMoreBloc,
-                          constraints: constraints,
+                          constraints: widget.constraints,
                           i: i,
                           likeBloc: likeBloc,
                           modelsPost: state.models,
-                          myFeedBloc: myFeedBloc,
+                          myFeedBloc: widget.myFeedBloc,
                           postBloc: postBloc,
-                          editProfileBloc: editProfileBloc,
+                          editProfileBloc: widget.editProfileBloc,
+                        );
+                      },
+                    ),
+                  )));
+        }
+        if (state is onUserFeedSuccess) {
+          refreshList = !state.refreshList;
+          //free memory from stream StreamSubscription
+          //alter load data success
+          //
+          return Container(
+              height: 580.0,
+              width: double.infinity,
+              child: InkWell(
+                  onDoubleTap: () {},
+                  onLongPress: () {
+                    print("create new post");
+                    Navigator.of(context).pushNamed("/newPost");
+                  },
+                  child: RefreshIndicator(
+                    key: _refreshIndicatorKey,
+                    onRefresh: () async {
+                      //event load my feed
+                      // GetTableList.add(true);
+                      widget.myFeedBloc.add(onLoadUserFeedClick(
+                          from: "profile", refeshPage: false));
+                      likeBloc.add(onLikeResultPostClick());
+                    },
+                    child: ListView.builder(
+                      physics: ScrollPhysics(),
+                      itemCount: state.models.length,
+                      itemBuilder: (context, i) {
+                        //load feed successful
+                        // check post type
+                        // likeBloc.add(onCehckOneLike(
+                        //     id: state.models[i].postId));
+                        //user post with image
+                        // print(state.models[i].uid.toString());
+                        return CardPost(
+                          pageNaviagtorChageBloc: widget.pageNaviagtorChageBloc,
+                          uid: uid,
+                          textMoreBloc: textMoreBloc,
+                          constraints: widget.constraints,
+                          i: i,
+                          likeBloc: likeBloc,
+                          modelsPost: state.models,
+                          myFeedBloc: widget.myFeedBloc,
+                          postBloc: postBloc,
+                          editProfileBloc: widget.editProfileBloc,
                         );
                       },
                     ),
@@ -333,7 +422,8 @@ class stackUserPost extends StatelessWidget {
             //make material button
             InkWell(
               onTap: () {
-                myFeedBloc.add(onLoadUserFeedClick());
+                widget.myFeedBloc.add(
+                    onLoadUserFeedClick(from: "profile", refeshPage: false));
                 print('refresh my feed');
               },
               child: Container(
@@ -837,7 +927,7 @@ Future<void> _customDialogUserName(
                             icon: Icons.upload_rounded,
                             iconSize: 26.0,
                             radius: 42.0,
-                            text: "UP Now",
+                            message: "UP Now",
                             onClick: () {
                               editProfileBloc
                                   .add(EditProfileNameClik(data: textChange));
@@ -969,7 +1059,7 @@ Future<void> _customDialogStatus(
                             icon: Icons.upload_outlined,
                             iconSize: 26.0,
                             radius: 42.0,
-                            text: "UP Now",
+                            message: "UP Now",
                             onClick: () {
                               editProfileBloc.add(
                                   EditProfileStstusClick(data: textChange));

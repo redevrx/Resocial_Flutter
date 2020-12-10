@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,8 +12,8 @@ import 'package:socialapp/findFriends/screens/request_friend_page.dart';
 import 'package:socialapp/home/bloc/bloc_pageChange.dart';
 import 'package:socialapp/home/bloc/event_pageChange.dart';
 import 'package:socialapp/home/export/export_file.dart';
-import 'package:socialapp/home/screen/home_page.dart';
 import 'package:socialapp/home/screen/look_image.dart';
+import 'package:socialapp/home/widget/post_widget.dart';
 import 'package:socialapp/likes/export/export_like.dart';
 import 'package:socialapp/textMore/export/export.dart';
 import 'package:socialapp/userPost/bloc/event_post.dart';
@@ -25,7 +24,6 @@ import 'dart:async';
 import 'package:socialapp/widgets/models/choice.dart';
 import 'package:socialapp/shared/shared_app.dart';
 // import 'package:workmanager/workmanager.dart';
-
 // import 'package:flutter/foundation.dart' show kIsWeb;
 
 class homePage extends StatefulWidget {
@@ -55,6 +53,10 @@ class _homePage extends State<homePage> {
   }
 
   var uid = '';
+  //use change bloc load feed
+  //infinity list
+  var refreshList = false;
+
   //size appbar
   double bottonNavSize = 128;
   MyFeedBloc myFeedBloc;
@@ -64,8 +66,8 @@ class _homePage extends State<homePage> {
   EditProfileBloc editProfileBloc;
   PageNaviagtorChageBloc pageNaviagtorChageBloc;
 
-  //check refiresh load feed
-  bool refreshPage = false;
+  //scroll control
+  final _scrollController = ScrollController();
 
   //key refresh page
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
@@ -92,17 +94,18 @@ class _homePage extends State<homePage> {
     bottonNavSize = 150;
 
     super.initState();
+
+    _scrollController.addListener(_onScroll);
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    myFeedBloc.close();
+    super.dispose();
     myFeedBloc.add(DisponseFeed());
     editProfileBloc.add(onDisponscEditProfile());
     _enableRotation();
-
-    super.dispose();
+    _scrollController.dispose();
   }
 
   @override
@@ -115,131 +118,216 @@ class _homePage extends State<homePage> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: constraints.maxHeight),
-            child: Column(
-              children: <Widget>[
-                InkWell(
-                  child: AppBarCustom(
-                    widgetSize: bottonNavSize,
-                    title: "Resocial",
-                    titleColor: widget.bodyColor,
-                    status: "home page",
+    return SafeArea(
+      left: false,
+      top: false,
+      right: false,
+      bottom: false,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Column(
+                children: <Widget>[
+                  InkWell(
+                    child: AppBarCustom(
+                      widgetSize: bottonNavSize,
+                      title: "Resocial",
+                      titleColor: widget.bodyColor,
+                      status: "home page",
+                    ),
+                    onTap: () {
+                      _scrollController.animateTo(
+                        // NEW
+                        _scrollController.position.minScrollExtent, // NEW
+                        duration: const Duration(milliseconds: 500), // NEW
+                        curve: Curves.ease, // NEW
+                      );
+                    },
+                    onLongPress: () {
+                      print("create new post");
+                      Navigator.of(context).pushNamed("/newPost");
+                    },
                   ),
-                  onLongPress: () {
-                    print("create new post");
-                    Navigator.of(context).pushNamed("/newPost");
-                  },
-                ),
-                //make bloc get feed data
-                BlocBuilder<MyFeedBloc, StateMyFeed>(
-                  builder: (context, state) {
-                    if (state is onFeedFaield) {
-                      return Container(
-                        child: Center(
-                          child: Text('Please Connect Internet...'),
-                        ),
-                      );
-                    }
-                    if (state is onFeedProgress) {
-                      // return LoadingAnimation();
-                      return Container(
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    }
-                    if (state is onFeedSuccessful) {
-                      //event bloc check user like this post
-                      // print('I :${i}');
-                      // likeBloc.add(onCheckLikeClick(
-                      //   postId: state.models,
-                      // ));
+                  //make bloc get feed data
+                  BlocBuilder<MyFeedBloc, StateMyFeed>(
+                    builder: (context, state) {
+                      if (state is onFeedFaield) {
+                        return Container(
+                          child: Center(
+                            child: Text('Please Connect Internet...'),
+                          ),
+                        );
+                      }
+                      if (state is onFeedProgress) {
+                        // return LoadingAnimation();
+                        return Container(
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                      if (state is onFeedSuccessfulInitial) {
+                        refreshList = !state.refreshList;
 
-                      //getLikeResult(state.models);
-                      // getUserDetails(state.models);
-                      //-----------------------------
-                      //load loadFriendProfilePost for give user info of
-                      //post show detail in card
-                      editProfileBloc.add(loadFriendProfilePost());
-                      //load user detail success
-                      return (uid != null)
-                          ? Container(
-                              height: 580.0,
-                              width:
-                                  //  (kIsWeb)
-                                  //     ? MediaQuery.of(context).size.width * .55
-                                  double.infinity,
-                              color: Color(0XFFFAFAFA),
-                              child: InkWell(
-                                  onDoubleTap: () {},
-                                  onLongPress: () {
-                                    print("create new post");
-                                    Navigator.of(context).pushNamed("/newPost");
+                        editProfileBloc.add(loadFriendProfilePost());
+                        return Container(
+                            height: constraints.maxHeight * .8,
+                            width:
+                                //  (kIsWeb)
+                                //     ? MediaQuery.of(context).size.width * .55
+                                double.infinity,
+                            color: Color(0XFFFAFAFA),
+                            child: InkWell(
+                                onDoubleTap: () {},
+                                onLongPress: () {
+                                  print("create new post");
+                                  Navigator.of(context).pushNamed("/newPost");
+                                },
+                                child: RefreshIndicator(
+                                  color: Colors.green,
+                                  key: _refreshIndicatorKey,
+                                  onRefresh: () async {
+                                    //event load my feed
+                                    // GetTableList.add(true);
+                                    myFeedBloc.add(onLoadMyFeedClick());
+                                    likeBloc.add(onLikeResultPostClick());
                                   },
-                                  child: RefreshIndicator(
-                                    color: Colors.green,
-                                    key: _refreshIndicatorKey,
-                                    onRefresh: () async {
-                                      //event load my feed
-                                      // GetTableList.add(true);
-                                      myFeedBloc.add(onLoadMyFeedClick());
-                                      likeBloc.add(onLikeResultPostClick());
+                                  child: ListView.builder(
+                                    physics: ScrollPhysics(),
+                                    controller: _scrollController,
+                                    // semanticChildCount: state.models.length,
+                                    itemCount: state.models.length,
+                                    itemBuilder: (context, i) {
+                                      //load feed successful
+                                      // check post type
+                                      // likeBloc.add(onCehckOneLike(
+                                      //     id: state.models[i].postId));
+                                      //user post with image
+                                      // print(state.models[i].uid.toString());
+                                      return CardPost(
+                                        pageNaviagtorChageBloc:
+                                            pageNaviagtorChageBloc,
+                                        textMoreBloc: textMoreBloc,
+                                        constraints: constraints,
+                                        uid: uid,
+                                        i: i,
+                                        likeBloc: likeBloc,
+                                        modelsPost: state.models,
+                                        myFeedBloc: myFeedBloc,
+                                        postBloc: postBloc,
+                                        editProfileBloc: editProfileBloc,
+                                        // onTop: () {
+                                        //   if (i % 20 == 0) {
+                                        //     myFeedBloc.add(onLoadMyFeedClick());
+                                        //     print("load feed more :${i}");
+                                        //   }
+                                        // },
+                                      );
                                     },
-                                    child: ListView.builder(
-                                      physics: ScrollPhysics(),
-                                      // reverse: true,
-                                      cacheExtent: 102,
-                                      semanticChildCount: state.models.length,
-                                      itemCount: state.models.length,
-                                      shrinkWrap: true,
-                                      addSemanticIndexes: true,
-                                      addRepaintBoundaries: true,
-                                      primary: true,
-                                      addAutomaticKeepAlives: true,
-                                      itemBuilder: (context, i) {
-                                        //load feed successful
-                                        // check post type
-                                        // likeBloc.add(onCehckOneLike(
-                                        //     id: state.models[i].postId));
-                                        //user post with image
-                                        // print(state.models[i].uid.toString());
-                                        return (state.models == null)
-                                            ? Container()
-                                            : postWithImage(
-                                                pageNaviagtorChageBloc:
-                                                    pageNaviagtorChageBloc,
-                                                textMoreBloc: textMoreBloc,
-                                                constraints: constraints,
-                                                uid: uid,
-                                                i: i,
-                                                likeBloc: likeBloc,
-                                                modelsPost: state.models,
-                                                myFeedBloc: myFeedBloc,
-                                                postBloc: postBloc,
-                                                editProfileBloc:
-                                                    editProfileBloc,
-                                              );
-                                      },
-                                    ),
-                                  )))
-                          : Container();
-                    }
-                    return Opacity(
-                      opacity: 0,
-                      child: Container(),
-                    );
-                  },
-                ),
-              ],
+                                  ),
+                                )));
+                      }
+                      if (state is onFeedSuccessful) {
+                        refreshList = !state.refreshList;
+                        //event bloc check user like this post
+                        // print('I :${i}');
+                        // likeBloc.add(onCheckLikeClick(
+                        //   postId: state.models,
+                        // ));
+
+                        //getLikeResult(state.models);
+                        // getUserDetails(state.models);
+                        //-----------------------------
+                        //load loadFriendProfilePost for give user info of
+                        //post show detail in card
+                        editProfileBloc.add(loadFriendProfilePost());
+                        //load user detail success
+                        return Container(
+                            height: constraints.maxHeight * .8,
+                            width:
+                                //  (kIsWeb)
+                                //     ? MediaQuery.of(context).size.width * .55
+                                double.infinity,
+                            color: Color(0XFFFAFAFA),
+                            child: InkWell(
+                                onDoubleTap: () {},
+                                onLongPress: () {
+                                  print("create new post");
+                                  Navigator.of(context).pushNamed("/newPost");
+                                },
+                                child: RefreshIndicator(
+                                  color: Colors.green,
+                                  key: _refreshIndicatorKey,
+                                  onRefresh: () async {
+                                    //event load my feed
+                                    // GetTableList.add(true);
+                                    myFeedBloc.add(onLoadMyFeedClick());
+                                    likeBloc.add(onLikeResultPostClick());
+                                  },
+                                  child: ListView.builder(
+                                    physics: ScrollPhysics(),
+                                    controller: _scrollController,
+                                    // semanticChildCount: state.models.length,
+                                    itemCount: state.models.length,
+                                    itemBuilder: (context, i) {
+                                      //load feed successful
+                                      // check post type
+                                      // likeBloc.add(onCehckOneLike(
+                                      //     id: state.models[i].postId));
+                                      //user post with image
+                                      // print(state.models[i].uid.toString());
+                                      return CardPost(
+                                        pageNaviagtorChageBloc:
+                                            pageNaviagtorChageBloc,
+                                        textMoreBloc: textMoreBloc,
+                                        constraints: constraints,
+                                        uid: uid,
+                                        i: i,
+                                        likeBloc: likeBloc,
+                                        modelsPost: state.models,
+                                        myFeedBloc: myFeedBloc,
+                                        postBloc: postBloc,
+                                        editProfileBloc: editProfileBloc,
+                                        // onTop: () {
+                                        //   if (i % 20 == 0) {
+                                        //     myFeedBloc.add(onLoadMyFeedClick());
+                                        //     print("load feed more :${i}");
+                                        //   }
+                                        // },
+                                      );
+                                    },
+                                  ),
+                                )));
+                      }
+                      return Opacity(
+                        opacity: 0,
+                        child: Container(),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    // if (maxScroll - currentScroll <= _scrollThreshold) {
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      myFeedBloc.add(onLoadMyFeedClick(refeshPage: refreshList));
+      // final repository = FeedRepository();
+      // repository.requestMoreData();
+      print("load feed more :${maxScroll - currentScroll}");
+    }
   }
 
   void _portraitModeOnly() {
@@ -283,6 +371,7 @@ class postWithImage extends StatelessWidget {
     this.editProfileBloc,
     this.uid,
     this.pageNaviagtorChageBloc,
+    // this.onTop,
   }) : super(key: key);
 
   final TextMoreBloc textMoreBloc;
@@ -295,14 +384,18 @@ class postWithImage extends StatelessWidget {
   final EditProfileBloc editProfileBloc;
   final String uid;
   final PageNaviagtorChageBloc pageNaviagtorChageBloc;
+  // final Function onTop;
 
   @override
   Widget build(BuildContext context) {
+    // if (onTop != null) {
+    //   onTop();
+    // }
     return Card(
-      elevation: 22.0,
+      elevation: 8.0,
       color: Colors.white,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30.0),
+        borderRadius: BorderRadius.circular(18.0),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: .0, vertical: 4.5),

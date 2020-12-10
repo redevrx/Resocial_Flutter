@@ -143,7 +143,7 @@ class FriendRepository {
 
     await _mRef
         .collection("user info")
-        .where("user", isEqualTo: word)
+        .where("user", isGreaterThanOrEqualTo: word)
         .get()
         .then((value) {
       frindList =

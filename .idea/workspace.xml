@@ -27,7 +27,29 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c30520a-dc2b-44cf-959d-9a124e4aee58" name="Default Changelist" comment="" />
+    <list default="true" id="5c30520a-dc2b-44cf-959d-9a124e4aee58" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.packages" beforeDir="false" afterPath="$PROJECT_DIR$/.packages" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc.txt" beforeDir="false" afterPath="$PROJECT_DIR$/doc.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Profile/EditPtofile/screen/user_profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Profile/EditPtofile/screen/user_profile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/editPost/screen/edit_user_post.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/editPost/screen/edit_user_post.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/findFriends/repository/friend_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/findFriends/repository/friend_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/findFriends/widget/search_friends.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/findFriends/widget/search_friends.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/home/bloc/bloc_my_feed.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/bloc/bloc_my_feed.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/home/bloc/event_my_feed.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/bloc/event_my_feed.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/home/bloc/state_my_feed.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/bloc/state_my_feed.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/home/repository/feed_data_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/repository/feed_data_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/home/screen/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/screen/home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/home/screen/look_image.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/screen/look_image.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/home/widget/widget_home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/widget/widget_home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/notifications/screen/notify_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/notifications/screen/notify_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/showFriend/widget/widget_show_request.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/showFriend/widget/widget_show_request.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/userPost/screen/create_new_post.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/userPost/screen/create_new_post.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/materialButton/materialButton.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,7 +83,10 @@
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../Programs/ProgrammingLanguage/dart-sdk/bin" />
-    <property name="settings.editor.selected.configurable" value="emulator" />
+    <property name="project.structure.last.edited" value="Problems" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="dart.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
@@ -95,6 +120,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="520" y="260" key="#Custom_Plugin_Repositories" timestamp="1605605366346">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state x="520" y="260" key="#Custom_Plugin_Repositories/0.0.1280.720@0.0.1280.720" timestamp="1605605366346" />
     <state x="490" y="250" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1601708957217">
       <screen x="0" y="0" width="1280" height="720" />
     </state>
@@ -107,10 +136,10 @@
       <screen x="0" y="0" width="1280" height="720" />
     </state>
     <state x="393" y="25" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog/0.0.1280.720@0.0.1280.720" timestamp="1601721673198" />
-    <state x="93" y="93" width="1095" height="535" key="AVDManager" timestamp="1605064911513">
+    <state x="93" y="93" width="1095" height="535" key="AVDManager" timestamp="1606289505837">
       <screen x="0" y="0" width="1280" height="720" />
     </state>
-    <state x="93" y="93" width="1095" height="535" key="AVDManager/0.0.1280.720@0.0.1280.720" timestamp="1605064911513" />
+    <state x="93" y="93" width="1095" height="535" key="AVDManager/0.0.1280.720@0.0.1280.720" timestamp="1606289505837" />
     <state x="421" y="110" key="FileChooserDialogImpl" timestamp="1603444362444">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -132,11 +161,11 @@
       <screen x="0" y="0" width="1280" height="720" />
     </state>
     <state width="1220" height="172" key="GridCell.Tab.0.right/0.0.1280.720@0.0.1280.720" timestamp="1603391989412" />
-    <state x="142" y="6" key="SettingsEditor" timestamp="1604550059700">
+    <state x="149" y="13" width="996" height="707" key="SettingsEditor" timestamp="1605605535681">
       <screen x="0" y="0" width="1280" height="720" />
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1603444397074" />
-    <state x="142" y="6" key="SettingsEditor/0.0.1280.720@0.0.1280.720" timestamp="1604550059700" />
+    <state x="149" y="13" width="996" height="707" key="SettingsEditor/0.0.1280.720@0.0.1280.720" timestamp="1605605535681" />
     <state x="93" y="93" width="1095" height="535" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1601719780186">
       <screen x="0" y="0" width="1280" height="720" />
     </state>
@@ -145,5 +174,9 @@
       <screen x="0" y="0" width="1280" height="720" />
     </state>
     <state x="233" y="178" key="com.intellij.ide.util.TipDialog/0.0.1280.720@0.0.1280.720" timestamp="1601874071114" />
+    <state x="303" y="41" width="672" height="678" key="search.everywhere.popup" timestamp="1606289447640">
+      <screen x="0" y="0" width="1280" height="720" />
+    </state>
+    <state x="303" y="41" width="672" height="678" key="search.everywhere.popup/0.0.1280.720@0.0.1280.720" timestamp="1606289447640" />
   </component>
 </project>

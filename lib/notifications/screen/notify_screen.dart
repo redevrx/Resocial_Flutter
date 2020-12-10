@@ -7,6 +7,7 @@ import 'package:socialapp/notifications/bloc/notifyBloc.dart';
 import 'package:socialapp/notifications/bloc/notifyEvent.dart';
 import 'package:socialapp/notifications/bloc/notifyState.dart';
 import 'package:socialapp/notifications/exportNotify.dart';
+import 'package:socialapp/notifications/widget/notify_card.dart';
 import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'dart:async';
 
@@ -144,7 +145,7 @@ class build_list_notify extends StatelessWidget {
       child: new ListView(
         children: itemsNotify.map((model) {
           //card notify list
-          return build_card_notify(
+          return NotifyCard(
             model: model,
             notifyBloc: notifyBloc,
             myFeedBloc: myFeedBloc,
@@ -155,153 +156,167 @@ class build_list_notify extends StatelessWidget {
   }
 }
 
-class build_card_notify extends StatelessWidget {
-  const build_card_notify({
-    Key key,
-    this.model,
-    this.notifyBloc,
-    this.myFeedBloc,
-  }) : super(key: key);
-  final NotifyModel model;
-  final NotifyBloc notifyBloc;
-  final MyFeedBloc myFeedBloc;
+// class build_card_notify extends StatelessWidget {
+//   const build_card_notify({
+//     Key key,
+//     this.model,
+//     this.notifyBloc,
+//     this.myFeedBloc,
+//   }) : super(key: key);
+//   final NotifyModel model;
+//   final NotifyBloc notifyBloc;
+//   final MyFeedBloc myFeedBloc;
 
-  @override
-  Widget build(BuildContext context) {
-    return Dismissible(
-      key: Key('${model}'),
-      onDismissed: (direction) {
-        notifyBloc.add(RemoveNotify(postId: model.postID));
-      },
-      child: InkWell(
-        onLongPress: () {},
-        onTap: () async {
-          // print("on click notify");
-          //check if type notidy
-          //- like give go to post that like
-          //- new post or new feed go to new post
-          //- comment go to comment page
-          //and before to  page
-          //give load post info and comment info
+//   @override
+//   Widget build(BuildContext context) {
+//     return Dismissible(
+//       key: UniqueKey(),
+//       onDismissed: (direction) {
+//         if (direction == DismissDirection.startToEnd) {
+//           notifyBloc.add(RemoveNotify(postId: model.postID));
+//         } else {
+//           notifyBloc.add(RemoveNotify(postId: model.postID));
+//         }
+//       },
+//       background: Container(
+//         height: 95.0,
+//         decoration: BoxDecoration(
+//             color: Colors.redAccent, borderRadius: BorderRadius.circular(12.0)),
+//         child: Icon(
+//           Icons.remove_circle_outline,
+//           size: 32.0,
+//           color: Colors.white,
+//         ),
+//       ),
+//       child: InkWell(
+//         onLongPress: () {},
+//         onTap: () async {
+//           // print("on click notify");
+//           //check if type notidy
+//           //- like give go to post that like
+//           //- new post or new feed go to new post
+//           //- comment go to comment page
+//           //and before to  page
+//           //give load post info and comment info
 
-          final feed = FeedRepository();
+//           final feed = FeedRepository();
 
-          final item = await feed.getOneFeed(model.postID);
+//           final item = await feed.getOneFeed(model.postID);
 
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Comments(
-              i: 0,
-              postModels: [item],
-              uid: model.uid,
-            ),
-          ));
-        },
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(boxShadow: [
-            BoxShadow(
-                color: Colors.black12,
-                blurRadius: 12,
-                offset: Offset(.5, .5),
-                spreadRadius: .1)
-          ]),
-          padding: EdgeInsets.only(
-            bottom: 4.0,
-          ),
-          child: Stack(
-            children: [
-              Container(
-                height: 95.0,
-                width: MediaQuery.of(context).size.width * 1,
-                decoration: BoxDecoration(
-                    color: Colors.pinkAccent.withOpacity(.6),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.pinkAccent.withOpacity(.3),
-                          blurRadius: 4,
-                          offset: Offset(.5, .5),
-                          spreadRadius: .1)
-                    ],
-                    borderRadius: BorderRadius.circular(8.0)),
-              ),
-              Container(
-                height: 95.0,
-                margin: EdgeInsets.symmetric(horizontal: 6.0),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8.0)),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: 8.5,
-                      left: 6.0,
-                      child: Container(
-                          height: 65.0,
-                          width: 65.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50.0),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                  offset: Offset(.5, .5),
-                                  blurRadius: 0.5,
-                                  color: Colors.black.withOpacity(.15),
-                                  spreadRadius: .5)
-                            ],
-                            //shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                  // '${userDetail[0].imageProfile}'
-                                  model.profileUrl.toString()),
-                              fit: BoxFit.cover,
-                            ),
-                          )),
-                    ),
-                    //create show user name if type is like notify
-                    //if not if show
-                    Positioned(
-                      left: 85.0,
-                      top: 16.0,
-                      child: Text(
-                        (model.getTypeNotify() == "comment")
-                            ? model.name + " comment" + "\n"
-                            : model.name + "\n",
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                    ),
-                    //type is like show "give like your post"
-                    //type is post "He create new post now"
-                    Positioned(
-                        left: 85.0,
-                        top: 42.0,
-                        child: Text(
-                          model.getTypeNotify() == "new feed"
-                              ? "He create new post now"
-                              : (model.getTypeNotify() == "comment")
-                                  ? "${model.message}"
-                                  : "give like your post",
-                          style: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold),
-                        )),
-                    //show time that make like or create post
-                    Positioned(
-                        right: 16.0,
-                        bottom: 12.0,
-                        child: Text(
-                          "${model.time}",
-                          style: TextStyle(
-                            fontSize: 14.0,
-                          ),
-                        ))
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//           Navigator.of(context).push(MaterialPageRoute(
+//             builder: (context) => Comments(
+//               i: 0,
+//               postModels: [item],
+//               uid: model.uid,
+//             ),
+//           ));
+//         },
+//         child: Container(
+//           width: double.infinity,
+//           decoration: BoxDecoration(boxShadow: [
+//             BoxShadow(
+//                 color: Colors.black12,
+//                 blurRadius: 12,
+//                 offset: Offset(.5, .5),
+//                 spreadRadius: .1)
+//           ]),
+//           padding: EdgeInsets.only(
+//             bottom: 4.0,
+//           ),
+//           child: Stack(
+//             children: [
+//               Container(
+//                 height: 95.0,
+//                 width: MediaQuery.of(context).size.width * 1,
+//                 decoration: BoxDecoration(
+//                     color: Colors.pinkAccent.withOpacity(.6),
+//                     boxShadow: [
+//                       BoxShadow(
+//                           color: Colors.pinkAccent.withOpacity(.3),
+//                           blurRadius: 4,
+//                           offset: Offset(.5, .5),
+//                           spreadRadius: .1)
+//                     ],
+//                     borderRadius: BorderRadius.circular(8.0)),
+//               ),
+//               Container(
+//                 height: 95.0,
+//                 margin: EdgeInsets.symmetric(horizontal: 6.0),
+//                 decoration: BoxDecoration(
+//                     color: Colors.white,
+//                     borderRadius: BorderRadius.circular(8.0)),
+//                 child: Stack(
+//                   children: [
+//                     Positioned(
+//                       top: 8.5,
+//                       left: 6.0,
+//                       child: Container(
+//                           height: 65.0,
+//                           width: 65.0,
+//                           decoration: BoxDecoration(
+//                             borderRadius: BorderRadius.circular(50.0),
+//                             color: Colors.white,
+//                             boxShadow: [
+//                               BoxShadow(
+//                                   offset: Offset(.5, .5),
+//                                   blurRadius: 0.5,
+//                                   color: Colors.black.withOpacity(.15),
+//                                   spreadRadius: .5)
+//                             ],
+//                             //shape: BoxShape.circle,
+//                             image: DecorationImage(
+//                               image: NetworkImage(
+//                                   // '${userDetail[0].imageProfile}'
+//                                   model.profileUrl.toString()),
+//                               fit: BoxFit.cover,
+//                             ),
+//                           )),
+//                     ),
+//                     //create show user name if type is like notify
+//                     //if not if show
+//                     Positioned(
+//                       left: 85.0,
+//                       top: 16.0,
+//                       child: Text(
+//                         (model.getTypeNotify() == "comment")
+//                             ? model.name + " comment" + "\n"
+//                             : model.name + "\n",
+//                         style: Theme.of(context).textTheme.headline6,
+//                       ),
+//                     ),
+//                     //type is like show "give like your post"
+//                     //type is post "He create new post now"
+//                     Positioned(
+//                         left: 85.0,
+//                         top: 42.0,
+//                         child: Text(
+//                           model.getTypeNotify() == "new feed"
+//                               ? "He create new post now"
+//                               : (model.getTypeNotify() == "comment")
+//                                   ? "${model.message}"
+//                                   : "give like your post",
+//                           style: TextStyle(
+//                               color: Colors.black54,
+//                               fontSize: 18.0,
+//                               fontWeight: FontWeight.bold),
+//                         )),
+//                     //show time that make like or create post
+//                     Positioned(
+//                         right: 16.0,
+//                         bottom: 12.0,
+//                         child: Text(
+//                           "${model.time}",
+//                           style: TextStyle(
+//                             fontSize: 14.0,
+//                           ),
+//                         ))
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

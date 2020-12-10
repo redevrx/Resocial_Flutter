@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Profile/EditPtofile/screen/user_profile.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'dart:async';

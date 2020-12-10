@@ -45,6 +45,7 @@ dependencies:
   # formmat input
   formz: ^0.3.2
   # background_fetch: ^0.6.0
+  material_buttonx: ^2.0.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -67,8 +68,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-assets:
-  - assets/icons/
+  assets:
+     - assets/icons/
 
 module:
   androidX: true

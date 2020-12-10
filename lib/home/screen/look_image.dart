@@ -86,7 +86,7 @@ class LookImage extends StatelessWidget {
                         return InkWell(
                             onTap: () {
                               checkStoragePermission(context, imageUrl);
-                              context.bloc<DownloadCubit>().onClickDownload();
+                              context.read<DownloadCubit>().onClickDownload();
                             },
                             child: Icon(
                               Icons.file_download,
@@ -101,7 +101,7 @@ class LookImage extends StatelessWidget {
                         return InkWell(
                             onTap: () {
                               checkStoragePermission(context, imageUrl);
-                              context.bloc<DownloadCubit>().onClickDownload();
+                              context.read<DownloadCubit>().onClickDownload();
                             },
                             child: Icon(
                               Icons.file_download,

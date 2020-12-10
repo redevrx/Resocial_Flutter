@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
+import 'package:socialapp/Profile/EditPtofile/bloc/event/edit_profile_event.dart';
 import 'package:socialapp/comments/export/export_comment.dart';
 import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/comments/widget/widget_card_comments.dart';
@@ -7,6 +9,8 @@ import 'package:socialapp/likes/bloc/likes_bloc.dart';
 import 'package:socialapp/likes/export/export_like.dart';
 import 'package:socialapp/textMore/bloc/text_more_bloc.dart';
 import 'package:socialapp/textMore/export/export.dart';
+import 'package:socialapp/userPost/bloc/post_bloc.dart';
+import 'package:socialapp/userPost/export/export_new_post.dart';
 
 //comment post  page
 class Comments extends StatelessWidget {
@@ -29,13 +33,19 @@ class Comments extends StatelessWidget {
       child: BlocProvider(
           create: (context) => LikeBloc(new LikeRepository()),
           child: BlocProvider(
-            create: (context) => CommentBloc(new CommentRepository()),
-            child: _Comments(
-              uid: uid,
-              postModels: postModels,
-              i: i,
-            ),
-          )),
+              create: (context) => CommentBloc(new CommentRepository()),
+              child: BlocProvider(
+                  create: (context) => MyFeedBloc(new FeedRepository()),
+                  child: BlocProvider(
+                      create: (context) => PostBloc(new PostRepository()),
+                      child: BlocProvider(
+                        create: (context) => EditProfileBloc(),
+                        child: _Comments(
+                          uid: uid,
+                          postModels: postModels,
+                          i: i,
+                        ),
+                      ))))),
     ));
   }
 }
@@ -61,6 +71,9 @@ class _CommentsState extends State<_Comments> {
   CommentBloc commentBloc;
   var message = '';
   TextEditingController txtComment;
+  MyFeedBloc myFeedBloc;
+  PostBloc postBloc;
+  EditProfileBloc editProfileBloc;
 
   @override
   void initState() {
@@ -69,11 +82,22 @@ class _CommentsState extends State<_Comments> {
     textMoreBloc = BlocProvider.of<TextMoreBloc>(context);
     likeBloc = BlocProvider.of<LikeBloc>(context);
     commentBloc = BlocProvider.of<CommentBloc>(context);
+    myFeedBloc = BlocProvider.of<MyFeedBloc>(context);
+    postBloc = BlocProvider.of<PostBloc>(context);
+    editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
+
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
     //commentCount = int.parse(widget.postModels.commentCount);
     likeBloc.add(onLikeResultPostClick());
     commentBloc.add(onLoadComments(postId: widget.postModels[widget.i].postId));
+    editProfileBloc.add(loadFriendProfilePost());
     // print(message.length);
-    super.initState();
   }
 
   @override

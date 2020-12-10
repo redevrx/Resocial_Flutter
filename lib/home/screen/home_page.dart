@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/screen/user_profile.dart';
 import 'package:socialapp/Profile/colorBloc/bloc_color.dart';
-import 'package:socialapp/Profile/colorBloc/event_color.dart';
 import 'package:socialapp/Profile/colorBloc/state_color.dart';
 import 'package:socialapp/home/bloc/bloc_pageChange.dart';
 import 'package:socialapp/home/bloc/state_pageChange.dart';
@@ -85,8 +84,6 @@ class _fechPage extends State<HomePage> {
       ),
       SettingApp()
     ];
-
-    selectedBar = widget.pageNumber;
 
     super.initState();
   }

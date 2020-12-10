@@ -16,12 +16,20 @@ class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
   @override
   Stream<StateMyFeed> mapEventToState(EventMyFeed event) async* {
     if (event is onLoadMyFeedClick) {
-      // load my feed all user post
-      yield* onLoadFeed();
+      //start load feed from onFeedSuccessfulInitial
+      // load my feed all user
+      // print('start load after ${event.satrtModels[5].body}');
+      // currentState.models = [];
+      yield* onLoadFeed(0, 20, event.refeshPage);
     }
     if (event is onLoadedMyFeedClick) {
       if (event.models != null) {
-        yield onFeedSuccessful(models: event.models);
+        if (!event.refeshPage)
+          yield onFeedSuccessfulInitial(
+              models: event.models, refreshList: event.refeshPage);
+        else
+          yield onFeedSuccessful(
+              models: event.models, refreshList: event.refeshPage);
       } else {
         yield onFeedFaield();
       }
@@ -35,13 +43,19 @@ class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
     }
     if (event is DisponseFeed) {
       _streamSubscription.cancel();
+      repository.close();
     }
     if (event is onLoadUserFeedClick) {
-      yield* onLoadUserFeed(event);
+      yield* onLoadUserFeed(event, event.refeshPage);
     }
     if (event is onLoadUserFeeded) {
       if (event.model != null) {
-        yield onUserFeedSuccess(models: event.model);
+        if (!event.refeshPage)
+          yield onUserFeedSuccessInitial(
+              models: event.model, refreshList: event.refeshPage);
+        else
+          yield onUserFeedSuccess(
+              models: event.model, refreshList: event.refeshPage);
       } else {
         yield onFeedFaield();
       }
@@ -52,8 +66,12 @@ class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
     }
   }
 
+  bool _hasReachedMax(StateMyFeed state) =>
+      state is onFeedSuccessful && state.hasReachedMax;
+
   @override
-  Stream<StateMyFeed> onLoadUserFeed(onLoadUserFeedClick event) async* {
+  Stream<StateMyFeed> onLoadUserFeed(
+      onLoadUserFeedClick event, bool refeshPage) async* {
     final _pref = await SharedPreferences.getInstance();
     var uid = '';
 
@@ -63,12 +81,9 @@ class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
     //other profile
     (event.from == "profile") ? uid = _pref.getString("uid") : uid = event.uid;
 
-    print("start load user feed :${uid}");
-
     _streamSubscription?.cancel();
-    _streamSubscription = repository
-        .getMyFeed(uid)
-        .listen((model) => add(onLoadUserFeeded(model: model)));
+    _streamSubscription = repository.getMyFeed(uid).listen(
+        (model) => add(onLoadUserFeeded(model: model, refeshPage: refeshPage)));
 
     // try {
     //   models = await repository.getMyFeed(uid);
@@ -83,10 +98,11 @@ class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
   }
 
   @override
-  Stream<StateMyFeed> onLoadFeed() async* {
+  Stream<StateMyFeed> onLoadFeed(int min, int max, bool refreshList) async* {
     _streamSubscription?.cancel();
-    _streamSubscription =
-        repository.getFeed().listen((items) => add(onLoadedMyFeedClick(items)));
+    _streamSubscription = repository.getFeed(min, max).listen((items) {
+      add(onLoadedMyFeedClick(models: items, refeshPage: refreshList));
+    });
   }
 
   @override

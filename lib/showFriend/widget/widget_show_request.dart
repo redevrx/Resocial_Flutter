@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:material_buttonx/materialButtonX.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'package:socialapp/findFriends/models/findFriendResult_model.dart';
 import 'dart:async';
-import 'package:socialapp/widgets/materialButton/materialButton.dart';
 
 class widgetShowRequest extends StatelessWidget {
   const widgetShowRequest({
@@ -100,7 +100,7 @@ class widgetShowRequest extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         MaterialButtonX(
-          text: "Cencel",
+          message: "Cencel",
           height: 36.0,
           width: 110.0,
           color: Colors.red,
@@ -127,7 +127,7 @@ class widgetShowRequest extends StatelessWidget {
     return Row(
       children: [
         MaterialButtonX(
-          text: "Accept",
+          message: "Accept",
           height: 36.0,
           width: 110.0,
           color: Colors.green,
@@ -150,7 +150,7 @@ class widgetShowRequest extends StatelessWidget {
           width: 16.0,
         ),
         MaterialButtonX(
-          text: "Cancel",
+          message: "Cancel",
           height: 36.0,
           width: 110.0,
           color: Colors.red,
