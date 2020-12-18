@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:socialapp/Login/screen/login_page.dart';
 import 'package:socialapp/Login/screen/register_user.dart';
 import 'package:socialapp/Profile/AddProfile/screen/add_info_profile.dart';
@@ -15,6 +16,8 @@ import 'package:socialapp/notifications/exportNotify.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart' show kIsWeb;
+
+import 'localizations/languages.dart';
 // import 'package:workmanager/workmanager.dart';
 
 void main() async {
@@ -30,7 +33,7 @@ void main() async {
     await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
   }
   if (USE_FIRESTORE_EMULATOR) {
-    FirebaseFirestore.instance.settings = Settings(persistenceEnabled: true);
+    FirebaseFirestore.instance.settings = Settings(persistenceEnabled: false);
   }
 
   // Bloc.observer = SimpleBlocObserver();
@@ -39,7 +42,42 @@ void main() async {
 
 bool USE_FIRESTORE_EMULATOR = false;
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  MyApp({Key key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+
+  static void setLocale(BuildContext context, Locale locale) {
+    final state = context.findAncestorStateOfType<_MyAppState>();
+
+    state.changeLocale(locale);
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale _locale;
+
+  void changeLocale(Locale locale) {
+    setState(() {
+      this._locale = locale;
+    });
+  }
+
+  @override
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    final languageApp = AppLocalizations(null);
+    final localeKey = await languageApp.readLocaleKey();
+
+    if (localeKey == "en") {
+      this._locale = new Locale("en", "EN");
+    } else {
+      this._locale = new Locale("th", "TH");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // _initialBackgound();
@@ -59,6 +97,27 @@ class MyApp extends StatelessWidget {
         },
         //debugShowCheckedModeBanner: false,
         title: "Social App",
+        locale: _locale,
+        supportedLocales: [
+          Locale('th', 'TH'),
+          Locale('en', 'EN'),
+        ],
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocaleLanguage in supportedLocales) {
+            if (supportedLocaleLanguage?.languageCode == locale?.languageCode &&
+                supportedLocaleLanguage?.countryCode == locale?.countryCode) {
+              return supportedLocaleLanguage;
+            }
+          }
+
+          // If device not support with locale to get language code then default get first on from the list
+          return supportedLocales?.first;
+        },
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),

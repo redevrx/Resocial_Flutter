@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/notifications/exportNotify.dart';
 import 'dart:async';
 
@@ -77,7 +78,7 @@ class _widgetShowNotifySettingState extends State<widgetShowNotifySetting> {
                         width: 16.0,
                       ),
                       Text(
-                        "Friend notifications",
+                        "${AppLocalizations.of(context).translate("titleFriendNotify")}",
                         style: Theme.of(context).textTheme.headline6.apply(
                               color: Colors.black.withOpacity(.65),
                             ),
@@ -131,7 +132,7 @@ class _widgetShowNotifySettingState extends State<widgetShowNotifySetting> {
                         width: 16.0,
                       ),
                       Text(
-                        "Chat notifications",
+                        "${AppLocalizations.of(context).translate("titleChatNotify")}",
                         style: Theme.of(context).textTheme.headline6.apply(
                               color: Colors.black.withOpacity(.65),
                             ),
@@ -174,7 +175,7 @@ class _widgetShowNotifySettingState extends State<widgetShowNotifySetting> {
                         width: 16.0,
                       ),
                       Text(
-                        "App notifications",
+                        "${AppLocalizations.of(context).translate("titleAppNotify")}",
                         style: Theme.of(context).textTheme.headline6.apply(
                               color: Colors.black.withOpacity(.65),
                             ),

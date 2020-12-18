@@ -139,8 +139,7 @@ class FeedRepository {
   void requestAllFeedLimit(int min, int max) {
     final _mRef = FirebaseFirestore.instance;
 
-    var feedRequest =
-        _mRef.collection("Post").orderBy("postId", descending: true).limit(max);
+    var feedRequest = _mRef.collection("Post").limit(max);
     //load after feed
 
     //check last document
@@ -153,7 +152,7 @@ class FeedRepository {
     // If there's no more posts then bail out of the function
     var currentPage = models.length;
 
-    feedRequest.snapshots().listen((snapshot) {
+    feedRequest.snapshots(includeMetadataChanges: true).listen((snapshot) {
       if (snapshot.docs.isNotEmpty) {
         var feed =
             snapshot.docs.map((model) => PostModel.fromJson(model)).toList();
@@ -183,7 +182,8 @@ class FeedRepository {
   }
 
   void close() async {
-    await _feedController.close();
+    await _feedController?.close();
+    await streamControllerOnwerUser?.close();
   }
 
   void requestMoreData() => requestAllFeedLimit(0, 6);
@@ -203,6 +203,8 @@ class FeedRepository {
   }
 
   void requestOnwerFeed(String uid) {
+    int max = 6;
+
     //firebase data path
     print("start load user feed :${uid}");
     final _mRef = FirebaseFirestore.instance;
@@ -210,24 +212,24 @@ class FeedRepository {
     var refFeed = _mRef
         .collection("Post")
         .where("uid", isEqualTo: uid)
-        .orderBy("postId", descending: true)
-        .limit(5);
+        // .orderBy("postId", descending: true)
+        .limit(max);
 
     //check last document
-    // if (_lastDocumentOnweFeed != null) {
-    //   refFeed = refFeed.startAfterDocument(_lastDocumentOnweFeed);
-    // }
+    if (_lastDocumentOnweFeed != null) {
+      refFeed = refFeed.startAfterDocument(_lastDocumentOnweFeed);
+    }
 
-    // if (!_hasMoreDataOnwerFeed) return;
+    if (!_hasMoreDataOnwerFeed) return;
 
     // If there's no more posts then bail out of the function
     var currentPage = onwerListFeed.length;
 
-    refFeed.snapshots().listen((snapshot) {
+    refFeed.snapshots(includeMetadataChanges: true).listen((snapshot) {
       // if (snapshot.docs == null) return;
       var feedOnwer = snapshot.docs.map((e) => PostModel.fromJson2(e)).toList();
 
-      bool pageExists = currentPage < models.length;
+      bool pageExists = currentPage < onwerListFeed.length;
       //position item in list
 
       if (pageExists) {
@@ -242,13 +244,13 @@ class FeedRepository {
 
       print('all feed onwer user legnth service :${allFeed.length}');
 
-      streamControllerOnwerUser.add(feedOnwer);
+      streamControllerOnwerUser.add(allFeed);
 
       // Save the last document from the results only if it's the current last page
       if (currentPage == onwerListFeed.length - 1) {
         _lastDocumentOnweFeed = snapshot.docs.last;
       }
-      _hasMoreDataOnwerFeed = feedOnwer.length == 5;
+      _hasMoreDataOnwerFeed = feedOnwer.length == max;
       // return allFeed;
     });
   }

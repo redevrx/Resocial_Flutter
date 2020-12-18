@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/showFriend/screen/show_friend.dart';
 
 class widgetShowFriendsSetting extends StatelessWidget {
@@ -32,7 +33,7 @@ class widgetShowFriendsSetting extends StatelessWidget {
                         width: 16.0,
                       ),
                       Text(
-                        "All Friends",
+                        "${AppLocalizations.of(context).translate("titleAllFreind")}",
                         style: Theme.of(context).textTheme.headline6.apply(
                               color: Colors.black.withOpacity(.65),
                             ),
@@ -45,9 +46,12 @@ class widgetShowFriendsSetting extends StatelessWidget {
                       size: 30.0,
                       color: Colors.black.withOpacity(.55),
                     ),
-                    onTap: () 
-                    {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowFriends(wordSate: "All Friends",),));
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ShowFriends(
+                          wordSate: "All Friends",
+                        ),
+                      ));
                     },
                   )
                 ],
@@ -76,7 +80,7 @@ class widgetShowFriendsSetting extends StatelessWidget {
                         width: 16.0,
                       ),
                       Text(
-                        "Request",
+                        "${AppLocalizations.of(context).translate("titleRequest")}",
                         style: Theme.of(context).textTheme.headline6.apply(
                               color: Colors.black.withOpacity(.65),
                             ),
@@ -89,8 +93,12 @@ class widgetShowFriendsSetting extends StatelessWidget {
                       size: 30.0,
                       color: Colors.black.withOpacity(.55),
                     ),
-                    onTap: (){
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowFriends(wordSate:"Request Friends",),));
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ShowFriends(
+                          wordSate: "Request Friends",
+                        ),
+                      ));
                     },
                   )
                 ],
@@ -119,7 +127,7 @@ class widgetShowFriendsSetting extends StatelessWidget {
                         width: 16.0,
                       ),
                       Text(
-                        "Block user",
+                        "${AppLocalizations.of(context).translate("titleBlockUser")}",
                         style: Theme.of(context).textTheme.headline6.apply(
                               color: Colors.black.withOpacity(.65),
                             ),

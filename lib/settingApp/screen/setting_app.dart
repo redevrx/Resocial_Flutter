@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/home/bloc/bloc_pageChange.dart';
+import 'package:socialapp/localizations/language/language.dart';
+import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/settingApp/export/setting_export.dart';
 
 class SettingApp extends StatefulWidget {
@@ -43,7 +45,8 @@ class _SettingAppState extends State<SettingApp> {
                       SizedBox(
                         height: 20.0,
                       ),
-                      _showText("Account"),
+                      _showText(
+                          "${AppLocalizations.of(context).translate("titleAccount")}"),
                       SizedBox(
                         height: 4.0,
                       ),
@@ -53,14 +56,16 @@ class _SettingAppState extends State<SettingApp> {
                       SizedBox(
                         height: 12.0,
                       ),
-                      _showText("Notifications"),
+                      _showText(
+                          "${AppLocalizations.of(context).translate("titleNotification")}"),
                       widgetShowNotifySetting(
                         constraints: constraints,
                       ),
                       SizedBox(
                         height: 12.0,
                       ),
-                      _showText("Friends"),
+                      _showText(
+                          "${AppLocalizations.of(context).translate("titleFriendNotify")}"),
                       widgetShowFriendsSetting(
                         constraints: constraints,
                       ),

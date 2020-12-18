@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:socialapp/comments/screen/comments.dart';
 import 'package:socialapp/home/export/export_file.dart';
+import 'package:socialapp/localizations/languages.dart';
+import 'package:socialapp/showFriend/screen/show_friend.dart';
 
 import '../exportNotify.dart';
 
@@ -70,17 +72,28 @@ class NotifyCard extends StatelessWidget {
                       //and before to  page
                       //give load post info and comment info
 
-                      final feed = FeedRepository();
+                      if (model.getTypeNotify() == "request" ||
+                          model.getTypeNotify() == "accept") {
+                        //todo open reqest screen
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ShowFriends(
+                            wordSate: "Request Friends",
+                          ),
+                        ));
+                      } else {
+                        //todo open post screen
+                        final feed = FeedRepository();
 
-                      final item = await feed.getOneFeed(model.postID);
+                        final item = await feed.getOneFeed(model.postID);
 
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => Comments(
-                          i: 0,
-                          postModels: [item],
-                          uid: model.uid,
-                        ),
-                      ));
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Comments(
+                            i: 0,
+                            postModels: [item],
+                            uid: model.uid,
+                          ),
+                        ));
+                      }
                     },
                     child: Container(
                       width: double.infinity,
@@ -144,12 +157,18 @@ class NotifyCard extends StatelessWidget {
                                               color: Colors.blueAccent,
                                               size: 28.0,
                                             )
-                                          : Image.asset(
-                                              "assets/icons/like_up.png",
-                                              width: 30.0,
-                                              scale: 1.0,
-                                              fit: BoxFit.cover,
-                                            ),
+                                          : (model.getTypeNotify() == "request")
+                                              ? Icon(
+                                                  Icons.face_rounded,
+                                                  color: Colors.blueAccent,
+                                                  size: 28.0,
+                                                )
+                                              : Image.asset(
+                                                  "assets/icons/like_up.png",
+                                                  width: 30.0,
+                                                  scale: 1.0,
+                                                  fit: BoxFit.cover,
+                                                ),
                                   // child: Text(
                                   //   (model.getTypeNotify() == "comment")
                                   //       ? "\ncomment"
@@ -168,10 +187,16 @@ class NotifyCard extends StatelessWidget {
                                     top: 16.0,
                                     child: Text(
                                       model.getTypeNotify() == "new feed"
-                                          ? "He create new post now"
+                                          ? "${AppLocalizations.of(context).translate("titleCreateNotify")}"
                                           : (model.getTypeNotify() == "comment")
                                               ? "${model.message}"
-                                              : "give like your post",
+                                              : (model.getTypeNotify() ==
+                                                      "request")
+                                                  ? "${AppLocalizations.of(context).translate("titleRequestNitify")}"
+                                                  : (model.getTypeNotify() ==
+                                                          "accept")
+                                                      ? "${AppLocalizations.of(context).translate("titleAcceptNitify")}"
+                                                      : "${AppLocalizations.of(context).translate("titleLike")}",
                                       style: TextStyle(
                                           color: Colors.black54,
                                           fontSize: 22.0,

@@ -4,6 +4,7 @@ import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'dart:async';
 import 'package:socialapp/findFriends/friendManagement/bloc/friend_manage_bloc.dart';
 import 'package:socialapp/findFriends/friendManagement/repository/friensManagement_repository.dart';
+import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/showFriend/widget/widget_show_all_freind.dart';
 import 'package:socialapp/showFriend/widget/widget_show_request.dart';
 
@@ -97,7 +98,9 @@ class widgetShowState extends StatelessWidget {
                       ),
                       Center(
                         child: Text(
-                          "${wordSate}",
+                          (wordSate == "All Friends")
+                              ? "${AppLocalizations.of(context).translate("titleAllFreind")}"
+                              : "${AppLocalizations.of(context).translate("titleRequest")}",
                           style: Theme.of(context)
                               .textTheme
                               .headline5
@@ -118,9 +121,10 @@ class widgetShowState extends StatelessWidget {
                       // event load friend of current user
                       // print("Item Count :${state.list.length}");
                       return widgetShowAllfreind(
-                        constraints: constraints,
-                        list: state.list,
-                      );
+                          constraints: constraints,
+                          list: state.list,
+                          friendBloc: friendBloc,
+                          friendManageBloc: friendManagerBloc);
                     }
                     if (state is onLoadRequestFriendUserSuccessfully) {
                       return widgetShowRequest(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socialapp/findFriends/screens/show_lis_friends.dart';
+import 'package:socialapp/localizations/languages.dart';
 
 class appBarSetting extends StatefulWidget {
   final bool changeSize;
@@ -64,7 +65,7 @@ class _appBarSettingState extends State<appBarSetting> {
                       ),
                     ),
                     Text(
-                      'Setting App',
+                      '${AppLocalizations.of(context).translate("titleSettingApp")}',
                       style: Theme.of(context).textTheme.headline4,
                     ),
                     AnimatedContainer(

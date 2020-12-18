@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/home/bloc/bloc_pageChange.dart';
 import 'package:socialapp/home/bloc/event_pageChange.dart';
-import 'package:socialapp/home/screen/home_page.dart';
+import 'package:socialapp/localizations/languages.dart';
 
 class widgetShowAccountSetting extends StatefulWidget {
   final BoxConstraints constraints;
@@ -19,6 +20,15 @@ class widgetShowAccountSetting extends StatefulWidget {
 }
 
 class _widgetShowAccountSettingState extends State<widgetShowAccountSetting> {
+  AppLocalizations localeApp;
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    localeApp = AppLocalizations(null);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -45,7 +55,7 @@ class _widgetShowAccountSettingState extends State<widgetShowAccountSetting> {
                         width: 16.0,
                       ),
                       Text(
-                        "Profile",
+                        "${AppLocalizations.of(context).translate("lableProfile")}",
                         style: Theme.of(context).textTheme.headline6.apply(
                               color: Colors.black.withOpacity(.65),
                             ),
@@ -94,7 +104,7 @@ class _widgetShowAccountSettingState extends State<widgetShowAccountSetting> {
                         width: 16.0,
                       ),
                       Text(
-                        "Forget Password",
+                        "${AppLocalizations.of(context).translate("titleForgotPassword")}",
                         style: Theme.of(context).textTheme.headline6.apply(
                               color: Colors.black.withOpacity(.65),
                             ),
@@ -134,7 +144,7 @@ class _widgetShowAccountSettingState extends State<widgetShowAccountSetting> {
                         width: 16.0,
                       ),
                       Text(
-                        "Sing out",
+                        "${AppLocalizations.of(context).translate("titleSingOut")}",
                         style: Theme.of(context).textTheme.headline6.apply(
                               color: Colors.black.withOpacity(.65),
                             ),
@@ -158,6 +168,54 @@ class _widgetShowAccountSettingState extends State<widgetShowAccountSetting> {
                     },
                   )
                 ],
+              ),
+            ),
+            //
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.language_rounded,
+                        size: 35.0,
+                        color: Colors.black.withOpacity(.55),
+                      ),
+                      SizedBox(
+                        width: 16.0,
+                      ),
+                      Text(
+                        "${AppLocalizations.of(context).translate("titleLanguage")}",
+                        style: Theme.of(context).textTheme.headline6.apply(
+                              color: Colors.black.withOpacity(.65),
+                            ),
+                      ),
+                    ],
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      if (await localeApp.readLocaleKey() == "th") {
+                        localeApp.setLocale(context, new Locale("en", "EN"));
+                      } else
+                        localeApp.setLocale(context, new Locale("th", "TH"));
+                    },
+                    child: Icon(
+                      Icons.refresh_outlined,
+                      size: 30.0,
+                      color: Colors.black.withOpacity(.55),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            //
+            SizedBox(
+              height: 4.0,
+              width: widget.constraints.maxWidth,
+              child: Divider(
+                color: Colors.black.withOpacity(.55),
               ),
             ),
           ],

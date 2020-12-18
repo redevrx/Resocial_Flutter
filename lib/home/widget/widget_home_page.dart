@@ -15,6 +15,7 @@ import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/home/screen/look_image.dart';
 import 'package:socialapp/home/widget/post_widget.dart';
 import 'package:socialapp/likes/export/export_like.dart';
+import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/textMore/export/export.dart';
 import 'package:socialapp/userPost/bloc/event_post.dart';
 import 'package:socialapp/userPost/bloc/post_bloc.dart';
@@ -49,6 +50,7 @@ class _homePage extends State<homePage> {
     // if (uid.isNotEmpty) {
     myFeedBloc.add(onLoadMyFeedClick());
     likeBloc.add(onLikeResultPostClick());
+    editProfileBloc.add(loadFriendProfilePost());
     // }
   }
 
@@ -133,7 +135,8 @@ class _homePage extends State<homePage> {
                   InkWell(
                     child: AppBarCustom(
                       widgetSize: bottonNavSize,
-                      title: "Resocial",
+                      title:
+                          "${AppLocalizations.of(context).translate("appName")}",
                       titleColor: widget.bodyColor,
                       status: "home page",
                     ),
@@ -171,7 +174,6 @@ class _homePage extends State<homePage> {
                       if (state is onFeedSuccessfulInitial) {
                         refreshList = !state.refreshList;
 
-                        editProfileBloc.add(loadFriendProfilePost());
                         return Container(
                             height: constraints.maxHeight * .8,
                             width:
@@ -242,7 +244,6 @@ class _homePage extends State<homePage> {
                         //-----------------------------
                         //load loadFriendProfilePost for give user info of
                         //post show detail in card
-                        editProfileBloc.add(loadFriendProfilePost());
                         //load user detail success
                         return Container(
                             height: constraints.maxHeight * .8,

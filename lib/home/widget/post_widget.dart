@@ -601,28 +601,41 @@ class make_like_ui extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () async {
+      onTap: () {
         // likeBloc
-        print('like result post :${i}');
-        if (modelsPost[i].getUserLikePost(uid)) {
+        if (modelsPost[i].likeResults["${uid}"] == uid) {
+          //
+          if (int.parse(modelsPost[i].likesCount) <= 0) {
+            modelsPost[i].likesCount = "0";
+            modelsPost[i].likeResults['${uid}'] = null;
+          } else {
+            modelsPost[i].likesCount =
+                (int.parse(modelsPost[i].likesCount) - 1).toString();
+            modelsPost[i].likeResults['${uid}'] = null;
+          }
+          //
           //unlike
-          await likeBloc.add(onLikeClick(
+          likeBloc.add(onLikeClick(
               postId: modelsPost[i].postId,
               statusLike: 'un',
               onwerId: modelsPost[i].uid));
-          modelsPost[i].likesCount =
-              (int.parse(modelsPost[i].likesCount) - 1).toString();
-          modelsPost[i].likeResults['${uid}'] = null;
         } else {
           //like
-          print("post id :${modelsPost[i].postId}");
-          await likeBloc.add(onLikeClick(
+
+          //
+          if (int.parse(modelsPost[i].likesCount) == 0) {
+            modelsPost[i].likesCount = "1";
+            modelsPost[i].likeResults['${uid}'] = uid;
+          } else {
+            modelsPost[i].likesCount =
+                (int.parse(modelsPost[i].likesCount) + 1).toString();
+            modelsPost[i].likeResults['${uid}'] = uid;
+          }
+
+          likeBloc.add(onLikeClick(
               postId: modelsPost[i].postId,
               statusLike: 'like',
               onwerId: modelsPost[i].uid));
-          modelsPost[i].likesCount =
-              (int.parse(modelsPost[i].likesCount) + 1).toString();
-          modelsPost[i].likeResults['${uid}'] = uid;
         }
 
         // likeBloc
@@ -638,7 +651,7 @@ class make_like_ui extends StatelessWidget {
                   //     ? Colors.pinkAccent.withOpacity(.6)
                   //     : Colors.transparent,
                   borderRadius: BorderRadius.circular(20.0)),
-              child: modelsPost[i].getUserLikePost(uid)
+              child: modelsPost[i].likeResults[uid] == uid
                   ? Image.asset("assets/icons/like_up.png")
                   : Image.asset(
                       "assets/icons/like.png",

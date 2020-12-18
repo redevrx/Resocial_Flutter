@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/comments/screen/comments.dart';
 import 'package:socialapp/home/export/export_file.dart';
+import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/notifications/bloc/notifyBloc.dart';
 import 'package:socialapp/notifications/bloc/notifyEvent.dart';
 import 'package:socialapp/notifications/bloc/notifyState.dart';
@@ -67,7 +68,7 @@ class _notifyScreen extends State<NotifyScreen> {
                 //build app bar
                 AppBarCustom(
                   widgetSize: 150,
-                  title: "Resocial",
+                  title: "${AppLocalizations.of(context).translate("appName")}",
                   titleColor: widget.bodyColor,
                   status: "home page",
                 ),

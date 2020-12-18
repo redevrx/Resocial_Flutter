@@ -21,6 +21,7 @@ import 'package:socialapp/home/widget/post_widget.dart';
 import 'dart:async';
 import 'package:socialapp/likes/bloc/likes_bloc.dart';
 import 'package:socialapp/likes/export/export_like.dart';
+import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/textMore/bloc/text_more_bloc.dart';
 import 'package:socialapp/userPost/bloc/post_bloc.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
@@ -248,8 +249,6 @@ class _stackUserPost extends State<stackUserPost> {
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
-
     //bloc instanc
     likeBloc = BlocProvider.of<LikeBloc>(context);
     textMoreBloc = BlocProvider.of<TextMoreBloc>(context);
@@ -257,6 +256,7 @@ class _stackUserPost extends State<stackUserPost> {
 
     _getUId();
     _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+    super.initState();
 
     _scrollController.addListener(_onScroll);
   }
@@ -268,21 +268,6 @@ class _stackUserPost extends State<stackUserPost> {
     widget.myFeedBloc.add(DisponseFeed());
     widget.editProfileBloc.add(onDisponscEditProfile());
     _scrollController.dispose();
-  }
-
-  void _onScroll() {
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.position.pixels;
-    // if (maxScroll - currentScroll <= _scrollThreshold) {
-    if (_scrollController.offset >=
-            _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
-      widget.myFeedBloc
-          .add(onLoadUserFeedClick(from: "profile", refeshPage: refreshList));
-      // final repository = FeedRepository();
-      // repository.requestMoreData();
-      print("load feed more :${maxScroll - currentScroll}");
-    }
   }
 
   @override
@@ -329,6 +314,7 @@ class _stackUserPost extends State<stackUserPost> {
                     child: ListView.builder(
                       physics: ScrollPhysics(),
                       itemCount: state.models.length,
+                      controller: _scrollController,
                       itemBuilder: (context, i) {
                         //load feed successful
                         // check post type
@@ -378,6 +364,7 @@ class _stackUserPost extends State<stackUserPost> {
                     child: ListView.builder(
                       physics: ScrollPhysics(),
                       itemCount: state.models.length,
+                      controller: _scrollController,
                       itemBuilder: (context, i) {
                         //load feed successful
                         // check post type
@@ -481,6 +468,21 @@ class _stackUserPost extends State<stackUserPost> {
         ),
       ),
     );
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    // if (maxScroll - currentScroll <= _scrollThreshold) {
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      widget.myFeedBloc
+          .add(onLoadUserFeedClick(from: "profile", refeshPage: refreshList));
+      // final repository = FeedRepository();
+      // repository.requestMoreData();
+      print("load feed this user more :${maxScroll - currentScroll}");
+    }
   }
 }
 
@@ -872,7 +874,7 @@ Future<void> _customDialogUserName(
                   children: <Widget>[
                     //title
                     Text(
-                      "Edit",
+                      "${AppLocalizations.of(context).translate("edit")}",
                       style: TextStyle(fontSize: 30.0, color: Colors.green),
                     ),
                     SizedBox(
@@ -891,7 +893,8 @@ Future<void> _customDialogUserName(
                           keyboardType: TextInputType.multiline,
                           decoration: InputDecoration(
                               labelStyle: TextStyle(color: Colors.black),
-                              labelText: "user Name",
+                              labelText:
+                                  "${AppLocalizations.of(context).translate("lableUserName")}",
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(20.0),
@@ -927,7 +930,8 @@ Future<void> _customDialogUserName(
                             icon: Icons.upload_rounded,
                             iconSize: 26.0,
                             radius: 42.0,
-                            message: "UP Now",
+                            message:
+                                "${AppLocalizations.of(context).translate("btnUpdateNow")}",
                             onClick: () {
                               editProfileBloc
                                   .add(EditProfileNameClik(data: textChange));
@@ -1004,7 +1008,7 @@ Future<void> _customDialogStatus(
                   children: <Widget>[
                     //title
                     Text(
-                      "Edit",
+                      "${AppLocalizations.of(context).translate("edit")}",
                       style: TextStyle(fontSize: 30.0, color: Colors.green),
                     ),
                     SizedBox(
@@ -1059,7 +1063,8 @@ Future<void> _customDialogStatus(
                             icon: Icons.upload_outlined,
                             iconSize: 26.0,
                             radius: 42.0,
-                            message: "UP Now",
+                            message:
+                                "${AppLocalizations.of(context).translate("btnUpdateNow")}",
                             onClick: () {
                               editProfileBloc.add(
                                   EditProfileStstusClick(data: textChange));
@@ -1122,7 +1127,7 @@ Future<void> _customDialog(BuildContext context, bool _fromTop,
               children: <Widget>[
                 //title
                 Text(
-                  "Select",
+                  "${AppLocalizations.of(context).translate("lableSelect")}",
                   style: TextStyle(
                     fontSize: 30.0,
                   ),
@@ -1131,7 +1136,7 @@ Future<void> _customDialog(BuildContext context, bool _fromTop,
                   height: 36.0,
                 ),
                 Text(
-                  "Select Image From Camera\n \nor Gallery...",
+                  "${AppLocalizations.of(context).translate("bodySelectImage")}",
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 20.0,
@@ -1154,7 +1159,7 @@ Future<void> _customDialog(BuildContext context, bool _fromTop,
                                 context, editProfileBloc, type);
                           },
                           child: Text(
-                            "Camera",
+                            "${AppLocalizations.of(context).translate("btnCamera")}",
                             style: Theme.of(context)
                                 .textTheme
                                 .headline6
@@ -1171,7 +1176,7 @@ Future<void> _customDialog(BuildContext context, bool _fromTop,
                                 context, editProfileBloc, type);
                           },
                           child: Text(
-                            "Gallery",
+                            "${AppLocalizations.of(context).translate("btnGallery")}",
                             style: Theme.of(context)
                                 .textTheme
                                 .headline6

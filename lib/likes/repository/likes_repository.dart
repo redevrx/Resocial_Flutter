@@ -265,9 +265,9 @@ class LikeRepository {
           .collection("notify")
           .doc(postId)
           .set(notifyData)
-          .then((value) {
+          .then((value) async {
         print("create notify like success..");
-        counterNotifyChange(onwerId);
+        await counterNotifyChange(onwerId);
       });
     });
   }

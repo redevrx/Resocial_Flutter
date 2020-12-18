@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'package:socialapp/findFriends/models/findFriendResult_model.dart';
 
 class FriensManageRepo {
+//read friends and check as friend with this user
   Future<List<FindFreindResultModel>> onFindFreindListStatus(
       List<FrindsModel> friendList) async {
     //new instances freind model list
@@ -42,6 +44,10 @@ class FriensManageRepo {
     return friendModel;
   }
 
+//check status freidn
+//requesting
+//sending
+//
   Future<String> onCheckFriendInfo(String friendId) async {
     final _mRef = FirebaseFirestore.instance;
     final _pref = await SharedPreferences.getInstance();
@@ -115,6 +121,7 @@ class FriensManageRepo {
     return result;
   }
 
+//send request to freind
   Future<String> onRequestFreind(String friendId) async {
     bool it1, it2 = false;
     var result = "";
@@ -151,6 +158,8 @@ class FriensManageRepo {
 
     if (it1 && it2) {
       result = "successfully";
+
+      await sendNotifyToRequestFreind(friendId, uid, "request");
     } else {
       result = "request Faield..";
     }
@@ -158,6 +167,101 @@ class FriensManageRepo {
     return result;
   }
 
+//send notify to freind that to request
+  Future<void> sendNotifyToRequestFreind(
+      String friendId, String uid, String type) async {
+    //get time now
+    var now = DateTime.now();
+    //date format
+    var date = DateFormat("yyyy-MM-dd").format(now);
+    // String mDate = date.format(dateTime);
+
+    // time format
+    var time = DateFormat("H:m:s").format(now);
+
+    final _mRef = FirebaseFirestore.instance;
+
+    await _mRef.collection("user info").doc(uid).get().then((info) async {
+      //
+      final name = info.get("user").toString();
+
+      // map keep  detail notification
+      final notifyData = Map<String, String>();
+      notifyData['date'] = date;
+      notifyData['time'] = time;
+      notifyData['uid'] = uid;
+      notifyData['friendId'] = friendId;
+      notifyData['type'] = type;
+      notifyData["name"] = name;
+      notifyData['postID'] = "postId";
+      notifyData['message'] = 'like notification';
+      notifyData['profileUrl'] =
+          await _mRef.collection("user info").doc(uid).get().then((info) {
+        return info.get('imageProfile').toString();
+      });
+
+      // //create firebase firestore instand
+      // //save
+      _mRef
+          .collection("Notifications")
+          .doc(friendId)
+          .collection("notify")
+          .doc(uid)
+          .set(notifyData)
+          .then((value) {
+        print("create notify request friend success..");
+        counterNotifyChange(friendId);
+      });
+    });
+  }
+
+//increment value + 1 if click like
+  Future counterNotifyChange(String friendId) async {
+    final _mRef = FirebaseFirestore.instance;
+    //load counter notification and + 1
+    try {
+      await _mRef
+          .collection("Notifications")
+          .doc(friendId)
+          .collection("counter")
+          .doc('counter')
+          .get()
+          .then((counterNotify) {
+        if (counterNotify.data() == null) {
+          //new counter 0
+          int c = 0;
+          _mRef
+              .collection("Notifications")
+              .doc(friendId)
+              .collection("counter")
+              .doc('counter')
+              .set({'counter': c += 1});
+        } else {
+//current + = 1
+          int c = 0;
+          c = int.parse(counterNotify.get("counter").toString());
+          _mRef
+              .collection("Notifications")
+              .doc(friendId)
+              .collection("counter")
+              .doc('counter')
+              .set({'counter': c += 1});
+        }
+      });
+    } catch (e) {
+      //new counter 0
+      print(e);
+      // int c = 0;
+      // _mRef
+      //     .collection("Notifications")
+      //     .doc(onwerId)
+      //     .collection("notify")
+      //     .doc("counter")
+      //     .set({'counter': c += 1});
+    }
+  }
+
+//unrequest freind
   Future<String> onUnRequest(String friendId) async {
     bool it1, it2 = false;
     var result = "";
@@ -196,6 +300,8 @@ class FriensManageRepo {
     return result;
   }
 
+//other user request
+//select accept or remove request
   Future<String> onAcceptFreind(String friendId) async {
     bool it1, it2 = false;
     var result = "";
@@ -257,6 +363,8 @@ class FriensManageRepo {
 
     if (it1 && it2) {
       result = "successfully";
+
+      sendNotifyToRequestFreind(friendId, uid, "accept");
     } else {
       result = "Remove Faield..";
     }
@@ -264,6 +372,7 @@ class FriensManageRepo {
     return result;
   }
 
+//remove freind
   Future<String> onRemoveFriends(String friendId) async {
     bool it1, it2 = false;
     var result = "";

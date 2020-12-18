@@ -19,17 +19,7 @@ class LikeBloc extends Bloc<LikeEvent, LikeState> {
       // user like or unlike
       // yield onLikeProgress();
       yield onLikesResult(likeResult: false);
-
-      bool result;
-      result = await repository.onLike(
-          event.postId, event.statusLike, event.onwerId);
-
-      if (result != null) {
-        //true is user click action unlike success
-        //false is user click like post  success
-        print('like click :${result}');
-        //  yield onLikesResult(likeResult: result);
-      }
+      await onClickLike(event);
     }
     if (event is onCheckLikeClick) {
       // check user like this post or not like this post
@@ -61,15 +51,30 @@ class LikeBloc extends Bloc<LikeEvent, LikeState> {
       if (result != null) {
         //true is user click action unlike success
         //false is user click like post  success
-        print('like click :${result}');
+        print('onCehckOneLike like click :${result}');
         yield onLikesResult(likeResult: result);
       }
     }
     if (event is onLikeResultPostClick) {
-      yield onLikeProgress();
+      // yield onLikeProgress();
 
-      Future.delayed(Duration(milliseconds: 700));
+      // Future.delayed(Duration(milliseconds: 700));
       yield onLikeResultPost();
+    }
+  }
+
+  //make like or unlike
+
+  Future<void> onClickLike(onLikeClick event) async {
+    bool result;
+    result =
+        await repository.onLike(event.postId, event.statusLike, event.onwerId);
+
+    if (result != null) {
+      //true is user click action unlike success
+      //false is user click like post  success
+      print('like click :${result}');
+      //  yield onLikesResult(likeResult: result);
     }
   }
 }

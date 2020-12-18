@@ -1,16 +1,21 @@
 there are bug like
- -request freind send notify
+-all friend page click go to profile page
+ *multi language Thai-Eng
+ -forget password
  -remove comment
+ - group freind notify
+   - disable request notify
+   - disable like notify 
 
     
       
 
 new feature 
- -forget password
  - login with facebook and google
- -blok user in other profile
+ *blok user in other profile
  -block user in search friend page
- *multi language Thai-Eng
  -comment with image
  -post multi image
  -post vdo
+ *Message one to one chat
+ *Vedio call or voice call 
