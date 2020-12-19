@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:socialapp/Login/bloc/login_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/screen/user_profile.dart';
 import 'package:socialapp/Profile/colorBloc/bloc_color.dart';
@@ -105,26 +106,28 @@ class _fechPage extends State<HomePage> {
                             child: BlocProvider(
                               create: (context) => NotifyBloc(NotifyLoading()),
                               child: BlocProvider(
-                                create: (context) => ColorBloc(
-                                    onColorChangeState(
-                                        color: Colors.blueAccent)),
-                                child: BlocBuilder<PageNaviagtorChageBloc,
-                                    PageChangeState>(
-                                  builder: (context, state) {
-                                    if (state is onPageChangeState) {
-                                      selectedBar = state.pageNumber;
-                                      return IndexedStack(
-                                        index: state.pageNumber,
-                                        children: pageItem,
-                                      );
-                                    }
-                                    return IndexedStack(
-                                      index: 0,
-                                      children: pageItem,
-                                    );
-                                  },
-                                ),
-                              ),
+                                  create: (context) => ColorBloc(
+                                      onColorChangeState(
+                                          color: Colors.blueAccent)),
+                                  child: BlocProvider(
+                                    create: (context) => LoginBloc(),
+                                    child: BlocBuilder<PageNaviagtorChageBloc,
+                                        PageChangeState>(
+                                      builder: (context, state) {
+                                        if (state is onPageChangeState) {
+                                          selectedBar = state.pageNumber;
+                                          return IndexedStack(
+                                            index: state.pageNumber,
+                                            children: pageItem,
+                                          );
+                                        }
+                                        return IndexedStack(
+                                          index: 0,
+                                          children: pageItem,
+                                        );
+                                      },
+                                    ),
+                                  )),
                             )
                             // selectedBar == 0
                             //     ? homePage(

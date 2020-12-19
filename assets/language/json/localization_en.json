@@ -9,6 +9,8 @@
     "edit": "Edit",
     "lableConfrimPassword": "Confirm Password",
     "lableEmail": "Email",
+    "invalidEmail":"invalid email",
+    "invalidPassword":"invalid password en 2 and number 6",
     "lableHomePage": "Home",
     "lableNotify": "Notify",
     "lablePassword": "Password",
@@ -35,6 +37,11 @@
     "titleRequestPage": "Request Friends",
     "titleSettingApp": "Setting App",
     "titleSignUp": "Sing Up",
+    "titleSignIn":"Sign In",
     "titleSingOut": "Sing Out",
-    "titleLanguage":"English Language"
+    "titleLanguage":"English Language",
+    "textResetPassowrdSuccess":"send change password in email success",
+    "textResetPasswordError":"error send change password in email",
+    "textEmailResetPassword":"Enter Current Email",
+    "btnOk":"OK"
 }

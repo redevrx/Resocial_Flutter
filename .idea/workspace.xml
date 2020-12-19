@@ -27,29 +27,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c30520a-dc2b-44cf-959d-9a124e4aee58" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.packages" beforeDir="false" afterPath="$PROJECT_DIR$/.packages" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc.txt" beforeDir="false" afterPath="$PROJECT_DIR$/doc.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/Profile/EditPtofile/screen/user_profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Profile/EditPtofile/screen/user_profile.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/editPost/screen/edit_user_post.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/editPost/screen/edit_user_post.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/findFriends/repository/friend_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/findFriends/repository/friend_repository.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/findFriends/widget/search_friends.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/findFriends/widget/search_friends.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/home/bloc/bloc_my_feed.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/bloc/bloc_my_feed.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/home/bloc/event_my_feed.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/bloc/event_my_feed.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/home/bloc/state_my_feed.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/bloc/state_my_feed.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/home/repository/feed_data_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/repository/feed_data_repository.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/home/screen/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/screen/home_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/home/screen/look_image.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/screen/look_image.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/home/widget/widget_home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/widget/widget_home_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/notifications/screen/notify_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/notifications/screen/notify_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/showFriend/widget/widget_show_request.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/showFriend/widget/widget_show_request.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/userPost/screen/create_new_post.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/userPost/screen/create_new_post.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/materialButton/materialButton.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-    </list>
+    <list default="true" id="5c30520a-dc2b-44cf-959d-9a124e4aee58" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:socialapp/Login/bloc/events/login_evevt.dart';
 import 'package:socialapp/Login/bloc/login_bloc.dart';
 import 'package:socialapp/Login/bloc/states/login_state.dart';
+import 'package:socialapp/localizations/languages.dart';
 
 class buttonToLogin extends StatelessWidget {
   final LoginBloc bloc;
@@ -18,7 +19,7 @@ class buttonToLogin extends StatelessWidget {
         child: OutlineButton(
           highlightedBorderColor: Colors.red,
           child: Text(
-            'Login',
+            "${AppLocalizations.of(context).translate("btnLogin")}",
             style: Theme.of(context)
                 .textTheme
                 .headline5
@@ -63,9 +64,10 @@ class textPasswordCm extends StatelessWidget {
                   errorText: (state == null)
                       ? null
                       : state.password.invalid
-                          ? "password invaid en 2 and number 6"
+                          ? "${AppLocalizations.of(context).translate("invalidPassword")}"
                           : null,
-                  hintText: "Confrim Password",
+                  hintText:
+                      "${AppLocalizations.of(context).translate("lableConfrimPassword")}",
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20.0),
@@ -116,9 +118,10 @@ class txtPassword extends StatelessWidget {
                   errorText: (state == null)
                       ? null
                       : state.password.invalid
-                          ? "password invaid en 2 and number 6"
+                          ? "${AppLocalizations.of(context).translate("invalidPassword")}"
                           : null,
-                  hintText: "Password",
+                  hintText:
+                      "${AppLocalizations.of(context).translate("lablePassword")}",
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20.0),
@@ -164,7 +167,8 @@ class textUserName extends StatelessWidget {
               onChanged: (name) =>
                   loginBloc.add(onUserNameChange(userName: name)),
               decoration: InputDecoration(
-                  hintText: "User Name",
+                  hintText:
+                      "${AppLocalizations.of(context).translate("lableUserName")}",
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20.0),

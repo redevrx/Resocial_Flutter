@@ -4,6 +4,7 @@ import 'package:socialapp/Login/bloc/login_bloc.dart';
 import 'package:socialapp/Login/bloc/states/login_state.dart';
 import 'package:socialapp/Login/screen/widget/login/login_widget.dart';
 import 'package:socialapp/Login/screen/widget/register/register_widget.dart';
+import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'package:socialapp/widgets/cardBackground/item_card_shape_v2.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,8 @@ class signUpScreen extends StatelessWidget {
                 children: <Widget>[
                   // app bar page
                   AppBarCustom(
-                    title: 'Sign Up',
+                    title:
+                        "${AppLocalizations.of(context).translate("titleSignUp")}",
                     titleColor: Color(0xFFFF2D55),
                     status: "register",
                   ),
@@ -295,7 +297,7 @@ class buttonSignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-      child: Text("Sign Up"),
+      child: Text("${AppLocalizations.of(context).translate("btnSingUp")}"),
       elevation: 8.0,
       textColor: Colors.white.withOpacity(.9),
       color: Colors.red,

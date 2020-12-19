@@ -1,17 +1,15 @@
 there are bug like
--all friend page click go to profile page
- *multi language Thai-Eng
- -forget password
+ - login with facebook and google
  -remove comment
  - group freind notify
    - disable request notify
    - disable like notify 
+  -bug remove notify screen <predi>
 
     
       
 
 new feature 
- - login with facebook and google
  *blok user in other profile
  -block user in search friend page
  -comment with image

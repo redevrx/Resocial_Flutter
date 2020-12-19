@@ -47,9 +47,15 @@ class NotifyCard extends StatelessWidget {
           ),
           onDismissed: (direction) {
             if (direction == DismissDirection.startToEnd) {
-              notifyBloc.add(RemoveNotify(postId: model.postID));
+              if (model.type == "accept")
+                notifyBloc.add(RemoveNotify(postId: model.uid));
+              else
+                notifyBloc.add(RemoveNotify(postId: model.postID));
             } else {
-              notifyBloc.add(RemoveNotify(postId: model.postID));
+              if (model.type == "accept")
+                notifyBloc.add(RemoveNotify(postId: model.uid));
+              else
+                notifyBloc.add(RemoveNotify(postId: model.postID));
             }
           },
           key: UniqueKey(),

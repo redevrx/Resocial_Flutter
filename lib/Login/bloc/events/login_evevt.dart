@@ -9,6 +9,12 @@ class onLogin extends LoginEvevt {
   onLogin(this.data);
 }
 
+class onUserChangePassowrdEvent extends LoginEvevt {
+  final String email;
+
+  onUserChangePassowrdEvent({this.email});
+}
+
 class onSignUp extends LoginEvevt {
   final SignUpModel data;
 

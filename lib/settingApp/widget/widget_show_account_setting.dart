@@ -1,7 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_buttonx/materialButtonX.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:socialapp/Login/bloc/events/login_evevt.dart';
+import 'package:socialapp/Login/bloc/login_bloc.dart';
+import 'package:socialapp/Login/bloc/states/login_state.dart';
 import 'package:socialapp/home/bloc/bloc_pageChange.dart';
 import 'package:socialapp/home/bloc/event_pageChange.dart';
 import 'package:socialapp/localizations/languages.dart';
@@ -21,11 +26,20 @@ class widgetShowAccountSetting extends StatefulWidget {
 
 class _widgetShowAccountSettingState extends State<widgetShowAccountSetting> {
   AppLocalizations localeApp;
+  LoginBloc loginBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loginBloc = BlocProvider.of<LoginBloc>(context);
+  }
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+
     localeApp = AppLocalizations(null);
   }
 
@@ -112,6 +126,10 @@ class _widgetShowAccountSettingState extends State<widgetShowAccountSetting> {
                     ],
                   ),
                   InkWell(
+                    onTap: () {
+                      //show dialog question change password
+                      _userChangePassword(context);
+                    },
                     child: Icon(
                       Icons.arrow_forward_ios,
                       size: 30.0,
@@ -221,6 +239,218 @@ class _widgetShowAccountSettingState extends State<widgetShowAccountSetting> {
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> _showResult(
+      BuildContext context, String message, Color typeColor, bool from) {
+    return showGeneralDialog(
+      barrierDismissible: true,
+      barrierLabel: "alert result for change password",
+      transitionDuration: Duration(milliseconds: 800),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween(begin: Offset(0, (from) ? -1 : 1), end: Offset.zero)
+              .animate(animation),
+          child: child,
+        );
+      },
+      context: context,
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Align(
+          alignment: from ? Alignment.bottomCenter : Alignment.topCenter,
+          child: Container(
+            height: 150.0,
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(horizontal: 32.0, vertical: 62.0),
+            padding: EdgeInsets.only(right: 4.0),
+            decoration: BoxDecoration(
+                color: typeColor, borderRadius: BorderRadius.circular(22.0)),
+            child: Stack(
+              children: [
+                Container(
+                  height: 150.0,
+                  width: double.infinity,
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(22.0)),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 12.0,
+                      ),
+                      Text("${message}",
+                          style: TextStyle(
+                              color: Colors.black45,
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.bold,
+                              decorationColor: Colors.white)),
+                      Spacer(),
+                      Material(
+                        child: MaterialButtonX(
+                          onClick: () => Navigator.of(context).pop(),
+                          color: Colors.blueAccent,
+                          height: 38.0,
+                          icon: Icons.offline_pin,
+                          iconSize: 20.0,
+                          message:
+                              "${AppLocalizations.of(context).translate("btnOk")}",
+                          radius: 38.0,
+                          width: 110.0,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _userChangePassword(BuildContext context) {
+    bool _from = false;
+    return showGeneralDialog(
+      barrierDismissible: true,
+      barrierLabel: "user change passowrd",
+      transitionDuration: Duration(milliseconds: 400),
+      context: context,
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween(begin: Offset(0, (_from) ? -1 : 1), end: Offset.zero)
+              .animate(animation),
+          child: child,
+        );
+      },
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Align(
+          alignment: _from ? Alignment.bottomCenter : Alignment.topCenter,
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 32.0, vertical: 62.0),
+            padding: EdgeInsets.only(right: 4.0),
+            width: double.infinity,
+            height: 250.0,
+            decoration: BoxDecoration(
+                color: Colors.blue, borderRadius: BorderRadius.circular(22.0)),
+            child: Stack(
+              children: [
+                Positioned(
+                    child: Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
+                  height: 250.0,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(22.0)),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 12.0,
+                      ),
+                      Text(
+                        "${AppLocalizations.of(context).translate("titleForgotPassword")}",
+                        style: TextStyle(
+                            color: Colors.black45,
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.bold,
+                            decorationColor: Colors.white),
+                      ),
+                      SizedBox(
+                        height: 42.0,
+                      ),
+                      BlocBuilder<LoginBloc, LoginState>(
+                        buildWhen: (previous, current) =>
+                            previous.email != current.email,
+                        cubit: loginBloc,
+                        builder: (context, state) {
+                          if (state is onEmailStateChange) {
+                            print("onEmailStateChange");
+                            //current password
+                            Material(
+                                child: TextField(
+                                    onSubmitted: (email) => loginBloc.add(
+                                        onUserChangePassowrdEvent(
+                                            email: email)),
+                                    onChanged: (email) => loginBloc
+                                        .add(onEmailChange(email: email)),
+                                    enableInteractiveSelection: false,
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      errorText: (state == null)
+                                          ? null
+                                          : state.email.invalid
+                                              ? "${AppLocalizations.of(context).translate("invalidEmail")}"
+                                              : null,
+                                      hintText:
+                                          "${AppLocalizations.of(context).translate("textEmailResetPassword")}",
+                                      enabledBorder: InputBorder.none,
+                                    )));
+                          }
+                          return Material(
+                              child: TextFormField(
+                                  onChanged: (email) => loginBloc
+                                      .add(onEmailChange(email: email)),
+                                  enableInteractiveSelection: false,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    hintText:
+                                        "${AppLocalizations.of(context).translate("textEmailResetPassword")}",
+                                    enabledBorder: InputBorder.none,
+                                  )));
+                        },
+                      ),
+                      Spacer(),
+                      BlocListener<LoginBloc, LoginState>(
+                        cubit: loginBloc,
+                        listener: (context, state) {
+                          if (state is onUserChangePasswordState) {
+                            //show alert dialog success
+                            Navigator.of(context).pop();
+                            _showResult(
+                                context,
+                                "${AppLocalizations.of(context).translate("textResetPassowrdSuccess")}",
+                                Colors.green,
+                                true);
+                          }
+                          if (state is onUserChangePasswordErrorState) {
+                            //show alert dialog error
+                            Navigator.of(context).pop();
+                            _showResult(
+                                context,
+                                "${AppLocalizations.of(context).translate("textResetPasswordError")}",
+                                Colors.redAccent,
+                                true);
+                          }
+                        },
+                        child: Container(),
+                      ),
+                      Material(
+                        child: MaterialButtonX(
+                          onClick: () => loginBloc
+                              .add(onUserChangePassowrdEvent(email: null)),
+                          color: Colors.blueAccent,
+                          height: 38.0,
+                          icon: Icons.vpn_key_rounded,
+                          iconSize: 20.0,
+                          message:
+                              "${AppLocalizations.of(context).translate("btnOk")}",
+                          radius: 38.0,
+                          width: 110.0,
+                        ),
+                      )
+                    ],
+                  ),
+                ))
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

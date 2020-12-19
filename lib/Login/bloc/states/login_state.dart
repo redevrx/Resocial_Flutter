@@ -99,6 +99,18 @@ class onEmailStateChange extends LoginState {
   }
 }
 
+class onUserChangePasswordState extends LoginState {
+  final String resulChange;
+
+  onUserChangePasswordState(this.resulChange);
+}
+
+class onUserChangePasswordErrorState extends LoginState {
+  final String resulError;
+
+  onUserChangePasswordErrorState(this.resulError);
+}
+
 class onPasswordStateChange extends LoginState {
   final Email email;
   final Password password;

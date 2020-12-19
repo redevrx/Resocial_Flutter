@@ -1,10 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:socialapp/Login/bloc/events/login_evevt.dart';
 import 'package:socialapp/Login/bloc/login_bloc.dart';
-import 'package:socialapp/Login/bloc/models/login_model.dart';
 import 'package:socialapp/Login/bloc/states/login_state.dart';
+import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/widgets/cardBackground/item_card_shape_v2.dart';
 // import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -21,7 +19,7 @@ class buttonLogin extends StatelessWidget {
     return RaisedButton(
       elevation: 8.0,
       child: Text(
-        " Login ",
+        "${AppLocalizations.of(context).translate("btnLogin")}",
         style: Theme.of(context).textTheme.headline6.apply(color: Colors.white),
       ),
       textColor: Colors.white,
@@ -50,7 +48,7 @@ class buttonToSignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlineButton(
       child: Text(
-        "Sign Up",
+        "${AppLocalizations.of(context).translate("btnSingUp")}",
         style: Theme.of(context).textTheme.headline6.apply(color: Colors.white),
       ),
       borderSide: BorderSide(color: Color(0xFF0D8E53)),
@@ -90,12 +88,13 @@ class textPassword extends StatelessWidget {
               errorText: (state == null)
                   ? null
                   : state.password.invalid
-                      ? 'invalid password en 2 and number 6'
+                      ? "${AppLocalizations.of(context).translate("invalidPassword")}"
                       : null,
               prefixIcon: Icon(Icons.vpn_key, color: Colors.white),
               filled: true,
               hintStyle: TextStyle(color: Colors.white),
-              hintText: "Password",
+              hintText:
+                  "${AppLocalizations.of(context).translate("lablePassword")}",
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
@@ -142,10 +141,11 @@ class textEmail extends StatelessWidget {
               errorText: (state == null)
                   ? null
                   : state.email.invalid
-                      ? 'invalid email'
+                      ? "${AppLocalizations.of(context).translate("invalidEmail")}"
                       : null,
               hintStyle: TextStyle(color: Colors.white),
-              hintText: "Email",
+              hintText:
+                  "${AppLocalizations.of(context).translate("lableEmail")}",
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),

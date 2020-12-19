@@ -9,6 +9,8 @@
     "edit": "แก้ไข",
     "lableConfrimPassword": "ยืนยันรหัสผ่าน",
     "lableEmail": "อีเมล",
+    "invalidEmail":"อีเมลไม่ถูกต้อง",
+    "invalidPassword":"รหัสไม่ถูกใส่ตัวเลข 6 ตัว ภาษาอังกฤษ 2 ตัว",
     "lableHomePage": "เนื้อหา",
     "lableNotify": "แจ้งเตือน",
     "lablePassword": "รหัสผ่าน",
@@ -35,6 +37,11 @@
     "titleRequestPage": "คำขอเป็นเพื่อน",
     "titleSettingApp": "ตั้งค่าแอพ",
     "titleSignUp": "สมัครสมาชิก",
+    "titleSignIn":"เข้าใช้งานระบบ",
     "titleSingOut": "ออกจากระบบ",
-    "titleLanguage":"ภาษาไทย"
+    "titleLanguage":"ภาษาไทย",
+    "textResetPassowrdSuccess":"ส่งข้อมูลการเปลี่ยนรหัสไปที่อีเมลแล้ว",
+    "textResetPasswordError":"ส่งข้อมูลการเปลี่ยนรหัสไปที่อีเมลไม่สำเร็จ",
+    "textEmailResetPassword":"กรุณากรอกอีเมลปัจจุบัน",
+    "btnOk":"ยอมรับ"
 }

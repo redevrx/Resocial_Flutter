@@ -60,6 +60,39 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
       await _sharedPreferences.setString("cmPassword", _password.value);
       yield onCmPasswordStateChange().copyWith(
           password: _password, status: Formz.validate([_password, _password]));
+    } else if (event is onUserChangePassowrdEvent) {
+      yield* onChangePassword(event);
+    }
+  }
+
+  @override
+  Stream<LoginState> onChangePassword(onUserChangePassowrdEvent event) async* {
+    final _auth = FirebaseAuth.instance;
+    _sharedPreferences = await SharedPreferences.getInstance();
+    bool checkError = false;
+
+    await _auth
+        .sendPasswordResetEmail(
+            email: event.email ?? _sharedPreferences.getString("email"))
+        .whenComplete(() {
+      print("send change password in email success");
+      checkError = true;
+    }).catchError((e) {
+      print("error send change password in email :${e}");
+      checkError = false;
+    });
+
+    if (checkError) {
+      //send email change password
+      //success
+      //remove all data user register in shared preferace
+      await _sharedPreferences.remove("email");
+      yield onUserChangePasswordState("");
+    } else {
+      //error
+      //remove all data user register in shared preferace
+      await _sharedPreferences.remove("email");
+      yield onUserChangePasswordErrorState("resulError");
     }
   }
 
@@ -96,10 +129,10 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
         if (it2) {
           //use.uid.toString()
           //remove all data user register in shared preferace
-          _sharedPreferences.remove("email");
-          _sharedPreferences.remove("userName");
-          _sharedPreferences.remove("password");
-          _sharedPreferences.remove("cmPassword");
+          await _sharedPreferences.remove("email");
+          await _sharedPreferences.remove("userName");
+          await _sharedPreferences.remove("password");
+          await _sharedPreferences.remove("cmPassword");
           print("craete account success");
           yield onCreateAccountSuccessfully("${use.uid.toString()}");
         }

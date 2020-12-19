@@ -2,6 +2,7 @@ import 'package:socialapp/Login/bloc/login_bloc.dart';
 import 'package:socialapp/Login/bloc/states/login_state.dart';
 import 'package:socialapp/Login/screen/register_user.dart';
 import 'package:socialapp/Login/screen/widget/login/login_widget.dart';
+import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -63,7 +64,8 @@ class loginScreen extends StatelessWidget {
                 children: <Widget>[
                   //make app bar title login app
                   AppBarCustom(
-                    title: 'Sign in',
+                    title:
+                        "${AppLocalizations.of(context).translate("titleSignIn")}",
                     titleColor: Color(0xFF0D8E53),
                     status: "login",
                   ),
