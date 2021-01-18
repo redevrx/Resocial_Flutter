@@ -48,6 +48,7 @@ dependencies:
   formz: ^0.3.2
   # background_fetch: ^0.6.0
   material_buttonx: ^2.0.2
+  transparent_image: ^1.0.0
   
 
 

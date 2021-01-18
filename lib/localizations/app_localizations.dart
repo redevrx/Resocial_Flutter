@@ -48,7 +48,7 @@ class AppLocalizations {
 
   // called from every widget which needs a localized text
   String translate(String jsonkey) {
-    return _localizedStrings[jsonkey].toString() ?? "not found";
+    return _localizedStrings[jsonkey] ?? "not found";
   }
 }
 

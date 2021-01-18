@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:socialapp/home/screen/home_page.dart';
 
 class widgetAppBarPost extends StatelessWidget {
   final String message;
@@ -41,7 +42,13 @@ class widgetAppBarPost extends StatelessWidget {
                     size: 30.0,
                   ),
                   onTap: () {
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(
+                            pageNumber: 0,
+                          ),
+                        ),
+                        (route) => false);
                   },
                 ),
                 Text(

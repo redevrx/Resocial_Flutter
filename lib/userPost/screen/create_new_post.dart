@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/event/edit_profile_event.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/state/edit_profile_state.dart';
+import 'package:socialapp/home/screen/home_page.dart';
 import 'package:socialapp/userPost/bloc/event_post.dart';
 import 'package:socialapp/userPost/bloc/post_bloc.dart';
 import 'package:socialapp/userPost/bloc/state_post.dart';
@@ -148,133 +149,143 @@ class __CreatePostState extends State<_CreatePost> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: constraints.maxHeight),
-            child: Column(
-              children: <Widget>[
-                //make widget get message and image that current use post
+    return WillPopScope(
+      onWillPop: () => Future.value(false),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Column(
+                children: <Widget>[
+                  //make widget get message and image that current use post
 
-                //1. make app bar show name screen
-                widgetAppBarPost(constraints: constraints, message: 'New Post'),
-                //2. make content widget
-                //add bloc get user detail name and image profile
-                BlocBuilder<EditProfileBloc, EditProfileState>(
-                  builder: (context, state) {
-                    if (state is onLoadUserSuccessfully) {
-                      return widgetShowUserDetail(model: state.data);
-                    }
-                    return Container(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  },
-                ),
-
-                //3 make post bloc show post status
-                // - success  give got to home
-                //- error show status error
-                BlocBuilder<PostBloc, StatePost>(
-                  builder: (context, state) {
-                    if (state is onPostProgress) {
+                  //1. make app bar show name screen
+                  widgetAppBarPost(
+                      constraints: constraints, message: 'New Post'),
+                  //2. make content widget
+                  //add bloc get user detail name and image profile
+                  BlocBuilder<EditProfileBloc, EditProfileState>(
+                    builder: (context, state) {
+                      if (state is onLoadUserSuccessfully) {
+                        return widgetShowUserDetail(model: state.data);
+                      }
                       return Container(
-                          child: Center(
-                        child: CircularProgressIndicator(),
-                      ));
-                    }
-                    if (state is onPostFailed) {
-                      return Container(
-                          child: Center(
-                        child: Text(
-                          'Failed',
-                          style: TextStyle(fontSize: 28.0),
+                        child: Center(
+                          child: CircularProgressIndicator(),
                         ),
-                      ));
-                    }
-                    if (state is onPostSuccessful) {
-                      // Navigator.of(context).pop();
-                      return Container(
-                          child: Center(
-                        child: CircularProgressIndicator(),
-                      ));
-                    }
-                    return Container();
-                  },
-                ),
-                //check bloc event navigator
-                BlocListener<PostBloc, StatePost>(
-                  listener: (context, state) {
-                    if (state is onPostSuccessful) {
-                      // Navigator.of(context).pushNamed('/home');
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: Container(),
-                ),
-                //make get text from user
-                SizedBox(
-                  height: 16.0,
-                ),
-                widgetGetMessage(
-                  postBloc: postBloc,
-                ),
+                      );
+                    },
+                  ),
 
-                //make image view
-                //make bloc for get image
-                SizedBox(
-                  height: 4.0,
-                ),
-                BlocBuilder<PostBloc, StatePost>(
-                  // buildWhen: (previous, current) => previous.imageFile != current.imageFIle,
-                  cubit: postBloc,
-                  builder: (context, state) {
-                    if (state is onImageFilePostChangeState) {
+                  //3 make post bloc show post status
+                  // - success  give got to home
+                  //- error show status error
+                  BlocBuilder<PostBloc, StatePost>(
+                    builder: (context, state) {
+                      if (state is onPostProgress) {
+                        return Container(
+                            child: Center(
+                          child: CircularProgressIndicator(),
+                        ));
+                      }
+                      if (state is onPostFailed) {
+                        return Container(
+                            child: Center(
+                          child: Text(
+                            'Failed',
+                            style: TextStyle(fontSize: 28.0),
+                          ),
+                        ));
+                      }
+                      if (state is onPostSuccessful) {
+                        // Navigator.of(context).pop();
+                        return Container(
+                            child: Center(
+                          child: CircularProgressIndicator(),
+                        ));
+                      }
+                      return Container();
+                    },
+                  ),
+                  //check bloc event navigator
+                  BlocListener<PostBloc, StatePost>(
+                    listener: (context, state) {
+                      if (state is onPostSuccessful) {
+                        // Navigator.of(context).pushNamed('/home');
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => HomePage(
+                                pageNumber: 0,
+                              ),
+                            ),
+                            (route) => false);
+                      }
+                    },
+                    child: Container(),
+                  ),
+                  //make get text from user
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  widgetGetMessage(
+                    postBloc: postBloc,
+                  ),
+
+                  //make image view
+                  //make bloc for get image
+                  SizedBox(
+                    height: 4.0,
+                  ),
+                  BlocBuilder<PostBloc, StatePost>(
+                    // buildWhen: (previous, current) => previous.imageFile != current.imageFIle,
+                    cubit: postBloc,
+                    builder: (context, state) {
+                      if (state is onImageFilePostChangeState) {
+                        return widgetShowImage(
+                          image: state.imageFile,
+                          url: "",
+                        );
+                      }
                       return widgetShowImage(
-                        image: state.imageFile,
+                        image: null,
                         url: "",
                       );
-                    }
-                    return widgetShowImage(
-                      image: null,
-                      url: "",
-                    );
-                  },
-                ),
-                //make bottom sheet
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: MaterialButtonX(
-                        message: "Post",
-                        height: 50.0,
-                        width: 150.0,
-                        color: Colors.blueAccent,
-                        icon: Icons.add,
-                        iconSize: 30.0,
-                        radius: 46.0,
-                        onClick: () {
-                          postBloc.add(onUserPost(
-                            uid: uid,
-                          ));
-                        },
-                      )
-                      //_buildFloatingActionButtonPost(postBloc),
-                      ),
-                ),
-                // _buildFloatingActionButtonPost(),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: _buildContainerBottonNav(postBloc),
-                ),
-              ],
+                    },
+                  ),
+                  //make bottom sheet
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: MaterialButtonX(
+                          message: "Post",
+                          height: 50.0,
+                          width: 150.0,
+                          color: Colors.blueAccent,
+                          icon: Icons.add,
+                          iconSize: 30.0,
+                          radius: 46.0,
+                          onClick: () {
+                            postBloc.add(onUserPost(
+                              uid: uid,
+                            ));
+                          },
+                        )
+                        //_buildFloatingActionButtonPost(postBloc),
+                        ),
+                  ),
+                  // _buildFloatingActionButtonPost(),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: _buildContainerBottonNav(postBloc),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
@@ -292,7 +303,7 @@ class __CreatePostState extends State<_CreatePost> {
   Container _buildContainerBottonNav(PostBloc postBloc) {
     return Container(
       height: 55.0,
-      margin: const EdgeInsets.all(12.0),
+      margin: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
       child: Material(
         color: Colors.white,
         elevation: 28.0,

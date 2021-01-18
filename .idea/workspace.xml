@@ -27,7 +27,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c30520a-dc2b-44cf-959d-9a124e4aee58" name="Default Changelist" comment="" />
+    <list default="true" id="5c30520a-dc2b-44cf-959d-9a124e4aee58" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/assets/icons/messenger.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/chat/screen/chat_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/widgets/appBar/app_bar_login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/appBar/app_bar_login.dart" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -49,12 +55,15 @@
     <allAvailableExecutables />
   </component>
   <component name="ProjectId" id="1iGqNmolvnHjKzpnin4LBpXWdLc" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
@@ -64,7 +73,7 @@
     <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="dart.settings" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
@@ -96,6 +105,9 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="520" y="260" key="#Custom_Plugin_Repositories" timestamp="1605605366346">
@@ -139,11 +151,11 @@
       <screen x="0" y="0" width="1280" height="720" />
     </state>
     <state width="1220" height="172" key="GridCell.Tab.0.right/0.0.1280.720@0.0.1280.720" timestamp="1603391989412" />
-    <state x="149" y="13" width="996" height="707" key="SettingsEditor" timestamp="1605605535681">
+    <state x="149" y="13" width="996" height="707" key="SettingsEditor" timestamp="1609225066366">
       <screen x="0" y="0" width="1280" height="720" />
     </state>
     <state x="142" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1603444397074" />
-    <state x="149" y="13" width="996" height="707" key="SettingsEditor/0.0.1280.720@0.0.1280.720" timestamp="1605605535681" />
+    <state x="149" y="13" width="996" height="707" key="SettingsEditor/0.0.1280.720@0.0.1280.720" timestamp="1609225066366" />
     <state x="93" y="93" width="1095" height="535" key="com.android.tools.idea.avdmanager.AvdListDialog" timestamp="1601719780186">
       <screen x="0" y="0" width="1280" height="720" />
     </state>

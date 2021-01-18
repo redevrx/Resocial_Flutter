@@ -2,6 +2,7 @@ import 'package:socialapp/Login/bloc/login_bloc.dart';
 import 'package:socialapp/Login/bloc/states/login_state.dart';
 import 'package:socialapp/Login/screen/register_user.dart';
 import 'package:socialapp/Login/screen/widget/login/login_widget.dart';
+import 'package:socialapp/home/screen/home_page.dart';
 import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'package:flutter/material.dart';
@@ -174,7 +175,14 @@ class loginScreen extends StatelessWidget {
                                 }));
                               } else if (state is onLoginSuccessfully) {
                                 print(state.toString());
-                                Navigator.of(context).pushNamed("/home");
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                      builder: (context) => HomePage(
+                                        pageNumber: 0,
+                                      ),
+                                    ),
+                                    (route) => false);
+                                // Navigator.of(context).pushNamed("/home");
                               }
                             },
                             child: Container(),

@@ -99,8 +99,8 @@ class _MyAppState extends State<MyApp> {
         title: "Social App",
         locale: _locale,
         supportedLocales: [
-          Locale('th', 'TH'),
           Locale('en', 'EN'),
+          Locale('th', 'TH'),
         ],
         localizationsDelegates: [
           AppLocalizations.delegate,

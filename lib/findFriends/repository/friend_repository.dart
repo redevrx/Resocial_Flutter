@@ -62,6 +62,7 @@ class FriendRepository {
         await friendList.add(new FrindsModel(
             uid: value.get("uid").toString(),
             imageProfile: value.get("imageProfile").toString(),
+            status: value.get("userStatus").toString(),
             userName: value.get("user").toString()));
       });
     }

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialapp/chat/bloc/scaleSizeAnimated/scale_bloc.dart';
+import 'package:socialapp/chat/bloc/scaleSizeAnimated/scale_state.dart';
+import 'package:socialapp/chat/screen/chat_screen.dart';
 import 'package:socialapp/findFriends/screens/show_lis_friends.dart';
 // import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -101,25 +105,58 @@ class AppBarCustom extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
               status == "home page"
-                  ? AnimatedContainer(
-                      // padding: EdgeInsets.all(4),
-                      duration: Duration(milliseconds: 800),
-                      decoration: BoxDecoration(
-                          color: titleColor.withOpacity(.4),
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                                color: titleColor.withOpacity(.46),
-                                blurRadius: 18,
-                                offset: Offset(.5, .5),
-                                spreadRadius: .1)
-                          ]),
-                      child: IconButton(
-                          icon: Icon(
-                            Icons.chat,
-                            color: titleColor,
-                          ),
-                          onPressed: () async {}))
+                  ? BlocProvider(
+                      create: (context) =>
+                          ScaleBloc(OnScaleSizeInitialResult(0.0)),
+                      child: AnimatedContainer(
+                          // padding: EdgeInsets.all(4),
+                          duration: Duration(milliseconds: 800),
+                          decoration: BoxDecoration(
+                              color: titleColor.withOpacity(.4),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: titleColor.withOpacity(.46),
+                                    blurRadius: 18,
+                                    offset: Offset(.5, .5),
+                                    spreadRadius: .1)
+                              ]),
+                          child: IconButton(
+                              icon: Image.asset(
+                                "assets/icons/messenger.png",
+                                width: 25.0,
+                                height: 25.0,
+                              ),
+                              onPressed: () async {
+                                // open to chat screen
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(seconds: 1),
+                                      transitionsBuilder: (context, animation,
+                                          secondaryAnimation, child) {
+                                        animation = CurvedAnimation(
+                                            parent: animation,
+                                            curve: Curves.easeInOutBack);
+                                        return ScaleTransition(
+                                          alignment: Alignment.center,
+                                          scale: animation,
+                                          child: child,
+                                        );
+                                      },
+                                      pageBuilder: (context, animation,
+                                          secondaryAnimation) {
+                                        return ChatScreen();
+                                      },
+                                    ),
+                                    (route) => false);
+                                // Navigator.of(context).pushAndRemoveUntil(
+                                //     MaterialPageRoute(
+                                //       builder: (context) => ChatScreen(),
+                                //     ),
+                                //     (route) => false);
+                              })),
+                    )
                   : status == "register"
                       ? Opacity(
                           opacity: 0.0,

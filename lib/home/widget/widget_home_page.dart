@@ -118,6 +118,26 @@ class _homePage extends State<homePage> {
     super.didChangeDependencies();
   }
 
+  void toPageCreatePost() {
+    Navigator.pushAndRemoveUntil(
+        context,
+        PageRouteBuilder(
+          transitionDuration: Duration(milliseconds: 700),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            animation =
+                CurvedAnimation(curve: Curves.easeInOutBack, parent: animation);
+            return ScaleTransition(
+              scale: animation,
+              child: child,
+            );
+          },
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return CreatePost();
+          },
+        ),
+        (r) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -150,7 +170,8 @@ class _homePage extends State<homePage> {
                     },
                     onLongPress: () {
                       print("create new post");
-                      Navigator.of(context).pushNamed("/newPost");
+                      // Navigator.of(context).pushNamed("/newPost");
+                      toPageCreatePost();
                     },
                   ),
                   //make bloc get feed data
@@ -185,7 +206,8 @@ class _homePage extends State<homePage> {
                                 onDoubleTap: () {},
                                 onLongPress: () {
                                   print("create new post");
-                                  Navigator.of(context).pushNamed("/newPost");
+                                  // Navigator.of(context).pushNamed("/newPost");
+                                  toPageCreatePost();
                                 },
                                 child: RefreshIndicator(
                                   color: Colors.green,
@@ -256,7 +278,7 @@ class _homePage extends State<homePage> {
                                 onDoubleTap: () {},
                                 onLongPress: () {
                                   print("create new post");
-                                  Navigator.of(context).pushNamed("/newPost");
+                                  toPageCreatePost();
                                 },
                                 child: RefreshIndicator(
                                   color: Colors.green,
