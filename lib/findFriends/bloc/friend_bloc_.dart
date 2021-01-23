@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialapp/chat/screen/chat_detial.dart';
 import 'package:socialapp/findFriends/bloc/friend_event_.dart';
 import 'package:socialapp/findFriends/bloc/friend_state_.dart';
 import 'dart:async';
@@ -45,9 +47,26 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
     print("${event.friendId}");
     final checkResult =
         await friendRepository.onCheckFriendCurrentUser(event.friendId);
-    if (checkResult != null) {
-      yield onCheckFriendResult(
-          checkResult: checkResult, friendUID: event.friendId);
+
+    if (checkResult == "friend") {
+      print("go to chat screen");
+      Navigator.of(event.context).push(PageRouteBuilder(
+        transitionDuration: Duration(milliseconds: 700),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          animation =
+              CurvedAnimation(curve: Curves.easeInOutBack, parent: animation);
+          return ScaleTransition(
+            scale: animation,
+            child: child,
+          );
+        },
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return ChatDetial(
+            data: event.model,
+            friendBloc: event.friendBloc,
+          );
+        },
+      ));
     }
   }
 

@@ -6,7 +6,6 @@ import 'package:socialapp/home/screen/home_page.dart';
 import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter/foundation.dart' show kIsWeb;
 

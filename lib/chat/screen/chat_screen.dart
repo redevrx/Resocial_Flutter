@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialapp/chat/screen/chat_detial.dart';
-import 'package:socialapp/findFriends/bloc/friend_bloc_.dart';
-import 'package:socialapp/findFriends/eport/export_friend.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transparent_image/transparent_image.dart';
+
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/event/edit_profile_event.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/state/edit_profile_state.dart';
+import 'package:socialapp/chat/bloc/export.dart';
+import 'package:socialapp/chat/screen/chat_detial.dart';
+import 'package:socialapp/findFriends/bloc/friend_bloc_.dart';
+import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'package:socialapp/home/screen/home_page.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -22,6 +25,9 @@ class ChatScreen extends StatelessWidget {
           ),
           BlocProvider<FriendBloc>(
             create: (context) => FriendBloc(FriendRepository()),
+          ),
+          BlocProvider<ChatBloc>(
+            create: (context) => ChatBloc(ChatLoadingState()),
           )
         ],
         child: chatScreen(),
@@ -44,6 +50,8 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
 //new instance bloc
   EditProfileBloc _editProfileBloc;
   FriendBloc _friendBloc;
+  ChatBloc _chatBloc;
+
   void settingAnimated() {
     _controller = AnimationController(
       duration: Duration(milliseconds: 2500),
@@ -56,6 +64,19 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
   void settingBloc() {
     _editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
     _friendBloc = BlocProvider.of<FriendBloc>(context);
+    _chatBloc = BlocProvider.of<ChatBloc>(context);
+  }
+
+  void blocCallInitialMethod() async {
+// _getUserID();
+//load user profile
+    _editProfileBloc.add(EditProfileLoadUserInfo());
+    //load all friend of this user
+    _friendBloc.add(onLoadFriendUserClick());
+
+    final sPref = await SharedPreferences.getInstance();
+    //load chat list info user
+    _chatBloc.add(LoadingChatInfo(uid: "${sPref.getString('uid')}"));
   }
 
   @override
@@ -63,11 +84,8 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
     // TODO: implement initState
 
     settingBloc();
-// _getUserID();
-//load user profile
-    _editProfileBloc.add(EditProfileLoadUserInfo());
-    //load all friend of this user
-    _friendBloc.add(onLoadFriendUserClick());
+
+    blocCallInitialMethod();
     settingAnimated();
 
     _pageController = PageController(initialPage: 0, keepPage: false);
@@ -78,6 +96,7 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
   void dispose() {
     _controller.dispose();
     _pageController.dispose();
+
     // TODO: implement dispose
     super.dispose();
   }
@@ -153,9 +172,13 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
                           //make content message lsit
                           makeListChat(
                             friendBloc: _friendBloc,
+                            chatBloc: _chatBloc,
                           ),
                           //make load all user
-                          makeListFriend(friendBloc: _friendBloc)
+                          makeListFriend(
+                            friendBloc: _friendBloc,
+                            chatBloc: _chatBloc,
+                          )
                         ],
                       ),
                     ),
@@ -179,10 +202,13 @@ class makeListFriend extends StatelessWidget {
   const makeListFriend({
     Key key,
     @required FriendBloc friendBloc,
+    @required ChatBloc chatBloc,
   })  : _friendBloc = friendBloc,
+        _chatBloc = chatBloc,
         super(key: key);
 
   final FriendBloc _friendBloc;
+  final ChatBloc _chatBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -194,6 +220,7 @@ class makeListFriend extends StatelessWidget {
             return ListView.builder(
                 itemCount: state.list.length,
                 itemBuilder: (context, index) => makeCardProfile(
+                      chatBloc: _chatBloc,
                       data: state.list[index],
                       friendBloc: _friendBloc,
                     ));
@@ -202,6 +229,7 @@ class makeListFriend extends StatelessWidget {
             return ListView.builder(
                 itemCount: state.list.length,
                 itemBuilder: (context, index) => makeCardProfile(
+                      chatBloc: _chatBloc,
                       data: state.list[index],
                       friendBloc: _friendBloc,
                     ));
@@ -231,10 +259,12 @@ class makeListFriend extends StatelessWidget {
 class makeCardProfile extends StatelessWidget {
   final FrindsModel data;
   final FriendBloc friendBloc;
+  final ChatBloc chatBloc;
   const makeCardProfile({
     Key key,
     this.data,
     this.friendBloc,
+    this.chatBloc,
   }) : super(key: key);
 
   @override
@@ -382,15 +412,27 @@ class makeCardProfile extends StatelessWidget {
                   right: MediaQuery.of(context).size.width * .4,
                   child: Material(
                     child: InkWell(
-                      onTap: () {
+                      onTap: () async {
                         //cehck freind
                         print("user name :${data.userName}");
-                        friendBloc.add(
-                            onCheckFriendCurrentUserClick(friendId: data.uid));
+                        friendBloc.add(onCheckFriendCurrentUserClick(
+                            context: context,
+                            model: data,
+                            friendBloc: friendBloc,
+                            friendId: data.uid));
                         //if yes go to chat screen else show dialog error
 
                         //load all friend of this user
                         // friendBloc.add(onLoadFriendUserClick());
+
+                        //chat bloc call save chat user info
+                        //will keep user info in chat list of current user
+                        final sharePref = await SharedPreferences.getInstance();
+                        //
+                        chatBloc.add(ChatInitial(
+                            friendModel: data,
+                            senderId: sharePref.getString("uid")));
+                        //
                       },
                       child: Container(
                         width: 55.0,
@@ -440,49 +482,6 @@ class makeCardProfile extends StatelessWidget {
                       ),
                     ),
                   )),
-              // make check freind to chat screen
-              Positioned(
-                child: BlocListener(
-                  cubit: friendBloc,
-                  child: Container(),
-                  listener: (context, state) {
-                    if (state is onCheckFriendResult) {
-                      // print("go to chat screen ${state.checkResult}");
-                      if (state.checkResult == "friend") {
-                        //go to chat screen
-
-                        if (state.friendUID == data.uid) {
-                          print("go to chat screen");
-                          Navigator.of(context).push(PageRouteBuilder(
-                            transitionDuration: Duration(milliseconds: 700),
-                            transitionsBuilder: (context, animation,
-                                secondaryAnimation, child) {
-                              animation = CurvedAnimation(
-                                  curve: Curves.easeInOutBack,
-                                  parent: animation);
-                              return ScaleTransition(
-                                scale: animation,
-                                child: child,
-                              );
-                            },
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) {
-                              return ChatDetial(
-                                data: data,
-                                friendBloc: friendBloc,
-                              );
-                            },
-                          ));
-                        }
-                      } else {
-                        //show dialog give add as freind before.
-                        print("not as freind");
-                      }
-                    } else {}
-                  },
-                ),
-              ),
-              //
             ],
           )
         ],
@@ -493,187 +492,186 @@ class makeCardProfile extends StatelessWidget {
 
 class makeListChat extends StatelessWidget {
   final FriendBloc friendBloc;
+  final ChatBloc chatBloc;
   const makeListChat({
     Key key,
     this.friendBloc,
+    this.chatBloc,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ListView.builder(
-        itemCount: listInfo.length,
-        itemBuilder: (context, index) {
-          return Material(
-            child: InkWell(
-              onLongPress: () => null,
-              onTap: () => Navigator.of(context).push(PageRouteBuilder(
-                transitionDuration: Duration(milliseconds: 700),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  animation = CurvedAnimation(
-                      curve: Curves.easeInOutBack, parent: animation);
-                  return ScaleTransition(
-                    scale: animation,
-                    child: child,
-                  );
-                },
-                pageBuilder: (context, animation, secondaryAnimation) {
-                  return ChatDetial(
-                    friendBloc: friendBloc,
-                  );
-                },
-              )),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                width: double.infinity,
-                height: 80.0,
-                child: Row(
-                  children: [
-                    //make icon user chat
-                    Container(
-                      height: 50.0,
-                      width: 50.0,
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black54,
-                                offset: Offset(.5, .5),
-                                blurRadius: 2.5,
-                                spreadRadius: .2)
-                          ],
-                          color: Colors.white70,
-                          borderRadius: BorderRadius.circular(12.0)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12.0),
-                        child: FadeInImage.memoryNetwork(
-                            width: 50.0,
-                            height: 50.0,
-                            placeholder: kTransparentImage,
-                            fit: BoxFit.cover,
-                            image: "${listInfo[index]._image}"),
-                      ),
-                    ),
-                    // make show user name and last message
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 18.0, vertical: 16.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "${listInfo[index]._name}",
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                color: index <= 2
-                                    ? Color(0xFF6583F3)
-                                    : Colors.black,
-                                fontWeight: index <= 2
-                                    ? FontWeight.bold
-                                    : FontWeight.w400),
-                          ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Text(
-                            "${listInfo[index]._lastMessage}",
-                            style:
-                                TextStyle(fontSize: 14.0, color: Colors.grey),
-                          )
-                        ],
-                      ),
-                    ),
-                    //make show time and alter message
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 18.0, right: 8.0),
-                      child: Column(
-                        children: [
-                          Text("${listInfo[index]._time}",
-                              style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.normal)),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Container(
-                              height: 24.0,
-                              width: 24.0,
-                              decoration: BoxDecoration(
-                                  color: index <= 2
-                                      ? Color(0xFF6583F3)
-                                      : Colors.white,
-                                  shape: BoxShape.circle),
-                              child: Center(
-                                  child: Text(
-                                "${listInfo[index]._alter}",
-                                style: TextStyle(
-                                    color: index <= 2
-                                        ? Colors.white
-                                        : Colors.grey),
-                              )))
-                        ],
-                      ),
-                    )
-                  ],
+      child: BlocBuilder<ChatBloc, ChatState>(
+        cubit: chatBloc,
+        builder: (context, state) {
+          if (state is LoadedChatInfoSuccess) {
+            if (state.chatListInfo.length >= 1) {
+              return _makeChatListInfoCard(
+                  friendBloc: friendBloc, chatListInfo: state.chatListInfo);
+            } else {
+              return Container(
+                child: Center(
+                  child: Text("No Chat Data"),
                 ),
+              );
+            }
+          }
+          if (state is ChatLoadingState) {
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(),
               ),
-            ),
-          );
+            );
+          } else {
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
         },
       ),
     );
   }
 }
 
-List<InfoData> listInfo = [
-  InfoData("Kasem Saikhuedong", "Where Are you from ?", "10.20", "1",
-      "https://thetrendsquad.com/wp-content/uploads/2020/09/45-Cool-Beard-Styles-for-Men-with-Round-Face-47-1.jpg"),
-  InfoData("Meal Hong", "Where Are you from ?", "10.20", "1",
-      "https://thetrendsquad.com/wp-content/uploads/2020/09/45-Cool-Beard-Styles-for-Men-with-Round-Face-47-1.jpg"),
-  InfoData("Naked Snake", "Hi Snake", "10.20", "1",
-      "https://thetrendsquad.com/wp-content/uploads/2020/09/45-Cool-Beard-Styles-for-Men-with-Round-Face-47-1.jpg"),
-  InfoData("WowWow", "lastMessage", "10.20", "1",
-      "https://thetrendsquad.com/wp-content/uploads/2020/09/45-Cool-Beard-Styles-for-Men-with-Round-Face-47-1.jpg"),
-  InfoData("Rel", "lastMessage", "10.20", "1",
-      "https://thetrendsquad.com/wp-content/uploads/2020/09/45-Cool-Beard-Styles-for-Men-with-Round-Face-47-1.jpg"),
-  InfoData("Mama", "lastMessage", "10.20", "1",
-      "https://thetrendsquad.com/wp-content/uploads/2020/09/45-Cool-Beard-Styles-for-Men-with-Round-Face-47-1.jpg"),
-  InfoData("name", "lastMessage", "10.20", "1",
-      "https://thetrendsquad.com/wp-content/uploads/2020/09/45-Cool-Beard-Styles-for-Men-with-Round-Face-47-1.jpg"),
-  InfoData("name", "lastMessage", "10.20", "1",
-      "https://thetrendsquad.com/wp-content/uploads/2020/09/45-Cool-Beard-Styles-for-Men-with-Round-Face-47-1.jpg"),
-  InfoData("name", "lastMessage", "10.20", "1",
-      "https://thetrendsquad.com/wp-content/uploads/2020/09/45-Cool-Beard-Styles-for-Men-with-Round-Face-47-1.jpg"),
-  InfoData("name", "lastMessage", "10.20", "1",
-      "https://thetrendsquad.com/wp-content/uploads/2020/09/45-Cool-Beard-Styles-for-Men-with-Round-Face-47-1.jpg"),
-  InfoData("name", "lastMessage", "10.20", "1",
-      "https://thetrendsquad.com/wp-content/uploads/2020/09/45-Cool-Beard-Styles-for-Men-with-Round-Face-47-1.jpg"),
-  InfoData("name", "lastMessage", "10.20", "1",
-      "https://thetrendsquad.com/wp-content/uploads/2020/09/45-Cool-Beard-Styles-for-Men-with-Round-Face-47-1.jpg")
-];
+class _makeChatListInfoCard extends StatelessWidget {
+  const _makeChatListInfoCard({
+    Key key,
+    @required this.friendBloc,
+    @required this.chatListInfo,
+  }) : super(key: key);
 
-class InfoData {
-  String _name;
-  String _lastMessage;
-  String _time;
-  String _alter;
-  String _image;
+  final FriendBloc friendBloc;
+  final List<ChatListInfo> chatListInfo;
 
-  InfoData(String name, String lastMessage, String time, String alter,
-      String image) {
-    this._name = name;
-    this._lastMessage = lastMessage;
-    this._time = time;
-    this._alter = alter;
-    this._image = image;
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: chatListInfo.length,
+      itemBuilder: (context, index) {
+        return Material(
+          child: InkWell(
+            onLongPress: () => null,
+            onTap: () => Navigator.of(context).push(PageRouteBuilder(
+              transitionDuration: Duration(milliseconds: 700),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                animation = CurvedAnimation(
+                    curve: Curves.easeInOutBack, parent: animation);
+                return ScaleTransition(
+                  scale: animation,
+                  child: child,
+                );
+              },
+              pageBuilder: (context, animation, secondaryAnimation) {
+                return ChatDetial(
+                  friendBloc: friendBloc,
+                  data: FrindsModel(
+                      imageProfile: chatListInfo[index].image,
+                      status: "",
+                      uid: chatListInfo[index].uid,
+                      userName: chatListInfo[index].name),
+                );
+              },
+            )),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 18.0),
+              width: double.infinity,
+              height: 80.0,
+              child: Row(
+                children: [
+                  //make icon user chat
+                  Container(
+                    height: 50.0,
+                    width: 50.0,
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black54,
+                              offset: Offset(.5, .5),
+                              blurRadius: 2.5,
+                              spreadRadius: .2)
+                        ],
+                        color: Colors.white70,
+                        borderRadius: BorderRadius.circular(12.0)),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12.0),
+                      child: FadeInImage.memoryNetwork(
+                          width: 50.0,
+                          height: 50.0,
+                          placeholder: kTransparentImage,
+                          fit: BoxFit.cover,
+                          image: "${chatListInfo[index].image}"),
+                    ),
+                  ),
+                  // make show user name and last message
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 18.0, vertical: 16.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          "${chatListInfo[index].name}",
+                          style: TextStyle(
+                              fontSize: 18.0,
+                              color:
+                                  index <= 2 ? Color(0xFF6583F3) : Colors.black,
+                              fontWeight: index <= 2
+                                  ? FontWeight.bold
+                                  : FontWeight.w400),
+                        ),
+                        SizedBox(
+                          height: 8.0,
+                        ),
+                        Text(
+                          "${chatListInfo[index].lastMessage}",
+                          style: TextStyle(fontSize: 14.0, color: Colors.grey),
+                        )
+                      ],
+                    ),
+                  ),
+                  //make show time and alter message
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 18.0, right: 8.0),
+                    child: Column(
+                      children: [
+                        Text("${chatListInfo[index].time}",
+                            style: TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.normal)),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Container(
+                            height: 24.0,
+                            width: 24.0,
+                            decoration: BoxDecoration(
+                                color: index <= 2
+                                    ? Color(0xFF6583F3)
+                                    : Colors.white,
+                                shape: BoxShape.circle),
+                            child: Center(
+                                child: Text(
+                              "${chatListInfo[index].alert}",
+                              style: TextStyle(
+                                  color:
+                                      index <= 2 ? Colors.white : Colors.grey),
+                            )))
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
-
-  String get name => this._name;
-  String get lastMessage => this._lastMessage;
-  String get time => this._time;
-  String get alter => this._alter;
-  String get image => this._image;
 }
 
 class bottomBar extends StatefulWidget {

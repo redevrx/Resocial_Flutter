@@ -1,13 +1,22 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'package:socialapp/findFriends/models/findFriendResult_model.dart';
 
 abstract class FriendEvent extends Equatable {}
 
 class onCheckFriendCurrentUserClick extends FriendEvent {
   final String friendId;
+  final FrindsModel model;
+  final BuildContext context;
+  final FriendBloc friendBloc;
 
-  onCheckFriendCurrentUserClick({this.friendId});
+  onCheckFriendCurrentUserClick({
+    this.friendId,
+    this.model,
+    this.context,
+    this.friendBloc,
+  });
 
   @override
   // TODO: implement props
