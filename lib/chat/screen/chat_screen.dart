@@ -88,7 +88,9 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
     blocCallInitialMethod();
     settingAnimated();
 
-    _pageController = PageController(initialPage: 0, keepPage: false);
+    _pageController = PageController(
+      initialPage: 0,
+    );
     super.initState();
   }
 
@@ -96,7 +98,7 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
   void dispose() {
     _controller.dispose();
     _pageController.dispose();
-
+    _chatBloc.add(OnCloseStreamReading());
     // TODO: implement dispose
     super.dispose();
   }
@@ -176,6 +178,7 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
                           ),
                           //make load all user
                           makeListFriend(
+                            pageController: _pageController,
                             friendBloc: _friendBloc,
                             chatBloc: _chatBloc,
                           )
@@ -203,12 +206,14 @@ class makeListFriend extends StatelessWidget {
     Key key,
     @required FriendBloc friendBloc,
     @required ChatBloc chatBloc,
+    this.pageController,
   })  : _friendBloc = friendBloc,
         _chatBloc = chatBloc,
         super(key: key);
 
   final FriendBloc _friendBloc;
   final ChatBloc _chatBloc;
+  final PageController pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -220,6 +225,7 @@ class makeListFriend extends StatelessWidget {
             return ListView.builder(
                 itemCount: state.list.length,
                 itemBuilder: (context, index) => makeCardProfile(
+                      pageController: pageController,
                       chatBloc: _chatBloc,
                       data: state.list[index],
                       friendBloc: _friendBloc,
@@ -229,6 +235,7 @@ class makeListFriend extends StatelessWidget {
             return ListView.builder(
                 itemCount: state.list.length,
                 itemBuilder: (context, index) => makeCardProfile(
+                      pageController: pageController,
                       chatBloc: _chatBloc,
                       data: state.list[index],
                       friendBloc: _friendBloc,
@@ -260,11 +267,13 @@ class makeCardProfile extends StatelessWidget {
   final FrindsModel data;
   final FriendBloc friendBloc;
   final ChatBloc chatBloc;
+  final PageController pageController;
   const makeCardProfile({
     Key key,
     this.data,
     this.friendBloc,
     this.chatBloc,
+    this.pageController,
   }) : super(key: key);
 
   @override
@@ -416,9 +425,8 @@ class makeCardProfile extends StatelessWidget {
                         //cehck freind
                         print("user name :${data.userName}");
                         friendBloc.add(onCheckFriendCurrentUserClick(
-                            context: context,
-                            model: data,
                             friendBloc: friendBloc,
+                            chatBloc: chatBloc,
                             friendId: data.uid));
                         //if yes go to chat screen else show dialog error
 
@@ -482,6 +490,21 @@ class makeCardProfile extends StatelessWidget {
                       ),
                     ),
                   )),
+//make check press to chat home page bloc
+              Positioned(
+                  child: BlocListener<FriendBloc, FriendState>(
+                cubit: friendBloc,
+                listener: (context, state) {
+                  if (state is onCheckFriendResult) {
+                    if (state.checkResult == "friend") {
+                      pageController.animateToPage(0,
+                          duration: Duration(milliseconds: 700),
+                          curve: Curves.easeInOutSine);
+                    }
+                  }
+                },
+                child: Container(),
+              ))
             ],
           )
         ],
@@ -508,7 +531,9 @@ class makeListChat extends StatelessWidget {
           if (state is LoadedChatInfoSuccess) {
             if (state.chatListInfo.length >= 1) {
               return _makeChatListInfoCard(
-                  friendBloc: friendBloc, chatListInfo: state.chatListInfo);
+                  chatBloc: chatBloc,
+                  friendBloc: friendBloc,
+                  chatListInfo: state.chatListInfo);
             } else {
               return Container(
                 child: Center(
@@ -541,9 +566,11 @@ class _makeChatListInfoCard extends StatelessWidget {
     Key key,
     @required this.friendBloc,
     @required this.chatListInfo,
+    this.chatBloc,
   }) : super(key: key);
 
   final FriendBloc friendBloc;
+  final ChatBloc chatBloc;
   final List<ChatListInfo> chatListInfo;
 
   @override
@@ -568,11 +595,8 @@ class _makeChatListInfoCard extends StatelessWidget {
               pageBuilder: (context, animation, secondaryAnimation) {
                 return ChatDetial(
                   friendBloc: friendBloc,
-                  data: FrindsModel(
-                      imageProfile: chatListInfo[index].image,
-                      status: "",
-                      uid: chatListInfo[index].uid,
-                      userName: chatListInfo[index].name),
+                  chatBloc: chatBloc,
+                  data: chatListInfo[index],
                 );
               },
             )),
@@ -646,21 +670,25 @@ class _makeChatListInfoCard extends StatelessWidget {
                         SizedBox(
                           height: 10.0,
                         ),
-                        Container(
-                            height: 24.0,
-                            width: 24.0,
-                            decoration: BoxDecoration(
-                                color: index <= 2
-                                    ? Color(0xFF6583F3)
-                                    : Colors.white,
-                                shape: BoxShape.circle),
-                            child: Center(
-                                child: Text(
-                              "${chatListInfo[index].alert}",
-                              style: TextStyle(
-                                  color:
-                                      index <= 2 ? Colors.white : Colors.grey),
-                            )))
+                        //
+                        chatListInfo[index].alert.isNotEmpty
+                            ? Container(
+                                height: 24.0,
+                                width: 24.0,
+                                decoration: BoxDecoration(
+                                    color: index <= 2
+                                        ? Color(0xFF6583F3)
+                                        : Colors.white,
+                                    shape: BoxShape.circle),
+                                child: Center(
+                                    child: Text(
+                                  "${chatListInfo[index].alert}",
+                                  style: TextStyle(
+                                      color: index <= 2
+                                          ? Colors.white
+                                          : Colors.grey),
+                                )))
+                            : Container()
                       ],
                     ),
                   )

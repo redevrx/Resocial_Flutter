@@ -41,6 +41,7 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
     }
   }
 
+  //check as friend
   @override
   Stream<FriendState> onCheckFreind(
       onCheckFriendCurrentUserClick event) async* {
@@ -48,26 +49,8 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
     final checkResult =
         await friendRepository.onCheckFriendCurrentUser(event.friendId);
 
-    if (checkResult == "friend") {
-      print("go to chat screen");
-      Navigator.of(event.context).push(PageRouteBuilder(
-        transitionDuration: Duration(milliseconds: 700),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          animation =
-              CurvedAnimation(curve: Curves.easeInOutBack, parent: animation);
-          return ScaleTransition(
-            scale: animation,
-            child: child,
-          );
-        },
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return ChatDetial(
-            data: event.model,
-            friendBloc: event.friendBloc,
-          );
-        },
-      ));
-    }
+    yield onCheckFriendResult(
+        checkResult: checkResult, friendUID: event.friendId);
   }
 
 // load request all ferind

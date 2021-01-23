@@ -1,15 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:socialapp/findFriends/eport/export_friend.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class ChatDetial extends StatelessWidget {
-  final FrindsModel data;
+import 'package:socialapp/chat/bloc/export.dart';
+import 'package:socialapp/findFriends/eport/export_friend.dart';
+
+class ChatDetial extends StatefulWidget {
+  final ChatListInfo data;
   final FriendBloc friendBloc;
-  const ChatDetial({Key key, this.data, this.friendBloc}) : super(key: key);
+  final ChatBloc chatBloc;
+  ChatDetial({
+    Key key,
+    this.data,
+    this.friendBloc,
+    this.chatBloc,
+  }) : super(key: key);
+
+  @override
+  _ChatDetialState createState() => _ChatDetialState();
+}
+
+class _ChatDetialState extends State<ChatDetial> {
+  //
+  void initialBlocMethod() async {
+    widget.friendBloc.add(onLoadFriendUserClick());
+
+    // get current user id
+    final sPref = await SharedPreferences.getInstance();
+    widget.chatBloc.add(OnUpdateChatListInfo(
+        senderId: sPref.getString("uid"),
+        freindId: widget.data.uid,
+        type: widget.data.type));
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    initialBlocMethod();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    friendBloc.add(onLoadFriendUserClick());
     return Scaffold(
       body: Material(
         child: LayoutBuilder(
@@ -24,7 +56,7 @@ class ChatDetial extends StatelessWidget {
                   child: Column(
                     children: [
                       //make app bar
-                      _makeAppBarChat(data: data),
+                      _makeAppBarChat(data: widget.data),
                       // make content list chat
 
                       Container(
@@ -33,7 +65,11 @@ class ChatDetial extends StatelessWidget {
                         child: Text("data"),
                       ),
                       //make botton bar textBox Chat
-                      _makeBottonMessage()
+                      //data is chat list info
+                      _makeBottonMessage(
+                        chatBloc: widget.chatBloc,
+                        data: widget.data,
+                      )
                     ],
                   ),
                 ),
@@ -47,12 +83,20 @@ class ChatDetial extends StatelessWidget {
 }
 
 class _makeBottonMessage extends StatelessWidget {
+  final ChatBloc chatBloc;
+  final ChatListInfo data;
   const _makeBottonMessage({
     Key key,
+    this.chatBloc,
+    this.data,
   }) : super(key: key);
+
+  //data is chat list info
 
   @override
   Widget build(BuildContext context) {
+    var message = "";
+    var textController = TextEditingController();
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
@@ -82,6 +126,22 @@ class _makeBottonMessage extends StatelessWidget {
               margin: const EdgeInsets.only(left: 8.0),
               width: MediaQuery.of(context).size.width * .614,
               child: TextFormField(
+                controller: textController,
+                onChanged: (value) => message = value,
+                onFieldSubmitted: (message) async {
+                  FocusScope.of(context).unfocus();
+                  textController.text = "";
+                  // print(value);
+                  //send message
+                  final sPref = await SharedPreferences.getInstance();
+                  //
+                  chatBloc.add(OnSendMessage(
+                      chatListInfo: data,
+                      imageFile: null,
+                      message: message,
+                      receiveId: data.uid,
+                      senderId: sPref.getString("uid")));
+                },
                 decoration: InputDecoration(
                     hintStyle: Theme.of(context)
                         .textTheme
@@ -108,10 +168,26 @@ class _makeBottonMessage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8.0)),
               child: Transform.rotate(
                 angle: -45.0,
-                child: Icon(
-                  Icons.send,
-                  size: 28.0,
-                  color: Colors.white,
+                child: InkWell(
+                  onTap: () async {
+                    // print(value);
+                    //send message
+                    FocusScope.of(context).unfocus();
+                    textController.text = "";
+                    final sPref = await SharedPreferences.getInstance();
+                    //
+                    chatBloc.add(OnSendMessage(
+                        chatListInfo: data,
+                        imageFile: null,
+                        message: message,
+                        receiveId: data.uid,
+                        senderId: sPref.getString("uid")));
+                  },
+                  child: Icon(
+                    Icons.send,
+                    size: 20.0,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -128,7 +204,7 @@ class _makeAppBarChat extends StatelessWidget {
     @required this.data,
   }) : super(key: key);
 
-  final FrindsModel data;
+  final ChatListInfo data;
 
   @override
   Widget build(BuildContext context) {
@@ -253,7 +329,7 @@ class _makeProfileAndName extends StatelessWidget {
     @required this.data,
   }) : super(key: key);
 
-  final FrindsModel data;
+  final ChatListInfo data;
 
   @override
   Widget build(BuildContext context) {
@@ -285,7 +361,7 @@ class _makeProfileAndName extends StatelessWidget {
                 width: 42.0,
                 height: 42.0,
                 placeholder: kTransparentImage,
-                image: data.imageProfile,
+                image: data.image,
                 fit: BoxFit.cover,
               ),
             ),
@@ -298,7 +374,7 @@ class _makeProfileAndName extends StatelessWidget {
                 //make name
 
                 Text(
-                  "${data.userName}",
+                  "${data.name}",
                   style: TextStyle(
                       fontSize: 16.0,
                       color: Colors.white,

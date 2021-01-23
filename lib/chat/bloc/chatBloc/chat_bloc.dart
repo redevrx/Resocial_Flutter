@@ -27,7 +27,48 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         yield LoadedChatEmpty();
       }
     }
+    if (event is OnUpdateChatListInfo) {
+      yield* onUpdateChatListInfo(event);
+    }
+    if (event is OnCloseStreamReading) {
+      await close();
+    }
+    if (event is OnSendMessage) {
+      yield* onSendMessage(event);
+    }
   }
+
+  //call method send message
+  @override
+  Stream<ChatState> onSendMessage(OnSendMessage event) async* {
+    final result = await _chatRepository.onSendMessage(
+        event.senderId,
+        event.receiveId,
+        event.chatListInfo,
+        event.type,
+        event.message,
+        event.imageFile);
+
+    if (result) {
+      //return read message success
+    }
+  }
+
+  // update list chat room
+  //update only name status and image
+  @override
+  Stream<ChatState> onUpdateChatListInfo(OnUpdateChatListInfo event) async* {
+    await _chatRepository.onUpdateChatListInfo(
+        event.senderId, event.freindId, event.type);
+  }
+
+  /*
+  call method getListChatInfo
+  and get data type real-time 
+  and send data go event 
+  LoadedChatInfo
+  and if ecent LoadedChatInfo update ui 
+   */
 
   @override
   Stream<ChatState> onLoadChatListInfo(LoadingChatInfo event) async* {
@@ -39,11 +80,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         .listen((chatInfo) => add(LoadedChatInfo(chatListInfo: chatInfo)));
   }
 
+/*
+create chat room info 
+by will keep data of sender and receive
+ */
   @override
   Stream<ChatState> onSaveChatInfo(ChatInitial event) async* {
     if (event.senderId == null) return;
-    //
-    yield ChatLoadingState();
 
     await _chatRepository.onSavefriendInfoChatList(
         event.senderId, event.friendModel);

@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:socialapp/chat/bloc/chatBloc/chat_bloc.dart';
+import 'package:socialapp/chat/models/chat/chat_list_info.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'package:socialapp/findFriends/models/findFriendResult_model.dart';
 
@@ -7,15 +9,13 @@ abstract class FriendEvent extends Equatable {}
 
 class onCheckFriendCurrentUserClick extends FriendEvent {
   final String friendId;
-  final FrindsModel model;
-  final BuildContext context;
   final FriendBloc friendBloc;
+  final ChatBloc chatBloc;
 
   onCheckFriendCurrentUserClick({
     this.friendId,
-    this.model,
-    this.context,
     this.friendBloc,
+    this.chatBloc,
   });
 
   @override
