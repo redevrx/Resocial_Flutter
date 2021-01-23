@@ -27,13 +27,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c30520a-dc2b-44cf-959d-9a124e4aee58" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/assets/icons/messenger.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/chat/screen/chat_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/appBar/app_bar_login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/appBar/app_bar_login.dart" afterDir="false" />
-    </list>
+    <list default="true" id="5c30520a-dc2b-44cf-959d-9a124e4aee58" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

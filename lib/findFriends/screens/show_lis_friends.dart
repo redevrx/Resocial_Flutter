@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialapp/findFriends/widget/result_find_friend.dart';
 import '../eport/export_friend.dart';
 
 class AllUser extends StatelessWidget {

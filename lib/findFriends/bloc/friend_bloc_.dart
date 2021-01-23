@@ -26,6 +26,9 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
     if (event is onLoadFriendUserClick) {
       yield* loadFriendUser(event);
     }
+    if (event is onCheckFriendCurrentUserClick) {
+      yield* onCheckFreind(event);
+    }
 
     if (event is onLoadRequestFriendUserClick) {
       yield* loadRequestFriends();
@@ -33,6 +36,18 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
     if (event is onRelaodAllFreindStatsu) {
       // print("not null :${data1.length}");
       yield onLoadRequestFriendUserSuccessfully(list: event.model);
+    }
+  }
+
+  @override
+  Stream<FriendState> onCheckFreind(
+      onCheckFriendCurrentUserClick event) async* {
+    print("${event.friendId}");
+    final checkResult =
+        await friendRepository.onCheckFriendCurrentUser(event.friendId);
+    if (checkResult != null) {
+      yield onCheckFriendResult(
+          checkResult: checkResult, friendUID: event.friendId);
     }
   }
 
@@ -46,9 +61,9 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
 
     if (data != null) {
       print("not null :${data.length}");
-      data.forEach((it) {
-        print(it);
-      });
+      // data.forEach((it) {
+      //   print(it);
+      // });
 
       List<FrindsModel> data1;
       data1 = await friendRepository.loadRequestFriendUserInfo(data);

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:socialapp/findFriends/models/frind_model.dart';
+import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ChatDetial extends StatelessWidget {
   final FrindsModel data;
-  const ChatDetial({Key key, this.data}) : super(key: key);
+  final FriendBloc friendBloc;
+  const ChatDetial({Key key, this.data, this.friendBloc}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    friendBloc.add(onLoadFriendUserClick());
     return Scaffold(
       body: Material(
         child: LayoutBuilder(

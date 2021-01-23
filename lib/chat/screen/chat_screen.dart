@@ -3,10 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/chat/screen/chat_detial.dart';
 import 'package:socialapp/findFriends/bloc/friend_bloc_.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
-import 'package:socialapp/home/bloc/bloc_pageChange.dart';
-import 'package:socialapp/home/bloc/state_pageChange.dart';
 import 'package:transparent_image/transparent_image.dart';
-
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/event/edit_profile_event.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/state/edit_profile_state.dart';
@@ -138,7 +135,10 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
                           //   "Search ...",
                           //   style: TextStyle(fontSize: 16.0, color: Colors.white),
                           // ),
-                          _paddingRowSearch()
+                          _paddingRowSearch(
+                            pageController: _pageController,
+                            friendBloc: _friendBloc,
+                          )
                         ],
                       ),
                     ),
@@ -151,7 +151,9 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
                         scrollDirection: Axis.horizontal,
                         children: [
                           //make content message lsit
-                          makeListChat(),
+                          makeListChat(
+                            friendBloc: _friendBloc,
+                          ),
                           //make load all user
                           makeListFriend(friendBloc: _friendBloc)
                         ],
@@ -189,14 +191,33 @@ class makeListFriend extends StatelessWidget {
         cubit: _friendBloc,
         builder: (context, state) {
           if (state is onLoadFriendUserSuccessfully) {
-            return ListView(
-              children: state.list.map((data) {
-                return makeCardProfile(
-                  data: data,
-                );
-              }).toList(),
-            );
+            return ListView.builder(
+                itemCount: state.list.length,
+                itemBuilder: (context, index) => makeCardProfile(
+                      data: state.list[index],
+                      friendBloc: _friendBloc,
+                    ));
+          }
+          if (state is onFindFriendResult) {
+            return ListView.builder(
+                itemCount: state.list.length,
+                itemBuilder: (context, index) => makeCardProfile(
+                      data: state.list[index],
+                      friendBloc: _friendBloc,
+                    ));
+          }
+          if (state is onShowLoadingWidget) {
+            return Center(
+              child: CircularProgressIndicator(),
+            ); //LoadingAnimation();
+          }
+          if (state is onLoadFrindFailed) {
+            //if onLoadFrindFailed
+            //if load new friend
+            _friendBloc.add(onLoadFriendUserClick());
+            return Center(child: Container(child: Text(state.data)));
           } else {
+            _friendBloc.add(onLoadFriendUserClick());
             return Center(
               child: CircularProgressIndicator(),
             );
@@ -209,9 +230,11 @@ class makeListFriend extends StatelessWidget {
 
 class makeCardProfile extends StatelessWidget {
   final FrindsModel data;
+  final FriendBloc friendBloc;
   const makeCardProfile({
     Key key,
     this.data,
+    this.friendBloc,
   }) : super(key: key);
 
   @override
@@ -359,24 +382,16 @@ class makeCardProfile extends StatelessWidget {
                   right: MediaQuery.of(context).size.width * .4,
                   child: Material(
                     child: InkWell(
-                      onTap: () => Navigator.of(context).push(PageRouteBuilder(
-                        transitionDuration: Duration(milliseconds: 700),
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
-                          animation = CurvedAnimation(
-                              curve: Curves.easeInOutBack, parent: animation);
-                          return ScaleTransition(
-                            scale: animation,
-                            child: child,
-                          );
-                        },
-                        pageBuilder: (context, animation, secondaryAnimation) {
-                          return ChatDetial(
-                            data: data,
-                          );
-                        },
-                      )),
-                      onLongPress: () => null,
+                      onTap: () {
+                        //cehck freind
+                        print("user name :${data.userName}");
+                        friendBloc.add(
+                            onCheckFriendCurrentUserClick(friendId: data.uid));
+                        //if yes go to chat screen else show dialog error
+
+                        //load all friend of this user
+                        // friendBloc.add(onLoadFriendUserClick());
+                      },
                       child: Container(
                         width: 55.0,
                         height: 85.0,
@@ -425,6 +440,49 @@ class makeCardProfile extends StatelessWidget {
                       ),
                     ),
                   )),
+              // make check freind to chat screen
+              Positioned(
+                child: BlocListener(
+                  cubit: friendBloc,
+                  child: Container(),
+                  listener: (context, state) {
+                    if (state is onCheckFriendResult) {
+                      // print("go to chat screen ${state.checkResult}");
+                      if (state.checkResult == "friend") {
+                        //go to chat screen
+
+                        if (state.friendUID == data.uid) {
+                          print("go to chat screen");
+                          Navigator.of(context).push(PageRouteBuilder(
+                            transitionDuration: Duration(milliseconds: 700),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              animation = CurvedAnimation(
+                                  curve: Curves.easeInOutBack,
+                                  parent: animation);
+                              return ScaleTransition(
+                                scale: animation,
+                                child: child,
+                              );
+                            },
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) {
+                              return ChatDetial(
+                                data: data,
+                                friendBloc: friendBloc,
+                              );
+                            },
+                          ));
+                        }
+                      } else {
+                        //show dialog give add as freind before.
+                        print("not as freind");
+                      }
+                    } else {}
+                  },
+                ),
+              ),
+              //
             ],
           )
         ],
@@ -434,8 +492,10 @@ class makeCardProfile extends StatelessWidget {
 }
 
 class makeListChat extends StatelessWidget {
+  final FriendBloc friendBloc;
   const makeListChat({
     Key key,
+    this.friendBloc,
   }) : super(key: key);
 
   @override
@@ -459,7 +519,9 @@ class makeListChat extends StatelessWidget {
                   );
                 },
                 pageBuilder: (context, animation, secondaryAnimation) {
-                  return ChatDetial();
+                  return ChatDetial(
+                    friendBloc: friendBloc,
+                  );
                 },
               )),
               child: Container(
@@ -702,12 +764,17 @@ class _bottomBarState extends State<bottomBar> {
 }
 
 class _paddingRowSearch extends StatelessWidget {
+  final PageController pageController;
+  final FriendBloc friendBloc;
   const _paddingRowSearch({
     Key key,
+    this.pageController,
+    this.friendBloc,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String wordSearch = "";
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, left: 8.0),
       child: Container(
@@ -726,9 +793,26 @@ class _paddingRowSearch extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                 child: Container(
                   // padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  child: TextFormField(
+                  child: TextField(
                     decoration: InputDecoration(
                         hintText: "Search !", border: InputBorder.none),
+                    onChanged: (value) => wordSearch = value,
+                    onSubmitted: (word) {
+                      FocusScope.of(context).unfocus();
+                      if (word == null || word == "") {
+                        // reload list freind
+                        friendBloc.add(onLoadFriendUserClick());
+                      } else {
+                        print("on search friend chat ${word}");
+                        // call method search user
+                        friendBloc.add(onSearchFriendsClick(data: word));
+
+                        // move tab to profile chat tab
+                        pageController.animateToPage(1,
+                            duration: Duration(milliseconds: 700),
+                            curve: Curves.easeInOutSine);
+                      }
+                    },
                   ),
                 ),
               ),
@@ -739,7 +823,22 @@ class _paddingRowSearch extends StatelessWidget {
               padding: const EdgeInsets.all(4.0),
               child: Material(
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    if (wordSearch == null || wordSearch == "") {
+                      // reload list freind
+                      friendBloc.add(onLoadFriendUserClick());
+                    } else {
+                      print("on search friend chat ${wordSearch}");
+                      // call method search user
+                      friendBloc.add(onSearchFriendsClick(data: wordSearch));
+
+                      // move tab to profile chat tab
+                      pageController.animateToPage(1,
+                          duration: Duration(milliseconds: 700),
+                          curve: Curves.easeInOutSine);
+                    }
+                  },
                   child: Icon(
                     Icons.search,
                     size: 30.0,

@@ -5,6 +5,13 @@ abstract class FriendState {}
 
 class onShowLoadingWidget extends FriendState {}
 
+class onCheckFriendResult extends FriendState {
+  final String checkResult;
+  final String friendUID;
+
+  onCheckFriendResult({this.checkResult, this.friendUID});
+}
+
 class onLoadRequestFriendUserSuccessfully extends FriendState {
   final List<FindFreindResultModel> list;
 

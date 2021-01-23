@@ -152,6 +152,7 @@ class _homePage extends State<homePage> {
               constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: Column(
                 children: <Widget>[
+                  // make app bar
                   InkWell(
                     child: AppBarCustom(
                       widgetSize: bottonNavSize,

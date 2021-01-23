@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
 
 class FriendRepository {
@@ -132,6 +133,30 @@ class FriendRepository {
     } else {
       return null;
     }
+  }
+
+  //make search friend onwer this user
+  Future<String> onCheckFriendCurrentUser(String friendId) async {
+    final _mRef = FirebaseFirestore.instance.collection("friends");
+    //get current user id
+    final _sPref = await SharedPreferences.getInstance();
+    String uid = _sPref.getString("uid");
+
+    String checkFreind = "";
+
+    // search friend id
+    await _mRef
+        .doc("${uid}")
+        .collection("status")
+        .doc(friendId)
+        .get()
+        .then((info) {
+      checkFreind = info["status"].toString();
+    }).catchError((_) {
+      checkFreind = "not as freind";
+    });
+
+    return checkFreind;
   }
 
 //search user
