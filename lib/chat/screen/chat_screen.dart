@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:socialapp/chat/bloc/messageBloc/message_bloc.dart';
+import 'package:socialapp/chat/bloc/messageBloc/message_state.dart';
+import 'package:socialapp/localizations/app_localizations.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
@@ -13,7 +16,8 @@ import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'package:socialapp/home/screen/home_page.dart';
 
 class ChatScreen extends StatelessWidget {
-  const ChatScreen({Key key}) : super(key: key);
+  final String uid;
+  const ChatScreen({Key key, this.uid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,16 +32,22 @@ class ChatScreen extends StatelessWidget {
           ),
           BlocProvider<ChatBloc>(
             create: (context) => ChatBloc(ChatLoadingState()),
+          ),
+          BlocProvider<MessageBloc>(
+            create: (context) => MessageBloc(OnLaodingMessageState()),
           )
         ],
-        child: chatScreen(),
+        child: chatScreen(
+          uid: uid,
+        ),
       ),
     );
   }
 }
 
 class chatScreen extends StatefulWidget {
-  chatScreen({Key key}) : super(key: key);
+  final String uid;
+  chatScreen({Key key, this.uid}) : super(key: key);
 
   @override
   _chatScreenState createState() => _chatScreenState();
@@ -51,6 +61,7 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
   EditProfileBloc _editProfileBloc;
   FriendBloc _friendBloc;
   ChatBloc _chatBloc;
+  MessageBloc _messageBloc;
 
   void settingAnimated() {
     _controller = AnimationController(
@@ -65,6 +76,7 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
     _editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
     _friendBloc = BlocProvider.of<FriendBloc>(context);
     _chatBloc = BlocProvider.of<ChatBloc>(context);
+    _messageBloc = BlocProvider.of<MessageBloc>(context);
   }
 
   void blocCallInitialMethod() async {
@@ -95,7 +107,7 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
   }
 
   @override
-  void dispose() {
+  void dispose() async {
     _controller.dispose();
     _pageController.dispose();
     _chatBloc.add(OnCloseStreamReading());
@@ -175,6 +187,8 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
                           makeListChat(
                             friendBloc: _friendBloc,
                             chatBloc: _chatBloc,
+                            messageBloc: _messageBloc,
+                            uid: widget.uid,
                           ),
                           //make load all user
                           makeListFriend(
@@ -516,10 +530,14 @@ class makeCardProfile extends StatelessWidget {
 class makeListChat extends StatelessWidget {
   final FriendBloc friendBloc;
   final ChatBloc chatBloc;
+  final MessageBloc messageBloc;
+  final String uid;
   const makeListChat({
     Key key,
     this.friendBloc,
     this.chatBloc,
+    this.messageBloc,
+    this.uid,
   }) : super(key: key);
 
   @override
@@ -533,6 +551,8 @@ class makeListChat extends StatelessWidget {
               return _makeChatListInfoCard(
                   chatBloc: chatBloc,
                   friendBloc: friendBloc,
+                  messageBloc: messageBloc,
+                  uid: uid,
                   chatListInfo: state.chatListInfo);
             } else {
               return Container(
@@ -567,11 +587,15 @@ class _makeChatListInfoCard extends StatelessWidget {
     @required this.friendBloc,
     @required this.chatListInfo,
     this.chatBloc,
+    this.messageBloc,
+    this.uid,
   }) : super(key: key);
 
   final FriendBloc friendBloc;
   final ChatBloc chatBloc;
+  final MessageBloc messageBloc;
   final List<ChatListInfo> chatListInfo;
+  final String uid;
 
   @override
   Widget build(BuildContext context) {
@@ -596,7 +620,9 @@ class _makeChatListInfoCard extends StatelessWidget {
                 return ChatDetial(
                   friendBloc: friendBloc,
                   chatBloc: chatBloc,
+                  messageBloc: messageBloc,
                   data: chatListInfo[index],
+                  uid: uid,
                 );
               },
             )),
@@ -671,7 +697,7 @@ class _makeChatListInfoCard extends StatelessWidget {
                           height: 10.0,
                         ),
                         //
-                        chatListInfo[index].alert.isNotEmpty
+                        int.parse(chatListInfo[index].alert) >= 1
                             ? Container(
                                 height: 24.0,
                                 width: 24.0,
@@ -821,7 +847,9 @@ class _paddingRowSearch extends StatelessWidget {
                   // padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                   child: TextField(
                     decoration: InputDecoration(
-                        hintText: "Search !", border: InputBorder.none),
+                        hintText:
+                            "${AppLocalizations.of(context).translate('search')}",
+                        border: InputBorder.none),
                     onChanged: (value) => wordSearch = value,
                     onSubmitted: (word) {
                       FocusScope.of(context).unfocus();
@@ -896,17 +924,11 @@ class _makeRowArrowIconUser extends StatelessWidget {
       children: [
         //make back icon to home screen
 
-        ScaleTransition(
-          scale: CurvedAnimation(
-            parent: _controller,
-            curve: Curves.fastOutSlowIn,
-          ),
-          child: _makeIconArrow(size: 42.0),
-        ),
+        _makeIconArrow(size: 42.0),
 
         // make text message
         Text(
-          "Message",
+          "${AppLocalizations.of(context).translate('message')}",
           style: Theme.of(context)
               .textTheme
               .headline5

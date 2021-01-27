@@ -5,6 +5,7 @@ there are bug like
  - group freind notify
    - disable request notify
    - disable like notify 
+   *chat notify
   -bug remove notify screen <predi>
 
     
@@ -16,5 +17,4 @@ new feature
  -comment with image
  -post multi image
  -post vdo
- *Message one to one chat
  *Vedio call or voice call 

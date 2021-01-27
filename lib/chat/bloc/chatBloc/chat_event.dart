@@ -6,36 +6,6 @@ import 'package:socialapp/findFriends/eport/export_friend.dart';
 
 abstract class ChatEvent extends Equatable {}
 
-/*
-satrt this method will make send meesage to receive
- */
-class OnSendMessage extends ChatEvent {
-  final String senderId;
-  final String receiveId;
-  final String type;
-  final String message;
-  final File imageFile;
-  final ChatListInfo chatListInfo;
-
-  OnSendMessage(
-      {this.senderId,
-      this.receiveId,
-      this.type,
-      this.message,
-      this.imageFile,
-      this.chatListInfo});
-  @override
-  // TODO: implement props
-  List<Object> get props => [
-        this.senderId,
-        this.receiveId,
-        this.type,
-        this.message,
-        this.imageFile,
-        this.chatListInfo
-      ];
-}
-
 //chat initial is keep user info in chat list
 //that represen in home chat
 //model data

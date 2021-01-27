@@ -71,10 +71,10 @@ class PushNotificationService {
     });
   }
 
-  Future<void> questSendNotify() async {
-    Future<SharedPreferences> _pref = SharedPreferences.getInstance();
-    final pref = await _pref;
-  }
+  // Future<void> questSendNotify() async {
+  //   Future<SharedPreferences> _pref = SharedPreferences.getInstance();
+  //   final pref = await _pref;
+  // }
 
   Future<void> onSubscribe(String topic, String type) async {
     Future<SharedPreferences> _pref = SharedPreferences.getInstance();
@@ -113,6 +113,7 @@ class PushNotificationService {
       // print(user.uid);
       if (user != null) {
         pref.setString("uid", user.uid);
+
         await _mRef
             .collection("user info")
             .doc(user.uid)

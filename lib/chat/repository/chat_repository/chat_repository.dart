@@ -1,9 +1,6 @@
 import 'dart:collection';
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/intl.dart';
 import 'package:socialapp/chat/models/chat/chat_list_info.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
 
@@ -62,7 +59,7 @@ class ChatRepository {
     friendChatInfoSender["lastMessage"] = "";
     friendChatInfoSender["time"] = "";
     friendChatInfoSender["profile"] = friendModel.imageProfile;
-    friendChatInfoSender['alert'] = "";
+    friendChatInfoSender['alert'] = "0";
     friendChatInfoSender["type"] = "person";
     friendChatInfoSender["groupId"] = "";
     friendChatInfoSender["createBy"] = "";
@@ -77,7 +74,7 @@ class ChatRepository {
     friendChatInfoReceive["lastMessage"] = "";
     friendChatInfoReceive["time"] = "";
     friendChatInfoReceive["profile"] = senderImage;
-    friendChatInfoReceive['alert'] = "";
+    friendChatInfoReceive['alert'] = "0";
     friendChatInfoReceive["type"] = "person";
     friendChatInfoReceive["groupId"] = "";
     friendChatInfoReceive["createBy"] = "";
@@ -167,7 +164,8 @@ class ChatRepository {
     await mChatRef.doc("${senderId}").collection("list").doc("${uid}").update({
       'name': '${name}',
       'profile': '${image}',
-      'status': "${status}"
+      'status': "${status}",
+      'alert': '0'
     }).then((_) {
       print("update chat room success");
     }).catchError((e) {
@@ -176,90 +174,4 @@ class ChatRepository {
 
     //case group chat
   }
-
-//
-/**
- this method will send message between current user with freind 
- in chat room
- case send message with image
- will upload image to firebase server after
- and will save text data or message to firebase server
- */
-  Future<bool> onSendMessage(String senderId, String receiveId,
-      ChatListInfo model, String type, String message, File image) async {
-    //database path
-    final mMessageSenderRef = FirebaseFirestore.instance.collection("Messages");
-    final mMessageReceiveRef =
-        FirebaseFirestore.instance.collection("Messages");
-    final mSenderInfo = FirebaseFirestore.instance.collection("user info");
-
-    var senderName = "";
-    var senderImage = "";
-    final now = DateTime.now();
-    var messageId = mMessageSenderRef.doc().id;
-    bool checkResul = false;
-
-    //read sender info
-    await mSenderInfo.doc("${senderId}").get().then((info) {
-      senderName = info["user"].toString();
-      senderImage = info["imageProfile"].toString();
-    }).catchError((e) {
-      senderName = "";
-      senderImage = "";
-    });
-
-    //map message structor sender
-    Map messageSender = HashMap<String, dynamic>();
-    messageSender['type'] = type;
-    messageSender['time'] = now;
-    messageSender['from'] = senderId;
-    messageSender['message'] = message;
-    messageSender['to'] = receiveId;
-    messageSender['messageId'] = messageId;
-    messageSender["image"] = '';
-    messageSender['senderName'] = senderName;
-    messageSender['senderImage'] = senderImage;
-
-    //map message structor sender
-    Map messageReceive = HashMap<String, dynamic>();
-    messageReceive['type'] = type;
-    messageReceive['time'] = now;
-    messageReceive['from'] = senderId;
-    messageReceive['message'] = message;
-    messageReceive['to'] = receiveId;
-    messageReceive['messageId'] = messageId;
-    messageReceive["image"] = '';
-    messageReceive['senderName'] = model.name;
-    messageReceive['senderImage'] = model.image;
-
-    // send message of sender
-    await mMessageSenderRef
-        .doc("${senderId}")
-        .collection("${receiveId}")
-        .doc("${messageId}")
-        .set(messageSender)
-        .then((value) {
-      print('send message sender success');
-      checkResul = true;
-    }).catchError((e) {
-      checkResul = false;
-      print("send message sender error ${e}");
-    });
-
-    // send message of receive
-    await mMessageReceiveRef
-        .doc("${receiveId}")
-        .collection("${senderId}")
-        .doc("${messageId}")
-        .set(messageReceive)
-        .then((value) {
-      print('send message receive success');
-    }).catchError((e) {
-      print("send message receive error ${e}");
-    });
-
-    //
-    return checkResul;
-  }
-  //
 }

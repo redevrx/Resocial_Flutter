@@ -1,7 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialapp/chat/bloc/scaleSizeAnimated/scale_bloc.dart';
-import 'package:socialapp/chat/bloc/scaleSizeAnimated/scale_state.dart';
 import 'package:socialapp/chat/screen/chat_screen.dart';
 import 'package:socialapp/findFriends/screens/show_lis_friends.dart';
 // import 'package:flutter/foundation.dart' show kIsWeb;
@@ -12,6 +11,7 @@ class AppBarCustom extends StatelessWidget {
   final String status;
   final double textSize;
   final double widgetSize;
+  final String uid;
 
   const AppBarCustom(
       {Key key,
@@ -19,11 +19,16 @@ class AppBarCustom extends StatelessWidget {
       this.titleColor,
       this.status,
       this.textSize = 36.0,
-      this.widgetSize = 128})
+      this.widgetSize = 128,
+      this.uid})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    User user = null;
+    try {
+      user = FirebaseAuth.instance.currentUser;
+    } catch (e) {}
     return Material(
       elevation: 0,
       child: AnimatedContainer(
@@ -143,7 +148,9 @@ class AppBarCustom extends StatelessWidget {
                                   },
                                   pageBuilder:
                                       (context, animation, secondaryAnimation) {
-                                    return ChatScreen();
+                                    return ChatScreen(
+                                      uid: user.uid,
+                                    );
                                   },
                                 ),
                                 (route) => false);

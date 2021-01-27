@@ -43,5 +43,7 @@
     "textResetPassowrdSuccess":"send change password in email success",
     "textResetPasswordError":"error send change password in email",
     "textEmailResetPassword":"Enter Current Email",
-    "btnOk":"OK"
+    "btnOk":"OK",
+    "message":"Message",
+    "search":"Search !"
 }

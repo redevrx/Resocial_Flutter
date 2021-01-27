@@ -139,7 +139,8 @@ class FeedRepository {
   void requestAllFeedLimit(int min, int max) {
     final _mRef = FirebaseFirestore.instance;
 
-    var feedRequest = _mRef.collection("Post").limit(max);
+    var feedRequest =
+        _mRef.collection("Post").orderBy("date", descending: true).limit(max);
     //load after feed
 
     //check last document
@@ -212,7 +213,7 @@ class FeedRepository {
     var refFeed = _mRef
         .collection("Post")
         .where("uid", isEqualTo: uid)
-        // .orderBy("postId", descending: true)
+        .orderBy("date", descending: true)
         .limit(max);
 
     //check last document

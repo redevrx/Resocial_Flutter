@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:socialapp/chat/bloc/messageBloc/message_bloc.dart';
+import 'package:socialapp/chat/bloc/messageBloc/message_event.dart';
+import 'package:socialapp/chat/bloc/messageBloc/message_state.dart';
+import 'package:socialapp/chat/models/chat/chat_model.dart';
+import 'package:socialapp/notifications/PushNotificationService.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import 'package:socialapp/chat/bloc/export.dart';
@@ -9,11 +15,15 @@ class ChatDetial extends StatefulWidget {
   final ChatListInfo data;
   final FriendBloc friendBloc;
   final ChatBloc chatBloc;
+  final MessageBloc messageBloc;
+  final String uid;
   ChatDetial({
     Key key,
     this.data,
     this.friendBloc,
     this.chatBloc,
+    this.messageBloc,
+    this.uid,
   }) : super(key: key);
 
   @override
@@ -22,11 +32,19 @@ class ChatDetial extends StatefulWidget {
 
 class _ChatDetialState extends State<ChatDetial> {
   //
+
   void initialBlocMethod() async {
     widget.friendBloc.add(onLoadFriendUserClick());
 
     // get current user id
     final sPref = await SharedPreferences.getInstance();
+    // _uid = sPref.getString("uid");
+
+    //start load message info
+    widget.messageBloc.add(OnReadingMessage(
+        senderId: sPref.getString("uid"), receiveId: widget.data.uid));
+
+    //start update chat list info
     widget.chatBloc.add(OnUpdateChatListInfo(
         senderId: sPref.getString("uid"),
         freindId: widget.data.uid,
@@ -35,9 +53,17 @@ class _ChatDetialState extends State<ChatDetial> {
 
   @override
   void initState() {
+    print("uid :${widget.uid}");
     // TODO: implement initState
     initialBlocMethod();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    widget.messageBloc.close();
+    super.dispose();
   }
 
   @override
@@ -59,15 +85,14 @@ class _ChatDetialState extends State<ChatDetial> {
                       _makeAppBarChat(data: widget.data),
                       // make content list chat
 
-                      Container(
-                        // color: Colors.red,
-                        height: MediaQuery.of(context).size.height * .75,
-                        child: Text("data"),
+                      _makeListMessage(
+                        widget: widget,
+                        uid: widget.uid,
                       ),
                       //make botton bar textBox Chat
                       //data is chat list info
                       _makeBottonMessage(
-                        chatBloc: widget.chatBloc,
+                        messageBloc: widget.messageBloc,
                         data: widget.data,
                       )
                     ],
@@ -82,12 +107,111 @@ class _ChatDetialState extends State<ChatDetial> {
   }
 }
 
+class _makeListMessage extends StatelessWidget {
+  const _makeListMessage({
+    Key key,
+    @required this.widget,
+    @required String uid,
+  })  : _uid = uid,
+        super(key: key);
+
+  final ChatDetial widget;
+  final String _uid;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // color: Colors.red,
+      height: MediaQuery.of(context).size.height * .76,
+      child: BlocBuilder<MessageBloc, MessageState>(
+        cubit: widget.messageBloc,
+        builder: (context, state) {
+          if (state is OnReadMessageSuccess) {
+            return ListView(
+              children: state.chatModel.map((messageModel) {
+                return _makeCardMessage(
+                  uid: _uid,
+                  messageModel: messageModel,
+                );
+              }).toList(),
+            );
+          }
+          if (state is OnLaodingMessageState) {
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else {
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+}
+
+class _makeCardMessage extends StatelessWidget {
+  const _makeCardMessage({
+    Key key,
+    @required String uid,
+    this.messageModel,
+  })  : _uid = uid,
+        super(key: key);
+  final ChatModel messageModel;
+  final String _uid;
+
+  @override
+  Widget build(BuildContext context) {
+    var sender = messageModel.from == _uid;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Column(
+        children: [
+          //check current that send message rigth ?
+          //if yes show message rigth else left
+          Align(
+              alignment: sender ? Alignment.centerRight : Alignment.centerLeft,
+              // right: 16.0,
+              child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 10.0),
+                  decoration: BoxDecoration(
+                      color: sender ? Color(0xFF6583F3) : Color(0xFFEEF1FF),
+                      boxShadow: [
+                        BoxShadow(
+                            color:
+                                sender ? Color(0xFF879EF7) : Color(0xFFC8D2FC),
+                            offset: Offset(.5, .5),
+                            blurRadius: 8.0,
+                            spreadRadius: 1.0)
+                      ],
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(.5),
+                          topRight: Radius.circular(16.5),
+                          bottomLeft: Radius.circular(16.5),
+                          bottomRight: Radius.circular(.5))),
+                  child: Text(
+                    messageModel.message,
+                    style: Theme.of(context).textTheme.subtitle2.copyWith(
+                        color: sender ? Colors.white : Colors.black87),
+                  )))
+        ],
+      ),
+    );
+  }
+}
+
 class _makeBottonMessage extends StatelessWidget {
-  final ChatBloc chatBloc;
+  final MessageBloc messageBloc;
   final ChatListInfo data;
   const _makeBottonMessage({
     Key key,
-    this.chatBloc,
+    this.messageBloc,
     this.data,
   }) : super(key: key);
 
@@ -135,7 +259,7 @@ class _makeBottonMessage extends StatelessWidget {
                   //send message
                   final sPref = await SharedPreferences.getInstance();
                   //
-                  chatBloc.add(OnSendMessage(
+                  messageBloc.add(OnSendMessage(
                       chatListInfo: data,
                       imageFile: null,
                       message: message,
@@ -176,7 +300,7 @@ class _makeBottonMessage extends StatelessWidget {
                     textController.text = "";
                     final sPref = await SharedPreferences.getInstance();
                     //
-                    chatBloc.add(OnSendMessage(
+                    messageBloc.add(OnSendMessage(
                         chatListInfo: data,
                         imageFile: null,
                         message: message,

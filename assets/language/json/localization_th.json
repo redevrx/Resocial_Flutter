@@ -43,5 +43,7 @@
     "textResetPassowrdSuccess":"ส่งข้อมูลการเปลี่ยนรหัสไปที่อีเมลแล้ว",
     "textResetPasswordError":"ส่งข้อมูลการเปลี่ยนรหัสไปที่อีเมลไม่สำเร็จ",
     "textEmailResetPassword":"กรุณากรอกอีเมลปัจจุบัน",
-    "btnOk":"ยอมรับ"
+    "btnOk":"ยอมรับ",
+    "message":"ข้อความ",
+    "search":"ค้นหา !"
 }

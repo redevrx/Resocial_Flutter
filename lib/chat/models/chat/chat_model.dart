@@ -26,7 +26,7 @@ class ChatModel {
     this._senderImage = senderImage;
   }
   //
-  ChatModel.fromJson(DocumentSnapshot json)
+  ChatModel.fromJson(QueryDocumentSnapshot json)
       : this._type = json['type'] ?? "",
         this._time = json['time'] ?? "",
         this._from = json['from'] ?? "",
@@ -36,4 +36,14 @@ class ChatModel {
         this._image = json['image'] ?? "",
         this._senderName = json['senderName'] ?? "",
         this._senderImage = json['senderImage'] ?? "";
+
+  String get type => this._type;
+  String get time => this._time;
+  String get from => this._from;
+  String get message => this._message;
+  String get to => this._to;
+  String get messageId => this._messageId;
+  String get image => this._image;
+  String get senderName => this._senderName;
+  String get senderImage => this._senderImage;
 }

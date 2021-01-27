@@ -9,6 +9,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc(ChatState initialState) : super(initialState);
   //
   ChatRepository _chatRepository = new ChatRepository();
+
+  //chat list info
   StreamSubscription _subscription;
 
   @override
@@ -32,25 +34,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
     if (event is OnCloseStreamReading) {
       await close();
-    }
-    if (event is OnSendMessage) {
-      yield* onSendMessage(event);
-    }
-  }
-
-  //call method send message
-  @override
-  Stream<ChatState> onSendMessage(OnSendMessage event) async* {
-    final result = await _chatRepository.onSendMessage(
-        event.senderId,
-        event.receiveId,
-        event.chatListInfo,
-        event.type,
-        event.message,
-        event.imageFile);
-
-    if (result) {
-      //return read message success
     }
   }
 
