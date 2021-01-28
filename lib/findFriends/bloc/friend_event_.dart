@@ -11,12 +11,10 @@ class onCheckFriendCurrentUserClick extends FriendEvent {
   final String friendId;
   final FriendBloc friendBloc;
   final ChatBloc chatBloc;
+  final FrindsModel freindModel;
 
-  onCheckFriendCurrentUserClick({
-    this.friendId,
-    this.friendBloc,
-    this.chatBloc,
-  });
+  onCheckFriendCurrentUserClick(
+      {this.friendId, this.friendBloc, this.chatBloc, this.freindModel});
 
   @override
   // TODO: implement props

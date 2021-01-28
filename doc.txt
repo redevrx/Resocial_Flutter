@@ -1,12 +1,13 @@
 there are bug like
  - bug unfocus textfield
  - login with facebook and google apple 
- -remove comment
+ -remove comment and edit
  - group freind notify
    - disable request notify
    - disable like notify 
    *chat notify
-  -bug remove notify screen <predi>
+  -chat 
+    *Vedio call or voice call 
 
     
       
@@ -17,4 +18,3 @@ new feature
  -comment with image
  -post multi image
  -post vdo
- *Vedio call or voice call 

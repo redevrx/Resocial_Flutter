@@ -263,12 +263,12 @@ class makeListFriend extends StatelessWidget {
           if (state is onLoadFrindFailed) {
             //if onLoadFrindFailed
             //if load new friend
-            _friendBloc.add(onLoadFriendUserClick());
+            // _friendBloc.add(onLoadFriendUserClick());
             return Center(child: Container(child: Text(state.data)));
           } else {
-            _friendBloc.add(onLoadFriendUserClick());
+            // _friendBloc.add(onLoadFriendUserClick());
             return Center(
-              child: CircularProgressIndicator(),
+              child: Text("Can not start chat because not as friend"),
             );
           }
         },
@@ -440,6 +440,7 @@ class makeCardProfile extends StatelessWidget {
                         print("user name :${data.userName}");
                         friendBloc.add(onCheckFriendCurrentUserClick(
                             friendBloc: friendBloc,
+                            freindModel: data,
                             chatBloc: chatBloc,
                             friendId: data.uid));
                         //if yes go to chat screen else show dialog error
@@ -447,13 +448,6 @@ class makeCardProfile extends StatelessWidget {
                         //load all friend of this user
                         // friendBloc.add(onLoadFriendUserClick());
 
-                        //chat bloc call save chat user info
-                        //will keep user info in chat list of current user
-                        final sharePref = await SharedPreferences.getInstance();
-                        //
-                        chatBloc.add(ChatInitial(
-                            friendModel: data,
-                            senderId: sharePref.getString("uid")));
                         //
                       },
                       child: Container(
@@ -514,6 +508,8 @@ class makeCardProfile extends StatelessWidget {
                       pageController.animateToPage(0,
                           duration: Duration(milliseconds: 700),
                           curve: Curves.easeInOutSine);
+                    } else {
+                      print('not friend');
                     }
                   }
                 },
@@ -605,27 +601,30 @@ class _makeChatListInfoCard extends StatelessWidget {
         return Material(
           child: InkWell(
             onLongPress: () => null,
-            onTap: () => Navigator.of(context).push(PageRouteBuilder(
-              transitionDuration: Duration(milliseconds: 700),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                animation = CurvedAnimation(
-                    curve: Curves.easeInOutBack, parent: animation);
-                return ScaleTransition(
-                  scale: animation,
-                  child: child,
-                );
-              },
-              pageBuilder: (context, animation, secondaryAnimation) {
-                return ChatDetial(
-                  friendBloc: friendBloc,
-                  chatBloc: chatBloc,
-                  messageBloc: messageBloc,
-                  data: chatListInfo[index],
-                  uid: uid,
-                );
-              },
-            )),
+            onTap: () {
+              //
+              Navigator.of(context).push(PageRouteBuilder(
+                transitionDuration: Duration(milliseconds: 700),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  animation = CurvedAnimation(
+                      curve: Curves.easeInOutBack, parent: animation);
+                  return ScaleTransition(
+                    scale: animation,
+                    child: child,
+                  );
+                },
+                pageBuilder: (context, animation, secondaryAnimation) {
+                  return new ChatDetial(
+                    friendBloc: friendBloc,
+                    chatBloc: chatBloc,
+                    messageBloc: messageBloc,
+                    data: chatListInfo[index],
+                    uid: uid,
+                  );
+                },
+              ));
+            },
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
               width: double.infinity,
@@ -688,7 +687,8 @@ class _makeChatListInfoCard extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 18.0, right: 8.0),
                     child: Column(
                       children: [
-                        Text("${chatListInfo[index].time}",
+                        Text(
+                            "${chatListInfo[index].time.split(":")[0]}:${chatListInfo[index].time.split(":")[1]}",
                             style: TextStyle(
                                 fontSize: 14.0,
                                 color: Colors.grey,

@@ -25,6 +25,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     if (event is OnSendMessage) {
       yield* onSendMessage(event);
     }
+    if (event is OnRemoveMessage) {
+      await _messageRepo.onRemoveMessage(
+          event.senderId, event.receiveId, event.messageId);
+    }
   }
 
   //call method send message
@@ -46,6 +50,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   //read message between current user with friend
   @override
   Stream<MessageState> onReadMessage(OnReadingMessage event) async* {
+    print("read message id :${event.receiveId}");
     _subscriptionMessage?.cancel();
     _subscriptionMessage = _messageRepo
         .onReadMessage(event.senderId, event.receiveId)
@@ -55,11 +60,11 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   //
 
   @override
-  Future<void> close() {
+  Future<void> close() async {
     // TODO: implement close
 
-    _subscriptionMessage?.cancel();
-
-    return super.close();
+    await _subscriptionMessage?.cancel();
+    // _subscriptionMessage.cancel();
+    // await _messageRepo.close();
   }
 }

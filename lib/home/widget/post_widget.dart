@@ -41,8 +41,14 @@ class CardPost extends StatelessWidget {
   final String uid;
   final PageNaviagtorChageBloc pageNaviagtorChageBloc;
 
+  var textLength = 0;
   @override
   Widget build(BuildContext context) {
+    if (modelsPost[i].body != null) {
+      textLength = modelsPost[i].body.length;
+    } else {
+      textLength = 0;
+    }
     return Container(
       margin: EdgeInsets.only(top: 22.0),
       width: double.infinity,
@@ -145,7 +151,7 @@ class CardPost extends StatelessWidget {
                         Column(
                           children: [
                             SizedBox(
-                              height: 80.0,
+                              height: textLength > 40 ? 20.0 : 80.0,
                             ),
                             BlocBuilder<TextMoreBloc, TextMoreState>(
                                 builder: (context, state) {
@@ -461,6 +467,13 @@ class CardPost extends StatelessWidget {
 
   Container _build_show_message_ui(onTextMoreResult state, double textSize) {
     return Container(
+        height: textLength >= 111
+            ? 175.0
+            : textLength >= 70
+                ? 90.0
+                : textLength >= 40
+                    ? 75.0
+                    : 50.0,
         padding: const EdgeInsets.only(
             top: 12.0, left: 12.0, right: 12.0, bottom: 16.0),
         child: SingleChildScrollView(

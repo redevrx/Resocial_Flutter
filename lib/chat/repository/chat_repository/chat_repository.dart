@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 import 'package:socialapp/chat/models/chat/chat_list_info.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
 
@@ -19,6 +20,8 @@ class ChatRepository {
     var senderName = "";
     var senderImage = "";
     var senderStatus = "";
+    var now = DateTime.now();
+    var time = DateFormat("H:mm:ss:dd:MM:yyyy").format(now);
 
     // await mMessageRef
     //     .doc("${senderId}")
@@ -57,7 +60,7 @@ class ChatRepository {
     friendChatInfoSender["uid"] = friendModel.uid;
     friendChatInfoSender["name"] = friendModel.userName;
     friendChatInfoSender["lastMessage"] = "";
-    friendChatInfoSender["time"] = "";
+    friendChatInfoSender["time"] = "${time}";
     friendChatInfoSender["profile"] = friendModel.imageProfile;
     friendChatInfoSender['alert'] = "0";
     friendChatInfoSender["type"] = "person";
@@ -72,7 +75,7 @@ class ChatRepository {
     friendChatInfoReceive["uid"] = senderId;
     friendChatInfoReceive["name"] = senderName;
     friendChatInfoReceive["lastMessage"] = "";
-    friendChatInfoReceive["time"] = "";
+    friendChatInfoReceive["time"] = "$time";
     friendChatInfoReceive["profile"] = senderImage;
     friendChatInfoReceive['alert'] = "0";
     friendChatInfoReceive["type"] = "person";
@@ -120,7 +123,8 @@ class ChatRepository {
     final mChatSenderRef = FirebaseFirestore.instance
         .collection('ChatsList')
         .doc("${_uid}")
-        .collection("list");
+        .collection("list")
+        .orderBy("time", descending: true);
 
     //read data type real-time
     return mChatSenderRef.snapshots().map((it) {

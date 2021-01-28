@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:socialapp/chat/bloc/chatBloc/chat_event.dart';
 import 'package:socialapp/chat/screen/chat_detial.dart';
 import 'package:socialapp/findFriends/bloc/friend_event_.dart';
 import 'package:socialapp/findFriends/bloc/friend_state_.dart';
@@ -48,6 +50,16 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
     print("${event.friendId}");
     final checkResult =
         await friendRepository.onCheckFriendCurrentUser(event.friendId);
+
+    if (checkResult == "friend") {
+      //chat bloc call save chat user info
+      //will keep user info in chat list of current user
+      final sharePref = await SharedPreferences.getInstance();
+      //
+      event.chatBloc.add(ChatInitial(
+          friendModel: event.freindModel,
+          senderId: sharePref.getString("uid")));
+    }
 
     yield onCheckFriendResult(
         checkResult: checkResult, friendUID: event.friendId);

@@ -6,6 +6,7 @@ import 'package:socialapp/chat/bloc/messageBloc/message_event.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_state.dart';
 import 'package:socialapp/chat/models/chat/chat_model.dart';
 import 'package:socialapp/notifications/PushNotificationService.dart';
+import 'package:socialapp/widgets/models/choice.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import 'package:socialapp/chat/bloc/export.dart';
@@ -33,6 +34,8 @@ class ChatDetial extends StatefulWidget {
 class _ChatDetialState extends State<ChatDetial> {
   //
 
+  ScrollController _scrollController = ScrollController();
+
   void initialBlocMethod() async {
     widget.friendBloc.add(onLoadFriendUserClick());
 
@@ -43,7 +46,6 @@ class _ChatDetialState extends State<ChatDetial> {
     //start load message info
     widget.messageBloc.add(OnReadingMessage(
         senderId: sPref.getString("uid"), receiveId: widget.data.uid));
-
     //start update chat list info
     widget.chatBloc.add(OnUpdateChatListInfo(
         senderId: sPref.getString("uid"),
@@ -53,10 +55,20 @@ class _ChatDetialState extends State<ChatDetial> {
 
   @override
   void initState() {
-    print("uid :${widget.uid}");
     // TODO: implement initState
+
     initialBlocMethod();
+
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    Future.delayed(Duration(seconds: 1), () {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    });
+    super.didChangeDependencies();
   }
 
   @override
@@ -82,18 +94,24 @@ class _ChatDetialState extends State<ChatDetial> {
                   child: Column(
                     children: [
                       //make app bar
-                      _makeAppBarChat(data: widget.data),
+                      _makeAppBarChat(
+                        data: widget.data,
+                        messageBloc: widget.messageBloc,
+                      ),
                       // make content list chat
 
                       _makeListMessage(
+                        messageBloc: widget.messageBloc,
                         widget: widget,
                         uid: widget.uid,
+                        scrollController: _scrollController,
                       ),
                       //make botton bar textBox Chat
                       //data is chat list info
                       _makeBottonMessage(
                         messageBloc: widget.messageBloc,
                         data: widget.data,
+                        scrollController: _scrollController,
                       )
                     ],
                   ),
@@ -112,11 +130,15 @@ class _makeListMessage extends StatelessWidget {
     Key key,
     @required this.widget,
     @required String uid,
+    this.scrollController,
+    this.messageBloc,
   })  : _uid = uid,
         super(key: key);
 
   final ChatDetial widget;
   final String _uid;
+  final MessageBloc messageBloc;
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -128,10 +150,12 @@ class _makeListMessage extends StatelessWidget {
         builder: (context, state) {
           if (state is OnReadMessageSuccess) {
             return ListView(
+              controller: scrollController,
               children: state.chatModel.map((messageModel) {
-                return _makeCardMessage(
+                return makeCardMessage(
                   uid: _uid,
                   messageModel: messageModel,
+                  messageBloc: messageBloc,
                 );
               }).toList(),
             );
@@ -155,51 +179,123 @@ class _makeListMessage extends StatelessWidget {
   }
 }
 
-class _makeCardMessage extends StatelessWidget {
-  const _makeCardMessage({
-    Key key,
-    @required String uid,
-    this.messageModel,
-  })  : _uid = uid,
-        super(key: key);
+const List<Choice> _choices = const <Choice>[
+  const Choice(title: 'Remove', icon: Icons.remove),
+];
+
+class makeCardMessage extends StatefulWidget {
   final ChatModel messageModel;
-  final String _uid;
+  final String uid;
+  final MessageBloc messageBloc;
+  makeCardMessage({Key key, this.messageModel, this.uid, this.messageBloc})
+      : super(key: key);
+
+  @override
+  _makeCardMessageState createState() => _makeCardMessageState();
+}
+
+class _makeCardMessageState extends State<makeCardMessage> {
+  bool sender;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    sender = widget.messageModel.from == widget.uid;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var sender = messageModel.from == _uid;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Column(
         children: [
           //check current that send message rigth ?
           //if yes show message rigth else left
-          Align(
-              alignment: sender ? Alignment.centerRight : Alignment.centerLeft,
-              // right: 16.0,
-              child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 10.0),
-                  decoration: BoxDecoration(
-                      color: sender ? Color(0xFF6583F3) : Color(0xFFEEF1FF),
-                      boxShadow: [
-                        BoxShadow(
-                            color:
-                                sender ? Color(0xFF879EF7) : Color(0xFFC8D2FC),
-                            offset: Offset(.5, .5),
-                            blurRadius: 8.0,
-                            spreadRadius: 1.0)
-                      ],
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(.5),
-                          topRight: Radius.circular(16.5),
-                          bottomLeft: Radius.circular(16.5),
-                          bottomRight: Radius.circular(.5))),
-                  child: Text(
-                    messageModel.message,
-                    style: Theme.of(context).textTheme.subtitle2.copyWith(
-                        color: sender ? Colors.white : Colors.black87),
-                  )))
+          PopupMenuButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(22.5),
+              topRight: Radius.circular(.5),
+              bottomRight: Radius.circular(22.5),
+              bottomLeft: Radius.circular(.5),
+            )),
+            onSelected: (value) async {
+              if (value == "Remove") {
+                if (sender) {
+                  widget.messageBloc.add(OnRemoveMessage(
+                      senderId: widget.uid,
+                      receiveId: (sender)
+                          ? widget.messageModel.to
+                          : widget.messageModel.from,
+                      messageId: widget.messageModel.messageId));
+                  print("click remove message ${value}");
+                } else {
+                  print("can not remove message");
+                  Scaffold.of(context).showSnackBar(
+                      SnackBar(content: Text("Can not remove Message")));
+                }
+              }
+            },
+            itemBuilder: (context) => [
+              //menu remove
+              PopupMenuItem(
+                value: _choices[0].title,
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.red.withOpacity(.25)),
+                      child: Icon(
+                        _choices[0].icon,
+                        color: Colors.red,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8.0,
+                    ),
+                    Text('${_choices[0].title}'),
+                  ],
+                ),
+              ),
+              //line
+
+              // PopupMenuDivider(
+              //   height: 1.5,
+              // ),
+            ],
+            child: Align(
+                alignment:
+                    sender ? Alignment.centerRight : Alignment.centerLeft,
+                // right: 16.0,
+                child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 10.0),
+                    decoration: BoxDecoration(
+                        color: sender ? Color(0xFF6583F3) : Color(0xFFEEF1FF),
+                        boxShadow: [
+                          BoxShadow(
+                              color: sender
+                                  ? Color(0xFF879EF7)
+                                  : Color(0xFFC8D2FC),
+                              offset: Offset(.5, .5),
+                              blurRadius: 8.0,
+                              spreadRadius: 1.0)
+                        ],
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(.5),
+                            topRight: Radius.circular(16.5),
+                            bottomLeft: Radius.circular(16.5),
+                            bottomRight: Radius.circular(.5))),
+                    child: Text(
+                      widget.messageModel.message,
+                      style: Theme.of(context).textTheme.subtitle2.copyWith(
+                          color: sender ? Colors.white : Colors.black87),
+                    ))),
+          )
         ],
       ),
     );
@@ -209,10 +305,12 @@ class _makeCardMessage extends StatelessWidget {
 class _makeBottonMessage extends StatelessWidget {
   final MessageBloc messageBloc;
   final ChatListInfo data;
+  final ScrollController scrollController;
   const _makeBottonMessage({
     Key key,
     this.messageBloc,
     this.data,
+    this.scrollController,
   }) : super(key: key);
 
   //data is chat list info
@@ -253,7 +351,7 @@ class _makeBottonMessage extends StatelessWidget {
                 controller: textController,
                 onChanged: (value) => message = value,
                 onFieldSubmitted: (message) async {
-                  FocusScope.of(context).unfocus();
+                  // FocusScope.of(context).unfocus();
                   textController.text = "";
                   // print(value);
                   //send message
@@ -265,6 +363,11 @@ class _makeBottonMessage extends StatelessWidget {
                       message: message,
                       receiveId: data.uid,
                       senderId: sPref.getString("uid")));
+
+                  Future.delayed(Duration(seconds: 3), () {
+                    scrollController
+                        .jumpTo(scrollController.position.maxScrollExtent);
+                  });
                 },
                 decoration: InputDecoration(
                     hintStyle: Theme.of(context)
@@ -296,7 +399,7 @@ class _makeBottonMessage extends StatelessWidget {
                   onTap: () async {
                     // print(value);
                     //send message
-                    FocusScope.of(context).unfocus();
+                    // FocusScope.of(context).unfocus();
                     textController.text = "";
                     final sPref = await SharedPreferences.getInstance();
                     //
@@ -306,6 +409,11 @@ class _makeBottonMessage extends StatelessWidget {
                         message: message,
                         receiveId: data.uid,
                         senderId: sPref.getString("uid")));
+
+                    Future.delayed(Duration(seconds: 3), () {
+                      scrollController
+                          .jumpTo(scrollController.position.maxScrollExtent);
+                    });
                   },
                   child: Icon(
                     Icons.send,
@@ -326,9 +434,11 @@ class _makeAppBarChat extends StatelessWidget {
   const _makeAppBarChat({
     Key key,
     @required this.data,
+    this.messageBloc,
   }) : super(key: key);
 
   final ChatListInfo data;
+  final MessageBloc messageBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -358,7 +468,9 @@ class _makeAppBarChat extends StatelessWidget {
           Row(
             children: [
               // make icon arrow
-              _makeIconArrowBack(),
+              _makeIconArrowBack(
+                messageBloc: messageBloc,
+              ),
               //make icon profile and name
 
               _makeProfileAndName(data: data),
@@ -524,8 +636,10 @@ class _makeProfileAndName extends StatelessWidget {
 }
 
 class _makeIconArrowBack extends StatelessWidget {
+  final MessageBloc messageBloc;
   const _makeIconArrowBack({
     Key key,
+    this.messageBloc,
   }) : super(key: key);
 
   @override
@@ -551,7 +665,9 @@ class _makeIconArrowBack extends StatelessWidget {
               bottomLeft: Radius.circular(12.0),
               bottomRight: Radius.circular(12.0))),
       child: InkWell(
-        onTap: () => Navigator.of(context).pop(),
+        onTap: () async {
+          Navigator.of(context).pop();
+        },
         child: Icon(
           Icons.arrow_back_ios,
           size: 28.0,

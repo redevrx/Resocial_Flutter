@@ -1,10 +1,13 @@
 import 'dart:collection';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:socialapp/chat/models/chat/chat_list_info.dart';
 import 'package:socialapp/chat/models/chat/chat_model.dart';
+import 'package:http/http.dart' as http;
 
 class MessageRepository {
 /**
@@ -78,7 +81,7 @@ class MessageRepository {
     var senderName = "";
     var senderImage = "";
     final now = DateTime.now();
-    var time = DateFormat("H:m").format(now);
+    var time = DateFormat("H:m:s:dd:MM:yyyy").format(now);
     var messageId = mMessageSenderRef.doc().id;
     bool checkResul = false;
 
@@ -130,7 +133,7 @@ class MessageRepository {
     });
 
     // send message of receive
-    await mMessageReceiveRef
+    mMessageReceiveRef
         .doc("${receiveId}")
         .collection("${senderId}")
         .doc("${messageId}")
@@ -141,8 +144,9 @@ class MessageRepository {
       print("send message receive error ${e}");
     });
 
-    await onUpdateChatListInfoLastMessage(
-        senderId, receiveId, message, "${time}");
+    onUpdateChatListInfoLastMessage(senderId, receiveId, message, "${time}");
+
+    sendNotifyTOFriend(receiveId, model.name);
 
     //
     return checkResul;
@@ -150,21 +154,97 @@ class MessageRepository {
   //
 
   /*
-  read message chat between current user and friend
+  remove message that current user send to friend
+  if message that is last message give update chat list info 
+  as unsend 
    */
 
-  Stream<List<ChatModel>> onReadMessage(String senderId, String receiveId) {
-    print("start load message");
-    //database path
-    final mMessage = FirebaseFirestore.instance.collection("Messages");
+  Future<Null> onRemoveMessage(
+      String senderId, String receiveId, String messageId) async {
+    //data base path
+    final mMessageRef = FirebaseFirestore.instance.collection("Messages");
 
-    return mMessage
+    //get time
+    final now = DateTime.now();
+    var time = DateFormat("H:m:s:dd:MM:yyyy").format(now);
+    //remove message from database
+    await mMessageRef
         .doc("${senderId}")
         .collection("${receiveId}")
+        .doc("${messageId}")
+        .delete()
+        .then((value) => print("unSend Message success"))
+        .catchError((e) => print('unSend message error :${e}'));
+
+    //update chat list info
+    await onUpdateChatListInfoLastMessage(senderId, receiveId, "unSend", time);
+  }
+
+  /*
+  read message chat between current user and friend
+   */
+  Stream<List<ChatModel>> onReadMessage(String senderId, String receiveId) {
+    PublishSubject<List<ChatModel>> _messageController =
+        PublishSubject<List<ChatModel>>();
+    print("start load message");
+    //database path
+    var mMessage = FirebaseFirestore.instance.collection("Messages");
+    var now = DateTime.now();
+    var time = DateFormat("H:m:s:dd:MM:yyyy").format(now);
+    mMessage
+        .doc("${senderId}")
+        .collection("${receiveId}")
+        .where(
+          "time",
+          isLessThanOrEqualTo: "${time}",
+        )
         .orderBy("time")
         .snapshots()
         .map((message) {
       return message.docs.map((e) => ChatModel.fromJson(e)).toList();
+    }).listen((event) => _messageController.add(event));
+    // _messageController.addStream(m);
+
+    return _messageController?.stream;
+  }
+
+  // Future<void> close() async {
+  //   await _messageController?.close();
+  // }
+
+  Future sendNotifyTOFriend(String friendId, String friendName) async {
+    final _mRef = FirebaseFirestore.instance;
+    _mRef.collection("user info").doc(friendId).get().then((info) async {
+      final token =
+          "AAAAqTVcAxY:APA91bFEdF2P_svKU7oOJ__XdVI6jTfjI-fP_2x0tpWEW9Z-xut891GBLAmTIYv4S5LwGtEc1Jn3_tMAoRiX5SVShXHOIvopdCBEHDM6IjZ7dQ9UnhXhikr_rZD7fl7cOAuGkb_iyQE0";
+      var deviceToken = "";
+      try {
+        deviceToken = (info.get("deviceToken").toString() != null)
+            ? info.get("deviceToken").toString()
+            : "";
+      } catch (e) {
+        print("$e");
+      }
+
+      //create notify data
+      Map<Object, Object> notifyData = HashMap();
+      notifyData['body'] = friendName + " give create new post now";
+      notifyData['title'] = "New Post";
+      notifyData['icon'] = "";
+
+      //create notify head
+      Map<Object, Object> notifyHead = HashMap();
+      notifyHead['to'] = deviceToken;
+      notifyHead['notification'] = notifyData;
+
+      //http post to FCM
+
+      await http.post('https://fcm.googleapis.com/fcm/send',
+          headers: {
+            'Authorization': 'key=$token',
+            'Content-Type': 'application/json'
+          },
+          body: jsonEncode(notifyHead));
     });
   }
 }

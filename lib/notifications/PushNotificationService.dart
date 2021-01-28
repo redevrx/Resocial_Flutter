@@ -42,16 +42,13 @@ class PushNotificationService {
     _fcm.configure(
       // onBackgroundMessage: myBackgroundMessageHandler,
       onMessage: (message) {
-        print("onMessage: $message");
-        //post notidy
-        showNotify.showNotifyPost(message);
+        if (message["title"].toString() == "chat") {
+          showNotify.showNotifyMessage(message);
+        } else {
+          //post notidy
+          showNotify.showNotifyPost(message);
+        }
       },
-      // onBackgroundMessage:
-      //     TargetPlatform.iOS == 'ios' ? null : myBackgroundMessageHandler,
-      // onLaunch: (Map<String, dynamic> message) async {
-      //   print("onLaunch: $message");
-      // },
-      // onBackgroundMessage : myBackgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
         print("onBackgriundMessage: $message");
         showNotify.showNotifyPost(message);
@@ -152,9 +149,39 @@ class ShowNotifyService {
       initializationSettings,
       onSelectNotification: (payload) {
         // when user tap on notification.
-        print("onSelectNotification called.");
+        print("onSelectNotification called. data");
       },
     );
+  }
+
+  showNotifyMessage(Map<String, dynamic> message) async {
+    //create android ip channel description channel
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      "notify_post",
+      "post",
+      "show notify to friends",
+      category: "messaging",
+      styleInformation: MessagingStyleInformation(
+        message[''],
+        messages: <Message>[Message(message['body'], null, null)],
+        conversationTitle: "New messages.",
+      ),
+      importance: Importance.Max,
+      priority: Priority.High,
+    );
+
+    //create ios setting notify
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+
+    //create platform ios android noify
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+
+    //show notify
+    //id notify_post 1
+    await flutterNotify.show(11, "" + message["notification"]['title'],
+        message["notification"]['body'], platformChannelSpecifics,
+        payload: 'FLUTTER_NOTIFICATION_CLICK');
   }
 
   showNotifyPost(Map<String, dynamic> message) async {
