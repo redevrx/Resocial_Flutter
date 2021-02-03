@@ -66,8 +66,8 @@ class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
     }
   }
 
-  bool _hasReachedMax(StateMyFeed state) =>
-      state is onFeedSuccessful && state.hasReachedMax;
+  // bool _hasReachedMax(StateMyFeed state) =>
+  //     state is onFeedSuccessful && state.hasReachedMax;
 
   @override
   Stream<StateMyFeed> onLoadUserFeed(
@@ -117,9 +117,10 @@ class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
   }
 
   @override
-  Future<void> close() {
+  Future<void> close() async {
     // TODO: implement close
     _streamSubscription?.cancel();
+    await repository.close();
     return super.close();
   }
 }

@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:socialapp/chat/models/chat/chat_list_info.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
 
@@ -112,6 +113,7 @@ class ChatRepository {
 
   //this method will read list chat show in chat home screeb
   //list chat is friend that chat with current user
+  PublishSubject _chatListController = PublishSubject<List<ChatListInfo>>();
   @override
   Stream<List<ChatListInfo>> getListChatInfo(String uid) {
     var _uid = uid;
@@ -127,11 +129,17 @@ class ChatRepository {
         .orderBy("time", descending: true);
 
     //read data type real-time
-    return mChatSenderRef.snapshots().map((it) {
+    mChatSenderRef.snapshots().map((it) {
       return it.docs.map((e) => ChatListInfo.fromJson(e)).toList();
-    });
+    }).listen((model) => _chatListController.add(model));
+
+    return _chatListController?.stream;
   }
   //
+
+  void close() async {
+    await _chatListController.close();
+  }
 
   /**
    this method will make update chat room or group chat room

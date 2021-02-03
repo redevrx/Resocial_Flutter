@@ -3,6 +3,10 @@ import 'package:socialapp/Login/bloc/models/signUpModel.dart';
 
 abstract class LoginEvevt {}
 
+class onLoginWithGoogle extends LoginEvevt {}
+
+class onLoginWithFacebook extends LoginEvevt {}
+
 class onLogin extends LoginEvevt {
   final LoginModel data;
 

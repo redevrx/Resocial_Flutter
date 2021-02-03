@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:socialapp/userPost/screen/create_new_post.dart';
 
 class LoginBloc extends Bloc<LoginEvevt, LoginState> {
   LoginBloc() : super(onInitialState());
@@ -62,6 +63,31 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
           password: _password, status: Formz.validate([_password, _password]));
     } else if (event is onUserChangePassowrdEvent) {
       yield* onChangePassword(event);
+    } else if (event is onLoginWithGoogle) {
+      yield* onLoginGoogle(event);
+    } else if (event is onLoginWithFacebook) {
+      yield* onLoginFacebook(event);
+    }
+  }
+
+  @override
+  Stream<LoginState> onLoginFacebook(onLoginWithFacebook event) async* {
+    final result = await signInWithFacebook();
+    if (result) {
+      yield onCreateAccountSuccessfully("signIn Success");
+    } else {
+      yield onLoingFaield("Error Not Access Your Email..");
+    }
+  }
+
+//google login
+  @override
+  Stream<LoginState> onLoginGoogle(onLoginWithGoogle event) async* {
+    final result = await signInWithGoogle();
+    if (result) {
+      yield onCreateAccountSuccessfully("signIn Success");
+    } else {
+      yield onLoingFaield("Error Not Access Your Email..");
     }
   }
 
@@ -196,6 +222,69 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
       print("Error: " + e);
       return false;
     });
+  }
+
+/*
+this method will sign in with facebook
+ */
+  Future<bool> signInWithFacebook() async {
+    // / Trigger the sign-in flow
+    // final result = await FacebookAuth.instance.login();
+
+    // // Create a credential from the access token
+    // final credential = FacebookAuthProvider.credential(result.token);
+
+    // final user = await FirebaseAuth.instance.signInWithCredential(credential);
+
+    // if (user.user.email != null) {
+    //   await onSaveData(
+    //       FirebaseFirestore.instance,
+    //       new SignUpModel(
+    //           user.user.email, user.user.displayName, "password", "passwordCm"),
+    //       user.user.uid);
+    //   return true;
+    // } else {
+    //   await GoogleSignIn().signOut();
+    //   return false;
+    // }
+  }
+
+/*
+login with google 
+and get email and user anme
+ */
+  Future<bool> signInWithGoogle() async {
+    // Trigger the authentication flow
+    // final googleSignIn = GoogleSignIn(
+    //   scopes: [
+    //     'email',
+    //     'https://www.googleapis.com/auth/contacts.readonly',
+    //   ],
+    // );
+
+    // final googleInUser = await googleSignIn.signIn();
+
+    // // Obtain the auth details from the request
+    // final googleAuth = await googleInUser.authentication;
+
+    // // / Create a new credential
+    // final GoogleAuthCredential credential = GoogleAuthProvider.credential(
+    //     accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+
+    // //use google login with firebase
+    // final user = await FirebaseAuth.instance.signInWithCredential(credential);
+
+    // if (user.user.email != null) {
+    //   await onSaveData(
+    //       FirebaseFirestore.instance,
+    //       new SignUpModel(
+    //           user.user.email, user.user.displayName, "password", "passwordCm"),
+    //       user.user.uid);
+    //   return true;
+    // } else {
+    //   await GoogleSignIn().signOut();
+    //   return false;
+    // }
   }
 
 //alter create account success

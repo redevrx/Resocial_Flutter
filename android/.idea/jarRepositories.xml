@@ -22,8 +22,8 @@
       <option name="url" value="https://storage.googleapis.com/download.flutter.io" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="Google9" />
-      <option name="name" value="Google9" />
+      <option name="id" value="Google8" />
+      <option name="name" value="Google8" />
       <option name="url" value="https://dl.google.com/dl/android/maven2/" />
     </remote-repository>
     <remote-repository>

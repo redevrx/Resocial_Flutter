@@ -1,0 +1,269 @@
+[33mcommit d4d385fc39b6091e377342718b185ec292cdaa81[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Thu Jan 28 18:28:11 2021 +0700
+
+    new feature send show message and remove message
+
+[33mcommit 4b3e9464d54c98ab3fada792837f76ee688cedeb[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Wed Jan 27 23:15:27 2021 +0700
+
+    represen message
+
+[33mcommit d531402df0bef840b13eac80462ba4ba5612da49[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Wed Jan 27 23:15:07 2021 +0700
+
+    represen message
+
+[33mcommit 4f10c88bb2f9ece9acf39bb273d1f5122dfba7f3[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Sun Jan 24 00:44:20 2021 +0700
+
+    send message
+
+[33mcommit 11ad87c00607af8b3281dd5e3a1871a2571424e7[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Sun Jan 24 00:44:05 2021 +0700
+
+    send message
+
+[33mcommit 8aac31261c9439fecf5aefd65f1a8ab2c31acff8[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Sat Jan 23 12:34:36 2021 +0700
+
+    make chat
+
+[33mcommit 7b5371407f9cb2edd73596c3d1ec10d29788fed5[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Sat Jan 23 12:34:21 2021 +0700
+
+    make chat
+
+[33mcommit 2cd5cd0bbdce7a29c9ad1e3eac24f3cb98122796[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Sat Jan 23 10:17:57 2021 +0700
+
+    chat fix bug
+
+[33mcommit a472fd1c310bc7bde91701762ca0584a7f53fc83[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Sat Jan 23 10:17:36 2021 +0700
+
+    chat fix bug
+
+[33mcommit fd23d12fb0e83932676462cc6bd4275eb32ad0d0[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Mon Jan 18 21:22:07 2021 +0700
+
+    commit all new chat screen
+
+[33mcommit 55d4720689de60d5881c9c92fcd4e070cdc3dc7d[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Mon Jan 18 21:21:08 2021 +0700
+
+    new chat screen
+
+[33mcommit 3df1443bd4d770f85d908f107bacbaee7a1175c7[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Sat Dec 19 18:48:42 2020 +0700
+
+    git commit -am 'new feature forgot password'
+
+[33mcommit 4677db2a4ab13f4c9d3ea9fa71c69f503f6a22ab[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Fri Dec 18 20:18:59 2020 +0700
+
+    git commit "multi language"
+
+[33mcommit cf5a716f57fd97e2e3bf623ab650171d4575b790[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Fri Dec 18 20:11:24 2020 +0700
+
+    multi language
+
+[33mcommit 47c161cc790971297cdbe064eb547a0429eb4966[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Thu Dec 10 20:46:48 2020 +0700
+
+    commit -am "fix bug like and change ui home page "
+
+[33mcommit 547e8dedd50a12facfac9dbc9132572097e0920c[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Thu Dec 10 20:46:27 2020 +0700
+
+    fix bug like and change ui home page
+
+[33mcommit 691599d90fe0822c738d91266c983eebbfff64bf[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Sat Nov 14 11:24:07 2020 +0700
+
+    git commit -am "fix bug setting and register"
+
+[33mcommit 17ee29e7d5d9f793fd11b8627f75d74882d342d4[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Sat Nov 14 11:22:33 2020 +0700
+
+    fix bug setting and register
+
+[33mcommit dfbdc5ed9a2631c79bb0d22f3af33f04bc509260[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Wed Nov 11 00:12:15 2020 +0700
+
+    commit -am "fix bug home page comment notify request friend profile"
+
+[33mcommit 76ac4286c5e8be086939bf19659c4fd9e4bc60f5[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Wed Nov 11 00:11:47 2020 +0700
+
+    fix bug home page comment notify request friend profile
+
+[33mcommit 3006abbe6471d621592ea42eec627aab2afcd2a7[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Mon Nov 9 22:15:35 2020 +0700
+
+    commit add -am "fix bug home page user feed"
+
+[33mcommit 1c2d6064cee2f326c1b3489895bb30e98e02085b[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Mon Nov 9 22:14:25 2020 +0700
+
+    fix bug home page user feed
+
+[33mcommit 39dc94bc790611b477adda222f821b91ee283e5b[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Sun Nov 8 23:49:36 2020 +0700
+
+    fix bug login register
+
+[33mcommit e19447d5708dabd337ff974c2392b98db728831f[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Sun Nov 8 19:05:29 2020 +0700
+
+    resocial fix bug login and register success
+
+[33mcommit 1fa09222ea3959decb1424b1c0d9f28a3956dc97[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Sun Nov 8 17:00:48 2020 +0700
+
+    commit all
+
+[33mcommit 7a5b48abba1504801bc337ca88d69e5a6b280713[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Thu Nov 5 13:57:02 2020 +0700
+
+    commit all
+
+[33mcommit c4093bb5f03b5419000362003e094c90778fc1af[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Thu Nov 5 11:31:38 2020 +0700
+
+    commit all
+
+[33mcommit bb443543e2a1b172075460d28e01653b9db39694[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Mon Nov 2 14:54:26 2020 +0700
+
+    commit all
+
+[33mcommit 8be37c0a79cf697b27022b0f109ea7c86d77c8b0[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Sun Nov 1 22:27:15 2020 +0700
+
+    commit all
+
+[33mcommit 2dc7b331233506dd987b102ee5645f51685add8b[m
+Author: unknown <kasem.jon12@hotmail.com>
+Date:   Sat Oct 31 23:45:58 2020 +0700
+
+    commit all
+
+[33mcommit 3e6ede2343766332f90408df69232d02740f34d2[m
+Author: unknown <kasem.s@cs.rmu.ac.th>
+Date:   Sat Oct 31 23:35:31 2020 +0700
+
+    commit all
+
+[33mcommit 845ed4b603e1857dc2b3b7e89c1c56e4cf2b9726[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Fri Oct 16 19:12:01 2020 +0700
+
+    commit all
+
+[33mcommit 5516380dc23887e234db8fea85b736179716f032[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Fri Oct 16 19:05:44 2020 +0700
+
+    commit all
+
+[33mcommit 68844aa61559dde29ea01d5a0bfb162abf826e87[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Fri Oct 16 18:24:10 2020 +0700
+
+    commit all
+
+[33mcommit ed5c3d98855a3f0126336d30b9b331f8e364d14e[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Fri Oct 9 13:43:30 2020 +0700
+
+    commit all
+
+[33mcommit 68a73bdd095320e35940aeaa8510380ed98f33b2[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Mon Oct 5 17:03:04 2020 +0700
+
+    commit all
+
+[33mcommit a58e879e5203e0aecbe07609aafbaa47d3d5c583[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Mon Oct 5 17:02:19 2020 +0700
+
+    commit all
+
+[33mcommit 141a0d4046816fcfdf1b94df7c75bb92e8cb4702[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Fri Oct 2 20:51:20 2020 +0700
+
+    commit all
+
+[33mcommit aa0c3c10b7d192ab069a673d45926346a680e0eb[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Fri Oct 2 15:26:12 2020 +0700
+
+    commit all
+
+[33mcommit 4fc7f4a2b4eb3cb845c2a087d2df6547e766a868[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Fri Oct 2 13:30:46 2020 +0700
+
+    commit all
+
+[33mcommit 1994af8da5915f266990296a39f46762b7efcbc9[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Fri Oct 2 13:10:43 2020 +0700
+
+    commit all
+
+[33mcommit 72df5c1f3ab8fa827aa53423f39017945aa808c4[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Fri Oct 2 12:56:07 2020 +0700
+
+    first commit
+
+[33mcommit d7f3da2597513e5e110b307f47aa95c8f3e20e34[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Fri Oct 2 12:55:14 2020 +0700
+
+    first commit
+
+[33mcommit 53e66f64d250dd5d36996b5f713fb8c5995f5d95[m
+Author: redevRx <kasem.jon12@hotmail.com>
+Date:   Fri Oct 2 12:47:47 2020 +0700
+
+    first commit
+
+[33mcommit 46df00b99e642b18b7da25215bc33aa1ae7b0bb8[m
+Author: เกษม ศรีเครือดง <kasem.jon12@hotmail.com>
+Date:   Thu Sep 3 17:45:12 2020 +0700
+
+    first commit

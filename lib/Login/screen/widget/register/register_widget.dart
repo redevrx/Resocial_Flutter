@@ -55,7 +55,10 @@ class textPasswordCm extends StatelessWidget {
                       borderSide: BorderSide(color: Colors.white)))),
           child: Container(
             child: TextField(
-              onSubmitted: (value) => loginBloc.add(onSignUp(null)),
+              onSubmitted: (value) {
+                FocusScope.of(context).unfocus();
+                loginBloc.add(onSignUp(null));
+              },
               onChanged: (cmPassword) =>
                   loginBloc.add(onCmPasswordChange(cmPassword: cmPassword)),
               autofocus: false,

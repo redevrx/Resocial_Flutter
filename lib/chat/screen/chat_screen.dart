@@ -1,6 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_bloc.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_state.dart';
 import 'package:socialapp/localizations/app_localizations.dart';
@@ -56,6 +56,7 @@ class chatScreen extends StatefulWidget {
 class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
   AnimationController _controller;
   PageController _pageController;
+  var uid = '';
 
 //new instance bloc
   EditProfileBloc _editProfileBloc;
@@ -81,14 +82,21 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
 
   void blocCallInitialMethod() async {
 // _getUserID();
+
+    if (widget.uid == null || widget.uid == "") {
+      uid = FirebaseAuth.instance.currentUser.uid;
+    } else {
+      uid = widget.uid;
+    }
 //load user profile
     _editProfileBloc.add(EditProfileLoadUserInfo());
     //load all friend of this user
     _friendBloc.add(onLoadFriendUserClick());
 
-    final sPref = await SharedPreferences.getInstance();
+    // final sPref = await SharedPreferences.getInstance();
     //load chat list info user
-    _chatBloc.add(LoadingChatInfo(uid: "${sPref.getString('uid')}"));
+    //  "${sPref.getString('uid')}"
+    _chatBloc.add(LoadingChatInfo(uid: uid));
   }
 
   @override
@@ -113,11 +121,6 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
     _chatBloc.add(OnCloseStreamReading());
     // TODO: implement dispose
     super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
   }
 
   @override
@@ -188,7 +191,7 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
                             friendBloc: _friendBloc,
                             chatBloc: _chatBloc,
                             messageBloc: _messageBloc,
-                            uid: widget.uid,
+                            uid: uid,
                           ),
                           //make load all user
                           makeListFriend(
@@ -305,7 +308,7 @@ class makeCardProfile extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 28.0),
                 child: Container(
-                  height: MediaQuery.of(context).size.height * .28,
+                  height: MediaQuery.of(context).size.height * .3,
                   decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
@@ -389,12 +392,18 @@ class makeCardProfile extends StatelessWidget {
                             ], borderRadius: BorderRadius.circular(12.0)),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(12.0),
-                              child: FadeInImage.memoryNetwork(
-                                  width: 80,
-                                  height: 80,
-                                  fit: BoxFit.cover,
-                                  placeholder: kTransparentImage,
-                                  image: "${data.imageProfile}"),
+                              child: data.imageProfile == null ||
+                                      data.imageProfile.isEmpty
+                                  ? FadeInImage.memoryNetwork(
+                                      placeholder: kTransparentImage,
+                                      image:
+                                          "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")
+                                  : FadeInImage.memoryNetwork(
+                                      width: 80,
+                                      height: 80,
+                                      fit: BoxFit.cover,
+                                      placeholder: kTransparentImage,
+                                      image: "${data.imageProfile}"),
                             ),
                           ),
                         ),
@@ -431,7 +440,7 @@ class makeCardProfile extends StatelessWidget {
                   )),
               //make button chat
               Positioned(
-                  bottom: MediaQuery.of(context).padding.bottom + 12,
+                  bottom: MediaQuery.of(context).padding.bottom + 10,
                   right: MediaQuery.of(context).size.width * .4,
                   child: Material(
                     child: InkWell(
@@ -451,8 +460,8 @@ class makeCardProfile extends StatelessWidget {
                         //
                       },
                       child: Container(
-                        width: 55.0,
-                        height: 85.0,
+                        width: MediaQuery.of(context).size.width * .13,
+                        height: MediaQuery.of(context).size.height * .1,
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
@@ -475,11 +484,11 @@ class makeCardProfile extends StatelessWidget {
                   )),
               //make button call
               Positioned(
-                  bottom: MediaQuery.of(context).padding.bottom + 12,
+                  bottom: MediaQuery.of(context).padding.bottom + 10,
                   right: MediaQuery.of(context).size.width * .2,
                   child: Container(
-                    width: 55.0,
-                    height: 85.0,
+                    width: MediaQuery.of(context).size.width * .13,
+                    height: MediaQuery.of(context).size.height * .1,
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
@@ -505,10 +514,12 @@ class makeCardProfile extends StatelessWidget {
                 listener: (context, state) {
                   if (state is onCheckFriendResult) {
                     if (state.checkResult == "friend") {
+                      friendBloc.add(onLoadFriendUserClick());
                       pageController.animateToPage(0,
                           duration: Duration(milliseconds: 700),
                           curve: Curves.easeInOutSine);
                     } else {
+                      friendBloc.add(onLoadFriendUserClick());
                       print('not friend');
                     }
                   }
@@ -600,7 +611,6 @@ class _makeChatListInfoCard extends StatelessWidget {
       itemBuilder: (context, index) {
         return Material(
           child: InkWell(
-            onLongPress: () => null,
             onTap: () {
               //
               Navigator.of(context).push(PageRouteBuilder(
@@ -615,7 +625,7 @@ class _makeChatListInfoCard extends StatelessWidget {
                   );
                 },
                 pageBuilder: (context, animation, secondaryAnimation) {
-                  return new ChatDetial(
+                  return new ChatDetail(
                     friendBloc: friendBloc,
                     chatBloc: chatBloc,
                     messageBloc: messageBloc,
@@ -647,12 +657,18 @@ class _makeChatListInfoCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12.0)),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12.0),
-                      child: FadeInImage.memoryNetwork(
-                          width: 50.0,
-                          height: 50.0,
-                          placeholder: kTransparentImage,
-                          fit: BoxFit.cover,
-                          image: "${chatListInfo[index].image}"),
+                      child: chatListInfo[index].image == null ||
+                              chatListInfo[index].image.isEmpty
+                          ? FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage,
+                              image:
+                                  "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")
+                          : FadeInImage.memoryNetwork(
+                              width: 50.0,
+                              height: 50.0,
+                              placeholder: kTransparentImage,
+                              fit: BoxFit.cover,
+                              image: "${chatListInfo[index].image}"),
                     ),
                   ),
                   // make show user name and last message
@@ -977,13 +993,19 @@ class _makeUserIcon extends StatelessWidget {
           if (state is onLoadUserSuccessfully) {
             return ClipRRect(
               borderRadius: BorderRadius.circular(12.0),
-              child: FadeInImage.memoryNetwork(
-                width: 42.0,
-                height: 42.0,
-                placeholder: kTransparentImage,
-                image: state.data.imageProfile,
-                fit: BoxFit.cover,
-              ),
+              child: state.data.imageProfile == null ||
+                      state.data.imageProfile.isEmpty
+                  ? FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image:
+                          "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")
+                  : FadeInImage.memoryNetwork(
+                      width: 42.0,
+                      height: 42.0,
+                      placeholder: kTransparentImage,
+                      image: state.data.imageProfile,
+                      fit: BoxFit.cover,
+                    ),
             );
           } else {
             return Container();

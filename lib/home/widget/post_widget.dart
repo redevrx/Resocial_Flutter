@@ -49,213 +49,215 @@ class CardPost extends StatelessWidget {
     } else {
       textLength = 0;
     }
-    return Container(
-      margin: EdgeInsets.only(top: 22.0),
-      width: double.infinity,
-      height: (modelsPost[i].body != null && modelsPost[i].type != "image")
-          ? 260.0
-          : 320.0,
-      child: Stack(
-        children: [
-          //make container like comment shared
+    return ClipRRect(
+      child: Container(
+        margin: EdgeInsets.only(top: 22.0),
+        width: double.infinity,
+        height: (modelsPost[i].body != null && modelsPost[i].type != "image")
+            ? 260.0
+            : 320.0,
+        child: Stack(
+          children: [
+            //make container like comment shared
 
-          Positioned(
-            left: 16.0,
-            bottom:
-                (modelsPost[i].body != null && modelsPost[i].type != "image")
-                    ? 16.0
-                    : 0.0,
-            child: Container(
-              height:
+            Positioned(
+              left: 16.0,
+              bottom:
                   (modelsPost[i].body != null && modelsPost[i].type != "image")
-                      ? 240.0
-                      : 300.0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  //make like icon
-                  // likes bloc
-                  BlocBuilder<LikeBloc, LikeState>(
-                    builder: (context, state) {
-                      if (state is onCheckLikesResult) {
-                        print("on onCheckLikesResult");
-                        //var likeResult = state.likeResult[i];
-                        return make_like_ui(
-                            uid: uid,
-                            i: i,
-                            modelsPost: modelsPost,
-                            likeBloc: likeBloc);
-                      }
-                      if (state is onLikesResult) {
-                        print("on onLikesResult");
-                        return make_like_ui(
-                            uid: uid,
-                            i: i,
-                            modelsPost: modelsPost,
-                            likeBloc: likeBloc);
-                      }
-                      if (state is onLikeProgress) {
-                        // not working
-                        print("on onLikeProgress");
-                        return make_like_ui(
-                            uid: uid,
-                            i: i,
-                            modelsPost: modelsPost,
-                            likeBloc: likeBloc);
-                      }
-                      if (state is onLikeResultPost) {
-                        print("on onLikeResultPost");
-                        return make_like_ui(
-                            uid: uid,
-                            i: i,
-                            modelsPost: modelsPost,
-                            likeBloc: likeBloc);
-                      }
-                      return Container();
-                    },
-                  ),
+                      ? 16.0
+                      : 0.0,
+              child: Container(
+                height: (modelsPost[i].body != null &&
+                        modelsPost[i].type != "image")
+                    ? 240.0
+                    : 300.0,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    //make like icon
+                    // likes bloc
+                    BlocBuilder<LikeBloc, LikeState>(
+                      builder: (context, state) {
+                        if (state is onCheckLikesResult) {
+                          print("on onCheckLikesResult");
+                          //var likeResult = state.likeResult[i];
+                          return make_like_ui(
+                              uid: uid,
+                              i: i,
+                              modelsPost: modelsPost,
+                              likeBloc: likeBloc);
+                        }
+                        if (state is onLikesResult) {
+                          print("on onLikesResult");
+                          return make_like_ui(
+                              uid: uid,
+                              i: i,
+                              modelsPost: modelsPost,
+                              likeBloc: likeBloc);
+                        }
+                        if (state is onLikeProgress) {
+                          // not working
+                          print("on onLikeProgress");
+                          return make_like_ui(
+                              uid: uid,
+                              i: i,
+                              modelsPost: modelsPost,
+                              likeBloc: likeBloc);
+                        }
+                        if (state is onLikeResultPost) {
+                          print("on onLikeResultPost");
+                          return make_like_ui(
+                              uid: uid,
+                              i: i,
+                              modelsPost: modelsPost,
+                              likeBloc: likeBloc);
+                        }
+                        return Container();
+                      },
+                    ),
 
-                  // make comment icon
-                  //comments bloc
-                  _build_comment_ui(context),
+                    // make comment icon
+                    //comments bloc
+                    _build_comment_ui(context),
 
-                  //make shared icon
-                  //share bloc
-                  make_shared_ui(modelsPost: modelsPost, i: i),
-                ],
+                    //make shared icon
+                    //share bloc
+                    make_shared_ui(modelsPost: modelsPost, i: i),
+                  ],
+                ),
               ),
             ),
-          ),
 
-          //  type card 250 message
-          (modelsPost[i].body != null && modelsPost[i].type != "image")
-              ? Positioned(
-                  left: 54.0,
-                  right: 6.0,
-                  top: 0.0,
-                  child: Container(
-                    height: 240,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16.0),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 22.0,
-                              offset: Offset(0.5, 0.5),
-                              spreadRadius: .5)
-                        ]),
-                    child: Column(
-                      children: [
-                        //make container show text more
-                        Column(
-                          children: [
-                            SizedBox(
-                              height: textLength > 40 ? 20.0 : 80.0,
-                            ),
-                            BlocBuilder<TextMoreBloc, TextMoreState>(
-                                builder: (context, state) {
-                              if (state is onTextMoreResult) {
-                                //show message top on card
-                                return _build_show_message_ui(state, 22.0);
-                              }
-                            }),
-                          ],
-                        ),
-                        // modelsPost[i].type == "image"
-                        //     ? _build_card_image_ui(context)
-                        //     : Container(),
-                      ],
-                    ),
-                  ))
-              :
-              //type card 300 image
-              //make card content show message or image of this post
-              Positioned(
-                  left: 54.0,
-                  right: 6.0,
-                  top: 0.0,
-                  child: Container(
-                    // height: 300,
-                    // decoration: BoxDecoration(
-                    //     color: Colors.white,
-                    //     borderRadius: BorderRadius.circular(16.0),
-                    //     boxShadow: [
-                    //       BoxShadow(
-                    //           color: Colors.black12,
-                    //           blurRadius: 22.0,
-                    //           offset: Offset(0.5, 0.5),
-                    //           spreadRadius: .5)
-                    //     ]),
-                    child: Column(
-                      children: [
-                        //make container show text more
+            //  type card 250 message
+            (modelsPost[i].body != null && modelsPost[i].type != "image")
+                ? Positioned(
+                    left: 54.0,
+                    right: 6.0,
+                    top: 0.0,
+                    child: Container(
+                      height: 240,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16.0),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 22.0,
+                                offset: Offset(0.5, 0.5),
+                                spreadRadius: .5)
+                          ]),
+                      child: Column(
+                        children: [
+                          //make container show text more
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: textLength > 40 ? 20.0 : 80.0,
+                              ),
+                              BlocBuilder<TextMoreBloc, TextMoreState>(
+                                  builder: (context, state) {
+                                if (state is onTextMoreResult) {
+                                  //show message top on card
+                                  return _build_show_message_ui(state, 22.0);
+                                }
+                              }),
+                            ],
+                          ),
+                          // modelsPost[i].type == "image"
+                          //     ? _build_card_image_ui(context)
+                          //     : Container(),
+                        ],
+                      ),
+                    ))
+                :
+                //type card 300 image
+                //make card content show message or image of this post
+                Positioned(
+                    left: 54.0,
+                    right: 6.0,
+                    top: 0.0,
+                    child: Container(
+                      // height: 300,
+                      // decoration: BoxDecoration(
+                      //     color: Colors.white,
+                      //     borderRadius: BorderRadius.circular(16.0),
+                      //     boxShadow: [
+                      //       BoxShadow(
+                      //           color: Colors.black12,
+                      //           blurRadius: 22.0,
+                      //           offset: Offset(0.5, 0.5),
+                      //           spreadRadius: .5)
+                      //     ]),
+                      child: Column(
+                        children: [
+                          //make container show text more
 
-                        BlocBuilder<TextMoreBloc, TextMoreState>(
-                            builder: (context, state) {
-                          if (state is onTextMoreResult) {
-                            //show message top on card
-                            return _build_show_message_ui(state, 18.0);
-                          }
-                        }),
-                        modelsPost[i].type == "image"
-                            ? _build_card_image_ui(context)
-                            : Container(),
-                      ],
-                    ),
-                  )),
+                          BlocBuilder<TextMoreBloc, TextMoreState>(
+                              builder: (context, state) {
+                            if (state is onTextMoreResult) {
+                              //show message top on card
+                              return _build_show_message_ui(state, 18.0);
+                            }
+                          }),
+                          modelsPost[i].type == "image"
+                              ? _build_card_image_ui(context)
+                              : Container(),
+                        ],
+                      ),
+                    )),
 
-          //make show user info
-          (modelsPost[i].body != null && modelsPost[i].type != "image")
-              ? Positioned(
-                  left: 68.0,
-                  right: 22.0,
-                  bottom: 0.0,
-                  child: BlocBuilder<EditProfileBloc, EditProfileState>(
-                      builder: (context, state) {
-                    //make row container user detail
-                    //bloc read user details
-                    if (state is onLoadUserSuccessfully) {
-                      return _build_user_info_ui(context);
-                    }
-                    if (state is onShowDialog) {
+            //make show user info
+            (modelsPost[i].body != null && modelsPost[i].type != "image")
+                ? Positioned(
+                    left: 68.0,
+                    right: 22.0,
+                    bottom: 0.0,
+                    child: BlocBuilder<EditProfileBloc, EditProfileState>(
+                        builder: (context, state) {
+                      //make row container user detail
+                      //bloc read user details
+                      if (state is onLoadUserSuccessfully) {
+                        return _build_user_info_ui(context);
+                      }
+                      if (state is onShowDialog) {
+                        return Container();
+                      }
+                      if (state is onEditFailed) {
+                        return Center(
+                            child: Container(
+                          child: Text("${state.data.toString()}"),
+                        ));
+                      }
                       return Container();
-                    }
-                    if (state is onEditFailed) {
-                      return Center(
-                          child: Container(
-                        child: Text("${state.data.toString()}"),
-                      ));
-                    }
-                    return Container();
-                  }),
-                )
-              : Positioned(
-                  left: 68.0,
-                  right: 22.0,
-                  bottom: 0.0,
-                  child: BlocBuilder<EditProfileBloc, EditProfileState>(
-                      builder: (context, state) {
-                    //make row container user detail
-                    //bloc read user details
-                    if (state is onLoadUserSuccessfully) {
-                      return _build_user_info_ui(context);
-                    }
-                    if (state is onShowDialog) {
+                    }),
+                  )
+                : Positioned(
+                    left: 68.0,
+                    right: 22.0,
+                    bottom: 0.0,
+                    child: BlocBuilder<EditProfileBloc, EditProfileState>(
+                        builder: (context, state) {
+                      //make row container user detail
+                      //bloc read user details
+                      if (state is onLoadUserSuccessfully) {
+                        return _build_user_info_ui(context);
+                      }
+                      if (state is onShowDialog) {
+                        return Container();
+                      }
+                      if (state is onEditFailed) {
+                        return Center(
+                            child: Container(
+                          child: Text("${state.data.toString()}"),
+                        ));
+                      }
                       return Container();
-                    }
-                    if (state is onEditFailed) {
-                      return Center(
-                          child: Container(
-                        child: Text("${state.data.toString()}"),
-                      ));
-                    }
-                    return Container();
-                  }),
-                )
+                    }),
+                  )
 
-          //
-        ],
+            //
+          ],
+        ),
       ),
     );
   }
@@ -319,12 +321,21 @@ class CardPost extends StatelessWidget {
                                     ],
                                     //shape: BoxShape.circle,
                                     image: DecorationImage(
-                                      image: NetworkImage(
-                                        // '${userDetail[0].imageProfile}'
-                                        snapshot.data
-                                            .get("imageProfile")
-                                            .toString(),
-                                      ),
+                                      image: snapshot.data
+                                                      .get("imageProfile") ==
+                                                  null ||
+                                              snapshot.data
+                                                  .get("imageProfile")
+                                                  .toString()
+                                                  .isEmpty
+                                          ? NetworkImage(
+                                              "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")
+                                          : NetworkImage(
+                                              // '${userDetail[0].imageProfile}'
+                                              snapshot.data
+                                                  .get("imageProfile")
+                                                  .toString(),
+                                            ),
                                       fit: BoxFit.cover,
                                     )),
                               ),
@@ -439,29 +450,28 @@ class CardPost extends StatelessWidget {
 
   Card _build_card_image_ui(BuildContext context) {
     return Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        child: InkWell(
-            onTap: () {
-              //user click look image
-              print('Look image');
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: InkWell(
+        onTap: () {
+          //user click look image
+          print('Look image');
 
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    LookImage(imageUrl: modelsPost[i].image, i: i),
-              ));
-            },
-            child: Hero(
-              tag: "look${i}",
-              child: Image.network(
-                '${modelsPost[i].image}',
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: 250.0,
-              ),
-            )));
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                LookImage(imageUrl: modelsPost[i].image, i: i),
+          ));
+        },
+        child: Image.network(
+          '${modelsPost[i].image}',
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: 250.0,
+        ),
+      ),
+    );
   }
   //
 
@@ -486,7 +496,7 @@ class CardPost extends StatelessWidget {
                     overflow: TextOverflow.fade,
                     textAlign: TextAlign.start,
                     softWrap: true,
-                    maxLines: state.value ? 400 : 7,
+                    maxLines: state.value ? 400 : 6,
                     style: TextStyle(fontSize: textSize),
                   )),
               InkWell(

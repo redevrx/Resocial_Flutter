@@ -253,9 +253,13 @@ class NotifyCard extends StatelessWidget {
                                       ],
                                       //shape: BoxShape.circle,
                                       image: DecorationImage(
-                                        image: NetworkImage(
-                                            // '${userDetail[0].imageProfile}'
-                                            model.profileUrl.toString()),
+                                        image: model.profileUrl == null ||
+                                                model.profileUrl.isEmpty
+                                            ? NetworkImage(
+                                                "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")
+                                            : NetworkImage(
+                                                // '${userDetail[0].imageProfile}'
+                                                model.profileUrl.toString()),
                                         fit: BoxFit.cover,
                                       ),
                                     )),

@@ -5,6 +5,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:socialapp/Profile/AddProfile/bloc/add_profile_bloc.dart';
 import 'package:socialapp/Profile/AddProfile/bloc/event/add_profile_event.dart';
 import 'package:socialapp/Profile/AddProfile/bloc/state/add_profile_state.dart';
+import 'package:socialapp/localizations/app_localizations.dart';
 import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'package:socialapp/widgets/cardBackground/item_card_shape_v2.dart';
 import 'dart:io';
@@ -23,38 +24,38 @@ class AddProfile extends StatelessWidget {
 
 class addProfile extends StatelessWidget {
 //check user permisstion by use map value
-  Future<void> checkPermission() async {
-    //check permission isUndetermined
-    //it is user yet not grant permission
-    if (await Permission.camera.status.isUndetermined &&
-        await Permission.storage.status.isUndetermined) {
-      // user grant permission yet ?
-      print("user not grant permission");
+  // Future<void> checkPermission() async {
+  //   //check permission isUndetermined
+  //   //it is user yet not grant permission
+  //   if (await Permission.camera.status.isUndetermined &&
+  //       await Permission.storage.status.isUndetermined) {
+  //     // user grant permission yet ?
+  //     print("user not grant permission");
 
-      //make request permission camera and storage
-      Map<Permission, PermissionStatus> statuses =
-          await [Permission.camera, Permission.storage].request();
+  //     //make request permission camera and storage
+  //     Map<Permission, PermissionStatus> statuses =
+  //         await [Permission.camera, Permission.storage].request();
 
-      print(statuses[Permission.camera]);
-      //if camara and storage grant
-      if (await statuses[Permission.camera].isGranted &&
-          await statuses[Permission.storage].isGranted) {
-        //fi yet give request permission
-        print("user grant permission camera and storeage");
-      }
-    }
+  //     print(statuses[Permission.camera]);
+  //     //if camara and storage grant
+  //     if (await statuses[Permission.camera].isGranted &&
+  //         await statuses[Permission.storage].isGranted) {
+  //       //fi yet give request permission
+  //       print("user grant permission camera and storeage");
+  //     }
+  //   }
 
-    if (await Permission.camera.isRestricted) {
-      //user bloc permission
-      print("user block grant permission");
-    }
-    if (await Permission.camera.status.isGranted &&
-        await Permission.storage.status.isGranted) {
-      //user grant permission
+  //   if (await Permission.camera.isRestricted) {
+  //     //user bloc permission
+  //     print("user block grant permission");
+  //   }
+  //   if (await Permission.camera.status.isGranted &&
+  //       await Permission.storage.status.isGranted) {
+  //     //user grant permission
 
-      print("user grant permission camera and storage");
-    }
-  }
+  //     print("user grant permission camera and storage");
+  //   }
+  // }
 
   //file keep image path from user select as category picture
 
@@ -150,7 +151,7 @@ class addProfile extends StatelessWidget {
               children: <Widget>[
                 // app bar page
                 AppBarCustom(
-                  title: 'Profile',
+                  title: '${AppLocalizations.of(context).translate('profile')}',
                   titleColor: Color(0xFFFF2D55),
                   status: "profile",
                 ),
@@ -282,7 +283,7 @@ class addProfile extends StatelessWidget {
                 child: Column(
               children: <Widget>[
                 Text(
-                  "Selcted",
+                  "${AppLocalizations.of(context).translate('lableSelect')}",
                   style: TextStyle(
                     fontSize: 30.0,
                   ),
@@ -291,7 +292,7 @@ class addProfile extends StatelessWidget {
                   height: 36.0,
                 ),
                 Text(
-                  "Select Image From Camera\n \nor Gallery...",
+                  "${AppLocalizations.of(context).translate('bodySelectImage')}",
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 20.0,
@@ -314,7 +315,7 @@ class addProfile extends StatelessWidget {
                             checkCameraPermission(context, profileBloc);
                           },
                           child: Text(
-                            "Camera",
+                            "${AppLocalizations.of(context).translate('btnCamera')}",
                             style: Theme.of(context)
                                 .textTheme
                                 .headline6
@@ -331,7 +332,7 @@ class addProfile extends StatelessWidget {
                             checkGalleryPermission(context, profileBloc);
                           },
                           child: Text(
-                            "Gallery",
+                            "${AppLocalizations.of(context).translate('btnGallery')}",
                             style: Theme.of(context)
                                 .textTheme
                                 .headline6
@@ -390,7 +391,7 @@ class buttonSaveAddprofile extends StatelessWidget {
                 bloc.add(onSaveAddprofile(null));
               },
               child: Text(
-                "Save",
+                "${AppLocalizations.of(context).translate('btnSave')}",
                 style: Theme.of(context)
                     .textTheme
                     .headline6
@@ -419,7 +420,7 @@ class textNickName extends StatelessWidget {
           onChanged: (nickName) =>
               profileBloc.add(onNickNameChange(nickName: nickName)),
           decoration: InputDecoration(
-              hintText: "Nick Name",
+              hintText: "${AppLocalizations.of(context).translate('nickName')}",
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20.0),
@@ -463,7 +464,8 @@ class textUserStatus extends StatelessWidget {
           maxLengthEnforced: true,
           maxLength: 50,
           decoration: InputDecoration(
-              hintText: "User Status",
+              hintText:
+                  "${AppLocalizations.of(context).translate('lableUserStatus')}",
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20.0),

@@ -29,6 +29,12 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       await _messageRepo.onRemoveMessage(
           event.senderId, event.receiveId, event.messageId);
     }
+    if (event is OnCloseMessageController) {
+      await _subscriptionMessage?.cancel();
+
+      await _messageRepo.closeController();
+      print("close messaeg stream");
+    }
   }
 
   //call method send message
@@ -50,7 +56,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   //read message between current user with friend
   @override
   Stream<MessageState> onReadMessage(OnReadingMessage event) async* {
-    print("read message id :${event.receiveId}");
+    // print("read message id :${event.receiveId}");
     _subscriptionMessage?.cancel();
     _subscriptionMessage = _messageRepo
         .onReadMessage(event.senderId, event.receiveId)
@@ -58,13 +64,4 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   }
 
   //
-
-  @override
-  Future<void> close() async {
-    // TODO: implement close
-
-    await _subscriptionMessage?.cancel();
-    // _subscriptionMessage.cancel();
-    // await _messageRepo.close();
-  }
 }

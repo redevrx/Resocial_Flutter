@@ -29,7 +29,7 @@ class buttonLogin extends StatelessWidget {
       ),
       onPressed: () {
         // final data = LoginModel(txtEmail.text, txtPassword.text);
-
+        FocusScope.of(context).unfocus();
         loginBloc.add(onLogin(null));
       },
     );
@@ -80,6 +80,7 @@ class textPassword extends StatelessWidget {
               loginBloc.add(onPasswordChange(password: password)),
           onSubmitted: (value) {
             // final data = LoginModel(state.email.value, state.password.value);
+            FocusScope.of(context).unfocus();
             loginBloc.add(onLogin(null));
           },
           autofocus: false,
@@ -188,7 +189,7 @@ class cardShape extends StatelessWidget {
               height:
                   // (kIsWeb)
                   //     ? MediaQuery.of(context).size.height * 0.84
-                  MediaQuery.of(context).size.height * 0.75,
+                  MediaQuery.of(context).size.height * 0.82,
               decoration: BoxDecoration(
                   gradient: LinearGradient(
                 colors: [Colors.green, Color(0xFF0D8E53).withOpacity(.78)],

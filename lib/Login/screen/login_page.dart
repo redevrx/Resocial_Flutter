@@ -1,3 +1,4 @@
+import 'package:socialapp/Login/bloc/events/login_evevt.dart';
 import 'package:socialapp/Login/bloc/login_bloc.dart';
 import 'package:socialapp/Login/bloc/states/login_state.dart';
 import 'package:socialapp/Login/screen/register_user.dart';
@@ -70,7 +71,7 @@ class loginScreen extends StatelessWidget {
                     status: "login",
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 2,
                   ),
 
                   // login bloc show status from event login
@@ -86,109 +87,114 @@ class loginScreen extends StatelessWidget {
                       }
                     },
                   ),
-                  Stack(
-                    children: <Widget>[
-                      //make background login page
-                      cardShape(),
-                      Column(
+                  Container(
+                    height: constraints.maxHeight * .82,
+                    child: SingleChildScrollView(
+                      child: Stack(
                         children: <Widget>[
-                          // (kIsWeb)
-                          //     ? Container(
-                          //         width:
-                          //             MediaQuery.of(context).size.width * 0.38,
-                          //         child: textEmail(
-                          //           txtEmail: txtEmail,
-                          //         ),
-                          //       )
+                          //make background login page
+                          cardShape(),
+                          Column(
+                            children: <Widget>[
+                              // (kIsWeb)
+                              //     ? Container(
+                              //         width:
+                              //             MediaQuery.of(context).size.width * 0.38,
+                              //         child: textEmail(
+                              //           txtEmail: txtEmail,
+                              //         ),
+                              //       )
 
-                          //make bloc login track email change and keep it as shared pref
-                          BlocBuilder<LoginBloc, LoginState>(
-                            buildWhen: (previous, current) =>
-                                previous.email != current.email,
-                            cubit: loginBloc,
-                            builder: (context, state) {
-                              if (state is onEmailStateChange) {
-                                return textEmail(
-                                    loginBloc: loginBloc, state: state);
-                              }
-                              return textEmail(
-                                  loginBloc: loginBloc, state: null);
-                            },
-                          ),
+                              //make bloc login track email change and keep it as shared pref
+                              BlocBuilder<LoginBloc, LoginState>(
+                                buildWhen: (previous, current) =>
+                                    previous.email != current.email,
+                                cubit: loginBloc,
+                                builder: (context, state) {
+                                  if (state is onEmailStateChange) {
+                                    return textEmail(
+                                        loginBloc: loginBloc, state: state);
+                                  }
+                                  return textEmail(
+                                      loginBloc: loginBloc, state: null);
+                                },
+                              ),
 
-                          //make bloc login track password and keep
-                          BlocBuilder<LoginBloc, LoginState>(
-                            buildWhen: (previous, current) =>
-                                previous.password != current.password,
-                            cubit: loginBloc,
-                            builder: (context, state) {
-                              if (state is onPasswordStateChange) {
-                                return textPassword(
-                                    loginBloc: loginBloc, state: state);
-                              }
-                              return textPassword(
-                                  loginBloc: loginBloc, state: null);
-                            },
-                          ),
-                          // (kIsWeb)
-                          //     ? Container(
-                          //         width:
-                          //             MediaQuery.of(context).size.width * 0.38,
-                          //         child: textPassword(
-                          //           txtPassword: txtPassword,
-                          //           email: txtEmail.text,
-                          //           loginBloc: loginBloc,
-                          //         ),
-                          //       )
+                              //make bloc login track password and keep
+                              BlocBuilder<LoginBloc, LoginState>(
+                                buildWhen: (previous, current) =>
+                                    previous.password != current.password,
+                                cubit: loginBloc,
+                                builder: (context, state) {
+                                  if (state is onPasswordStateChange) {
+                                    return textPassword(
+                                        loginBloc: loginBloc, state: state);
+                                  }
+                                  return textPassword(
+                                      loginBloc: loginBloc, state: null);
+                                },
+                              ),
+                              // (kIsWeb)
+                              //     ? Container(
+                              //         width:
+                              //             MediaQuery.of(context).size.width * 0.38,
+                              //         child: textPassword(
+                              //           txtPassword: txtPassword,
+                              //           email: txtEmail.text,
+                              //           loginBloc: loginBloc,
+                              //         ),
+                              //       )
 
-                          // (kIsWeb)
-                          //     ? Container(
-                          //         width:
-                          //             MediaQuery.of(context).size.width * 0.38,
-                          //         padding: const EdgeInsets.symmetric(
-                          //             horizontal: 46.0, vertical: 43.0),
-                          //         child: Row(
-                          //           mainAxisAlignment:
-                          //               MainAxisAlignment.spaceBetween,
-                          //           children: <Widget>[
-                          //             buttonToSignUp(loginBloc: loginBloc),
-                          //             buttonLogin(
-                          //                 txtEmail: txtEmail,
-                          //                 txtPassword: txtPassword,
-                          //                 loginBloc: loginBloc)
-                          //           ],
-                          //         ),
-                          //       )
-                          //build button
-                          _buildPaddingButton(loginBloc),
+                              // (kIsWeb)
+                              //     ? Container(
+                              //         width:
+                              //             MediaQuery.of(context).size.width * 0.38,
+                              //         padding: const EdgeInsets.symmetric(
+                              //             horizontal: 46.0, vertical: 43.0),
+                              //         child: Row(
+                              //           mainAxisAlignment:
+                              //               MainAxisAlignment.spaceBetween,
+                              //           children: <Widget>[
+                              //             buttonToSignUp(loginBloc: loginBloc),
+                              //             buttonLogin(
+                              //                 txtEmail: txtEmail,
+                              //                 txtPassword: txtPassword,
+                              //                 loginBloc: loginBloc)
+                              //           ],
+                              //         ),
+                              //       )
+                              //build button
+                              _buildPaddingButton(loginBloc),
 
-                          //make bloc login check status from event login
-                          //and make navigator
-                          BlocListener<LoginBloc, LoginState>(
-                            cubit: loginBloc,
-                            listener: (context, state) {
-                              if (state is onToSingUp) {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return SignUpScreen();
-                                }));
-                              } else if (state is onLoginSuccessfully) {
-                                print(state.toString());
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                      builder: (context) => HomePage(
-                                        pageNumber: 0,
-                                      ),
-                                    ),
-                                    (route) => false);
-                                // Navigator.of(context).pushNamed("/home");
-                              }
-                            },
-                            child: Container(),
-                          ),
+                              //make bloc login check status from event login
+                              //and make navigator
+                              BlocListener<LoginBloc, LoginState>(
+                                cubit: loginBloc,
+                                listener: (context, state) {
+                                  if (state is onToSingUp) {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return SignUpScreen();
+                                    }));
+                                  } else if (state is onLoginSuccessfully) {
+                                    print(state.toString());
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                          builder: (context) => HomePage(
+                                            pageNumber: 0,
+                                          ),
+                                        ),
+                                        (route) => false);
+                                    // Navigator.of(context).pushNamed("/home");
+                                  }
+                                },
+                                child: Container(),
+                              ),
+                            ],
+                          )
                         ],
-                      )
-                    ],
+                      ),
+                    ),
                   )
                 ],
               )),
@@ -198,16 +204,52 @@ class loginScreen extends StatelessWidget {
   }
 
   Padding _buildPaddingButton(LoginBloc loginBloc) {
+    // double center = MediaQuery.of(context).size.width * .5;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 46.0, vertical: 43.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          buttonToSignUp(loginBloc: loginBloc),
-          buttonLogin(
-              // txtEmail: txtEmail,
-              // txtPassword: txtPassword,
-              loginBloc: loginBloc)
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              buttonToSignUp(loginBloc: loginBloc),
+              buttonLogin(
+                  // txtEmail: txtEmail,
+                  // txtPassword: txtPassword,
+                  loginBloc: loginBloc)
+            ],
+          ),
+          SizedBox(
+            height: 16.0,
+          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 100.0),
+          //   child: Row(
+          //     children: [
+          //       InkWell(
+          //         onTap: () => loginBloc.add(onLoginWithGoogle()),
+          //         child: Container(
+          //             width: 42.0,
+          //             padding: const EdgeInsets.all(4.0),
+          //             child: ClipRRect(
+          //               child: Image.asset("assets/icons/google.png"),
+          //             )),
+          //       ),
+          //       SizedBox(
+          //         width: 32.0,
+          //       ),
+          //       InkWell(
+          //         onTap: () => loginBloc.add(onLoginWithFacebook()),
+          //         child: Container(
+          //             width: 42.0,
+          //             padding: const EdgeInsets.all(4.0),
+          //             child: ClipRRect(
+          //               child: Image.asset("assets/icons/facebook.png"),
+          //             )),
+          //       ),
+          //     ],
+          //   ),
+          // )
         ],
       ),
     );

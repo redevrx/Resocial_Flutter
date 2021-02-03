@@ -68,7 +68,7 @@ class LookImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('image :' + imageUrl);
+    print('image : $i' + imageUrl);
     return BlocProvider(
       create: (context) => DownloadCubit(DownloadState.onNormalDwonlaod),
       child: Scaffold(
@@ -79,7 +79,7 @@ class LookImage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 BlocBuilder<DownloadCubit, DownloadState>(
-                  // cubit: DownloadCubit(),
+                  // cubit: context.read<DownloadCubit>(),
                   builder: (context, state) {
                     switch (state) {
                       case DownloadState.onNormalDwonlaod:
@@ -271,20 +271,17 @@ class _widgetShowImage extends StatelessWidget {
   const _widgetShowImage({Key key, this.i, this.imageUrl}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final TransformationController controller = TransformationController();
+    // final TransformationController controller = TransformationController();
     return Center(
-      child: Hero(
-        tag: "look${i}",
-        child: ClipRect(
-          child: InteractiveViewer(
-              maxScale: 20.0,
-              child: Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
-                height: MediaQuery.of(context).size.height * .4,
-                width: MediaQuery.of(context).size.width * 1,
-              )),
-        ),
+      child: ClipRect(
+        child: InteractiveViewer(
+            maxScale: 20.0,
+            child: Image.network(
+              imageUrl,
+              fit: BoxFit.cover,
+              height: MediaQuery.of(context).size.height * .4,
+              width: MediaQuery.of(context).size.width * 1,
+            )),
       ),
     );
   }

@@ -79,10 +79,11 @@ class SearchFriends extends StatelessWidget {
                                     : Colors.black.withOpacity(.15),
                                 borderRadius: BorderRadius.circular(50.0),
                                 image: DecorationImage(
-                                  image: list[i].imageProfile != null
-                                      ? NetworkImage("${list[i].imageProfile}")
-                                      : NetworkImage(
-                                          "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg"),
+                                  image: list[i].imageProfile == null ||
+                                          list[i].imageProfile.isEmpty
+                                      ? NetworkImage(
+                                          "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")
+                                      : NetworkImage("${list[i].imageProfile}"),
                                   fit: BoxFit.cover,
                                 )),
                           ),

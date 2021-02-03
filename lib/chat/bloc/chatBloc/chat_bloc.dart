@@ -33,7 +33,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       yield* onUpdateChatListInfo(event);
     }
     if (event is OnCloseStreamReading) {
-      await close();
+      _subscription?.cancel();
+      await _chatRepository.close();
     }
   }
 
@@ -73,9 +74,5 @@ by will keep data of sender and receive
 
     await _chatRepository.onSavefriendInfoChatList(
         event.senderId, event.friendModel);
-  }
-
-  Future<void> close() async {
-    _subscription?.cancel();
   }
 }

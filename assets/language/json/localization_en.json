@@ -45,5 +45,8 @@
     "textEmailResetPassword":"Enter Current Email",
     "btnOk":"OK",
     "message":"Message",
-    "search":"Search !"
+    "search":"Search !",
+    "profile":"Profile",
+    "btnSave":"Save",
+    "nickName":"NickName"
 }

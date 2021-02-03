@@ -60,15 +60,16 @@ class AddProfileBloc extends Bloc<AddProfileEvent, AddProfileState> {
     //add data from shared pref to add profile model
 
     final data = AddProfileModel(
-        File(_preferences.getString("imageProfile")),
+        File(_preferences.getString("imageProfile") ?? "") ?? null,
         _preferences.getString("nickName"),
         _preferences.getString("userStatus"));
 
-//check image file
-    if (data.image != null) {
-      final _auth = await FirebaseAuth.instance.currentUser;
-      var uid = _auth.uid.toString();
+//get uid
+    final _auth = FirebaseAuth.instance.currentUser;
+    var uid = _auth.uid.toString();
 
+//check image file
+    if (_preferences.getString("imageProfile") != null) {
 //upload image to data storage
       final StorageReference mRef =
           FirebaseStorage().ref().child("Profile Image").child("Images");
@@ -94,6 +95,22 @@ class AddProfileBloc extends Bloc<AddProfileEvent, AddProfileState> {
       } else {
         yield onSaveAddProfileFailed(
             data: "save image and update user info failed");
+      }
+    } else if (_preferences.getString("imageProfile") == null) {
+      //update user info
+      //update image field
+      final it = await updateUserInfo("", data.status, data.nickName, uid);
+
+      if (it) {
+        //clear data that keep in shared pref
+        _preferences.remove("imageProfile");
+        _preferences.remove("nickName");
+        _preferences.remove("userStatus");
+
+        yield onSaveAddProfileSuccessfully(
+            data: "Save Image and Update user info");
+      } else {
+        yield onSaveAddProfileFailed(data: "update profile failed");
       }
     } else {
       yield onSaveAddProfileFailed(data: "Image file null");

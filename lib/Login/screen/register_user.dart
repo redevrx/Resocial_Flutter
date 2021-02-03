@@ -69,7 +69,7 @@ class signUpScreen extends StatelessWidget {
 
                   //  create container shap path
                   SizedBox(
-                    height: 33,
+                    height: 12,
                   ),
 
                   //bloc login show status user register
@@ -86,171 +86,177 @@ class signUpScreen extends StatelessWidget {
                       }
                     },
                   ),
-                  Stack(
-                    children: <Widget>[
-                      //card background
-                      cardShape(context),
-                      Column(
+                  Container(
+                    height: constraints.maxHeight * .82,
+                    child: SingleChildScrollView(
+                      child: Stack(
                         children: <Widget>[
-                          SizedBox(
-                            height: 0.0,
-                          ),
-                          // (kIsWeb)
-                          //     ? Container(
-                          //         width:
-                          //             MediaQuery.of(context).size.width * 0.38,
-                          //         child: textEmail(
-                          //           email: txtEmail,
-                          //         ),
-                          //       )
-                          //make bloc check text email change
-                          //
-                          BlocBuilder<LoginBloc, LoginState>(
-                            buildWhen: (previous, current) =>
-                                previous.email != current.email,
-                            cubit: loginBloc,
-                            builder: (context, state) {
-                              if (state is onEmailStateChange) {
-                                textEmail(
-                                  loginBloc: loginBloc,
-                                  state: state,
-                                );
-                              }
-                              return textEmail(
+                          //card background
+                          cardShape(context),
+                          Column(
+                            children: <Widget>[
+                              SizedBox(
+                                height: 0.0,
+                              ),
+                              // (kIsWeb)
+                              //     ? Container(
+                              //         width:
+                              //             MediaQuery.of(context).size.width * 0.38,
+                              //         child: textEmail(
+                              //           email: txtEmail,
+                              //         ),
+                              //       )
+                              //make bloc check text email change
+                              //
+                              BlocBuilder<LoginBloc, LoginState>(
+                                buildWhen: (previous, current) =>
+                                    previous.email != current.email,
+                                cubit: loginBloc,
+                                builder: (context, state) {
+                                  if (state is onEmailStateChange) {
+                                    textEmail(
+                                      loginBloc: loginBloc,
+                                      state: state,
+                                    );
+                                  }
+                                  return textEmail(
+                                    loginBloc: loginBloc,
+                                    state: null,
+                                  );
+                                },
+                              ),
+                              // (kIsWeb)
+                              //     ? Container(
+                              //         width:
+                              //             MediaQuery.of(context).size.width * 0.38,
+                              //         child: textUserName(
+                              //           userName: txtUserName,
+                              //         ),
+                              //       )
+
+                              //make login bloc for track data that change
+                              textUserName(
                                 loginBloc: loginBloc,
-                                state: null,
-                              );
-                            },
-                          ),
-                          // (kIsWeb)
-                          //     ? Container(
-                          //         width:
-                          //             MediaQuery.of(context).size.width * 0.38,
-                          //         child: textUserName(
-                          //           userName: txtUserName,
-                          //         ),
-                          //       )
+                              ),
 
-                          //make login bloc for track data that change
-                          textUserName(
-                            loginBloc: loginBloc,
-                          ),
+                              // (kIsWeb)
+                              //     ? Container(
+                              //         width:
+                              //             MediaQuery.of(context).size.width * 0.38,
+                              //         child: textPassword(
+                              //           password: txtPass,
+                              //         ),
+                              //       )
+                              //make bloc password change
+                              BlocBuilder<LoginBloc, LoginState>(
+                                buildWhen: (previous, current) =>
+                                    previous.password != current.password,
+                                cubit: loginBloc,
+                                builder: (context, state) {
+                                  if (state is onPasswordStateChange) {
+                                    return txtPassword(
+                                      loginBloc: loginBloc,
+                                      state: state,
+                                    );
+                                  }
+                                  return txtPassword(
+                                    loginBloc: loginBloc,
+                                    state: null,
+                                  );
+                                },
+                              ),
 
-                          // (kIsWeb)
-                          //     ? Container(
-                          //         width:
-                          //             MediaQuery.of(context).size.width * 0.38,
-                          //         child: textPassword(
-                          //           password: txtPass,
-                          //         ),
-                          //       )
-                          //make bloc password change
-                          BlocBuilder<LoginBloc, LoginState>(
-                            buildWhen: (previous, current) =>
-                                previous.password != current.password,
-                            cubit: loginBloc,
-                            builder: (context, state) {
-                              if (state is onPasswordStateChange) {
-                                return txtPassword(
-                                  loginBloc: loginBloc,
-                                  state: state,
-                                );
-                              }
-                              return txtPassword(
-                                loginBloc: loginBloc,
-                                state: null,
-                              );
-                            },
-                          ),
+                              // (kIsWeb)
+                              //     ? Container(
+                              //         width:
+                              //             MediaQuery.of(context).size.width * 0.38,
+                              //         child: textPasswordCm(
+                              //           passwordCm: textPassCm,
+                              //         ),
+                              //       )
+                              //password change
+                              BlocBuilder<LoginBloc, LoginState>(
+                                cubit: loginBloc,
+                                builder: (context, state) {
+                                  if (state is onCmPasswordStateChange) {
+                                    return textPasswordCm(
+                                      loginBloc: loginBloc,
+                                      state: state,
+                                    );
+                                  }
+                                  return textPasswordCm(
+                                    loginBloc: loginBloc,
+                                    state: null,
+                                  );
+                                },
+                              ),
 
-                          // (kIsWeb)
-                          //     ? Container(
-                          //         width:
-                          //             MediaQuery.of(context).size.width * 0.38,
-                          //         child: textPasswordCm(
-                          //           passwordCm: textPassCm,
-                          //         ),
-                          //       )
-                          //password change
-                          BlocBuilder<LoginBloc, LoginState>(
-                            cubit: loginBloc,
-                            builder: (context, state) {
-                              if (state is onCmPasswordStateChange) {
-                                return textPasswordCm(
-                                  loginBloc: loginBloc,
-                                  state: state,
-                                );
-                              }
-                              return textPasswordCm(
-                                loginBloc: loginBloc,
-                                state: null,
-                              );
-                            },
-                          ),
-
-                          // create button action
-                          // (kIsWeb)
-                          //     ? Container(
-                          //         width:
-                          //             MediaQuery.of(context).size.width * 0.38,
-                          //         padding: const EdgeInsets.symmetric(
-                          //             horizontal: 46.0, vertical: 43.0),
-                          //         child: Row(
-                          //           mainAxisAlignment:
-                          //               MainAxisAlignment.spaceBetween,
-                          //           children: <Widget>[
-                          //             buttonToLogin(
-                          //               bloc: loginBloc,
-                          //             ),
-                          //             buttonSignUp(
-                          //               bloc: loginBloc,
-                          //               email: txtEmail.text,
-                          //               userName: txtUserName.text,
-                          //               password: txtPass.text,
-                          //               passwordCm: textPassCm.text,
-                          //             )
-                          //           ],
-                          //         ),
-                          //       )
-                          //create  button
-                          //btn to login and btn sing up
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 22.0, horizontal: 42.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                buttonToLogin(
-                                  bloc: loginBloc,
+                              // create button action
+                              // (kIsWeb)
+                              //     ? Container(
+                              //         width:
+                              //             MediaQuery.of(context).size.width * 0.38,
+                              //         padding: const EdgeInsets.symmetric(
+                              //             horizontal: 46.0, vertical: 43.0),
+                              //         child: Row(
+                              //           mainAxisAlignment:
+                              //               MainAxisAlignment.spaceBetween,
+                              //           children: <Widget>[
+                              //             buttonToLogin(
+                              //               bloc: loginBloc,
+                              //             ),
+                              //             buttonSignUp(
+                              //               bloc: loginBloc,
+                              //               email: txtEmail.text,
+                              //               userName: txtUserName.text,
+                              //               password: txtPass.text,
+                              //               passwordCm: textPassCm.text,
+                              //             )
+                              //           ],
+                              //         ),
+                              //       )
+                              //create  button
+                              //btn to login and btn sing up
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 22.0, horizontal: 42.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    buttonToLogin(
+                                      bloc: loginBloc,
+                                    ),
+                                    buttonSignUp(
+                                      bloc: loginBloc,
+                                    )
+                                  ],
                                 ),
-                                buttonSignUp(
-                                  bloc: loginBloc,
-                                )
-                              ],
-                            ),
-                          ),
+                              ),
 
-                          //bloc listener
-                          //check status register
-                          BlocListener<LoginBloc, LoginState>(
-                            cubit: loginBloc,
-                            listener: (context, state) {
-                              if (state is onToLogin) {
-                                print("onLogin :to login page");
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, '/login', (r) => false);
-                              }
-                              if (state is onCreateAccountSuccessfully) {
-                                print("onLogin :" + state.data.toString());
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, "/addProfile", (r) => false);
-                              }
-                            },
-                            child: Container(),
+                              //bloc listener
+                              //check status register
+                              BlocListener<LoginBloc, LoginState>(
+                                cubit: loginBloc,
+                                listener: (context, state) {
+                                  if (state is onToLogin) {
+                                    print("onLogin :to login page");
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context, '/login', (r) => false);
+                                  }
+                                  if (state is onCreateAccountSuccessfully) {
+                                    print("onLogin :" + state.data.toString());
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context, "/addProfile", (r) => false);
+                                  }
+                                },
+                                child: Container(),
+                              )
+                            ],
                           )
                         ],
-                      )
-                    ],
+                      ),
+                    ),
                   ),
                 ],
               )),
@@ -274,7 +280,7 @@ class signUpScreen extends StatelessWidget {
               height:
                   // (kIsWeb)
                   //     ? MediaQuery.of(context).size.height * 0.84
-                  MediaQuery.of(context).size.height * 0.75,
+                  MediaQuery.of(context).size.height * 0.89,
               decoration: BoxDecoration(
                   gradient: LinearGradient(
                 colors: [Colors.orange, Colors.deepOrangeAccent],
@@ -307,6 +313,7 @@ class buttonSignUp extends StatelessWidget {
         // final data = SignUpModel(email, userName, password, passwordCm);
         // print("Password :" + data.password + passwordCm);
         //user register click
+        FocusScope.of(context).unfocus();
         bloc.add(onSignUp(null));
       },
     );

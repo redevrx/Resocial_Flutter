@@ -45,5 +45,8 @@
     "textEmailResetPassword":"กรุณากรอกอีเมลปัจจุบัน",
     "btnOk":"ยอมรับ",
     "message":"ข้อความ",
-    "search":"ค้นหา !"
+    "search":"ค้นหา !",
+    "profile":"ข้อมูล",
+    "btnSave":"บันทึก",
+    "nickName":"ชื่อเล่น"
 }

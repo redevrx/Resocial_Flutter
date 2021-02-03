@@ -5,6 +5,9 @@ import 'package:socialapp/chat/models/chat/chat_model.dart';
 
 abstract class MessageEvent {}
 
+//start close stream controller
+class OnCloseMessageController extends MessageEvent {}
+
 //start remove message or unsend message
 class OnRemoveMessage extends MessageEvent {
   final String senderId;
@@ -16,7 +19,7 @@ class OnRemoveMessage extends MessageEvent {
 
 //start read message success
 class OnReadedMessage extends MessageEvent {
-  final List<ChatModel> messageModel;
+  List<ChatModel> messageModel;
 
   OnReadedMessage({this.messageModel});
 }

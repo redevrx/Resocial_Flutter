@@ -133,7 +133,7 @@ class MessageRepository {
     });
 
     // send message of receive
-    mMessageReceiveRef
+    await mMessageReceiveRef
         .doc("${receiveId}")
         .collection("${senderId}")
         .doc("${messageId}")
@@ -144,9 +144,10 @@ class MessageRepository {
       print("send message receive error ${e}");
     });
 
-    onUpdateChatListInfoLastMessage(senderId, receiveId, message, "${time}");
+    await onUpdateChatListInfoLastMessage(
+        senderId, receiveId, message, "${time}");
 
-    sendNotifyTOFriend(receiveId, model.name);
+    await sendNotifyTOFriend(receiveId, model.name);
 
     //
     return checkResul;
@@ -183,11 +184,14 @@ class MessageRepository {
   /*
   read message chat between current user and friend
    */
+
+  //
   Stream<List<ChatModel>> onReadMessage(String senderId, String receiveId) {
     PublishSubject<List<ChatModel>> _messageController =
         PublishSubject<List<ChatModel>>();
     print("start load message");
     //database path
+
     var mMessage = FirebaseFirestore.instance.collection("Messages");
     var now = DateTime.now();
     var time = DateFormat("H:m:s:dd:MM:yyyy").format(now);
@@ -208,9 +212,10 @@ class MessageRepository {
     return _messageController?.stream;
   }
 
-  // Future<void> close() async {
-  //   await _messageController?.close();
-  // }
+  Future<void> closeController() async {
+    // _messageController?.done;
+    // _messageController?.close();
+  }
 
   Future sendNotifyTOFriend(String friendId, String friendName) async {
     final _mRef = FirebaseFirestore.instance;

@@ -39,7 +39,7 @@ class homePage extends StatefulWidget {
   _homePage createState() => _homePage();
 }
 
-class _homePage extends State<homePage> {
+class _homePage extends State<homePage> with TickerProviderStateMixin {
   void getUserId() async {
     //get install shared preferences
     final _pref = await SharedPreferences.getInstance();
@@ -137,6 +137,13 @@ class _homePage extends State<homePage> {
           },
         ),
         (r) => false);
+
+    // Navigator.pushAndRemoveUntil(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => CreatePost(),
+    //     ),
+    //     (route) => false);
   }
 
   @override
@@ -154,6 +161,7 @@ class _homePage extends State<homePage> {
               child: Column(
                 children: <Widget>[
                   // make app bar
+
                   InkWell(
                     child: AppBarCustom(
                       uid: uid,
@@ -177,6 +185,7 @@ class _homePage extends State<homePage> {
                       toPageCreatePost();
                     },
                   ),
+
                   //make bloc get feed data
                   BlocBuilder<MyFeedBloc, StateMyFeed>(
                     builder: (context, state) {
@@ -206,7 +215,6 @@ class _homePage extends State<homePage> {
                                 double.infinity,
                             color: Color(0XFFFAFAFA),
                             child: InkWell(
-                                onDoubleTap: () {},
                                 onLongPress: () {
                                   print("create new post");
                                   // Navigator.of(context).pushNamed("/newPost");
@@ -222,7 +230,6 @@ class _homePage extends State<homePage> {
                                     likeBloc.add(onLikeResultPostClick());
                                   },
                                   child: ListView.builder(
-                                    physics: ScrollPhysics(),
                                     controller: _scrollController,
                                     // semanticChildCount: state.models.length,
                                     itemCount: state.models.length,
@@ -233,7 +240,7 @@ class _homePage extends State<homePage> {
                                       //     id: state.models[i].postId));
                                       //user post with image
                                       // print(state.models[i].uid.toString());
-                                      return CardPost(
+                                      return new CardPost(
                                         pageNaviagtorChageBloc:
                                             pageNaviagtorChageBloc,
                                         textMoreBloc: textMoreBloc,

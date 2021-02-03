@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/models/EditProfileModel.dart';
 import 'package:socialapp/home/export/export_file.dart';
 
@@ -16,8 +17,12 @@ class FeedRepository {
   }
 
 //list and stream of this user feed
-  StreamController<List<PostModel>> streamControllerOnwerUser =
-      StreamController.broadcast();
+  // StreamController<List<PostModel>> streamControllerOnwerUser =
+  //     StreamController.broadcast();
+
+  BehaviorSubject<List<PostModel>> streamControllerOnwerUser =
+      BehaviorSubject<List<PostModel>>();
+
   List<List<PostModel>> onwerListFeed = List<List<PostModel>>();
   DocumentSnapshot _lastDocumentOnweFeed;
   bool _hasMoreDataOnwerFeed = true;
@@ -94,8 +99,11 @@ class FeedRepository {
     return result;
   }
 
-  StreamController<List<PostModel>> _feedController =
-      StreamController<List<PostModel>>.broadcast();
+  // StreamController<List<PostModel>> _feedController =
+  //     StreamController<List<PostModel>>.broadcast();
+
+  BehaviorSubject<List<PostModel>> _feedController =
+      BehaviorSubject<List<PostModel>>();
 
   List<List<PostModel>> models = List<List<PostModel>>();
   // List<DocumentSnapshot> likeModel;
@@ -185,6 +193,8 @@ class FeedRepository {
   void close() async {
     await _feedController?.close();
     await streamControllerOnwerUser?.close();
+    models = [];
+    onwerListFeed = [];
   }
 
   void requestMoreData() => requestAllFeedLimit(0, 6);

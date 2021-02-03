@@ -5,7 +5,7 @@ abstract class MessageState extends Equatable {}
 
 //show read messsage success
 class OnReadMessageSuccess extends MessageState {
-  final List<ChatModel> chatModel;
+  List<ChatModel> chatModel;
 
   OnReadMessageSuccess({this.chatModel});
   @override

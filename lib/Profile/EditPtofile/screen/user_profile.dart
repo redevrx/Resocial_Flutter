@@ -25,6 +25,7 @@ import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/textMore/bloc/text_more_bloc.dart';
 import 'package:socialapp/userPost/bloc/post_bloc.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 // create bloc provider
 class UserProfile extends StatelessWidget {
@@ -516,10 +517,10 @@ class _stackImageProfile extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: imageBackground != null
-                    ? NetworkImage("${imageBackground.trim()}")
-                    : NetworkImage(
-                        "https://visme.co/blog/wp-content/uploads/2017/07/50-Beautiful-and-Minimalist-Presentation-Backgrounds-031.jpg"),
+                image: (imageBackground == null || imageBackground.isEmpty
+                    ? NetworkImage(
+                        "https://firebasestorage.googleapis.com/v0/b/flutter-resocial.appspot.com/o/room-with-concrete-floor-smoke-background_9083-2991.jpg?alt=media&token=68342126-20a2-4aa8-8968-58b5b51ef760")
+                    : NetworkImage("${imageBackground.trim()}")),
                 fit: BoxFit.cover),
             color: bodyColor.withOpacity(.15),
             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(55.0))),
@@ -533,14 +534,21 @@ class _stackImageProfile extends StatelessWidget {
             InkWell(
               onTap: () => _customDialog(context, fromTop, editProfileBloc, 0),
               child: ClipOval(
-                clipBehavior: Clip.antiAlias,
-                child: Image.network(
-                  "${imageProfile}",
-                  width: 100.0,
-                  height: 100.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
+                  clipBehavior: Clip.antiAlias,
+                  child: (imageProfile == null || imageProfile.isEmpty)
+                      ? Text(
+                          "    Image    ",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline5
+                              .copyWith(color: Colors.white),
+                        )
+                      : FadeInImage.memoryNetwork(
+                          width: 100.0,
+                          height: 100.0,
+                          fit: BoxFit.cover,
+                          placeholder: kTransparentImage,
+                          image: imageProfile)),
             )
           ],
         ),

@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_bloc.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_event.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_state.dart';
 import 'package:socialapp/chat/models/chat/chat_model.dart';
-import 'package:socialapp/notifications/PushNotificationService.dart';
 import 'package:socialapp/widgets/models/choice.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import 'package:socialapp/chat/bloc/export.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
 
-class ChatDetial extends StatefulWidget {
+class ChatDetail extends StatefulWidget {
   final ChatListInfo data;
   final FriendBloc friendBloc;
   final ChatBloc chatBloc;
   final MessageBloc messageBloc;
   final String uid;
-  ChatDetial({
+  ChatDetail({
     Key key,
     this.data,
     this.friendBloc,
@@ -31,7 +29,7 @@ class ChatDetial extends StatefulWidget {
   _ChatDetialState createState() => _ChatDetialState();
 }
 
-class _ChatDetialState extends State<ChatDetial> {
+class _ChatDetialState extends State<ChatDetail> {
   //
 
   ScrollController _scrollController = ScrollController();
@@ -39,16 +37,12 @@ class _ChatDetialState extends State<ChatDetial> {
   void initialBlocMethod() async {
     widget.friendBloc.add(onLoadFriendUserClick());
 
-    // get current user id
-    final sPref = await SharedPreferences.getInstance();
-    // _uid = sPref.getString("uid");
-
     //start load message info
-    widget.messageBloc.add(OnReadingMessage(
-        senderId: sPref.getString("uid"), receiveId: widget.data.uid));
+    widget.messageBloc.add(
+        OnReadingMessage(senderId: widget.uid, receiveId: widget.data.uid));
     //start update chat list info
     widget.chatBloc.add(OnUpdateChatListInfo(
-        senderId: sPref.getString("uid"),
+        senderId: widget.uid,
         freindId: widget.data.uid,
         type: widget.data.type));
   }
@@ -74,7 +68,7 @@ class _ChatDetialState extends State<ChatDetial> {
   @override
   void dispose() {
     // TODO: implement dispose
-    widget.messageBloc.close();
+    widget.messageBloc.add(OnCloseMessageController());
     super.dispose();
   }
 
@@ -111,6 +105,7 @@ class _ChatDetialState extends State<ChatDetial> {
                       _makeBottonMessage(
                         messageBloc: widget.messageBloc,
                         data: widget.data,
+                        uid: widget.uid,
                         scrollController: _scrollController,
                       )
                     ],
@@ -135,7 +130,7 @@ class _makeListMessage extends StatelessWidget {
   })  : _uid = uid,
         super(key: key);
 
-  final ChatDetial widget;
+  final ChatDetail widget;
   final String _uid;
   final MessageBloc messageBloc;
   final ScrollController scrollController;
@@ -306,11 +301,13 @@ class _makeBottonMessage extends StatelessWidget {
   final MessageBloc messageBloc;
   final ChatListInfo data;
   final ScrollController scrollController;
+  final String uid;
   const _makeBottonMessage({
     Key key,
     this.messageBloc,
     this.data,
     this.scrollController,
+    this.uid,
   }) : super(key: key);
 
   //data is chat list info
@@ -323,7 +320,7 @@ class _makeBottonMessage extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        width: MediaQuery.of(context).size.width * .85,
+        width: MediaQuery.of(context).size.width * .9,
         height: 50.0,
         decoration: BoxDecoration(
             boxShadow: [
@@ -346,7 +343,7 @@ class _makeBottonMessage extends StatelessWidget {
             //make text edit
             Container(
               margin: const EdgeInsets.only(left: 8.0),
-              width: MediaQuery.of(context).size.width * .614,
+              width: MediaQuery.of(context).size.width * .6,
               child: TextFormField(
                 controller: textController,
                 onChanged: (value) => message = value,
@@ -355,19 +352,19 @@ class _makeBottonMessage extends StatelessWidget {
                   textController.text = "";
                   // print(value);
                   //send message
-                  final sPref = await SharedPreferences.getInstance();
+
                   //
                   messageBloc.add(OnSendMessage(
                       chatListInfo: data,
                       imageFile: null,
                       message: message,
                       receiveId: data.uid,
-                      senderId: sPref.getString("uid")));
+                      senderId: uid));
 
-                  Future.delayed(Duration(seconds: 3), () {
-                    scrollController
-                        .jumpTo(scrollController.position.maxScrollExtent);
-                  });
+                  // Future.delayed(Duration(seconds: 3), () {
+                  //   scrollController
+                  //       .jumpTo(scrollController.position.maxScrollExtent);
+                  // });
                 },
                 decoration: InputDecoration(
                     hintStyle: Theme.of(context)
@@ -379,7 +376,7 @@ class _makeBottonMessage extends StatelessWidget {
               ),
             ),
             //make icon send message
-            // Spacer(),
+            Spacer(),
             Container(
               width: 32.0,
               height: 32.0,
@@ -401,19 +398,18 @@ class _makeBottonMessage extends StatelessWidget {
                     //send message
                     // FocusScope.of(context).unfocus();
                     textController.text = "";
-                    final sPref = await SharedPreferences.getInstance();
                     //
                     messageBloc.add(OnSendMessage(
                         chatListInfo: data,
                         imageFile: null,
                         message: message,
                         receiveId: data.uid,
-                        senderId: sPref.getString("uid")));
+                        senderId: uid));
 
-                    Future.delayed(Duration(seconds: 3), () {
-                      scrollController
-                          .jumpTo(scrollController.position.maxScrollExtent);
-                    });
+                    // Future.delayed(Duration(seconds: 3), () {
+                    //   scrollController
+                    //       .jumpTo(scrollController.position.maxScrollExtent);
+                    // });
                   },
                   child: Icon(
                     Icons.send,
@@ -496,8 +492,8 @@ class _makeIconVideoCall extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 42.0,
-        width: 42.0,
+        height: 32.0,
+        width: 32.0,
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
@@ -532,8 +528,8 @@ class _makeIconVoiceCall extends StatelessWidget {
         children: [
           //make icon voice call
           Container(
-              height: 42.0,
-              width: 42.0,
+              height: 32.0,
+              width: 32.0,
               decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -570,7 +566,7 @@ class _makeProfileAndName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(
         children: [
           // image profile
@@ -593,13 +589,18 @@ class _makeProfileAndName extends StatelessWidget {
                     bottomRight: Radius.circular(12.0))),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12.0),
-              child: FadeInImage.memoryNetwork(
-                width: 42.0,
-                height: 42.0,
-                placeholder: kTransparentImage,
-                image: data.image,
-                fit: BoxFit.cover,
-              ),
+              child: data.image == null || data.image.isEmpty
+                  ? FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image:
+                          "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")
+                  : FadeInImage.memoryNetwork(
+                      width: 42.0,
+                      height: 42.0,
+                      placeholder: kTransparentImage,
+                      image: data.image,
+                      fit: BoxFit.cover,
+                    ),
             ),
           ),
           // make name and status
