@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
+import 'dart:async';
 import 'package:socialapp/chat/models/chat/chat_list_info.dart';
 import 'package:socialapp/chat/models/chat/chat_model.dart';
 import 'package:http/http.dart' as http;
@@ -73,16 +75,21 @@ class MessageRepository {
   Future<bool> onSendMessage(String senderId, String receiveId,
       ChatListInfo model, String type, String message, File image) async {
     //database path
-    final mMessageSenderRef = FirebaseFirestore.instance.collection("Messages");
+    final mMessageSenderRef =
+        FirebaseDatabase.instance.reference().child("Messages");
+    // final _messageKey = FirebaseFirestore.instance.collection("Messages");
     final mMessageReceiveRef =
-        FirebaseFirestore.instance.collection("Messages");
+        FirebaseDatabase.instance.reference().child("Messages");
+    ;
+    //FirebaseFirestore.instance.collection("Messages");
     final mSenderInfo = FirebaseFirestore.instance.collection("user info");
 
     var senderName = "";
     var senderImage = "";
     final now = DateTime.now();
     var time = DateFormat("H:m:s:dd:MM:yyyy").format(now);
-    var messageId = mMessageSenderRef.doc().id;
+    var messageId = mMessageSenderRef.child("").push().key.toString();
+    //_messageKey.doc("s").collection("Post").doc().id;
     bool checkResul = false;
 
     //read sender info
@@ -118,11 +125,23 @@ class MessageRepository {
     messageReceive['senderName'] = model.name;
     messageReceive['senderImage'] = model.image;
 
+    // send message of receive
+    await mMessageReceiveRef
+        .child("${receiveId}")
+        .child("${senderId}")
+        .child("${messageId}")
+        .set(messageReceive)
+        .then((value) {
+      print('send message receive success');
+    }).catchError((e) {
+      print("send message receive error ${e}");
+    });
+
     // send message of sender
     await mMessageSenderRef
-        .doc("${senderId}")
-        .collection("${receiveId}")
-        .doc("${messageId}")
+        .child("${senderId}")
+        .child("${receiveId}")
+        .child("${messageId}")
         .set(messageSender)
         .then((value) {
       print('send message sender success');
@@ -130,18 +149,6 @@ class MessageRepository {
     }).catchError((e) {
       checkResul = false;
       print("send message sender error ${e}");
-    });
-
-    // send message of receive
-    await mMessageReceiveRef
-        .doc("${receiveId}")
-        .collection("${senderId}")
-        .doc("${messageId}")
-        .set(messageReceive)
-        .then((value) {
-      print('send message receive success');
-    }).catchError((e) {
-      print("send message receive error ${e}");
     });
 
     await onUpdateChatListInfoLastMessage(
@@ -163,19 +170,30 @@ class MessageRepository {
   Future<Null> onRemoveMessage(
       String senderId, String receiveId, String messageId) async {
     //data base path
-    final mMessageRef = FirebaseFirestore.instance.collection("Messages");
+    final mMessageSenderRef =
+        FirebaseDatabase.instance.reference().child("Messages");
+    final mMessageReceiveRef =
+        FirebaseDatabase.instance.reference().child("Messages");
 
     //get time
     final now = DateTime.now();
     var time = DateFormat("H:m:s:dd:MM:yyyy").format(now);
     //remove message from database
-    await mMessageRef
-        .doc("${senderId}")
-        .collection("${receiveId}")
-        .doc("${messageId}")
-        .delete()
-        .then((value) => print("unSend Message success"))
-        .catchError((e) => print('unSend message error :${e}'));
+    await mMessageSenderRef
+        .child("${senderId}")
+        .child("${receiveId}")
+        .child("${messageId}")
+        .remove()
+        .then((value) => print("unSend Message sender success"))
+        .catchError((e) => print('unSend message sender error :${e}'));
+
+    await mMessageReceiveRef
+        .child("${receiveId}")
+        .child("${senderId}")
+        .child("${messageId}")
+        .remove()
+        .then((value) => print("unSend Message receive success"))
+        .catchError((e) => print('unSend message receive error :${e}'));
 
     //update chat list info
     await onUpdateChatListInfoLastMessage(senderId, receiveId, "unSend", time);
@@ -184,37 +202,40 @@ class MessageRepository {
   /*
   read message chat between current user and friend
    */
-
+  var _mMessage = FirebaseDatabase.instance.reference().child("Messages");
+  List<ChatModel> _messageModel = [];
   //
   Stream<List<ChatModel>> onReadMessage(String senderId, String receiveId) {
-    PublishSubject<List<ChatModel>> _messageController =
-        PublishSubject<List<ChatModel>>();
     print("start load message");
     //database path
-
-    var mMessage = FirebaseFirestore.instance.collection("Messages");
+    PublishSubject<List<ChatModel>> _messageController =
+        PublishSubject<List<ChatModel>>();
+    //
     var now = DateTime.now();
     var time = DateFormat("H:m:s:dd:MM:yyyy").format(now);
-    mMessage
-        .doc("${senderId}")
-        .collection("${receiveId}")
-        .where(
-          "time",
-          isLessThanOrEqualTo: "${time}",
-        )
-        .orderBy("time")
-        .snapshots()
-        .map((message) {
-      return message.docs.map((e) => ChatModel.fromJson(e)).toList();
-    }).listen((event) => _messageController.add(event));
-    // _messageController.addStream(m);
 
-    return _messageController?.stream;
+    _mMessage
+        .child("${senderId}")
+        .child("${receiveId}")
+        .orderByChild("messageId")
+        .onValue
+        .listen((message) {
+      _messageModel = [];
+      Map<dynamic, dynamic>.from(message.snapshot.value).forEach((k, v) {
+        _messageModel.add(new ChatModel.fromJson3(v));
+        _messageController.add(_messageModel);
+      });
+    });
+    //.listen((event) => _messageController.add(event));
+
+    return _messageController.stream;
   }
 
   Future<void> closeController() async {
     // _messageController?.done;
     // _messageController?.close();
+    _messageModel = [];
+    _mMessage.onDisconnect();
   }
 
   Future sendNotifyTOFriend(String friendId, String friendName) async {

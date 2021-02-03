@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_bloc.dart';
+import 'package:socialapp/chat/bloc/messageBloc/message_event.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_state.dart';
 import 'package:socialapp/localizations/app_localizations.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -119,6 +120,7 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
     _controller.dispose();
     _pageController.dispose();
     _chatBloc.add(OnCloseStreamReading());
+    _messageBloc.add(OnCloseMessageController());
     // TODO: implement dispose
     super.dispose();
   }
@@ -417,7 +419,7 @@ class makeCardProfile extends StatelessWidget {
                                 Text(
                                   "${data.userName}",
                                   style: TextStyle(
-                                      fontSize: 18.0,
+                                      fontSize: 14.0,
                                       color: Colors.black87,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -427,7 +429,7 @@ class makeCardProfile extends StatelessWidget {
                                 Text(
                                   "${data.status}",
                                   style: TextStyle(
-                                      fontSize: 14.0,
+                                      fontSize: 12.0,
                                       color: Colors.grey,
                                       fontWeight: FontWeight.normal),
                                 ),
@@ -688,7 +690,7 @@ class _makeChatListInfoCard extends StatelessWidget {
                                   : FontWeight.w400),
                         ),
                         SizedBox(
-                          height: 8.0,
+                          height: 4.0,
                         ),
                         Text(
                           "${chatListInfo[index].lastMessage}",

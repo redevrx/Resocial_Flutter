@@ -186,6 +186,14 @@ class loginScreen extends StatelessWidget {
                                         ),
                                         (route) => false);
                                     // Navigator.of(context).pushNamed("/home");
+                                  } else if (state
+                                      is onCreateAccountSuccessfully) {
+                                    print("onLogin :" + state.data.toString());
+
+                                    //
+
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context, "/addProfile", (r) => false);
                                   }
                                 },
                                 child: Container(),
@@ -222,34 +230,34 @@ class loginScreen extends StatelessWidget {
           SizedBox(
             height: 16.0,
           ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 100.0),
-          //   child: Row(
-          //     children: [
-          //       InkWell(
-          //         onTap: () => loginBloc.add(onLoginWithGoogle()),
-          //         child: Container(
-          //             width: 42.0,
-          //             padding: const EdgeInsets.all(4.0),
-          //             child: ClipRRect(
-          //               child: Image.asset("assets/icons/google.png"),
-          //             )),
-          //       ),
-          //       SizedBox(
-          //         width: 32.0,
-          //       ),
-          //       InkWell(
-          //         onTap: () => loginBloc.add(onLoginWithFacebook()),
-          //         child: Container(
-          //             width: 42.0,
-          //             padding: const EdgeInsets.all(4.0),
-          //             child: ClipRRect(
-          //               child: Image.asset("assets/icons/facebook.png"),
-          //             )),
-          //       ),
-          //     ],
-          //   ),
-          // )
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 100.0),
+            child: Row(
+              children: [
+                InkWell(
+                  onTap: () => loginBloc.add(onLoginWithGoogle()),
+                  child: Container(
+                      width: 42.0,
+                      padding: const EdgeInsets.all(4.0),
+                      child: ClipRRect(
+                        child: Image.asset("assets/icons/google.png"),
+                      )),
+                ),
+                SizedBox(
+                  width: 32.0,
+                ),
+                InkWell(
+                  onTap: () => loginBloc.add(onLoginWithFacebook()),
+                  child: Container(
+                      width: 42.0,
+                      padding: const EdgeInsets.all(4.0),
+                      child: ClipRRect(
+                        child: Image.asset("assets/icons/facebook.png"),
+                      )),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );

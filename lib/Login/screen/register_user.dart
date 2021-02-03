@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Login/bloc/events/login_evevt.dart';
 import 'package:socialapp/Login/bloc/login_bloc.dart';
 import 'package:socialapp/Login/bloc/states/login_state.dart';
 import 'package:socialapp/Login/screen/widget/login/login_widget.dart';
 import 'package:socialapp/Login/screen/widget/register/register_widget.dart';
+import 'package:socialapp/Profile/AddProfile/screen/add_info_profile.dart';
 import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'package:socialapp/widgets/cardBackground/item_card_shape_v2.dart';
@@ -238,7 +240,7 @@ class signUpScreen extends StatelessWidget {
                               //check status register
                               BlocListener<LoginBloc, LoginState>(
                                 cubit: loginBloc,
-                                listener: (context, state) {
+                                listener: (context, state) async {
                                   if (state is onToLogin) {
                                     print("onLogin :to login page");
                                     Navigator.pushNamedAndRemoveUntil(
@@ -246,6 +248,9 @@ class signUpScreen extends StatelessWidget {
                                   }
                                   if (state is onCreateAccountSuccessfully) {
                                     print("onLogin :" + state.data.toString());
+
+                                    //
+
                                     Navigator.pushNamedAndRemoveUntil(
                                         context, "/addProfile", (r) => false);
                                   }

@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:formz/formz.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Login/bloc/events/login_evevt.dart';
 import 'package:socialapp/Login/bloc/models/emailModel.dart';
@@ -151,7 +152,7 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
           _auth, data.email.toString(), data.password.toString());
       if (it) {
         final use = await _auth.currentUser;
-        final it2 = await onSaveData(_db, data, use.uid.toString());
+        final it2 = await onSaveData(_db, data, null, use.uid.toString());
         if (it2) {
           //use.uid.toString()
           //remove all data user register in shared preferace
@@ -255,42 +256,40 @@ and get email and user anme
  */
   Future<bool> signInWithGoogle() async {
     // Trigger the authentication flow
-    // final googleSignIn = GoogleSignIn(
-    //   scopes: [
-    //     'email',
-    //     'https://www.googleapis.com/auth/contacts.readonly',
-    //   ],
-    // );
+    final googleInUser = await GoogleSignIn(
+      scopes: [
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ],
+    ).signIn();
 
-    // final googleInUser = await googleSignIn.signIn();
+    // Obtain the auth details from the request
+    final googleAuth = await googleInUser.authentication;
 
-    // // Obtain the auth details from the request
-    // final googleAuth = await googleInUser.authentication;
+    // / Create a new credential
+    final GoogleAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
-    // // / Create a new credential
-    // final GoogleAuthCredential credential = GoogleAuthProvider.credential(
-    //     accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+    //use google login with firebase
+    final user = await FirebaseAuth.instance.signInWithCredential(credential);
 
-    // //use google login with firebase
-    // final user = await FirebaseAuth.instance.signInWithCredential(credential);
-
-    // if (user.user.email != null) {
-    //   await onSaveData(
-    //       FirebaseFirestore.instance,
-    //       new SignUpModel(
-    //           user.user.email, user.user.displayName, "password", "passwordCm"),
-    //       user.user.uid);
-    //   return true;
-    // } else {
-    //   await GoogleSignIn().signOut();
-    //   return false;
-    // }
+    if (user.user.email != null) {
+      await onSaveData(
+          FirebaseFirestore.instance,
+          new SignUpModel(
+              user.user.email, user.user.displayName, "password", "passwordCm"),
+          user.user.photoURL,
+          user.user.uid);
+      return true;
+    } else {
+      await GoogleSignIn().signOut();
+      return false;
+    }
   }
 
 //alter create account success
 //keep user info in database
   Future<bool> onSaveData(
-      FirebaseFirestore db, SignUpModel data, String uid) async {
+      FirebaseFirestore db, SignUpModel data, String image, String uid) async {
     //fi save user info success give return true
 
     //crate map data
@@ -298,6 +297,7 @@ and get email and user anme
     mapBody["email"] = data.email;
     mapBody["user"] = data.userName;
     mapBody["uid"] = uid;
+    mapBody["imageProfile"] = image ?? "";
     return await db.collection("user info").doc(uid).set(mapBody).then((data) {
       return true;
     }).catchError((e) {
@@ -308,7 +308,10 @@ and get email and user anme
 //register with fireabser auth
 //register with email password
   Future<bool> onUserLogin(
-      FirebaseAuth auth, String email, String password) async {
+    FirebaseAuth auth,
+    String email,
+    String password,
+  ) async {
     print("email :${email} : password : ${password}");
     return await auth
         .signInWithEmailAndPassword(email: email, password: password)

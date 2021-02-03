@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:material_buttonx/materialButtonX.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Login/bloc/events/login_evevt.dart';
@@ -176,13 +177,21 @@ class _widgetShowAccountSettingState extends State<widgetShowAccountSetting> {
                       color: Colors.black.withOpacity(.55),
                     ),
                     onTap: () async {
-                      final _ref = await SharedPreferences.getInstance();
-                      _ref.remove("uid");
-                      final _mAuth = FirebaseAuth.instance;
-                      await _mAuth.signOut();
+                      try {
+                        final _ref = await SharedPreferences.getInstance();
+                        _ref.remove("uid");
+                        final _mAuth = FirebaseAuth.instance;
+                        await _mAuth.signOut();
+                        await GoogleSignIn().signOut();
 
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, "/login", (r) => false);
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, "/login", (r) => false);
+                      } catch (e) {
+                        print("login error :$e");
+
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, "/login", (r) => false);
+                      }
                     },
                   )
                 ],
