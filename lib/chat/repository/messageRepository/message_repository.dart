@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_list.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import 'dart:async';
@@ -80,7 +81,7 @@ class MessageRepository {
     // final _messageKey = FirebaseFirestore.instance.collection("Messages");
     final mMessageReceiveRef =
         FirebaseDatabase.instance.reference().child("Messages");
-    ;
+
     //FirebaseFirestore.instance.collection("Messages");
     final mSenderInfo = FirebaseFirestore.instance.collection("user info");
 
@@ -204,29 +205,41 @@ class MessageRepository {
    */
   var _mMessage = FirebaseDatabase.instance.reference().child("Messages");
   List<ChatModel> _messageModel = [];
+
   //
   Stream<List<ChatModel>> onReadMessage(String senderId, String receiveId) {
     print("start load message");
     //database path
-    PublishSubject<List<ChatModel>> _messageController =
-        PublishSubject<List<ChatModel>>();
+    final _messageController = PublishSubject<List<ChatModel>>();
     //
-    var now = DateTime.now();
-    var time = DateFormat("H:m:s:dd:MM:yyyy").format(now);
+    // var now = DateTime.now();
+    // var time = DateFormat("H:m:s:dd:MM:yyyy").format(now);
 
     _mMessage
         .child("${senderId}")
         .child("${receiveId}")
-        .orderByChild("messageId")
         .onValue
         .listen((message) {
       _messageModel = [];
-      Map<dynamic, dynamic>.from(message.snapshot.value).forEach((k, v) {
-        _messageModel.add(new ChatModel.fromJson3(v));
+      final map = message.snapshot.value;
+      if (map != null) {
+        List<dynamic> list = map.values.toList();
+        Iterable i = list;
+        _messageModel = i.map((e) => ChatModel.fromJson3(e)).toList();
+        // _messageModel.sort((a, b) => a.time.compareTo('$time'));
+        // ..sort((a, b) => b['time'].compareTo(a['time']));
         _messageController.add(_messageModel);
-      });
+      } else {
+        _messageModel = [];
+        _messageController.add([]);
+      }
+
+      // Map<dynamic, dynamic>.from(message.snapshot.value).forEach((k, v) {
+      //   _messageModel.add(new ChatModel.fromJson3(v));
+
+      //   _messageController.add(_messageModel);
+      // });
     });
-    //.listen((event) => _messageController.add(event));
 
     return _messageController.stream;
   }

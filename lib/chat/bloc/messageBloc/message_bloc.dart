@@ -20,7 +20,12 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       yield* onReadMessage(event);
     }
     if (event is OnReadedMessage) {
-      yield OnReadMessageSuccess(chatModel: event.messageModel);
+      if (event.messageModel != null) {
+        event.messageModel.sort((a, b) => a.time.compareTo(b.time));
+        yield OnReadMessageSuccess(chatModel: event.messageModel);
+      } else {
+        yield OnReadMessageSuccess(chatModel: []);
+      }
     }
     if (event is OnSendMessage) {
       yield* onSendMessage(event);

@@ -269,7 +269,7 @@ class CardPost extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(28.0),
         ),
-        elevation: 16.0,
+        elevation: 4.0,
         clipBehavior: Clip.antiAlias,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -477,64 +477,62 @@ class CardPost extends StatelessWidget {
 
   Container _build_show_message_ui(onTextMoreResult state, double textSize) {
     return Container(
-        height: textLength >= 111
-            ? 175.0
-            : textLength >= 70
-                ? 90.0
-                : textLength >= 40
-                    ? 75.0
-                    : 50.0,
-        padding: const EdgeInsets.only(
-            top: 12.0, left: 12.0, right: 12.0, bottom: 16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Align(
-                  alignment: Alignment.topCenter,
-                  child: Text(
-                    (modelsPost[i].body == null) ? "" : "${modelsPost[i].body}",
-                    overflow: TextOverflow.fade,
-                    textAlign: TextAlign.start,
-                    softWrap: true,
-                    maxLines: state.value ? 400 : 6,
-                    style: TextStyle(fontSize: textSize),
-                  )),
-              InkWell(
-                onTap: () {
-                  textMoreBloc.add(onShowMoreClick(value: !state.value));
-                },
-                child: modelsPost[i].body == null
-                    ? Container()
-                    : BlocBuilder<TextMoreBloc, TextMoreState>(
-                        builder: (context, state) {
-                          if (state is onTextMoreResult) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                state.value && modelsPost[i].body.length >= 220
-                                    ? Text(
-                                        "Show Less",
-                                        style: TextStyle(color: Colors.blue),
-                                      )
-                                    : !state.value &&
-                                            modelsPost[i]
-                                                    .body
-                                                    .length >= //state.models[i].body.length >=
-                                                220
-                                        ? Text("Show More",
-                                            style:
-                                                TextStyle(color: Colors.blue))
-                                        : Container()
-                              ],
-                            );
-                          }
-                          return Container();
-                        },
-                      ),
-              )
-            ],
-          ),
-        ));
+      height: textLength >= 111
+          ? 175.0
+          : textLength >= 70
+              ? 90.0
+              : textLength >= 40
+                  ? 75.0
+                  : 65.0,
+      padding:
+          const EdgeInsets.only(top: .0, left: 16.0, right: 12.0, bottom: .0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Align(
+                alignment: Alignment.topCenter,
+                child: Text(
+                  (modelsPost[i].body == null) ? "" : "${modelsPost[i].body}",
+                  softWrap: true,
+                  maxLines: state.value ? 400 : 5,
+                  style: TextStyle(fontSize: textSize),
+                )),
+            InkWell(
+              onTap: () {
+                textMoreBloc.add(onShowMoreClick(value: !state.value));
+              },
+              child: modelsPost[i].body == null
+                  ? Container()
+                  : BlocBuilder<TextMoreBloc, TextMoreState>(
+                      builder: (context, state) {
+                        if (state is onTextMoreResult) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              state.value && modelsPost[i].body.length >= 220
+                                  ? Text(
+                                      "Show Less",
+                                      style: TextStyle(color: Colors.blue),
+                                    )
+                                  : !state.value &&
+                                          modelsPost[i]
+                                                  .body
+                                                  .length >= //state.models[i].body.length >=
+                                              220
+                                      ? Text("Show More",
+                                          style: TextStyle(color: Colors.blue))
+                                      : Container()
+                            ],
+                          );
+                        }
+                        return Container();
+                      },
+                    ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   ///
