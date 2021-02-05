@@ -7,6 +7,8 @@ import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/screen/user_profile.dart';
 import 'package:socialapp/Profile/colorBloc/bloc_color.dart';
 import 'package:socialapp/Profile/colorBloc/state_color.dart';
+import 'package:socialapp/call/bloc/call_bloc.dart';
+import 'package:socialapp/call/screen/pickUp/pick_layout.dart';
 import 'package:socialapp/home/bloc/bloc_pageChange.dart';
 import 'package:socialapp/home/bloc/state_pageChange.dart';
 import 'package:socialapp/home/export/export_file.dart';
@@ -55,6 +57,7 @@ class _fechPage extends State<HomePage> {
           Navigator.pushNamedAndRemoveUntil(context, "/login", (r) => false);
         } else {
           //
+
           final _pref = await SharedPreferences.getInstance();
           await _pref.setString("uid", user.uid.toString());
         }
@@ -110,24 +113,27 @@ class _fechPage extends State<HomePage> {
                                       onColorChangeState(
                                           color: Colors.blueAccent)),
                                   child: BlocProvider(
-                                    create: (context) => LoginBloc(),
-                                    child: BlocBuilder<PageNaviagtorChageBloc,
-                                        PageChangeState>(
-                                      builder: (context, state) {
-                                        if (state is onPageChangeState) {
-                                          selectedBar = state.pageNumber;
-                                          return IndexedStack(
-                                            index: state.pageNumber,
-                                            children: pageItem,
-                                          );
-                                        }
-                                        return IndexedStack(
-                                          index: 0,
-                                          children: pageItem,
-                                        );
-                                      },
-                                    ),
-                                  )),
+                                      create: (context) => LoginBloc(),
+                                      child: BlocProvider(
+                                        create: (context) => CallBloc(null),
+                                        child: BlocBuilder<
+                                            PageNaviagtorChageBloc,
+                                            PageChangeState>(
+                                          builder: (context, state) {
+                                            if (state is onPageChangeState) {
+                                              selectedBar = state.pageNumber;
+                                              return IndexedStack(
+                                                index: state.pageNumber,
+                                                children: pageItem,
+                                              );
+                                            }
+                                            return IndexedStack(
+                                              index: 0,
+                                              children: pageItem,
+                                            );
+                                          },
+                                        ),
+                                      ))),
                             )
                             // selectedBar == 0
                             //     ? homePage(

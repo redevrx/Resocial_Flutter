@@ -1,6 +1,5 @@
 there are bug like
- - bug unfocus textfield
- - login with facebook and google apple 
+ -bug show notify chat 
  -remove comment and edit
  - group freind notify
    - disable request notify
