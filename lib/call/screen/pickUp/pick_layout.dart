@@ -42,9 +42,9 @@ class PickupLayout extends StatelessWidget {
     return StreamBuilder<DocumentSnapshot>(
       stream: callAgoraRepository.CallStream1(),
       builder: (context, snapshot) {
-        if (snapshot.data.data() != null) {
-          print("There is call to you");
-          CallModel callModel = CallModel.formMap(snapshot.data.data());
+        CallModel callModel;
+        try {
+          callModel = CallModel.formMap(snapshot.data.data());
           if (!callModel.hasDialled) {
             return PickUpScreen(
               call: callModel,
@@ -53,8 +53,8 @@ class PickupLayout extends StatelessWidget {
           } else {
             return scaffold;
           }
-        } else {
-          print("not call");
+        } catch (e) {
+          print("not call error :$e");
           return scaffold;
         }
       },

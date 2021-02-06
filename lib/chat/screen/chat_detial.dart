@@ -527,7 +527,7 @@ class _makeIconVideoCall extends StatelessWidget {
       onTap: () async {
         // CallUtility callUtil = CallUtility();
         CallAgoraRepository callAgora = CallAgoraRepository();
-
+        print("press dial");
         await Permissions.checkVideoAndMicroPhonegrant()
             ? callAgora.dial(
                 context: context,
