@@ -1,5 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialapp/call/bloc/call_bloc.dart';
+import 'package:socialapp/call/bloc/call_event.dart';
+import 'package:socialapp/call/permission.dart';
+import 'package:socialapp/call/repository/call_agora_repository.dart';
+import 'package:socialapp/call/screen/pickUp/pick_layout.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_bloc.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_event.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_state.dart';
@@ -16,6 +22,7 @@ class ChatDetail extends StatefulWidget {
   final ChatBloc chatBloc;
   final MessageBloc messageBloc;
   final String uid;
+  final CallBloc callBloc;
   ChatDetail({
     Key key,
     this.data,
@@ -23,6 +30,7 @@ class ChatDetail extends StatefulWidget {
     this.chatBloc,
     this.messageBloc,
     this.uid,
+    @required this.callBloc,
   }) : super(key: key);
 
   @override
@@ -91,6 +99,8 @@ class _ChatDetialState extends State<ChatDetail> {
                       _makeAppBarChat(
                         data: widget.data,
                         messageBloc: widget.messageBloc,
+                        uid: widget.uid,
+                        callBloc: widget.callBloc,
                       ),
                       // make content list chat
 
@@ -427,10 +437,14 @@ class _makeBottonMessage extends StatelessWidget {
 }
 
 class _makeAppBarChat extends StatelessWidget {
+  final String uid;
+  final CallBloc callBloc;
   const _makeAppBarChat({
     Key key,
     @required this.data,
     this.messageBloc,
+    this.uid,
+    this.callBloc,
   }) : super(key: key);
 
   final ChatListInfo data;
@@ -472,10 +486,20 @@ class _makeAppBarChat extends StatelessWidget {
               _makeProfileAndName(data: data),
               // make icon voice call and video call
               Spacer(),
-              _makeIconVoiceCall(),
+              _makeIconVoiceCall(
+                receiverId: data.uid,
+                uid: uid,
+                name: data.name,
+                callBloc: callBloc,
+              ),
               //
               //make icon video call
-              _makeIconVideoCall(),
+              _makeIconVideoCall(
+                callBloc: callBloc,
+                receiverId: data.uid,
+                uid: uid,
+                name: data.name,
+              ),
             ],
           )
         ],
@@ -485,39 +509,70 @@ class _makeAppBarChat extends StatelessWidget {
 }
 
 class _makeIconVideoCall extends StatelessWidget {
+  final String uid;
+  final String receiverId;
+  final CallBloc callBloc;
+  final String name;
   const _makeIconVideoCall({
     Key key,
+    this.uid,
+    this.receiverId,
+    this.callBloc,
+    this.name,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 32.0,
-        width: 32.0,
-        decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                  color: Color(0xFF879EF7),
-                  offset: Offset(.5, .5),
-                  blurRadius: 2.0,
-                  spreadRadius: .2)
-            ],
-            color: Color(0xFF879EF7),
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12.0),
-                topRight: Radius.circular(12.0),
-                bottomLeft: Radius.circular(12.0),
-                bottomRight: Radius.circular(12.0))),
-        child: Icon(
-          Icons.video_call,
-          color: Colors.white,
-        ));
+    return InkWell(
+      onTap: () async {
+        // CallUtility callUtil = CallUtility();
+        CallAgoraRepository callAgora = CallAgoraRepository();
+        print("press dial");
+        await Permissions.checkVideoAndMicroPhonegrant()
+            ? callAgora.dial(
+                context: context,
+                senderId: uid,
+                channelName: name,
+                type: true,
+                receiverId: receiverId)
+            : {};
+      },
+      child: Container(
+          height: 32.0,
+          width: 32.0,
+          decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Color(0xFF879EF7),
+                    offset: Offset(.5, .5),
+                    blurRadius: 2.0,
+                    spreadRadius: .2)
+              ],
+              color: Color(0xFF879EF7),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12.0),
+                  topRight: Radius.circular(12.0),
+                  bottomLeft: Radius.circular(12.0),
+                  bottomRight: Radius.circular(12.0))),
+          child: Icon(
+            Icons.video_call,
+            color: Colors.white,
+          )),
+    );
   }
 }
 
 class _makeIconVoiceCall extends StatelessWidget {
+  final String uid;
+  final String receiverId;
+  final CallBloc callBloc;
+  final String name;
   const _makeIconVoiceCall({
     Key key,
+    this.uid,
+    this.receiverId,
+    this.callBloc,
+    this.name,
   }) : super(key: key);
 
   @override
@@ -527,27 +582,42 @@ class _makeIconVoiceCall extends StatelessWidget {
       child: Row(
         children: [
           //make icon voice call
-          Container(
-              height: 32.0,
-              width: 32.0,
-              decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Color(0xFF879EF7),
-                        offset: Offset(.5, .5),
-                        blurRadius: 2.0,
-                        spreadRadius: .2)
-                  ],
-                  color: Color(0xFF879EF7),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12.0),
-                      topRight: Radius.circular(12.0),
-                      bottomLeft: Radius.circular(12.0),
-                      bottomRight: Radius.circular(12.0))),
-              child: Icon(
-                Icons.keyboard_voice,
-                color: Colors.white,
-              )),
+          InkWell(
+            onTap: () async {
+              // CallUtility callUtil = CallUtility();
+              CallAgoraRepository callAgora = CallAgoraRepository();
+
+              await Permissions.checkVideoAndMicroPhonegrant()
+                  ? callAgora.dial(
+                      context: context,
+                      senderId: uid,
+                      channelName: name,
+                      type: false,
+                      receiverId: receiverId)
+                  : {};
+            },
+            child: Container(
+                height: 32.0,
+                width: 32.0,
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          color: Color(0xFF879EF7),
+                          offset: Offset(.5, .5),
+                          blurRadius: 2.0,
+                          spreadRadius: .2)
+                    ],
+                    color: Color(0xFF879EF7),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12.0),
+                        topRight: Radius.circular(12.0),
+                        bottomLeft: Radius.circular(12.0),
+                        bottomRight: Radius.circular(12.0))),
+                child: Icon(
+                  Icons.keyboard_voice,
+                  color: Colors.white,
+                )),
+          ),
           //
         ],
       ),

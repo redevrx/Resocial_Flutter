@@ -230,7 +230,8 @@ class loginScreen extends StatelessWidget {
           SizedBox(
             height: 16.0,
           ),
-          Padding(
+          Container(
+            width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 100.0),
             child: Row(
               children: [
@@ -238,22 +239,30 @@ class loginScreen extends StatelessWidget {
                   onTap: () => loginBloc.add(onLoginWithGoogle()),
                   child: Container(
                       width: 42.0,
+                      height: 42.0,
                       padding: const EdgeInsets.all(4.0),
                       child: ClipRRect(
-                        child: Image.asset("assets/icons/google.png"),
+                        child: Image.asset(
+                          "assets/icons/google.png",
+                        ),
                       )),
                 ),
                 SizedBox(
                   width: 32.0,
                 ),
-                InkWell(
-                  // onTap: () => loginBloc.add(onLoginWithFacebook()),
-                  child: Container(
-                      width: 42.0,
-                      padding: const EdgeInsets.all(4.0),
-                      child: ClipRRect(
-                        child: Image.asset("assets/icons/facebook.png"),
-                      )),
+                Expanded(
+                  child: InkWell(
+                    // onTap: () => loginBloc.add(onLoginWithFacebook()),
+                    child: Container(
+                        width: 42.0,
+                        height: 42.0,
+                        padding: const EdgeInsets.all(4.0),
+                        child: ClipRRect(
+                          child: Image.asset(
+                            "assets/icons/facebook.png",
+                          ),
+                        )),
+                  ),
                 ),
               ],
             ),

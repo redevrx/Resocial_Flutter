@@ -13,10 +13,13 @@ import 'dart:io';
 class AddProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocProvider(
-        create: (context) => AddProfileBloc(),
-        child: addProfile(),
+    return WillPopScope(
+      onWillPop: () => Future(() => false),
+      child: Scaffold(
+        body: BlocProvider(
+          create: (context) => AddProfileBloc(),
+          child: addProfile(),
+        ),
       ),
     );
   }

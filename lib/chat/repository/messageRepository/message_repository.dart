@@ -155,7 +155,7 @@ class MessageRepository {
     await onUpdateChatListInfoLastMessage(
         senderId, receiveId, message, "${time}");
 
-    await sendNotifyTOFriend(receiveId, model.name);
+    await sendNotifyTOFriend(receiveId, model.name, message);
 
     //
     return checkResul;
@@ -251,7 +251,8 @@ class MessageRepository {
     _mMessage.onDisconnect();
   }
 
-  Future sendNotifyTOFriend(String friendId, String friendName) async {
+  Future sendNotifyTOFriend(
+      String friendId, String friendName, String message) async {
     final _mRef = FirebaseFirestore.instance;
     _mRef.collection("user info").doc(friendId).get().then((info) async {
       final token =
@@ -267,8 +268,8 @@ class MessageRepository {
 
       //create notify data
       Map<Object, Object> notifyData = HashMap();
-      notifyData['body'] = friendName + " give create new post now";
-      notifyData['title'] = "New Post";
+      notifyData['body'] = friendName + ":$message";
+      notifyData['title'] = "New Caht";
       notifyData['icon'] = "";
 
       //create notify head

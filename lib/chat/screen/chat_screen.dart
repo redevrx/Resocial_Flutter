@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialapp/call/bloc/call_bloc.dart';
+import 'package:socialapp/call/screen/pickUp/pick_layout.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_bloc.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_event.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_state.dart';
@@ -36,7 +38,10 @@ class ChatScreen extends StatelessWidget {
           ),
           BlocProvider<MessageBloc>(
             create: (context) => MessageBloc(OnLaodingMessageState()),
-          )
+          ),
+          BlocProvider<CallBloc>(
+            create: (context) => CallBloc(null),
+          ),
         ],
         child: chatScreen(
           uid: uid,
@@ -63,6 +68,7 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
   EditProfileBloc _editProfileBloc;
   FriendBloc _friendBloc;
   ChatBloc _chatBloc;
+  CallBloc _callBloc;
   MessageBloc _messageBloc;
 
   void settingAnimated() {
@@ -79,6 +85,7 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
     _friendBloc = BlocProvider.of<FriendBloc>(context);
     _chatBloc = BlocProvider.of<ChatBloc>(context);
     _messageBloc = BlocProvider.of<MessageBloc>(context);
+    _callBloc = BlocProvider.of<CallBloc>(context);
   }
 
   void blocCallInitialMethod() async {
@@ -127,94 +134,99 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: constraints.maxHeight,
-              ),
-              child: Container(
-                child: Column(
-                  children: [
-                    //make app bar
-                    Container(
-                      padding: const EdgeInsets.only(
-                          left: 16.0, right: 16.0, top: 8.0),
-                      height: MediaQuery.of(context).size.height * .25,
-                      decoration: BoxDecoration(
-                          color: Color(0xFF6583F3),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Color(0xFF6583F3),
-                                offset: Offset(.5, .5),
-                                blurRadius: 18.5,
-                                spreadRadius: 1.5)
+    return PickupLayout(
+      callBloc: _callBloc,
+      uid: FirebaseAuth.instance.currentUser.uid,
+      scaffold: Scaffold(
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: Container(
+                  child: Column(
+                    children: [
+                      //make app bar
+                      Container(
+                        padding: const EdgeInsets.only(
+                            left: 16.0, right: 16.0, top: 8.0),
+                        height: MediaQuery.of(context).size.height * .25,
+                        decoration: BoxDecoration(
+                            color: Color(0xFF6583F3),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Color(0xFF6583F3),
+                                  offset: Offset(.5, .5),
+                                  blurRadius: 18.5,
+                                  spreadRadius: 1.5)
+                            ],
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(28.0),
+                                bottomRight: Radius.circular(28.0))),
+                        child: Column(
+                          children: [
+                            // make padding top
+                            SizedBox(
+                              height: MediaQuery.of(context).padding.top,
+                            ),
+                            // make icon back and icon profile
+                            _makeRowArrowIconUser(controller: _controller),
+                            //
+                            // make search icon
+                            SizedBox(
+                              height: 18.0,
+                            ),
+                            // show text search
+                            // Text(
+                            //   "Search ...",
+                            //   style: TextStyle(fontSize: 16.0, color: Colors.white),
+                            // ),
+                            _paddingRowSearch(
+                              pageController: _pageController,
+                              friendBloc: _friendBloc,
+                            )
                           ],
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(28.0),
-                              bottomRight: Radius.circular(28.0))),
-                      child: Column(
-                        children: [
-                          // make padding top
-                          SizedBox(
-                            height: MediaQuery.of(context).padding.top,
-                          ),
-                          // make icon back and icon profile
-                          _makeRowArrowIconUser(controller: _controller),
-                          //
-                          // make search icon
-                          SizedBox(
-                            height: 18.0,
-                          ),
-                          // show text search
-                          // Text(
-                          //   "Search ...",
-                          //   style: TextStyle(fontSize: 16.0, color: Colors.white),
-                          // ),
-                          _paddingRowSearch(
-                            pageController: _pageController,
-                            friendBloc: _friendBloc,
-                          )
-                        ],
+                        ),
                       ),
-                    ),
-                    //
-                    //content view
-                    Container(
-                      height: MediaQuery.of(context).size.height * .67,
-                      child: PageView(
-                        controller: _pageController,
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          //make content message lsit
-                          makeListChat(
-                            friendBloc: _friendBloc,
-                            chatBloc: _chatBloc,
-                            messageBloc: _messageBloc,
-                            uid: uid,
-                          ),
-                          //make load all user
-                          makeListFriend(
-                            pageController: _pageController,
-                            friendBloc: _friendBloc,
-                            chatBloc: _chatBloc,
-                          )
-                        ],
+                      //
+                      //content view
+                      Container(
+                        height: MediaQuery.of(context).size.height * .67,
+                        child: PageView(
+                          controller: _pageController,
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            //make content message lsit
+                            makeListChat(
+                              friendBloc: _friendBloc,
+                              chatBloc: _chatBloc,
+                              messageBloc: _messageBloc,
+                              uid: uid,
+                              callBloc: _callBloc,
+                            ),
+                            //make load all user
+                            makeListFriend(
+                              pageController: _pageController,
+                              friendBloc: _friendBloc,
+                              chatBloc: _chatBloc,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    // make botton bar
-                    bottomBar(
-                      controller: _controller,
-                      pageController: _pageController,
-                    )
-                  ],
+                      // make botton bar
+                      bottomBar(
+                        controller: _controller,
+                        pageController: _pageController,
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -541,12 +553,14 @@ class makeListChat extends StatelessWidget {
   final ChatBloc chatBloc;
   final MessageBloc messageBloc;
   final String uid;
+  final CallBloc callBloc;
   const makeListChat({
     Key key,
     this.friendBloc,
     this.chatBloc,
     this.messageBloc,
     this.uid,
+    this.callBloc,
   }) : super(key: key);
 
   @override
@@ -562,6 +576,7 @@ class makeListChat extends StatelessWidget {
                   friendBloc: friendBloc,
                   messageBloc: messageBloc,
                   uid: uid,
+                  callBloc: callBloc,
                   chatListInfo: state.chatListInfo);
             } else {
               return Container(
@@ -598,6 +613,7 @@ class _makeChatListInfoCard extends StatelessWidget {
     this.chatBloc,
     this.messageBloc,
     this.uid,
+    this.callBloc,
   }) : super(key: key);
 
   final FriendBloc friendBloc;
@@ -605,6 +621,7 @@ class _makeChatListInfoCard extends StatelessWidget {
   final MessageBloc messageBloc;
   final List<ChatListInfo> chatListInfo;
   final String uid;
+  final CallBloc callBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -628,6 +645,7 @@ class _makeChatListInfoCard extends StatelessWidget {
                 },
                 pageBuilder: (context, animation, secondaryAnimation) {
                   return new ChatDetail(
+                    callBloc: callBloc,
                     friendBloc: friendBloc,
                     chatBloc: chatBloc,
                     messageBloc: messageBloc,
