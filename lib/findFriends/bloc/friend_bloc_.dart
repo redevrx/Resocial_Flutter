@@ -47,22 +47,37 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
   @override
   Stream<FriendState> onCheckFreind(
       onCheckFriendCurrentUserClick event) async* {
-    print("${event.friendId}");
-    final checkResult =
-        await friendRepository.onCheckFriendCurrentUser(event.friendId);
+    //will keep user info in chat list of current user
+    final sharePref = await SharedPreferences.getInstance();
 
-    if (checkResult == "friend") {
-      //chat bloc call save chat user info
-      //will keep user info in chat list of current user
-      final sharePref = await SharedPreferences.getInstance();
-      //
+    if (event.friendId != null) {
+      //create chat room from
+      //click friend profile
+      print("${event.friendId}");
+      final checkResult =
+          await friendRepository.onCheckFriendCurrentUser(event.friendId);
+
+      if (checkResult == "friend") {
+        //chat bloc call save chat user info
+
+        //
+        event.chatBloc.add(ChatInitial(
+            friendModel: event.freindModel,
+            senderId: sharePref.getString("uid")));
+      }
+
+      yield onCheckFriendResult(
+          checkResult: checkResult, friendUID: event.friendId);
+    } else {
       event.chatBloc.add(ChatInitial(
+          groupName: event.groupName,
+          image: event.image,
           friendModel: event.freindModel,
           senderId: sharePref.getString("uid")));
+      //create group chat
+      yield onCheckFriendResult(
+          checkResult: "friend", friendUID: "event.friendId");
     }
-
-    yield onCheckFriendResult(
-        checkResult: checkResult, friendUID: event.friendId);
   }
 
 // load request all ferind
@@ -102,9 +117,6 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
 
     if (data != null) {
       print("not null :${data.length}");
-      data.forEach((it) {
-        print(it);
-      });
 
       List<FrindsModel> data1;
       data1 = await friendRepository.loadFriendUserInfo(data);

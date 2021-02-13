@@ -45,14 +45,25 @@ class _ChatDetialState extends State<ChatDetail> {
   void initialBlocMethod() async {
     widget.friendBloc.add(onLoadFriendUserClick());
 
-    //start load message info
-    widget.messageBloc.add(
-        OnReadingMessage(senderId: widget.uid, receiveId: widget.data.uid));
-    //start update chat list info
-    widget.chatBloc.add(OnUpdateChatListInfo(
-        senderId: widget.uid,
-        freindId: widget.data.uid,
-        type: widget.data.type));
+    if (widget.data.type == "group") {
+      //todo future
+
+      //load group message
+      //start load message info
+      widget.messageBloc.add(OnReadingMessage(
+        senderId: widget.data.groupId,
+      ));
+    } else {
+      //start load message info
+      widget.messageBloc.add(
+          OnReadingMessage(senderId: widget.uid, receiveId: widget.data.uid));
+
+      //start update chat list info
+      widget.chatBloc.add(OnUpdateChatListInfo(
+          senderId: widget.uid,
+          freindId: widget.data.uid,
+          type: widget.data.type));
+    }
   }
 
   @override
@@ -364,6 +375,7 @@ class _makeBottonMessage extends StatelessWidget {
                   //send message
 
                   //
+
                   messageBloc.add(OnSendMessage(
                       chatListInfo: data,
                       imageFile: null,
@@ -409,6 +421,10 @@ class _makeBottonMessage extends StatelessWidget {
                     // FocusScope.of(context).unfocus();
                     textController.text = "";
                     //
+                    //check type chat room
+
+                    //person chat
+                    print("send message type person");
                     messageBloc.add(OnSendMessage(
                         chatListInfo: data,
                         imageFile: null,

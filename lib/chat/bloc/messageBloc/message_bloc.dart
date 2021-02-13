@@ -45,13 +45,14 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   //call method send message
   @override
   Stream<MessageState> onSendMessage(OnSendMessage event) async* {
-    final result = await _messageRepo.onSendMessage(
-        event.senderId,
-        event.receiveId,
-        event.chatListInfo,
-        event.type,
-        event.message,
-        event.imageFile);
+    bool result;
+    if (event.chatListInfo.type == "group") {
+      result = await _messageRepo.onSendMessage(event.senderId, null,
+          event.chatListInfo, event.type, event.message, event.imageFile);
+    } else {
+      result = await _messageRepo.onSendMessage(event.senderId, event.receiveId,
+          event.chatListInfo, event.type, event.message, event.imageFile);
+    }
 
     if (result) {
       //return read message success
