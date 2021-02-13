@@ -1,11 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/call/bloc/call_bloc.dart';
-import 'package:socialapp/call/bloc/call_event.dart';
-import 'package:socialapp/call/bloc/call_state.dart';
 import 'package:socialapp/call/model/call_model.dart';
 import 'package:socialapp/call/repository/call_agora_repository.dart';
 import 'package:socialapp/call/screen/pickUp/pick_screen.dart';

@@ -104,11 +104,13 @@ class PostRepository {
       mapBody['likesCount'] = "${like}";
       mapBody['commentCount'] = "${comment}";
 
-      await _mRef.collection("Post").doc(postId).update(mapBody).then((_) {
-        print("Update post successful..");
+      if (message != null) {
+        await _mRef.collection("Post").doc(postId).update(mapBody).then((_) {
+          print("Update post successful..");
 
-        va = true;
-      });
+          va = true;
+        });
+      }
     }
 
     //check value and return
@@ -219,17 +221,18 @@ class PostRepository {
       mapBody['likesCount'] = "0";
       mapBody['commentCount'] = "0";
 
-      await _mRef.collection("Post").doc(key).set(mapBody).then((_) {
-        print("post successful..");
+      if (message != null) {
+        await _mRef.collection("Post").doc(key).set(mapBody).then((_) {
+          print("post successful..");
 
-        va = true;
-      });
+          va = true;
+        });
+      }
     }
 
     //check value and return
     if (va) {
       result = 'successful';
-
       /*
       if post create success give create notify data  
       Notifications {
@@ -242,7 +245,6 @@ type:''
 }
 }
       */
-
       await createNotificaionsPost(key, uid, date, time, message, "new feed");
     } else {
       result = 'faield';

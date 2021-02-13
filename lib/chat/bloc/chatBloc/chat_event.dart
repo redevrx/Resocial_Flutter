@@ -15,9 +15,11 @@ abstract class ChatEvent extends Equatable {}
 // last message
 class ChatInitial extends ChatEvent {
   final String senderId;
-  final FrindsModel friendModel;
+  final List<FrindsModel> friendModel;
+  final File image;
+  final String groupName;
 
-  ChatInitial({this.senderId, this.friendModel});
+  ChatInitial({this.image, this.groupName, this.senderId, this.friendModel});
 
   @override
   // TODO: implement props

@@ -1,6 +1,12 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:material_buttonx/materialButtonX.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:socialapp/call/bloc/call_bloc.dart';
 import 'package:socialapp/call/screen/pickUp/pick_layout.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_bloc.dart';
@@ -8,7 +14,6 @@ import 'package:socialapp/chat/bloc/messageBloc/message_event.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_state.dart';
 import 'package:socialapp/localizations/app_localizations.dart';
 import 'package:transparent_image/transparent_image.dart';
-
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/event/edit_profile_event.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/state/edit_profile_state.dart';
@@ -215,11 +220,14 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
                           ],
                         ),
                       ),
+
                       // make botton bar
                       bottomBar(
                         controller: _controller,
                         pageController: _pageController,
-                      )
+                        friendBloc: _friendBloc,
+                        chatBloc: _chatBloc,
+                      ),
                     ],
                   ),
                 ),
@@ -231,6 +239,8 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
     );
   }
 }
+
+var friendModel = List<FrindsModel>();
 
 class makeListFriend extends StatelessWidget {
   const makeListFriend({
@@ -253,6 +263,8 @@ class makeListFriend extends StatelessWidget {
         cubit: _friendBloc,
         builder: (context, state) {
           if (state is onLoadFriendUserSuccessfully) {
+            friendModel = state.list;
+
             return ListView.builder(
                 itemCount: state.list.length,
                 itemBuilder: (context, index) => makeCardProfile(
@@ -463,7 +475,7 @@ class makeCardProfile extends StatelessWidget {
                         print("user name :${data.userName}");
                         friendBloc.add(onCheckFriendCurrentUserClick(
                             friendBloc: friendBloc,
-                            freindModel: data,
+                            freindModel: [data],
                             chatBloc: chatBloc,
                             friendId: data.uid));
                         //if yes go to chat screen else show dialog error
@@ -765,9 +777,17 @@ class _makeChatListInfoCard extends StatelessWidget {
 }
 
 class bottomBar extends StatefulWidget {
-  bottomBar({Key key, this.controller, this.pageController}) : super(key: key);
+  bottomBar(
+      {Key key,
+      this.controller,
+      this.pageController,
+      this.friendBloc,
+      this.chatBloc})
+      : super(key: key);
   final AnimationController controller;
   final PageController pageController;
+  final FriendBloc friendBloc;
+  final ChatBloc chatBloc;
   @override
   _bottomBarState createState() => _bottomBarState();
 }
@@ -781,6 +801,8 @@ class _bottomBarState extends State<bottomBar> {
     pageNumber = widget.pageController.initialPage;
     super.didChangeDependencies();
   }
+
+  List<FrindsModel> listFreindGroupChat = [];
 
   @override
   Widget build(BuildContext context) {
@@ -800,6 +822,7 @@ class _bottomBarState extends State<bottomBar> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              //btn home
               InkWell(
                 onTap: () {
                   widget.pageController.animateToPage(0,
@@ -815,6 +838,7 @@ class _bottomBarState extends State<bottomBar> {
                   color: pageNumber == 0 ? Color(0xFF6583F3) : Colors.grey,
                 ),
               ),
+              //btn person
               InkWell(
                 onTap: () {
                   widget.pageController.animateToPage(1,
@@ -830,17 +854,391 @@ class _bottomBarState extends State<bottomBar> {
                   color: pageNumber == 1 ? Color(0xFF6583F3) : Colors.grey,
                 ),
               ),
+              //btn call
+              // InkWell(
+              //   onTap: () {
+              //     widget.pageController.animateToPage(2,
+              //         duration: Duration(milliseconds: 700),
+              //         curve: Curves.easeInOutSine);
+              //     setState(() {
+              //       pageNumber = 2;
+              //     });
+              //   },
+              //   child: Icon(
+              //     Icons.call_end_outlined,
+              //     size: 36.0,
+              //     color: pageNumber == 2 ? Color(0xFF6583F3) : Colors.grey,
+              //   ),
+              // ),
+              //btn add chat group
               InkWell(
-                onTap: () {
-                  widget.pageController.animateToPage(2,
+                onTap: () async {
+                  widget.pageController.animateToPage(1,
                       duration: Duration(milliseconds: 700),
                       curve: Curves.easeInOutSine);
                   setState(() {
-                    pageNumber = 2;
+                    pageNumber = 1;
                   });
+                  // friendModel
+                  var groupName = '';
+                  var imagePath = null;
+
+                  friendModel != null
+                      ? showCupertinoModalBottomSheet(
+                          animationCurve: Curves.easeInOutBack,
+                          duration: Duration(milliseconds: 700),
+                          elevation: 12.0,
+                          isDismissible: true,
+                          topRadius: Radius.circular(22.0),
+                          context: context,
+                          builder: (context) => StatefulBuilder(
+                            builder: (context, setState) {
+                              //get image from gallery
+                              Future<void> pickGallery() async {
+                                var image = await ImagePicker()
+                                    .getImage(source: ImageSource.gallery);
+                                // File(image.path);
+                                setState(() {
+                                  imagePath = image.path;
+                                });
+                              }
+
+                              ////permission
+                              Future<void> _checkGalleryPermission() async {
+                                final gallery = await Permission.storage;
+
+                                if (await gallery.status.isUndetermined) {
+                                  if (await gallery.request().isGranted) {
+                                    //user permission grant
+                                  }
+                                }
+
+                                if (await gallery.status.isRestricted) {
+                                  //user block permission
+                                }
+
+                                if (await gallery.status.isGranted) {
+                                  //permission grant storeage -> access gallery
+                                  //open image gallery pack
+
+                                  pickGallery();
+                                }
+                              }
+
+                              //
+                              return Material(
+                                child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * .55,
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 16.0, horizontal: 16.0),
+                                  child: SingleChildScrollView(
+                                    controller:
+                                        ModalScrollController.of(context),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                            child: Column(
+                                          children: [
+                                            //show text title
+                                            Text(
+                                              "Create Group Chat",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline5,
+                                            ),
+                                            //show edit text group name
+                                            Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 12.0),
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .75,
+                                              height: 50.0,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                        offset: Offset(18, 18),
+                                                        color: Colors.grey
+                                                            .withOpacity(.5),
+                                                        blurRadius: 16.0,
+                                                        spreadRadius: 5.0)
+                                                  ],
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0)),
+                                              child: TextField(
+                                                onChanged: (message) =>
+                                                    groupName = message,
+                                                decoration: InputDecoration(
+                                                  hintText: "Enter Group Name",
+                                                  border: InputBorder.none,
+                                                ),
+                                              ),
+                                            ),
+                                            //show text friend list
+                                            Text(
+                                              "Friends List",
+                                              style: TextStyle(
+                                                  fontSize: 16.0,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            // show list friend
+                                            //and select add to group
+                                            Container(
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 12.0),
+                                                height: 100.0,
+                                                width: 500.0,
+                                                child: ListView.builder(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount: friendModel != null
+                                                      ? friendModel.length
+                                                      : 0,
+                                                  itemBuilder: (context, i) {
+                                                    return Container(
+                                                      margin: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 12.0),
+                                                      child: Row(
+                                                        children: [
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              print("Seelcted");
+                                                              setState(() {
+                                                                //add selected freind
+                                                                listFreindGroupChat
+                                                                    .add(
+                                                                        friendModel[
+                                                                            i]);
+
+                                                                //remove frome show list
+                                                                var editModel =
+                                                                    friendModel[
+                                                                        i];
+                                                                editModel
+                                                                        .selected =
+                                                                    true;
+                                                                friendModel[i] =
+                                                                    editModel;
+                                                                // friendModel.removeWhere(
+                                                                //     (e) =>
+                                                                //         e.uid ==
+                                                                //         friendModel[i]
+                                                                //             .uid);
+                                                              });
+                                                            },
+                                                            child: Container(
+                                                              child: Column(
+                                                                children: [
+                                                                  //show image profile
+                                                                  Container(
+                                                                    child: ClipRRect(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                12.0),
+                                                                        child: FadeInImage.memoryNetwork(
+                                                                            height:
+                                                                                50.0,
+                                                                            width:
+                                                                                50.0,
+                                                                            placeholder:
+                                                                                kTransparentImage,
+                                                                            image: friendModel[i].imageProfile.isNotEmpty
+                                                                                ? friendModel[i].imageProfile
+                                                                                : "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")),
+                                                                  ),
+                                                                  //show user name
+                                                                  Text(friendModel[
+                                                                          i]
+                                                                      .userName)
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          //show selected freind
+                                                          friendModel[i]
+                                                                  .selected
+                                                              ? Icon(
+                                                                  Icons
+                                                                      .spellcheck_rounded,
+                                                                  size: 22.0,
+                                                                  color: Colors
+                                                                      .green,
+                                                                )
+                                                              : Container()
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
+                                                )),
+                                            //show text friend list
+                                            Text(
+                                              "Selected Friends List",
+                                              style: TextStyle(
+                                                  fontSize: 16.0,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            //show selected friend list
+                                            Container(
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 12.0),
+                                                height: 100.0,
+                                                width: 500.0,
+                                                child: ListView.builder(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount:
+                                                      listFreindGroupChat !=
+                                                              null
+                                                          ? listFreindGroupChat
+                                                              .length
+                                                          : 0,
+                                                  itemBuilder: (context, i) {
+                                                    return Container(
+                                                      margin: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 12.0),
+                                                      child: Row(
+                                                        children: [
+                                                          InkWell(
+                                                            onTap: () {
+                                                              setState(() {
+                                                                listFreindGroupChat
+                                                                    .removeWhere((e) =>
+                                                                        e.uid ==
+                                                                        listFreindGroupChat[i]
+                                                                            .uid);
+                                                              });
+                                                            },
+                                                            child: Container(
+                                                              child: Column(
+                                                                children: [
+                                                                  //show image profile
+                                                                  Container(
+                                                                    child: ClipRRect(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                12.0),
+                                                                        child: FadeInImage.memoryNetwork(
+                                                                            height:
+                                                                                50.0,
+                                                                            width:
+                                                                                50.0,
+                                                                            placeholder:
+                                                                                kTransparentImage,
+                                                                            image: listFreindGroupChat[i].imageProfile.isNotEmpty
+                                                                                ? listFreindGroupChat[i].imageProfile
+                                                                                : "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")),
+                                                                  ),
+                                                                  //show user name
+                                                                  Text(listFreindGroupChat[
+                                                                          i]
+                                                                      .userName)
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          //
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
+                                                )),
+                                            //show selected image group
+                                            Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                              width: 60.0,
+                                              height: 60.0,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                child: imagePath != null
+                                                    ? Image.asset(
+                                                        "${imagePath}")
+                                                    : Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.grey,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0),
+                                                        ),
+                                                        child: GestureDetector(
+                                                          onTap: () async {
+                                                            //
+                                                            await _checkGalleryPermission();
+                                                          },
+                                                          child: Icon(
+                                                            Icons
+                                                                .add_photo_alternate_outlined,
+                                                            size: 22.0,
+                                                          ),
+                                                        ),
+                                                      ),
+                                              ),
+                                            ),
+                                            //show btn save group chat info
+                                            imagePath != null
+                                                ? MaterialButtonX(
+                                                    onClick: () {
+                                                      //unfosuc textfield
+                                                      FocusScope.of(context)
+                                                          .unfocus();
+
+                                                      print(
+                                                          "initinal data group chat");
+                                                      widget.friendBloc.add(
+                                                          onCheckFriendCurrentUserClick(
+                                                              image: File(
+                                                                  imagePath),
+                                                              groupName:
+                                                                  groupName,
+                                                              friendBloc: widget
+                                                                  .friendBloc,
+                                                              freindModel:
+                                                                  listFreindGroupChat,
+                                                              chatBloc: widget
+                                                                  .chatBloc,
+                                                              friendId: null));
+
+                                                      //clear data
+                                                      listFreindGroupChat = [];
+                                                      Navigator.pop(context);
+                                                    },
+                                                    color: Colors.green,
+                                                    height: 48.0,
+                                                    icon: Icons
+                                                        .person_add_alt_1_outlined,
+                                                    iconSize: 22.0,
+                                                    message: "Save",
+                                                    radius: 48.0,
+                                                    width: 130,
+                                                  )
+                                                : Container(),
+                                          ],
+                                        ))
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      : null;
                 },
                 child: Icon(
-                  Icons.call_end_outlined,
+                  Icons.group_add_outlined,
                   size: 36.0,
                   color: pageNumber == 2 ? Color(0xFF6583F3) : Colors.grey,
                 ),
