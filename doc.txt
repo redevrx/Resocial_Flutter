@@ -4,9 +4,6 @@ there are bug like
  - group freind notify
    - disable request notify
    - disable like notify 
-   *chat notify
-  -chat 
-    *Vedio call or voice call 
 
     
       

@@ -370,18 +370,20 @@ class _makeBottonMessage extends StatelessWidget {
                 onChanged: (value) => message = value,
                 onFieldSubmitted: (message) async {
                   // FocusScope.of(context).unfocus();
+                  if (message.isNotEmpty) {
+                    messageBloc.add(OnSendMessage(
+                        chatListInfo: data,
+                        imageFile: null,
+                        message: message,
+                        receiveId: data.uid,
+                        senderId: uid));
+                  }
+
                   textController.text = "";
                   // print(value);
                   //send message
 
                   //
-
-                  messageBloc.add(OnSendMessage(
-                      chatListInfo: data,
-                      imageFile: null,
-                      message: message,
-                      receiveId: data.uid,
-                      senderId: uid));
 
                   // Future.delayed(Duration(seconds: 3), () {
                   //   scrollController
@@ -419,18 +421,20 @@ class _makeBottonMessage extends StatelessWidget {
                     // print(value);
                     //send message
                     // FocusScope.of(context).unfocus();
+                    print("send message type person");
+                    if (message.isNotEmpty) {
+                      messageBloc.add(OnSendMessage(
+                          chatListInfo: data,
+                          imageFile: null,
+                          message: message,
+                          receiveId: data.uid,
+                          senderId: uid));
+                    }
                     textController.text = "";
                     //
                     //check type chat room
 
                     //person chat
-                    print("send message type person");
-                    messageBloc.add(OnSendMessage(
-                        chatListInfo: data,
-                        imageFile: null,
-                        message: message,
-                        receiveId: data.uid,
-                        senderId: uid));
 
                     // Future.delayed(Duration(seconds: 3), () {
                     //   scrollController

@@ -82,7 +82,8 @@ class AddProfileBloc extends Bloc<AddProfileEvent, AddProfileState> {
 
       //update user info
       //update image field
-      final it = await updateUserInfo(url, data.status, data.nickName, uid);
+      final it = await updateUserInfo(
+          url, data.status ?? "", data.nickName ?? "", uid);
 
       if (it) {
         //clear data that keep in shared pref

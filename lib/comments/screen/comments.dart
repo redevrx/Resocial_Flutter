@@ -69,7 +69,6 @@ class _CommentsState extends State<_Comments> {
   TextMoreBloc textMoreBloc;
   LikeBloc likeBloc;
   CommentBloc commentBloc;
-  var message = '';
   TextEditingController txtComment;
   MyFeedBloc myFeedBloc;
   PostBloc postBloc;
@@ -176,8 +175,10 @@ class _CommentsState extends State<_Comments> {
 
   Container buildContainerComment(
       BoxConstraints constraints, onLoadCommentSuccess state) {
+    var message = '';
     return Container(
-      height: constraints.maxHeight * .7129,
+      height: constraints.maxHeight * .6,
+      width: double.infinity,
       child: Column(
         children: <Widget>[
           Padding(
@@ -211,8 +212,14 @@ class _CommentsState extends State<_Comments> {
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
-                                  image: NetworkImage(
-                                      state.comments[index].imageProfile),
+                                  image: NetworkImage(state.comments[index]
+                                                  .imageProfile ==
+                                              null ||
+                                          state.comments[index].imageProfile
+                                              .toString()
+                                              .isEmpty
+                                      ? "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg"
+                                      : state.comments[index].imageProfile),
                                   fit: BoxFit.cover,
                                 )),
                           ),
@@ -291,18 +298,15 @@ class _CommentsState extends State<_Comments> {
                   children: <Widget>[
                     Container(
                       width: 320.0,
-                      child: TextFormField(
+                      child: TextField(
                         controller: txtComment,
-                        onChanged: (value) {
-                          message = '${value}';
-                          print(message);
-                        },
-                        onFieldSubmitted: (value) {
+                        onChanged: (value) => message = value,
+                        onSubmitted: (value) {
                           // commentCount += 1;
+                          FocusScope.of(context).unfocus();
                           commentBloc.add(onAddCommentClick(
                               message: message,
                               postModel: widget.postModels[widget.i]));
-
                           message = "";
                           txtComment.clear();
                         },
@@ -314,16 +318,19 @@ class _CommentsState extends State<_Comments> {
                   ],
                 ),
                 //make button send comments
-                InkWell(
-                  onTap: () {
-                    // commentCount += 1;
-                    commentBloc.add(onAddCommentClick(
-                        message: message,
-                        postModel: widget.postModels[widget.i]));
-                    message = "";
-                    txtComment.clear();
-                  },
-                  child: Icon(Icons.send, size: 32, color: Colors.blue),
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                      // commentCount += 1;
+                      commentBloc.add(onAddCommentClick(
+                          message: message,
+                          postModel: widget.postModels[widget.i]));
+                      message = "";
+                      txtComment.clear();
+                    },
+                    child: Icon(Icons.send, size: 32, color: Colors.blue),
+                  ),
                 )
               ],
             ),
