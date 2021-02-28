@@ -25,7 +25,7 @@ class ChatListInfo extends Equatable {
       String type,
       String groupId,
       String createBy,
-      String participant,
+      dynamic participant,
       String status) {
     this._name = name;
     this._lastMessage = lastMessage;

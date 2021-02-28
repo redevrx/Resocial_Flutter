@@ -12,7 +12,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:socialapp/userPost/screen/create_new_post.dart';
+import 'package:flutter/material.dart';
+import 'package:socialapp/home/screen/home_page.dart';
 
 class LoginBloc extends Bloc<LoginEvevt, LoginState> {
   LoginBloc() : super(onInitialState());
@@ -254,7 +255,10 @@ this method will sign in with facebook
 login with google 
 and get email and user anme
  */
-  Future<bool> signInWithGoogle() async {
+  Future<bool> signInWithGoogle({BuildContext context}) async {
+    //firebase insyance
+    final mRef = FirebaseFirestore.instance;
+
     // Trigger the authentication flow
     final googleInUser = await GoogleSignIn(
       scopes: [
@@ -273,13 +277,41 @@ and get email and user anme
     final user = await FirebaseAuth.instance.signInWithCredential(credential);
 
     if (user.user.email != null) {
-      await onSaveData(
-          FirebaseFirestore.instance,
-          new SignUpModel(
-              user.user.email, user.user.displayName, "password", "passwordCm"),
-          user.user.photoURL,
-          user.user.uid);
-      return true;
+      //check user login
+      bool userLoginCheck = false;
+
+//check have account
+      await mRef.collection("user info").doc(user.user.uid).get().then((info) {
+        final it = info.get("uid").toString();
+        userLoginCheck = it != null || it.isNotEmpty ? true : false;
+      }).catchError((e) {
+        userLoginCheck = false;
+        print(e);
+      });
+
+      if (!userLoginCheck) {
+        //not account
+        await onSaveData(
+            mRef,
+            new SignUpModel(user.user.email, user.user.displayName, "password",
+                "passwordCm"),
+            user.user.photoURL,
+            user.user.uid);
+        return true;
+      } else {
+        //have account
+        //go to home page
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) {
+            return HomePage(
+              pageNumber: 0,
+            );
+          },
+        ));
+      }
+
+      //
+
     } else {
       await GoogleSignIn().signOut();
       return false;

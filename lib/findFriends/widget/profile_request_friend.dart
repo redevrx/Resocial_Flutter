@@ -10,7 +10,6 @@ import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'package:socialapp/home/widget/post_widget.dart';
 import 'dart:async';
-import 'package:socialapp/home/widget/widget_home_page.dart';
 import 'package:socialapp/likes/export/export_like.dart';
 import 'package:socialapp/textMore/export/export.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
@@ -74,7 +73,8 @@ class ProfileRequestFriend extends StatelessWidget {
                                   // ),
                                   _stackBackground(),
                                   _friendStatus(
-                                    statusUser: state.data.userStatus,
+                                    statusUser:
+                                        state.data.userStatus ?? "status",
                                     constraints: constraints,
                                     friendManageBloc: friendManageBloc,
                                     uid: uid,
@@ -93,7 +93,7 @@ class ProfileRequestFriend extends StatelessWidget {
                                     imageBackground: state.data.backgroundImage,
                                   ),
                                   _userNameWidget(
-                                    userName: state.data.userName,
+                                    userName: state.data.userName ?? "name",
                                   )
                                 ],
                               ),
