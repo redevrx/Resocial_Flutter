@@ -4,6 +4,7 @@ there are bug like
  - group freind notify
    - disable request notify
    - disable like notify 
+  -error other profile user status error text is null or emtry
 
     
       

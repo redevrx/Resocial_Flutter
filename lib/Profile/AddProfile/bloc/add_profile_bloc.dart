@@ -60,9 +60,9 @@ class AddProfileBloc extends Bloc<AddProfileEvent, AddProfileState> {
     //add data from shared pref to add profile model
 
     final data = AddProfileModel(
-        File(_preferences.getString("imageProfile") ?? "") ?? null,
-        _preferences.getString("nickName"),
-        _preferences.getString("userStatus"));
+        File(_preferences.getString("imageProfile") ?? "") ?? "",
+        _preferences.getString("nickName") ?? "",
+        _preferences.getString("userStatus") ?? "");
 
 //get uid
     final _auth = FirebaseAuth.instance.currentUser;
