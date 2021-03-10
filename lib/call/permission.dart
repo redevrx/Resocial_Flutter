@@ -11,8 +11,8 @@ class Permissions {
       return true;
     }
 
-    if (status[Permission.camera].isUndetermined ||
-        status[Permission.microphone].isUndetermined) {
+    if (status[Permission.camera].isPermanentlyDenied ||
+        status[Permission.microphone].isPermanentlyDenied) {
       return false;
     }
   }

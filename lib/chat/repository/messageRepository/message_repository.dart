@@ -279,7 +279,7 @@ class MessageRepository {
 
       //http post to FCM
 
-      await http.post('https://fcm.googleapis.com/fcm/send',
+      await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
           headers: {
             'Authorization': 'key=$token',
             'Content-Type': 'application/json'

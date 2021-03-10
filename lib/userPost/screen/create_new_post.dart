@@ -58,7 +58,7 @@ class __CreatePostState extends State<_CreatePost> {
     final gallery = await Permission.storage;
 
     //check grant
-    if (await gallery.status.isUndetermined) {
+    if (await gallery.status.isDenied) {
       //user not grant permission
       if (await gallery.request().isGranted) {
         //user permission grant
@@ -85,7 +85,7 @@ class __CreatePostState extends State<_CreatePost> {
     final camera = await Permission.camera;
 
     //check user grant permission
-    if (await camera.status.isUndetermined) {
+    if (await camera.status.isDenied) {
       //user not grant permission
 
       if (await camera.request().isGranted) {

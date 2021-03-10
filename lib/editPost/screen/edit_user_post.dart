@@ -82,7 +82,7 @@ class __EditPostState extends State<_EditPost> {
   Future<void> _checkGalleryPermission(PostBloc postBloc) async {
     var gallery = await Permission.storage;
 
-    if (await gallery.status.isUndetermined) {
+    if (await gallery.status.isDenied) {
       //not grant
       if (await gallery.request().isGranted) {
         // permission grant
@@ -102,7 +102,7 @@ class __EditPostState extends State<_EditPost> {
   Future<void> _checkCameraPermission(PostBloc postBloc) async {
     var camera = await Permission.camera;
 
-    if (await camera.status.isUndetermined) {
+    if (await camera.status.isDenied) {
       //not grant
       if (await camera.request().isGranted) {
         // permission grant

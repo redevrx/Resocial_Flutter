@@ -1219,7 +1219,7 @@ Future<void> _checkCamerPermission(
     BuildContext context, EditProfileBloc editProfileBloc, int type) async {
   final camera = await Permission.camera;
 
-  if (await camera.status.isUndetermined) {
+  if (await camera.status.isDenied) {
     //user not permission
     if (await camera.request().isGranted) {
       // //result that request permission
@@ -1246,7 +1246,7 @@ Future<void> _checkGalleryPermission(
     BuildContext context, EditProfileBloc editProfileBloc, int type) async {
   final gallery = await Permission.storage;
 
-  if (await gallery.status.isUndetermined) {
+  if (await gallery.status.isDenied) {
     if (await gallery.request().isGranted) {
       //user permission grant
     }

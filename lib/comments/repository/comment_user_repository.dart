@@ -165,7 +165,7 @@ class CommentRepository {
       notifyHead['notification'] = notifyData;
 
       //http post to FCM
-      await http.post('https://fcm.googleapis.com/fcm/send',
+      await http.Client().post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
           headers: {
             'Authorization': 'key=$token',
             'Content-Type': 'application/json'

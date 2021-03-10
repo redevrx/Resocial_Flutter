@@ -18,7 +18,7 @@ class LookImage extends StatelessWidget {
   Future checkStoragePermission(BuildContext context, String imageUrl) async {
     var storage = await Permission.storage;
 
-    if (await storage.status.isUndetermined) {
+    if (await storage.status.isDenied) {
       if (await storage.request().isGranted) {
         //downloadImage(imageUrl);
       }
@@ -53,7 +53,7 @@ class LookImage extends StatelessWidget {
       }
     }
 
-    var response = await http.get(imageUrl);
+    var response = await http.Client().get(Uri.parse(imageUrl));
     File file = new File(join(path + "/resocial", "image${i}.png"));
     await file.writeAsBytesSync(response.bodyBytes);
     print('object :${file}');

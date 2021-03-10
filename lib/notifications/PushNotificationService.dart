@@ -9,7 +9,7 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PushNotificationService {
-  final FirebaseMessaging _fcm = FirebaseMessaging();
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   final showNotify = ShowNotifyService();
 
   Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
@@ -27,36 +27,83 @@ class PushNotificationService {
     print("onBackgriundMessage");
   }
 
-  Future initialise() {
+  Future initialise() async {
     if (Platform.isIOS) {
-      _fcm.requestNotificationPermissions(
-          IosNotificationSettings(sound: true, badge: true, alert: true));
-      _fcm.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
-        print("Settings registered: $settings");
+      //ios request permission about notifications
+
+      await _fcm
+          .requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      )
+          .then((notification) {
+        print(
+            'User granted permission IOS : ${notification.authorizationStatus}');
+      }).catchError((e) {
+        print('User granted permission IOS Error: ${e}');
       });
     }
+
+    //android request permission about notification
+    await _fcm
+        .requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    )
+        .then((notification) {
+      print(
+          'User granted permission Android : ${notification.authorizationStatus}');
+    }).catchError((e) {
+      print('User granted permission Android Error: ${e}');
+    });
 
     //create notify ios and android
     showNotify.initialNotify();
 
-    _fcm.configure(
-      // onBackgroundMessage: myBackgroundMessageHandler,
-      onMessage: (message) {
-        if (message["title"].toString() == "chat") {
-          showNotify.showNotifyMessage(message);
-        } else {
-          //post notidy
-          showNotify.showNotifyPost(message);
-        }
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onBackgriundMessage: $message");
-        showNotify.showNotifyPost(message);
-      },
-      onResume: (message) {
-        print("onResume: $message");
-      },
-    );
+    //this event will work while open
+    FirebaseMessaging.onMessage.listen((message) {
+      if (message.data["title"].toString() == "chat") {
+        showNotify.showNotifyMessage(message.data);
+      } else {
+        //post notidy
+        showNotify.showNotifyPost(message.data);
+      }
+    });
+
+    //this event will wok close app
+    FirebaseMessaging.onBackgroundMessage((message) {
+      if (message.data["title"].toString() == "chat") {
+        showNotify.showNotifyMessage(message.data);
+      } else {
+        //post notidy
+        showNotify.showNotifyPost(message.data);
+      }
+    });
+
+    //this event will work when user click
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      if (message.data["title"].toString() == "chat") {
+        // showNotify.showNotifyMessage(message.data);
+        //go to chat screen
+      } else {
+        //post notidy
+        // showNotify.showNotifyPost(message.data);
+        //go to home page
+      }
+    });
+    //notification and go to app
+    //check data from notification
+    //and give go that screen ?
   }
 
   getDeviceToken() async {
@@ -143,7 +190,7 @@ class ShowNotifyService {
     );
 
     var initializationSettings = InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIos);
+        android: initializationSettingsAndroid, iOS: initializationSettingsIos);
 
     flutterNotify.initialize(
       initializationSettings,
@@ -166,8 +213,8 @@ class ShowNotifyService {
         messages: <Message>[Message(message['body'], null, null)],
         conversationTitle: "New messages.",
       ),
-      importance: Importance.Max,
-      priority: Priority.High,
+      importance: Importance.high,
+      priority: Priority.high,
     );
 
     //create ios setting notify
@@ -175,7 +222,8 @@ class ShowNotifyService {
 
     //create platform ios android noify
     var platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
 
     //show notify
     //id notify_post 1
@@ -190,8 +238,8 @@ class ShowNotifyService {
       "notify_post",
       "post",
       "show notify to friends",
-      importance: Importance.Max,
-      priority: Priority.High,
+      importance: Importance.high,
+      priority: Priority.high,
     );
 
     //create ios setting notify
@@ -199,7 +247,8 @@ class ShowNotifyService {
 
     //create platform ios android noify
     var platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
 
     //show notify
     //id notify_post 1

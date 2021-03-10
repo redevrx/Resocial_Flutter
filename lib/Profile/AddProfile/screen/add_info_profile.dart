@@ -84,7 +84,7 @@ class addProfile extends StatelessWidget {
     //get varialble permission camera
     var status = Permission.camera;
 
-    if (await status.status.isUndetermined) {
+    if (await status.status.isDenied) {
       //request permission
       if (await status.request().isGranted) {
         //result that request permission
@@ -113,7 +113,7 @@ class addProfile extends StatelessWidget {
       BuildContext context, AddProfileBloc profileBloc) async {
     var status = await Permission.storage;
 
-    if (await status.status.isUndetermined) {
+    if (await status.status.isDenied) {
       //request permission
       if (await status.request().isGranted) {
         //result that request permission

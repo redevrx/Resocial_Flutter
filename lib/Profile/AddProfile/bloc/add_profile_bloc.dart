@@ -71,13 +71,12 @@ class AddProfileBloc extends Bloc<AddProfileEvent, AddProfileState> {
 //check image file
     if (_preferences.getString("imageProfile") != null) {
 //upload image to data storage
-      final StorageReference mRef =
-          FirebaseStorage().ref().child("Profile Image").child("Images");
-      final StorageUploadTask uploadTask =
-          mRef.child("${uid}" + ".jpg").putFile(data.image);
+      final mRef =
+          FirebaseStorage.instance.ref().child("Profile Image").child("Images");
+      final uploadTask = mRef.child("${uid}" + ".jpg").putFile(data.image);
 
       //download image url
-      var dowurl = await (await uploadTask.onComplete).ref.getDownloadURL();
+      var dowurl = await uploadTask.snapshot.ref.getDownloadURL();
       var url = dowurl.toString();
 
       //update user info

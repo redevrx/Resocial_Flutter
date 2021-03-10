@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import 'package:workmanager/workmanager.dart';
 
 class PostRepository {
   //update user post
@@ -46,13 +45,12 @@ class PostRepository {
         print('update post image');
 
         final _mRefFile =
-            FirebaseStorage().ref().child("Post Image").child("Images");
+            FirebaseStorage.instance.ref().child("Post Image").child("Images");
 
         //save image to data storage
         final uploadTask = _mRefFile.child(postId).putFile(image);
 
-        String urlImage =
-            await (await uploadTask.onComplete).ref.getDownloadURL();
+        String urlImage = await uploadTask.snapshot.ref.getDownloadURL();
 
         //make map to json
         mapBody["uid"] = uid;
@@ -127,7 +125,7 @@ class PostRepository {
   Future<void> removePost(String postId) async {
     final _mRef = FirebaseFirestore.instance;
     final _mRefFile =
-        FirebaseStorage().ref().child("Post Image").child("Images");
+        FirebaseStorage.instance.ref().child("Post Image").child("Images");
 
     try {
       await _mRefFile
@@ -165,7 +163,7 @@ class PostRepository {
 
     final _mRef = FirebaseFirestore.instance;
     final _mRefFile =
-        FirebaseStorage().ref().child("Post Image").child("Images");
+        FirebaseStorage.instance.ref().child("Post Image").child("Images");
 
     final key = _mRef.collection("Post").doc().id;
     Map mapBody = HashMap<String, dynamic>();
@@ -185,7 +183,7 @@ class PostRepository {
       //save image to data storage
       final uploadTask = _mRefFile.child(key).putFile(image);
 
-      String url = await (await uploadTask.onComplete).ref.getDownloadURL();
+      String url = await uploadTask.snapshot.ref.getDownloadURL();
 
       //make map to json
       mapBody["uid"] = uid;
@@ -373,7 +371,7 @@ type:''
 
       //http post to FCM
 
-      await http.post('https://fcm.googleapis.com/fcm/send',
+      await http.post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
           headers: {
             'Authorization': 'key=$token',
             'Content-Type': 'application/json'
