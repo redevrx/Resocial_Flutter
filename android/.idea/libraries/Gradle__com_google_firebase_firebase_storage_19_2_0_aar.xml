@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.firebase:firebase-storage:19.2.0@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/d8fbad351f264cc56571cca0020ccb06/firebase-storage-19.2.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/d8fbad351f264cc56571cca0020ccb06/firebase-storage-19.2.0/res" />
+      <root url="file://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/d8fbad351f264cc56571cca0020ccb06/firebase-storage-19.2.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/modules-2/files-2.1/com.google.firebase/firebase-storage/19.2.0/fd2a43902dd1db71315d884bc9d5e13a1a2c13be/firebase-storage-19.2.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/modules-2/files-2.1/com.google.firebase/firebase-storage/19.2.0/ed580551d379b11a772f01a2ccb6d2d8ce73a116/firebase-storage-19.2.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

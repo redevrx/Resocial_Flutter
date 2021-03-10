@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id=":app" external.linked.project.path="$MODULE_DIR$/../../../app" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="android" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="android-gradle" name="Android-Gradle">
+      <configuration>
+        <option name="GRADLE_PROJECT_PATH" value=":app" />
+        <option name="LAST_SUCCESSFUL_SYNC_AGP_VERSION" value="3.5.0" />
+        <option name="LAST_KNOWN_AGP_VERSION" value="3.5.0" />
+      </configuration>
+    </facet>
+    <facet type="android" name="Android">
+      <configuration>
+        <option name="SELECTED_BUILD_VARIANT" value="debug" />
+        <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
+        <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugSources" />
+        <afterSyncTasks>
+          <task>generateDebugSources</task>
+        </afterSyncTasks>
+        <option name="ALLOW_USER_CONFIGURATION" value="false" />
+        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
+        <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../app/src/main/res;file://$MODULE_DIR$/../../../app/src/debug/res;file://$MODULE_DIR$/../../../../build/app/generated/res/google-services/debug;file://$MODULE_DIR$/../../../../build/app/generated/res/rs/debug;file://$MODULE_DIR$/../../../../build/app/generated/res/resValues/debug" />
+        <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../app/src/androidTest/res;file://$MODULE_DIR$/../../../app/src/androidTestDebug/res;file://$MODULE_DIR$/../../../../build/app/generated/res/rs/androidTest/debug;file://$MODULE_DIR$/../../../../build/app/generated/res/resValues/androidTest/debug" />
+        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
+      </configuration>
+    </facet>
+    <facet type="kotlin-language" name="Kotlin">
+      <configuration version="3" platform="JVM 1.6" allPlatforms="JVM [1.6]" useProjectSettings="false">
+        <compilerSettings>
+          <option name="additionalArguments" value="-Xallow-no-source-files" />
+        </compilerSettings>
+        <compilerArguments>
+          <option name="destination" value="$MODULE_DIR$/../../../../build/app/tmp/kotlin-classes/debug" />
+          <option name="classpath" value="$MODULE_DIR$/../../../../build/app/intermediates/flutter/debug/libs.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/google_sign_in/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/firebase_storage/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/flutter_plugin_android_lifecycle/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/agora_rtc_engine/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/firebase_messaging/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/path_provider/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/flutter_local_notifications/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/cloud_firestore/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/permission_handler/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/firebase_database/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/shared_preferences/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/workmanager/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/image_picker/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/share/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/firebase_auth/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Flutter/Tutorial/Flutter_Resocial_app/build/firebase_core/intermediates/compile_library_classes/debug/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/02ab16b361f054d4c79b328d772002c9/jetified-flutter_embedding_debug-1.0.0-2f0af3715217a0c2ada72c717d4ed9178d68f6ed.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/io.flutter/armeabi_v7a_debug/1.0.0-2f0af3715217a0c2ada72c717d4ed9178d68f6ed/121af36e209588e4812442cbc0fe86b34bf9ba8e/armeabi_v7a_debug-1.0.0-2f0af3715217a0c2ada72c717d4ed9178d68f6ed.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/io.flutter/arm64_v8a_debug/1.0.0-2f0af3715217a0c2ada72c717d4ed9178d68f6ed/df299d24517a75cb561ae5bbc2885a9ba6cb1143/arm64_v8a_debug-1.0.0-2f0af3715217a0c2ada72c717d4ed9178d68f6ed.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/io.flutter/x86_64_debug/1.0.0-2f0af3715217a0c2ada72c717d4ed9178d68f6ed/942f5658aef7d4bc2d47b27450d911750935aee3/x86_64_debug-1.0.0-2f0af3715217a0c2ada72c717d4ed9178d68f6ed.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/io.flutter/x86_debug/1.0.0-2f0af3715217a0c2ada72c717d4ed9178d68f6ed/75e14ba6a1c3c3b815dd31d2e3ffdd14094e8111/x86_debug-1.0.0-2f0af3715217a0c2ada72c717d4ed9178d68f6ed.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common-java8/2.2.0/cd3478503da69b1a7e0319bd2d1389943db9b364/lifecycle-common-java8-2.2.0.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/0d109f0ea2bc00cb79b87333b5888e1b/jetified-firebase-messaging-20.3.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/6d12ad5a6c314855143a70a9a9b43555/play-services-auth-19.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/b62464b320e763cbcd5f4eda5ecd0a31/firebase-analytics-17.6.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/b8f8222fda855e53e6ed9c19d9ffc7de/play-services-measurement-17.6.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/c54d21df40a2b914be32b843578fb0ff/play-services-measurement-api-17.6.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/11f5722b44f202f5081d3fedd3780f9d/play-services-measurement-sdk-17.6.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/15e27f388fa6d874488dbe33bfb5f19c/firebase-iid-20.3.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/ae3c1578debcad49d0a6c8743b24abc8/play-services-cloud-messaging-16.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/1fa899f6cccbb8f87c9cdcde1aaf6588/play-services-measurement-impl-17.6.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/646fcaf19234d7b37b884114aa567eb2/play-services-stats-17.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/34a0e5d53ae61e749f2724a77a7fa61b/firebase-datatransport-17.0.3/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/657a4170ad1fbb28863aa99d484eaa8d/firebase-installations-16.3.3/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/7da8b5a81a62a81ca06059f7d922a7d9/jetified-firebase-common-19.3.1/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/be92c5c51e7e0033fb4b175f26388755/firebase-installations-interop-16.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/4249dafbc90e047e09cdebdb3e82f272/play-services-auth-api-phone-17.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/4e748032d6df9c51e217df12fef202ab/play-services-auth-base-17.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/566477192cad9be9e53ff137fdc3eff4/firebase-iid-interop-17.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/6eb14f512292913515d869914807ad40/play-services-base-17.1.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/187fb4c1c365ae32171bd8312a35992f/play-services-tasks-17.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/31a3395230a9bd928e78ed2dc5338b8e/firebase-measurement-connector-18.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/bf32d33463f95f7bff9ab9ece9656a67/play-services-ads-identifier-17.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/f97a545ebbdcebd6555e7ddddc56d3bd/play-services-measurement-sdk-api-17.6.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/6aaeba7515e2a479e76fe7020916c95b/play-services-measurement-base-17.6.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/b9ddaa8045a47703cf7eaa738af05c29/jetified-play-services-basement-17.1.1/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/0d479d426be2ba1f4bdfee2f9a7aa519/fragment-1.1.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/d10fe1176fa5480b064486ece15f99c1/legacy-support-core-utils-1.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/28c8df72e3e98cf2af337943db219b6d/loader-1.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/4881302d1430cfdcaa10344523e2ce7f/viewpager-1.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/5a1de8d3594afca67ad230d5d25a73b9/activity-1.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/31cd047ed3ec37dce69ba9f16e10a05d/customview-1.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/20524ebcfbfb226395d832f3856e6cf1/core-1.3.1/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/00db72760b3662c4528b816b17c43995/lifecycle-runtime-2.2.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/13eb812daeca5edd5883d98298d1a9d8/savedstate-1.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/d2cb70f431b9024dfaf067f55a209d28/lifecycle-livedata-2.1.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/a2038a5084edaf54a4fadf716e247a13/lifecycle-livedata-core-2.1.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common/2.2.0/4ef09a745007778eef83b92f8f23987a8ea59496/lifecycle-common-2.2.0.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/4227c25f5adddf6ac1aa1a65c6b6f6a4/versionedparcelable-1.1.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/androidx.collection/collection/1.1.0/1f27220b47669781457de0d600849a5de0e89909/collection-1.1.0.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/96b48096cc6858db55ff0b9cadbfdd91/transport-backend-cct-2.2.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/34066712d6449b2703aaeeeb718baf20/transport-runtime-2.2.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/a8809c1da327e91f8ff2021837b2b25a/jetified-firebase-components-16.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/49c931c92b12f4476416c70f28960002/firebase-encoders-json-16.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/cf4db65e3695a469c93e319c7e3f0a79/core-runtime-2.1.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/androidx.arch.core/core-common/2.1.0/b3152fc64428c9354344bd89848ecddc09b6f07e/core-common-2.1.0.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/d51e0220d8e43d4bfbf3a1c4895b8a97/lifecycle-viewmodel-2.1.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/ec735b528ee8f52f56a38a2f27a69a4b/documentfile-1.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/c8f4c2580dddd9ecf64fc10bf9fbc418/localbroadcastmanager-1.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/dff04f4f27a157ea6f57a15b661fd9d7/print-1.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/androidx.annotation/annotation/1.1.0/e3a6fb2f40e3a3842e6b7472628ba4ce416ea4c8/annotation-1.1.0.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.3.60/a42a01c0338795930e0a7d8f9d19acafdd1c50ee/kotlin-stdlib-jdk7-1.3.60.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.60/984644b61450add3bcef8cf20f948fec458b420d/kotlin-stdlib-1.3.60.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.60/538bd29b2d5a7d278a7188f89c3b84183fa37f75/kotlin-stdlib-common-1.3.60.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/1e43ec82407637f465c620e746b223b7/multidex-2.0.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/d62c70c682445a3aae6412574932cb36/transport-api-2.2.0/jars/classes.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/com.google.dagger/dagger/2.24/97f35169621dd6a30d5958e8326e30f76ebe2e62/dagger-2.24.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/com.google.guava/guava/28.2-android/e11db6e27f5d1ec19826848a865c496c798398fa/guava-28.2-android.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/b421526c5f297295adef1c886e5246c39d4ac629/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/org.checkerframework/checker-compat-qual/2.5.5/435dc33e3019c9f019e15f01aa111de9d6b2b79c/checker-compat-qual-2.5.5.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.3.4/dac170e4594de319655ffb62f41cbd6dbb5e601e/error_prone_annotations-2.3.4.jar;D:/Tutorials/Android/kotlin/iHairstyle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/ba035118bc8bac37d7eff77700720999acd9986d/j2objc-annotations-1.3.jar;D:/Programs/Android/sdk/platforms/android-29/android.jar;D:/Programs/Android/sdk/build-tools/28.0.3/core-lambda-stubs.jar" />
+          <option name="noStdlib" value="true" />
+          <option name="noReflect" value="true" />
+          <option name="moduleName" value="app_debug" />
+          <option name="languageVersion" value="1.3" />
+          <option name="apiVersion" value="1.3" />
+          <option name="pluginOptions">
+            <array />
+          </option>
+          <option name="pluginClasspaths">
+            <array />
+          </option>
+          <option name="errors">
+            <ArgumentParseErrors />
+          </option>
+        </compilerArguments>
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output url="file://$MODULE_DIR$/../../../../build/app/intermediates/javac/debug/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../../build/app/intermediates/javac/debugUnitTest/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../app">
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/kotlin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/res" type="java-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../app/.gradle" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../../build/app/generated/aidl_source_output_dir/debug/compileDebugAidl/out" />
+    <content url="file://$MODULE_DIR$/../../../../build/app/generated/aidl_source_output_dir/debugAndroidTest/compileDebugAndroidTestAidl/out" />
+    <content url="file://$MODULE_DIR$/../../../../build/app/generated/ap_generated_sources/debug/out">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../build/app/generated/ap_generated_sources/debug/out" isTestSource="false" generated="true" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../../build/app/generated/ap_generated_sources/debugAndroidTest/out" />
+    <content url="file://$MODULE_DIR$/../../../../build/app/generated/ap_generated_sources/debugUnitTest/out" />
+    <content url="file://$MODULE_DIR$/../../../../build/app/generated/renderscript_source_output_dir/debug/compileDebugRenderscript/out" />
+    <content url="file://$MODULE_DIR$/../../../../build/app/generated/renderscript_source_output_dir/debugAndroidTest/compileDebugAndroidTestRenderscript/out" />
+    <content url="file://$MODULE_DIR$/../../../../build/app/generated/res/google-services/debug">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../build/app/generated/res/google-services/debug" type="java-resource" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../../build/app/generated/res/resValues/androidTest/debug" />
+    <content url="file://$MODULE_DIR$/../../../../build/app/generated/res/resValues/debug">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../build/app/generated/res/resValues/debug" type="java-resource" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../../build/app/generated/res/rs/androidTest/debug" />
+    <content url="file://$MODULE_DIR$/../../../../build/app/generated/res/rs/debug" />
+    <content url="file://$MODULE_DIR$/../../../../build/app/generated/source/buildConfig/androidTest/debug" />
+    <content url="file://$MODULE_DIR$/../../../../build/app/generated/source/buildConfig/debug">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../build/app/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
+    </content>
+    <orderEntry type="jdk" jdkName="Android API 29 Platform" jdkType="Android SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.12" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-integration:1.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-library:1.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: net.sf.kxml:kxml2:2.3.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup:javawriter:2.1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test.espresso:espresso-core:3.1.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test:runner:1.1.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test:monitor:1.1.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test.espresso:espresso-idling-resource:3.1.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: ./../build/app/intermediates/flutter/debug/libs.jar" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:flutter_embedding_debug:1.0.0-2f0af3715217a0c2ada72c717d4ed9178d68f6ed" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:armeabi_v7a_debug:1.0.0-2f0af3715217a0c2ada72c717d4ed9178d68f6ed" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:arm64_v8a_debug:1.0.0-2f0af3715217a0c2ada72c717d4ed9178d68f6ed" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:x86_64_debug:1.0.0-2f0af3715217a0c2ada72c717d4ed9178d68f6ed" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:x86_debug:1.0.0-2f0af3715217a0c2ada72c717d4ed9178d68f6ed" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common-java8:2.2.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.2.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.collection:collection:1.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.arch.core:core-common:2.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.annotation:annotation:1.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.60" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.3.60" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.3.60" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.dagger:dagger:2.24" level="project" />
+    <orderEntry type="library" name="Gradle: javax.inject:javax.inject:1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:28.2-android" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:failureaccess:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.checkerframework:checker-compat-qual:2.5.5" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.errorprone:error_prone_annotations:2.3.4" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.j2objc:j2objc-annotations:1.3" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-messaging:20.3.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-auth:19.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-analytics:17.6.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement:17.6.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement-api:17.6.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement-sdk:17.6.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-iid:20.3.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-cloud-messaging:16.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement-impl:17.6.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-stats:17.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-datatransport:17.0.3@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-installations:16.3.3@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-common:19.3.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-installations-interop:16.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-auth-api-phone:17.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-auth-base:17.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-iid-interop:17.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-base:17.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-tasks:17.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-measurement-connector:18.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-ads-identifier:17.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement-sdk-api:17.6.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement-base:17.6.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-basement:17.1.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.fragment:fragment:1.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.legacy:legacy-support-core-utils:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.loader:loader:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.viewpager:viewpager:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.activity:activity:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.customview:customview:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.core:core:1.3.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-runtime:2.2.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.savedstate:savedstate:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata:2.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata-core:2.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.versionedparcelable:versionedparcelable:1.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.datatransport:transport-backend-cct:2.2.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.datatransport:transport-runtime:2.2.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-components:16.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-encoders-json:16.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.arch.core:core-runtime:2.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel:2.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.documentfile:documentfile:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.localbroadcastmanager:localbroadcastmanager:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.print:print:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.multidex:multidex:2.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.datatransport:transport-api:2.2.0@aar" level="project" />
+    <orderEntry type="module" module-name="android.google_sign_in" />
+    <orderEntry type="module" module-name="android.firebase_storage" />
+    <orderEntry type="module" module-name="android.flutter_plugin_android_lifecycle" />
+    <orderEntry type="module" module-name="android.agora_rtc_engine" />
+    <orderEntry type="module" module-name="android.firebase_messaging" />
+    <orderEntry type="module" module-name="android.path_provider" />
+    <orderEntry type="module" module-name="android.flutter_local_notifications" />
+    <orderEntry type="module" module-name="android.cloud_firestore" />
+    <orderEntry type="module" module-name="android.permission_handler" />
+    <orderEntry type="module" module-name="android.firebase_database" />
+    <orderEntry type="module" module-name="android.shared_preferences" />
+    <orderEntry type="module" module-name="android.workmanager" />
+    <orderEntry type="module" module-name="android.image_picker" />
+    <orderEntry type="module" module-name="android.share" />
+    <orderEntry type="module" module-name="android.firebase_auth" />
+    <orderEntry type="module" module-name="android.firebase_core" />
+  </component>
+</module>

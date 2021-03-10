@@ -42,7 +42,7 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
 
       final _email = Email.dirty(event.email);
       _email1 = _email;
-      _sharedPreferences.remove("email");
+      await _sharedPreferences.remove("email");
       await _sharedPreferences.setString("email", _email.value);
 
       yield onEmailStateChange()
@@ -51,7 +51,7 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
       _sharedPreferences = await SharedPreferences.getInstance();
 
       final _password = Password.dirty(event.password);
-      _sharedPreferences.remove("password");
+      await _sharedPreferences.remove("password");
       await _sharedPreferences.setString("password", _password.value);
       yield onPasswordStateChange().copyWith(
           password: _password, status: Formz.validate([_password, _password]));
@@ -197,8 +197,8 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
 
     if (it) {
       //remove email and password login
-      _sharedPreferences.remove("email");
-      _sharedPreferences.remove("password");
+      await _sharedPreferences.remove("email");
+      await _sharedPreferences.remove("password");
       yield onLoginSuccessfully("Login Successfully..");
     } else {
       yield onLoingFaield("Password invalid");

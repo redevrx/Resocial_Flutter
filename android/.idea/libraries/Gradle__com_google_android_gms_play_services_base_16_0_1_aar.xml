@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.android.gms:play-services-base:16.0.1@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/bd01e52c1f33c4a4d321847c2572b47d/jetified-play-services-base-16.0.1/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/bd01e52c1f33c4a4d321847c2572b47d/jetified-play-services-base-16.0.1/res" />
+      <root url="file://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/bd01e52c1f33c4a4d321847c2572b47d/jetified-play-services-base-16.0.1/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

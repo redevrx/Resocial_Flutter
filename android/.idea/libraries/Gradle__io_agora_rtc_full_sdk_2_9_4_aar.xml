@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: io.agora.rtc:full-sdk:2.9.4@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/bc86e617542cd4dc1b0d64de0dce3c84/full-sdk-2.9.4/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/bc86e617542cd4dc1b0d64de0dce3c84/full-sdk-2.9.4/res" />
+      <root url="file://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/bc86e617542cd4dc1b0d64de0dce3c84/full-sdk-2.9.4/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/bc86e617542cd4dc1b0d64de0dce3c84/full-sdk-2.9.4/jars/libs/agora-rtc-sdk.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/modules-2/files-2.1/io.agora.rtc/full-sdk/2.9.4/9f87aca79b1e6ad82f255a198d2c0c930e8e0623/full-sdk-2.9.4-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/modules-2/files-2.1/io.agora.rtc/full-sdk/2.9.4/9f87aca79b1e6ad82f255a198d2c0c930e8e0623/full-sdk-2.9.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

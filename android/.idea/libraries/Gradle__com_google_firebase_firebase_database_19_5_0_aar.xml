@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.firebase:firebase-database:19.5.0@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/9acad3ea5b60d54f489db1a59431d55d/firebase-database-19.5.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/9acad3ea5b60d54f489db1a59431d55d/firebase-database-19.5.0/res" />
+      <root url="file://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/9acad3ea5b60d54f489db1a59431d55d/firebase-database-19.5.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/modules-2/files-2.1/com.google.firebase/firebase-database/19.5.0/831ae7fbd982d6e92a01feba64e74af62e16164f/firebase-database-19.5.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/modules-2/files-2.1/com.google.firebase/firebase-database/19.5.0/ad1f08a6e0440145c955c70a505b056fc92dd3f2/firebase-database-19.5.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
