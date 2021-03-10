@@ -46,7 +46,7 @@ class _homePage extends State<homePage> with TickerProviderStateMixin {
   void getUserId() async {
     //get install shared preferences
     final _pref = await SharedPreferences.getInstance();
-    uid = _pref.getString("uid");
+    uid = _pref.getString("uid") ?? "";
   }
 
   void _settingloadFeed(MyFeedBloc myFeedBloc, LikeBloc likeBloc) {
@@ -155,7 +155,7 @@ class _homePage extends State<homePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return PickupLayout(
       callBloc: _callBloc,
-      uid: FirebaseAuth.instance.currentUser.uid,
+      uid: "",
       scaffold: SafeArea(
         left: false,
         top: false,

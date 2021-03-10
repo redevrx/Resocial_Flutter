@@ -1,10 +1,8 @@
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_list.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import 'dart:async';
@@ -72,6 +70,8 @@ class MessageRepository {
  case send message with image
  will upload image to firebase server after
  and will save text data or message to firebase server
+
+ group chat not suppot send notifty
  */
   Future<bool> onSendMessage(String senderId, String receiveId,
       ChatListInfo model, String type, String message, File image) async {
@@ -84,14 +84,18 @@ class MessageRepository {
 
     //FirebaseFirestore.instance.collection("Messages");
     final mSenderInfo = FirebaseFirestore.instance.collection("user info");
+    //path databsae parti group chat
+    // final mPart = FirebaseFirestore.instance.collection("Participants");
 
-    var senderName = "";
-    var senderImage = "";
+    //get date time
     final now = DateTime.now();
     var time = DateFormat("H:m:s:dd:MM:yyyy").format(now);
+
     var messageId = mMessageSenderRef.child("").push().key.toString();
     //_messageKey.doc("s").collection("Post").doc().id;
     bool checkResul = false;
+    var senderName = "";
+    var senderImage = "";
 
     //read sender info
     await mSenderInfo.doc("${senderId}").get().then((info) {
@@ -102,60 +106,95 @@ class MessageRepository {
       senderImage = "";
     });
 
-    //map message structor sender
-    Map messageSender = HashMap<String, dynamic>();
-    messageSender['type'] = type;
-    messageSender['time'] = time;
-    messageSender['from'] = senderId;
-    messageSender['message'] = message;
-    messageSender['to'] = receiveId;
-    messageSender['messageId'] = messageId;
-    messageSender["image"] = '';
-    messageSender['senderName'] = senderName;
-    messageSender['senderImage'] = senderImage;
+    if (model.type == 'group') {
+      //group chat
+      print("type group :${model.groupId}");
+      //map message structor sender
+      Map messageSender = HashMap<String, dynamic>();
+      messageSender['type'] = type;
+      messageSender['time'] = time;
+      messageSender['from'] = senderId;
+      messageSender['message'] = message;
+      messageSender['to'] = model.groupId;
+      messageSender['messageId'] = messageId;
+      messageSender["image"] = '';
+      messageSender['senderName'] = senderName;
+      messageSender['senderImage'] = senderImage;
 
-    //map message structor sender
-    Map messageReceive = HashMap<String, dynamic>();
-    messageReceive['type'] = type;
-    messageReceive['time'] = time;
-    messageReceive['from'] = senderId;
-    messageReceive['message'] = message;
-    messageReceive['to'] = receiveId;
-    messageReceive['messageId'] = messageId;
-    messageReceive["image"] = '';
-    messageReceive['senderName'] = model.name;
-    messageReceive['senderImage'] = model.image;
+      // send message of receive
+      await mMessageReceiveRef
+          .child("${model.groupId}")
+          .child("${messageId}")
+          .set(messageSender)
+          .then((value) {
+        checkResul = true;
+        print('send message group chat success');
+      }).catchError((e) {
+        print("send message group chat error ${e}");
+      });
 
-    // send message of receive
-    await mMessageReceiveRef
-        .child("${receiveId}")
-        .child("${senderId}")
-        .child("${messageId}")
-        .set(messageReceive)
-        .then((value) {
-      print('send message receive success');
-    }).catchError((e) {
-      print("send message receive error ${e}");
-    });
+      await onUpdateChatListInfoLastMessage(
+          senderId, model.groupId, message, "${time}");
 
-    // send message of sender
-    await mMessageSenderRef
-        .child("${senderId}")
-        .child("${receiveId}")
-        .child("${messageId}")
-        .set(messageSender)
-        .then((value) {
-      print('send message sender success');
-      checkResul = true;
-    }).catchError((e) {
-      checkResul = false;
-      print("send message sender error ${e}");
-    });
+      //
+    } else {
+      //person chat
 
-    await onUpdateChatListInfoLastMessage(
-        senderId, receiveId, message, "${time}");
+      //map message structor sender
+      Map messageSender = HashMap<String, dynamic>();
+      messageSender['type'] = type;
+      messageSender['time'] = time;
+      messageSender['from'] = senderId;
+      messageSender['message'] = message;
+      messageSender['to'] = receiveId;
+      messageSender['messageId'] = messageId;
+      messageSender["image"] = '';
+      messageSender['senderName'] = senderName;
+      messageSender['senderImage'] = senderImage;
 
-    await sendNotifyTOFriend(receiveId, model.name, message);
+      //map message structor sender
+      Map messageReceive = HashMap<String, dynamic>();
+      messageReceive['type'] = type;
+      messageReceive['time'] = time;
+      messageReceive['from'] = senderId;
+      messageReceive['message'] = message;
+      messageReceive['to'] = receiveId;
+      messageReceive['messageId'] = messageId;
+      messageReceive["image"] = '';
+      messageReceive['senderName'] = model.name;
+      messageReceive['senderImage'] = model.image;
+
+      // send message of receive
+      await mMessageReceiveRef
+          .child("${receiveId}")
+          .child("${senderId}")
+          .child("${messageId}")
+          .set(messageReceive)
+          .then((value) {
+        print('send message receive success');
+      }).catchError((e) {
+        print("send message receive error ${e}");
+      });
+
+      // send message of sender
+      await mMessageSenderRef
+          .child("${senderId}")
+          .child("${receiveId}")
+          .child("${messageId}")
+          .set(messageSender)
+          .then((value) {
+        print('send message sender success');
+        checkResul = true;
+      }).catchError((e) {
+        checkResul = false;
+        print("send message sender error ${e}");
+      });
+
+      await onUpdateChatListInfoLastMessage(
+          senderId, receiveId, message, "${time}");
+
+      await sendNotifyTOFriend(receiveId, model.name, message);
+    }
 
     //
     return checkResul;
@@ -206,7 +245,9 @@ class MessageRepository {
   var _mMessage = FirebaseDatabase.instance.reference().child("Messages");
   List<ChatModel> _messageModel = [];
 
-  //
+  //1 step check type chat room
+  // A type person chat
+  //B type group chat
   Stream<List<ChatModel>> onReadMessage(String senderId, String receiveId) {
     print("start load message");
     //database path
@@ -215,31 +256,57 @@ class MessageRepository {
     // var now = DateTime.now();
     // var time = DateFormat("H:m:s:dd:MM:yyyy").format(now);
 
-    _mMessage
-        .child("${senderId}")
-        .child("${receiveId}")
-        .onValue
-        .listen((message) {
-      _messageModel = [];
-      final map = message.snapshot.value;
-      if (map != null) {
-        List<dynamic> list = map.values.toList();
-        Iterable i = list;
-        _messageModel = i.map((e) => ChatModel.fromJson3(e)).toList();
-        // _messageModel.sort((a, b) => a.time.compareTo('$time'));
-        // ..sort((a, b) => b['time'].compareTo(a['time']));
-        _messageController.add(_messageModel);
-      } else {
+    if (receiveId == null) {
+      //is type B
+      _mMessage.child("${senderId}").onValue.listen((message) {
         _messageModel = [];
-        _messageController.add([]);
-      }
+        final map = message.snapshot.value;
+        if (map != null) {
+          List<dynamic> list = map.values.toList();
+          Iterable i = list;
+          _messageModel = i.map((e) => ChatModel.fromJson3(e)).toList();
+          // _messageModel.sort((a, b) => a.time.compareTo('$time'));
+          // ..sort((a, b) => b['time'].compareTo(a['time']));
+          _messageController.add(_messageModel);
+        } else {
+          _messageModel = [];
+          _messageController.add([]);
+        }
 
-      // Map<dynamic, dynamic>.from(message.snapshot.value).forEach((k, v) {
-      //   _messageModel.add(new ChatModel.fromJson3(v));
+        // Map<dynamic, dynamic>.from(message.snapshot.value).forEach((k, v) {
+        //   _messageModel.add(new ChatModel.fromJson3(v));
 
-      //   _messageController.add(_messageModel);
-      // });
-    });
+        //   _messageController.add(_messageModel);
+        // });
+      });
+    } else {
+      //is type A
+      _mMessage
+          .child("${senderId}")
+          .child("${receiveId}")
+          .onValue
+          .listen((message) {
+        _messageModel = [];
+        final map = message.snapshot.value;
+        if (map != null) {
+          List<dynamic> list = map.values.toList();
+          Iterable i = list;
+          _messageModel = i.map((e) => ChatModel.fromJson3(e)).toList();
+          // _messageModel.sort((a, b) => a.time.compareTo('$time'));
+          // ..sort((a, b) => b['time'].compareTo(a['time']));
+          _messageController.add(_messageModel);
+        } else {
+          _messageModel = [];
+          _messageController.add([]);
+        }
+
+        // Map<dynamic, dynamic>.from(message.snapshot.value).forEach((k, v) {
+        //   _messageModel.add(new ChatModel.fromJson3(v));
+
+        //   _messageController.add(_messageModel);
+        // });
+      });
+    }
 
     return _messageController.stream;
   }

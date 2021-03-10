@@ -84,7 +84,7 @@ class PostBloc extends Bloc<EventPost, StatePost> {
     final imageFile = (_pref.getString("imagePost") != null)
         ? File(_pref.getString("imagePost"))
         : null;
-    final message = _pref.getString("messagePost");
+    final message = _pref.getString("messagePost") ?? null;
 
     var result = "";
     result = await repository.onCreatePost(event.uid, message, imageFile);

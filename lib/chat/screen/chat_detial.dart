@@ -45,14 +45,25 @@ class _ChatDetialState extends State<ChatDetail> {
   void initialBlocMethod() async {
     widget.friendBloc.add(onLoadFriendUserClick());
 
-    //start load message info
-    widget.messageBloc.add(
-        OnReadingMessage(senderId: widget.uid, receiveId: widget.data.uid));
-    //start update chat list info
-    widget.chatBloc.add(OnUpdateChatListInfo(
-        senderId: widget.uid,
-        freindId: widget.data.uid,
-        type: widget.data.type));
+    if (widget.data.type == "group") {
+      //todo future
+
+      //load group message
+      //start load message info
+      widget.messageBloc.add(OnReadingMessage(
+        senderId: widget.data.groupId,
+      ));
+    } else {
+      //start load message info
+      widget.messageBloc.add(
+          OnReadingMessage(senderId: widget.uid, receiveId: widget.data.uid));
+
+      //start update chat list info
+      widget.chatBloc.add(OnUpdateChatListInfo(
+          senderId: widget.uid,
+          freindId: widget.data.uid,
+          type: widget.data.type));
+    }
   }
 
   @override
@@ -359,17 +370,20 @@ class _makeBottonMessage extends StatelessWidget {
                 onChanged: (value) => message = value,
                 onFieldSubmitted: (message) async {
                   // FocusScope.of(context).unfocus();
+                  if (message.isNotEmpty) {
+                    messageBloc.add(OnSendMessage(
+                        chatListInfo: data,
+                        imageFile: null,
+                        message: message,
+                        receiveId: data.uid,
+                        senderId: uid));
+                  }
+
                   textController.text = "";
                   // print(value);
                   //send message
 
                   //
-                  messageBloc.add(OnSendMessage(
-                      chatListInfo: data,
-                      imageFile: null,
-                      message: message,
-                      receiveId: data.uid,
-                      senderId: uid));
 
                   // Future.delayed(Duration(seconds: 3), () {
                   //   scrollController
@@ -407,14 +421,20 @@ class _makeBottonMessage extends StatelessWidget {
                     // print(value);
                     //send message
                     // FocusScope.of(context).unfocus();
+                    print("send message type person");
+                    if (message.isNotEmpty) {
+                      messageBloc.add(OnSendMessage(
+                          chatListInfo: data,
+                          imageFile: null,
+                          message: message,
+                          receiveId: data.uid,
+                          senderId: uid));
+                    }
                     textController.text = "";
                     //
-                    messageBloc.add(OnSendMessage(
-                        chatListInfo: data,
-                        imageFile: null,
-                        message: message,
-                        receiveId: data.uid,
-                        senderId: uid));
+                    //check type chat room
+
+                    //person chat
 
                     // Future.delayed(Duration(seconds: 3), () {
                     //   scrollController

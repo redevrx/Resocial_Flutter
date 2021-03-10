@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialapp/chat/bloc/chatBloc/chat_event.dart';
 import 'package:socialapp/chat/bloc/chatBloc/chat_state.dart';
@@ -73,6 +72,6 @@ by will keep data of sender and receive
     if (event.senderId == null) return;
 
     await _chatRepository.onSavefriendInfoChatList(
-        event.senderId, event.friendModel);
+        event.senderId, event.friendModel, event.groupName, event.image);
   }
 }

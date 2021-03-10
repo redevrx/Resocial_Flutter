@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -53,8 +52,11 @@ class CallAgoraRepository implements CallRepository {
     }
   }
 
-  Stream<DocumentSnapshot> CallStream1({String uid}) =>
-      mCallRef.doc(FirebaseAuth.instance.currentUser.uid).snapshots();
+  Stream<DocumentSnapshot> CallStream1({String uid}) {
+    if (FirebaseAuth.instance.currentUser != null) {
+      return mCallRef.doc(FirebaseAuth.instance.currentUser.uid).snapshots();
+    }
+  }
 
   @override
   Stream<CallModel> CallStream({String uid}) {

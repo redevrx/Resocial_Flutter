@@ -114,13 +114,13 @@ class __UserProfileState extends State<_UserProfile> {
                               // ),
                               _stackBackground(),
                               _stackSelectColor(
-                                statusUser: state.data.userStatus,
+                                statusUser: state.data.userStatus ?? "status",
                                 constraints: constraints,
                                 colorBloc: colorBloc,
                               ),
 
                               _stackStatus(
-                                statusUser: state.data.userStatus,
+                                statusUser: state.data.userStatus ?? "status",
                                 constraints: constraints,
                                 editProfileBloc: editProfileBloc,
                               ),
@@ -133,7 +133,7 @@ class __UserProfileState extends State<_UserProfile> {
                                 editProfileBloc: editProfileBloc,
                               ),
                               _userNameWidget(
-                                userName: state.data.userName,
+                                userName: state.data.userName ?? "name",
                                 editProfileBloc: editProfileBloc,
                               )
                             ],

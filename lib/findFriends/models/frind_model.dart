@@ -6,6 +6,7 @@ class FrindsModel {
   String userName;
   String imageProfile;
   String status;
+  bool selected = false;
 
   FrindsModel(
       {Key key,

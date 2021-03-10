@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:socialapp/chat/bloc/chatBloc/chat_bloc.dart';
@@ -11,10 +13,17 @@ class onCheckFriendCurrentUserClick extends FriendEvent {
   final String friendId;
   final FriendBloc friendBloc;
   final ChatBloc chatBloc;
-  final FrindsModel freindModel;
+  final File image;
+  final String groupName;
+  final List<FrindsModel> freindModel;
 
   onCheckFriendCurrentUserClick(
-      {this.friendId, this.friendBloc, this.chatBloc, this.freindModel});
+      {this.friendId,
+      this.friendBloc,
+      this.image,
+      this.chatBloc,
+      this.freindModel,
+      this.groupName});
 
   @override
   // TODO: implement props

@@ -392,6 +392,7 @@ class buttonSaveAddprofile extends StatelessWidget {
                 // print(data.nickName + " : " + data.status);
                 //call  onSaveAddprofile for save user info data
                 bloc.add(onSaveAddprofile(null));
+                FocusScope.of(context).unfocus();
               },
               child: Text(
                 "${AppLocalizations.of(context).translate('btnSave')}",

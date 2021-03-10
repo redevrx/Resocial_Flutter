@@ -1,9 +1,14 @@
 import 'package:socialapp/Login/bloc/models/login_model.dart';
 import 'package:socialapp/Login/bloc/models/signUpModel.dart';
+import 'package:flutter/material.dart';
 
 abstract class LoginEvevt {}
 
-class onLoginWithGoogle extends LoginEvevt {}
+class onLoginWithGoogle extends LoginEvevt {
+  final BuildContext context;
+
+  onLoginWithGoogle({this.context});
+}
 
 class onLoginWithFacebook extends LoginEvevt {}
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:socialapp/comments/screen/comments.dart';
 import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/notifications/bloc/notifyBloc.dart';
@@ -10,7 +9,6 @@ import 'package:socialapp/notifications/bloc/notifyState.dart';
 import 'package:socialapp/notifications/exportNotify.dart';
 import 'package:socialapp/notifications/widget/notify_card.dart';
 import 'package:socialapp/widgets/appBar/app_bar_login.dart';
-import 'dart:async';
 
 class NotifyScreen extends StatefulWidget {
   final Color bodyColor;

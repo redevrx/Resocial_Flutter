@@ -15,10 +15,4 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-git
-cMD
-git push -u origin master
-"# Flutter-Resocial" 
-"# Flutter-Resocial" 
-"# Flutter-Resocial" 
-"#Flutter Web Error Cloud Messaging not Register Plugin"
+
