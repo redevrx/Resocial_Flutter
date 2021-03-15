@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:socialapp/Login/bloc/events/login_evevt.dart';
 import 'package:socialapp/Login/bloc/login_bloc.dart';
 import 'package:socialapp/Login/bloc/states/login_state.dart';
-import 'dart:async';
 
 void main() {
   LoginBloc loginBloc;

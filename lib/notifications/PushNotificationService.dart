@@ -72,31 +72,34 @@ class PushNotificationService {
 
     //this event will work while open
     FirebaseMessaging.onMessage.listen((message) {
-      if (message.data["title"].toString() == "chat") {
-        showNotify.showNotifyMessage(message.data);
+      if (message.notification.title == "chat") {
+        showNotify.showNotifyMessage(message.notification);
       } else {
         //post notidy
-        showNotify.showNotifyPost(message.data);
+        // print('notifications');
+        showNotify.showNotifyPost(message.notification);
       }
     });
 
     //this event will wok close app
-    FirebaseMessaging.onBackgroundMessage((message) {
-      if (message.data["title"].toString() == "chat") {
-        showNotify.showNotifyMessage(message.data);
-      } else {
-        //post notidy
-        showNotify.showNotifyPost(message.data);
-      }
-    });
+    // FirebaseMessaging.onBackgroundMessage((message) {
+    //   if (message.data["title"].toString() == "chat") {
+    //     showNotify.showNotifyMessage(message.data);
+    //   } else {
+    //     //post notidy
+    //     showNotify.showNotifyPost(message.data);
+    //   }
+    // },);
 
     //this event will work when user click
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      if (message.data["title"].toString() == "chat") {
+      if (message.notification.title == "chat") {
+        print("cleck notification open chat screen");
         // showNotify.showNotifyMessage(message.data);
         //go to chat screen
       } else {
         //post notidy
+        print("click notification open home screen");
         // showNotify.showNotifyPost(message.data);
         //go to home page
       }
@@ -201,20 +204,16 @@ class ShowNotifyService {
     );
   }
 
-  showNotifyMessage(Map<String, dynamic> message) async {
+  showNotifyMessage(RemoteNotification message) async {
     //create android ip channel description channel
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       "notify_post",
       "post",
       "show notify to friends",
       category: "messaging",
-      styleInformation: MessagingStyleInformation(
-        message[''],
-        messages: <Message>[Message(message['body'], null, null)],
-        conversationTitle: "New messages.",
-      ),
       importance: Importance.high,
       priority: Priority.high,
+      channelShowBadge: true,
     );
 
     //create ios setting notify
@@ -227,12 +226,12 @@ class ShowNotifyService {
 
     //show notify
     //id notify_post 1
-    await flutterNotify.show(11, "" + message["notification"]['title'],
-        message["notification"]['body'], platformChannelSpecifics,
+    await flutterNotify.show(
+        11, "" + message.title, message.body, platformChannelSpecifics,
         payload: 'FLUTTER_NOTIFICATION_CLICK');
   }
 
-  showNotifyPost(Map<String, dynamic> message) async {
+  showNotifyPost(RemoteNotification message) async {
     //create android ip channel description channel
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       "notify_post",
@@ -252,8 +251,8 @@ class ShowNotifyService {
 
     //show notify
     //id notify_post 1
-    await flutterNotify.show(1, "" + message["notification"]['title'],
-        message["notification"]['body'], platformChannelSpecifics,
+    await flutterNotify.show(
+        1, "" + message.title, message.body, platformChannelSpecifics,
         payload: 'FLUTTER_NOTIFICATION_CLICK');
   }
 }

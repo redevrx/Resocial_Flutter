@@ -23,7 +23,7 @@ class FeedRepository {
   BehaviorSubject<List<PostModel>> streamControllerOnwerUser =
       BehaviorSubject<List<PostModel>>();
 
-  List<List<PostModel>> onwerListFeed = List<List<PostModel>>();
+  List<List<PostModel>> onwerListFeed = [[]];
   DocumentSnapshot _lastDocumentOnweFeed;
   bool _hasMoreDataOnwerFeed = true;
 
@@ -35,13 +35,13 @@ class FeedRepository {
 
   Future<List<String>> onCheckUserLikePost(
       List<DocumentSnapshot> postId) async {
-    List<String> result = List();
+    List<String> result = [];
 
     //  print('I :${i}');
     //db
     final _mRef = FirebaseFirestore.instance;
     final _mAuth = await FirebaseAuth.instance.currentUser;
-    final uid = await _mAuth.uid.toString();
+    final uid = _mAuth.uid.toString();
 
     for (int i = 0; i < postId.length; i++) {
       await _mRef
@@ -105,7 +105,7 @@ class FeedRepository {
   BehaviorSubject<List<PostModel>> _feedController =
       BehaviorSubject<List<PostModel>>();
 
-  List<List<PostModel>> models = List<List<PostModel>>();
+  List<List<PostModel>> models = [[]];
   // List<DocumentSnapshot> likeModel;
   DocumentSnapshot _lastDocument;
   bool _hasMoreData = true;
@@ -173,8 +173,8 @@ class FeedRepository {
           models.add(feed);
         }
         //  // Concatenate the full list to be shown
-        var allFeed = models.fold<List<PostModel>>(List<PostModel>(),
-            (initialValue, element) => initialValue..addAll(element));
+        var allFeed = models.fold<List<PostModel>>(
+            [], (initialValue, element) => initialValue..addAll(element));
 
         print('all feed legnth service :${allFeed.length}');
 
@@ -200,7 +200,7 @@ class FeedRepository {
   void requestMoreData() => requestAllFeedLimit(0, 6);
 
   Future<List<EditProfileModel>> getUserDetail() async {
-    List<EditProfileModel> detailModel = List();
+    List<EditProfileModel> detailModel = [];
 
     final _mRef = FirebaseFirestore.instance;
 
@@ -250,8 +250,8 @@ class FeedRepository {
       }
 
       //  // Concatenate the full list to be shown
-      var allFeed = onwerListFeed.fold<List<PostModel>>(List<PostModel>(),
-          (initialValue, element) => initialValue..addAll(element));
+      var allFeed = onwerListFeed.fold<List<PostModel>>(
+          [], (initialValue, element) => initialValue..addAll(element));
 
       print('all feed onwer user legnth service :${allFeed.length}');
 

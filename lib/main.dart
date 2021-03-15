@@ -22,12 +22,14 @@ import 'localizations/languages.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp().whenComplete(() async {
+    print('Firebase Initial Complete');
+    final notifyService = PushNotificationService();
+    await notifyService.initialise();
+    notifyService.getDeviceToken();
+  });
   //
-  print('Firebase Initial Complete');
-  final notifyService = PushNotificationService();
-  await notifyService.initialise();
-  notifyService.getDeviceToken();
+
   if (kIsWeb) {
     // Disable persistence on web platforms
     await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);

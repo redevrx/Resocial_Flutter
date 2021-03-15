@@ -52,7 +52,7 @@ class FriendRepository {
   }
 
   Future<List<FrindsModel>> loadFriendUserInfo(List<String> idList) async {
-    List<FrindsModel> friendList = new List();
+    List<FrindsModel> friendList = [];
     final _user = FirebaseFirestore.instance;
 
     for (int i = 0; i < idList.length; i++) {
@@ -61,11 +61,13 @@ class FriendRepository {
           .doc(idList[i])
           .get()
           .then((value) async {
-        await friendList.add(new FrindsModel(
+        friendList.add(new FrindsModel(
             uid: value.get("uid").toString(),
             imageProfile: value.get("imageProfile").toString(),
             status: value.get("userStatus").toString(),
             userName: value.get("user").toString()));
+      }).catchError((e) {
+        print("load freind of this user error : ${e}");
       });
     }
 

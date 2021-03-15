@@ -1,4 +1,4 @@
-#Wed Mar 10 22:38:31 ICT 2021
+#Tue Mar 16 00:43:52 ICT 2021
 base.2=D\:\\Tutorials\\Flutter\\Tutorial\\Flutter_Resocial_app\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\out\\classes2.dex
 base.1=D\:\\Tutorials\\Flutter\\Tutorial\\Flutter_Resocial_app\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\out\\classes.dex
 base.0=D\:\\Tutorials\\Flutter\\Tutorial\\Flutter_Resocial_app\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\out\\classes.dex

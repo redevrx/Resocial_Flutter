@@ -1,6 +1,7 @@
 there are bug like
  -bug show notify chat 
  -remove comment and edit
+ -add shared image with message
  - group freind notify
    - disable request notify
    - disable like notify 
