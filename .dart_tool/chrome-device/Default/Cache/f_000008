@@ -1,0 +1,287 @@
+define(['dart_sdk', 'packages/google_sign_in_web/src/load_gapi.dart', 'packages/google_sign_in_platform_interface/src/utils.dart', 'packages/google_sign_in_platform_interface/src/types.dart', 'packages/flutter/src/services/system_channels.dart', 'packages/google_sign_in_web/src/utils.dart', 'packages/google_sign_in_web/src/generated/gapiauth2.dart'], (function load__packages__google_sign_in_web__google_sign_in_web_dart(dart_sdk, packages__google_sign_in_web__src__load_gapi$46dart, packages__google_sign_in_platform_interface__src__utils$46dart, packages__google_sign_in_platform_interface__src__types$46dart, packages__flutter__src__services__system_channels$46dart, packages__google_sign_in_web__src__utils$46dart, packages__google_sign_in_web__src__generated__gapiauth2$46dart) {
+  'use strict';
+  const core = dart_sdk.core;
+  const html = dart_sdk.html;
+  const async = dart_sdk.async;
+  const _internal = dart_sdk._internal;
+  const _interceptors = dart_sdk._interceptors;
+  const js = dart_sdk.js;
+  const dart = dart_sdk.dart;
+  const dartx = dart_sdk.dartx;
+  const load_gapi = packages__google_sign_in_web__src__load_gapi$46dart.src__load_gapi;
+  const google_sign_in_platform_interface = packages__google_sign_in_platform_interface__src__utils$46dart.google_sign_in_platform_interface;
+  const types = packages__google_sign_in_platform_interface__src__types$46dart.src__types;
+  const message_codec = packages__flutter__src__services__system_channels$46dart.src__services__message_codec;
+  const utils = packages__google_sign_in_web__src__utils$46dart.src__utils;
+  const gapiauth2 = packages__google_sign_in_web__src__generated__gapiauth2$46dart.src__generated__gapiauth2;
+  var google_sign_in_web = Object.create(dart.library);
+  var $getAttribute = dartx.getAttribute;
+  var $contains = dartx.contains;
+  var $any = dartx.any;
+  var $join = dartx.join;
+  var $where = dartx.where;
+  var $isEmpty = dartx.isEmpty;
+  dart._checkModuleNullSafetyMode(false);
+  var T = {
+    FutureOfvoid: () => (T.FutureOfvoid = dart.constFn(async.Future$(dart.void)))(),
+    voidToFutureOfvoid: () => (T.voidToFutureOfvoid = dart.constFn(dart.fnType(T.FutureOfvoid(), [dart.void])))(),
+    JSArrayOfFutureOfvoid: () => (T.JSArrayOfFutureOfvoid = dart.constFn(_interceptors.JSArray$(T.FutureOfvoid())))(),
+    StringL: () => (T.StringL = dart.constFn(dart.legacy(core.String)))(),
+    StringTobool: () => (T.StringTobool = dart.constFn(dart.fnType(core.bool, [core.String])))(),
+    CompleterOfvoid: () => (T.CompleterOfvoid = dart.constFn(async.Completer$(dart.void)))(),
+    GoogleAuthTodynamic: () => (T.GoogleAuthTodynamic = dart.constFn(dart.fnType(dart.dynamic, [dart.lazyJSType(() => dart.global.gapi.auth2.GoogleAuth, "gapi.auth2.GoogleAuth")])))(),
+    GoogleAuthToNull: () => (T.GoogleAuthToNull = dart.constFn(dart.fnType(core.Null, [dart.lazyJSType(() => dart.global.gapi.auth2.GoogleAuth, "gapi.auth2.GoogleAuth")])))(),
+    GoogleAuthInitFailureErrorTodynamic: () => (T.GoogleAuthInitFailureErrorTodynamic = dart.constFn(dart.fnType(dart.dynamic, [dart.anonymousJSType("GoogleAuthInitFailureError")])))(),
+    GoogleAuthInitFailureErrorToNull: () => (T.GoogleAuthInitFailureErrorToNull = dart.constFn(dart.fnType(core.Null, [dart.anonymousJSType("GoogleAuthInitFailureError")])))(),
+    GoogleSignInUserDataN: () => (T.GoogleSignInUserDataN = dart.constFn(dart.nullable(types.GoogleSignInUserData)))()
+  };
+  var T$Eval = Object.assign({
+    _: () => T$Eval
+  }, T);
+  var S = {
+    _: () => S
+  };
+  var S$Eval = Object.assign({
+    _: () => S$Eval
+  }, S);
+  const CT = Object.create({
+    _: () => (C, CT)
+  });
+  dart.defineLazy(CT, {
+    get C0() {
+      return C[0] = dart.constList([], T.StringL());
+    },
+    get C1() {
+      return C[1] = dart.const({
+        __proto__: types.SignInOption.prototype,
+        [_name]: "SignInOption.standard",
+        index: 0
+      });
+    }
+  }, false);
+  var C = Array(2).fill(void 0);
+  var I = [
+    "file:///D:/Programs/ProgrammingLanguage/dart-sdk/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_web-0.10.0/lib/google_sign_in_web.dart",
+    "package:google_sign_in_web/google_sign_in_web.dart"
+  ];
+  var __GoogleSignInPlugin__isGapiInitialized = dart.privateName(google_sign_in_web, "_#GoogleSignInPlugin#_isGapiInitialized");
+  var __GoogleSignInPlugin__isGapiInitialized_isSet = dart.privateName(google_sign_in_web, "_#GoogleSignInPlugin#_isGapiInitialized#isSet");
+  var __GoogleSignInPlugin__isAuthInitialized = dart.privateName(google_sign_in_web, "_#GoogleSignInPlugin#_isAuthInitialized");
+  var __GoogleSignInPlugin__isAuthInitialized_isSet = dart.privateName(google_sign_in_web, "_#GoogleSignInPlugin#_isAuthInitialized#isSet");
+  var _isInitCalled = dart.privateName(google_sign_in_web, "_isInitCalled");
+  var _autoDetectedClientId = dart.privateName(google_sign_in_web, "_autoDetectedClientId");
+  var _isGapiInitialized = dart.privateName(google_sign_in_web, "_isGapiInitialized");
+  var _isAuthInitialized = dart.privateName(google_sign_in_web, "_isAuthInitialized");
+  var _assertIsInitCalled = dart.privateName(google_sign_in_web, "_assertIsInitCalled");
+  var _name = dart.privateName(types, "_name");
+  google_sign_in_web.GoogleSignInPlugin = class GoogleSignInPlugin extends google_sign_in_platform_interface.GoogleSignInPlatform {
+    get [_isGapiInitialized]() {
+      let t0;
+      return dart.test(this[__GoogleSignInPlugin__isGapiInitialized_isSet]) ? (t0 = this[__GoogleSignInPlugin__isGapiInitialized], t0) : dart.throw(new _internal.LateError.fieldNI("_isGapiInitialized"));
+    }
+    set [_isGapiInitialized](t0) {
+      if (t0 == null) dart.nullFailed(I[0], 40, 21, "null");
+      this[__GoogleSignInPlugin__isGapiInitialized_isSet] = true;
+      this[__GoogleSignInPlugin__isGapiInitialized] = t0;
+    }
+    get [_isAuthInitialized]() {
+      let t1;
+      return dart.test(this[__GoogleSignInPlugin__isAuthInitialized_isSet]) ? (t1 = this[__GoogleSignInPlugin__isAuthInitialized], t1) : dart.throw(new _internal.LateError.fieldNI("_isAuthInitialized"));
+    }
+    set [_isAuthInitialized](t1) {
+      if (t1 == null) dart.nullFailed(I[0], 41, 21, "null");
+      this[__GoogleSignInPlugin__isAuthInitialized_isSet] = true;
+      this[__GoogleSignInPlugin__isAuthInitialized] = t1;
+    }
+    [_assertIsInitCalled]() {
+      if (!dart.test(this[_isInitCalled])) {
+        dart.throw(new core.StateError.new("GoogleSignInPlugin::init() must be called before any other method in this plugin."));
+      }
+    }
+    get initialized() {
+      this[_assertIsInitCalled]();
+      return async.Future.wait(dart.void, T.JSArrayOfFutureOfvoid().of([this[_isGapiInitialized], this[_isAuthInitialized]]));
+    }
+    static registerWith(registrar) {
+      if (registrar == null) dart.nullFailed(I[0], 64, 38, "registrar");
+      google_sign_in_platform_interface.GoogleSignInPlatform.instance = new google_sign_in_web.GoogleSignInPlugin.new();
+    }
+    init(opts) {
+      let scopes = opts && 'scopes' in opts ? opts.scopes : C[0] || CT.C0;
+      if (scopes == null) dart.nullFailed(I[0], 70, 18, "scopes");
+      let signInOption = opts && 'signInOption' in opts ? opts.signInOption : C[1] || CT.C1;
+      if (signInOption == null) dart.nullFailed(I[0], 71, 18, "signInOption");
+      let hostedDomain = opts && 'hostedDomain' in opts ? opts.hostedDomain : null;
+      let clientId = opts && 'clientId' in opts ? opts.clientId : null;
+      return async.async(dart.void, (function* init() {
+        let t2;
+        let appClientId = (t2 = clientId, t2 == null ? this[_autoDetectedClientId] : t2);
+        if (!(appClientId != null)) dart.assertFailed("ClientID not set. Either set it on a " + "<meta name=\"google-signin-client_id\" content=\"CLIENT_ID\" /> tag," + " or pass clientId when calling init()", I[0], 77, 9, "appClientId != null");
+        if (!!dart.test(scopes[$any](dart.fn(scope => {
+          if (scope == null) dart.nullFailed(I[0], 83, 29, "scope");
+          return scope[$contains](" ");
+        }, T.StringTobool())))) dart.assertFailed("OAuth 2.0 Scopes for Google APIs can't contain spaces." + "Check https://developers.google.com/identity/protocols/googlescopes " + "for a list of valid OAuth 2.0 scopes.", I[0], 83, 9, "!scopes.any((String scope) => scope.contains(' '))");
+        yield this[_isGapiInitialized];
+        let auth = dart.global.gapi.auth2.init({hosted_domain: hostedDomain, scope: scopes[$join](" "), client_id: dart.nullCheck(appClientId)});
+        let isAuthInitialized = T.CompleterOfvoid().new();
+        this[_isAuthInitialized] = isAuthInitialized.future;
+        this[_isInitCalled] = true;
+        auth.then(js.allowInterop(T.GoogleAuthTodynamic(), dart.fn(initializedAuth => {
+          if (initializedAuth == null) dart.nullFailed(I[0], 101, 46, "initializedAuth");
+          isAuthInitialized.complete();
+        }, T.GoogleAuthToNull())), js.allowInterop(T.GoogleAuthInitFailureErrorTodynamic(), dart.fn(reason => {
+          if (reason == null) dart.nullFailed(I[0], 109, 56, "reason");
+          isAuthInitialized.completeError(new message_codec.PlatformException.new({code: reason.error, message: reason.details, details: "https://developers.google.com/identity/sign-in/web/reference#error_codes"}));
+        }, T.GoogleAuthInitFailureErrorToNull())));
+        return this[_isAuthInitialized];
+      }).bind(this));
+    }
+    signInSilently() {
+      return async.async(T.GoogleSignInUserDataN(), (function* signInSilently() {
+        let t3, t2;
+        yield this.initialized;
+        return utils.gapiUserToPluginUserData(yield (t2 = dart.global.gapi.auth2.getAuthInstance(), t2 == null ? null : (t3 = t2.currentUser, t3 == null ? null : t3.get())));
+      }).bind(this));
+    }
+    signIn() {
+      return async.async(T.GoogleSignInUserDataN(), (function* signIn() {
+        let t2;
+        yield this.initialized;
+        try {
+          return utils.gapiUserToPluginUserData(yield (t2 = dart.global.gapi.auth2.getAuthInstance(), t2 == null ? null : gapiauth2['GoogleAuthExtensions|signIn'](t2)));
+        } catch (e) {
+          let reason = dart.getThrown(e);
+          if (dart.anonymousJSType("GoogleAuthSignInError").is(reason)) {
+            dart.throw(new message_codec.PlatformException.new({code: reason.error, message: "Exception raised from GoogleAuth.signIn()", details: "https://developers.google.com/identity/sign-in/web/reference#error_codes_2"}));
+          } else
+            throw e;
+        }
+      }).bind(this));
+    }
+    getTokens(opts) {
+      let email = opts && 'email' in opts ? opts.email : null;
+      if (email == null) dart.nullFailed(I[0], 147, 24, "email");
+      let shouldRecoverAuth = opts && 'shouldRecoverAuth' in opts ? opts.shouldRecoverAuth : null;
+      return async.async(types.GoogleSignInTokenData, (function* getTokens() {
+        let t4, t3, t3$, t3$0, t3$1;
+        yield this.initialized;
+        let currentUser = (t3 = dart.global.gapi.auth2.getAuthInstance(), t3 == null ? null : (t4 = t3.currentUser, t4 == null ? null : t4.get()));
+        let response = (t3$ = currentUser, t3$ == null ? null : t3$.getAuthResponse());
+        return new types.GoogleSignInTokenData.new({idToken: (t3$0 = response, t3$0 == null ? null : t3$0.id_token), accessToken: (t3$1 = response, t3$1 == null ? null : t3$1.access_token)});
+      }).bind(this));
+    }
+    signOut() {
+      return async.async(dart.void, (function* signOut() {
+        let t3;
+        yield this.initialized;
+        t3 = dart.global.gapi.auth2.getAuthInstance();
+        return t3 == null ? null : t3.signOut();
+      }).bind(this));
+    }
+    disconnect() {
+      return async.async(dart.void, (function* disconnect() {
+        let t4, t3;
+        yield this.initialized;
+        let currentUser = (t3 = dart.global.gapi.auth2.getAuthInstance(), t3 == null ? null : (t4 = t3.currentUser, t4 == null ? null : t4.get()));
+        if (currentUser == null) return;
+        return currentUser.disconnect();
+      }).bind(this));
+    }
+    isSignedIn() {
+      return async.async(core.bool, (function* isSignedIn() {
+        let t4, t3;
+        yield this.initialized;
+        let currentUser = (t3 = dart.global.gapi.auth2.getAuthInstance(), t3 == null ? null : (t4 = t3.currentUser, t4 == null ? null : t4.get()));
+        if (currentUser == null) return false;
+        return currentUser.isSignedIn();
+      }).bind(this));
+    }
+    clearAuthCache(opts) {
+      let token = opts && 'token' in opts ? opts.token : null;
+      if (token == null) dart.nullFailed(I[0], 190, 48, "token");
+      return async.async(dart.void, (function* clearAuthCache() {
+        let t3;
+        yield this.initialized;
+        t3 = dart.global.gapi.auth2.getAuthInstance();
+        return t3 == null ? null : t3.disconnect();
+      }).bind(this));
+    }
+    requestScopes(scopes) {
+      if (scopes == null) dart.nullFailed(I[0], 197, 43, "scopes");
+      return async.async(core.bool, (function* requestScopes() {
+        let t4, t3, t3$;
+        yield this.initialized;
+        let currentUser = (t3 = dart.global.gapi.auth2.getAuthInstance(), t3 == null ? null : (t4 = t3.currentUser, t4 == null ? null : t4.get()));
+        if (currentUser == null) return false;
+        let grantedScopes = (t3$ = currentUser.getGrantedScopes(), t3$ == null ? "" : t3$);
+        let missingScopes = scopes[$where](dart.fn(scope => {
+          if (scope == null) dart.nullFailed(I[0], 206, 23, "scope");
+          return !grantedScopes[$contains](scope);
+        }, T.StringTobool()));
+        if (dart.test(missingScopes[$isEmpty])) return true;
+        let response = (yield currentUser.grant({scope: missingScopes[$join](" ")}));
+        return response != null;
+      }).bind(this));
+    }
+  };
+  (google_sign_in_web.GoogleSignInPlugin.new = function() {
+    let t0;
+    this[__GoogleSignInPlugin__isGapiInitialized] = null;
+    this[__GoogleSignInPlugin__isGapiInitialized_isSet] = false;
+    this[__GoogleSignInPlugin__isAuthInitialized] = null;
+    this[__GoogleSignInPlugin__isAuthInitialized_isSet] = false;
+    this[_isInitCalled] = false;
+    this[_autoDetectedClientId] = null;
+    this[_autoDetectedClientId] = (t0 = html.querySelector(google_sign_in_web._kClientIdMetaSelector), t0 == null ? null : t0[$getAttribute]("content"));
+    this[_isGapiInitialized] = load_gapi.inject(google_sign_in_web.gapiUrl).then(dart.void, dart.fn(_ => load_gapi.init(), T.voidToFutureOfvoid()));
+  }).prototype = google_sign_in_web.GoogleSignInPlugin.prototype;
+  dart.addTypeTests(google_sign_in_web.GoogleSignInPlugin);
+  dart.addTypeCaches(google_sign_in_web.GoogleSignInPlugin);
+  dart.setMethodSignature(google_sign_in_web.GoogleSignInPlugin, () => ({
+    __proto__: dart.getMethods(google_sign_in_web.GoogleSignInPlugin.__proto__),
+    [_assertIsInitCalled]: dart.fnType(dart.void, [])
+  }));
+  dart.setGetterSignature(google_sign_in_web.GoogleSignInPlugin, () => ({
+    __proto__: dart.getGetters(google_sign_in_web.GoogleSignInPlugin.__proto__),
+    [_isGapiInitialized]: async.Future$(dart.void),
+    [_isAuthInitialized]: async.Future$(dart.void),
+    initialized: async.Future$(dart.void)
+  }));
+  dart.setSetterSignature(google_sign_in_web.GoogleSignInPlugin, () => ({
+    __proto__: dart.getSetters(google_sign_in_web.GoogleSignInPlugin.__proto__),
+    [_isGapiInitialized]: async.Future$(dart.void),
+    [_isAuthInitialized]: async.Future$(dart.void)
+  }));
+  dart.setLibraryUri(google_sign_in_web.GoogleSignInPlugin, I[1]);
+  dart.setFieldSignature(google_sign_in_web.GoogleSignInPlugin, () => ({
+    __proto__: dart.getFields(google_sign_in_web.GoogleSignInPlugin.__proto__),
+    [__GoogleSignInPlugin__isGapiInitialized]: dart.fieldType(dart.nullable(async.Future$(dart.void))),
+    [__GoogleSignInPlugin__isGapiInitialized_isSet]: dart.fieldType(core.bool),
+    [__GoogleSignInPlugin__isAuthInitialized]: dart.fieldType(dart.nullable(async.Future$(dart.void))),
+    [__GoogleSignInPlugin__isAuthInitialized_isSet]: dart.fieldType(core.bool),
+    [_isInitCalled]: dart.fieldType(core.bool),
+    [_autoDetectedClientId]: dart.fieldType(dart.nullable(core.String))
+  }));
+  dart.defineLazy(google_sign_in_web, {
+    /*google_sign_in_web._kClientIdMetaSelector*/get _kClientIdMetaSelector() {
+      return "meta[name=google-signin-client_id]";
+    },
+    /*google_sign_in_web._kClientIdAttributeName*/get _kClientIdAttributeName() {
+      return "content";
+    },
+    /*google_sign_in_web.gapiUrl*/get gapiUrl() {
+      return "https://apis.google.com/js/platform.js";
+    },
+    set gapiUrl(_) {}
+  }, false);
+  dart.trackLibraries("packages/google_sign_in_web/google_sign_in_web.dart", {
+    "package:google_sign_in_web/google_sign_in_web.dart": google_sign_in_web
+  }, {
+  }, '{"version":3,"sourceRoot":"","sources":["google_sign_in_web.dart"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAuCoB;IAAkB;;;AAAlB;;IAAkB;;;AAClB;IAAkB;;;AAAlB;;IAAkB;;AAOlC,qBAAK;AAEqF,QADxF,WAAM,wBACF;;IAER;;AAKuB,MAArB;AACA,YAAc,8BAAK,8BAAC,0BAAoB;IAC1C;;UAKmC;AACmB,MAA/B,kEAAW;IAClC;;UAIe;;UACA;;UACL;UACA;AAJO;;AAMD,2BAAuB,KAAT,QAAQ,EAAR,aAAY;AACxC,cACI,AAAY,WAAD,6BAAQ,AACnB,0CACA,yEACA;AAEJ,aACI,WAAC,AAAO,MAAD,OAAK;cAAQ;AAAU,gBAAA,AAAM,MAAD,YAAU;kDAAK,AAClD,2DACA,yEACA;AAEoB,QAAxB,MAAM;AAEiB,mBAAO,4BAAiB,gBAC9B,YAAY,SAEpB,AAAO,MAAD,QAAM,iBACG,eAAX,WAAW;AAGR,gCAAoB;AACS,QAA7C,2BAAqB,AAAkB,iBAAD;AAClB,QAApB,sBAAgB;AAkBb,QAhBH,AAAK,IAAD,MAAM,yCAAa;cAAkB;AAOX,UAA5B,AAAkB,iBAAD;mCACf,yDAAa;cAAkC;AAO/C,UALF,AAAkB,iBAAD,eAAe,+CACxB,AAAO,MAAD,iBACH,AAAO,MAAD,mBAEX;;AAIR,cAAO;MACT;;;AAG4C;;AACzB,QAAjB,MAAM;AAEN,cAAO,gCACH,2EAAM,KAAyB,6BAAzB,OAAsC;MAClD;;;AAGoC;;AACjB,QAAjB,MAAM;AACN;AACE,gBAAO,gCAAyB,mEAAM,OAAyB;;cACzB;AAAtC;AAMC,YALD,WAAM,+CACE,AAAO,MAAD,iBACH,sDAEL;;;;MAGV;;;UAIqB;;UAAa;AADK;;AAEpB,QAAjB,MAAM;AAEkB,+FACpB,KAAyB,6BAAzB,OAAsC;AAChB,8BAAW,WAAW,gBAAX,OAAa;AAElD,cAAO,uDACM,QAAQ,iBAAR,OAAU,qCAAuB,QAAQ,iBAAR,OAAU;MAC1D;;;AAGoB;;AACD,QAAjB,MAAM;AAEN,aAAO;mCAAyB;MAClC;;;AAGuB;;AACJ,QAAjB,MAAM;AAEkB,+FACpB,KAAyB,6BAAzB,OAAsC;AAE1C,YAAI,AAAY,WAAD,UAAU;AAEzB,cAAO,AAAY,YAAD;MACpB;;;AAGuB;;AACJ,QAAjB,MAAM;AAEkB,+FACpB,KAAyB,6BAAzB,OAAsC;AAE1C,YAAI,AAAY,WAAD,UAAU,MAAO;AAEhC,cAAO,AAAY,YAAD;MACpB;;;UAG6C;;AAAlB;;AACR,QAAjB,MAAM;AAEN,aAAO;mCAAyB;MAClC;;;UAGwC;AAAd;;AACP,QAAjB,MAAM;AAEA,+FAAc,KAAyB,6BAAzB,OAAsC;AAE1D,YAAI,AAAY,WAAD,UAAU,MAAO;AAE1B,6BAA+C,MAA/B,AAAY,WAAD,qBAAC,cAAsB;AAClD,4BACF,AAAO,MAAD,SAAO;cAAC;AAAU,kBAAC,AAAc,aAAD,YAAU,KAAK;;AAEzD,sBAAI,AAAc,aAAD,aAAU,MAAO;AAE5B,wBAAW,MAAM,AAClB,WAD6B,OACjB,QAAqB,AAAc,aAAD,QAAM;AAEzD,cAAO,AAAS,SAAD;MACjB;;;;;oDA9KkB;;oDACA;;IACb,sBAAgB;IAmBb;AA1BqC,IAF3C,oCAAwB,mBACL,yDADK,OAElB;AAE4D,IAAlE,2BAAqB,AAAqB,iBAAT,4CAAc,QAAC,KAAM;EACxD;;;;;;;;;;;;;;;;;;;;;;;;;;;;;MApBW,yCAAsB;;;MACtB,0CAAuB;;;MAK7B,0BAAO;YAAG","file":"../../../../../../../../../packages/google_sign_in_web/google_sign_in_web.dart.lib.js"}');
+  // Exports:
+  return {
+    google_sign_in_web: google_sign_in_web
+  };
+}));
+
+//# sourceMappingURL=google_sign_in_web.dart.lib.js.map
