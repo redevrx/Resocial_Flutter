@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.android.datatransport:transport-runtime:2.2.5@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/228b99c013aff09c05ffd2d1c74e220c/jetified-transport-runtime-2.2.5/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/228b99c013aff09c05ffd2d1c74e220c/jetified-transport-runtime-2.2.5/res" />
+      <root url="file://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/228b99c013aff09c05ffd2d1c74e220c/jetified-transport-runtime-2.2.5/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/modules-2/files-2.1/com.google.android.datatransport/transport-runtime/2.2.5/38c4e6b083c7e6b9ff2c5887a5cdc3f32ad358ae/transport-runtime-2.2.5-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

@@ -93,8 +93,8 @@ class CallAgoraRepository implements CallRepository {
     String tokenCall = "";
 
     await http.Client()
-        .get(Uri.http("http://172.24.176.1:8080/resocial/api/v1/generate",
-            "/token?channelName=$channelName&uid=0&role=publisher&expireTime=3600"))
+        .get(Uri.parse(
+            "http://192.168.1.42:8080/resocial/api/v1/generate/token?channelName=$channelName&uid=0&role=publisher&expireTime=3600"))
         .then((token) {
       Map t = jsonDecode(token.body);
       tokenCall = t['token'];

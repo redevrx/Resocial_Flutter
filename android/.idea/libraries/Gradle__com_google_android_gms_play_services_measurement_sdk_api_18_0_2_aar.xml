@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.android.gms:play-services-measurement-sdk-api:18.0.2@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/124f39278f1b27eb17b85011a724d3dc/play-services-measurement-sdk-api-18.0.2/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/124f39278f1b27eb17b85011a724d3dc/play-services-measurement-sdk-api-18.0.2/res" />
+      <root url="file://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/transforms-2/files-2.1/124f39278f1b27eb17b85011a724d3dc/play-services-measurement-sdk-api-18.0.2/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../../../Android/kotlin/iHairstyle/caches/modules-2/files-2.1/com.google.android.gms/play-services-measurement-sdk-api/18.0.2/27037f967d955876b3e29db6de6a24458c5b6080/play-services-measurement-sdk-api-18.0.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>
