@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Tutorials\\Flutter\\Tutorial\\Flutter_Resocial_app\\build\\agora_rtc_engine\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-ky\\values-ky.xml",
+            "outputFile": "D:\\Tutotials\\Flutter\\Projects\\Flutter_Resocial_app\\build\\agora_rtc_engine\\intermediates\\res\\merged\\release\\values-ky\\values-ky.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Kasem\\.gradle\\caches\\transforms-2\\files-2.1\\3aaf6e5219b7f981ec263df919098c6f\\core-1.1.0\\res\\values-ky\\values-ky.xml",
+                    "source": "C:\\Users\\Kasem Saikhuedong\\.gradle\\caches\\transforms-2\\files-2.1\\3aaf6e5219b7f981ec263df919098c6f\\core-1.1.0\\res\\values-ky\\values-ky.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -16,10 +16,10 @@
             ]
         },
         {
-            "outputFile": "D:\\Tutorials\\Flutter\\Tutorial\\Flutter_Resocial_app\\build\\agora_rtc_engine\\intermediates\\res\\merged\\release\\values-ky\\values-ky.xml",
+            "outputFile": "D:\\Tutotials\\Flutter\\Projects\\Flutter_Resocial_app\\build\\agora_rtc_engine\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-ky\\values-ky.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Kasem\\.gradle\\caches\\transforms-2\\files-2.1\\3aaf6e5219b7f981ec263df919098c6f\\core-1.1.0\\res\\values-ky\\values-ky.xml",
+                    "source": "C:\\Users\\Kasem Saikhuedong\\.gradle\\caches\\transforms-2\\files-2.1\\3aaf6e5219b7f981ec263df919098c6f\\core-1.1.0\\res\\values-ky\\values-ky.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
