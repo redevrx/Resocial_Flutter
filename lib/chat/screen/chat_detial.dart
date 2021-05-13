@@ -102,35 +102,32 @@ class _ChatDetialState extends State<ChatDetail> {
                 constraints: BoxConstraints(
                   minHeight: constraints.maxHeight,
                 ),
-                child: Container(
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      //make app bar
-                      _makeAppBarChat(
-                        data: widget.data,
-                        messageBloc: widget.messageBloc,
-                        uid: widget.uid,
-                        callBloc: widget.callBloc,
-                      ),
-                      // make content list chat
+                child: Column(
+                  children: [
+                    //make app bar
+                    _makeAppBarChat(
+                      data: widget.data,
+                      messageBloc: widget.messageBloc,
+                      uid: widget.uid,
+                      callBloc: widget.callBloc,
+                    ),
+                    // make content list chat
 
-                      _makeListMessage(
-                        messageBloc: widget.messageBloc,
-                        widget: widget,
-                        uid: widget.uid,
-                        scrollController: _scrollController,
-                      ),
-                      //make botton bar textBox Chat
-                      //data is chat list info
-                      _makeBottonMessage(
-                        messageBloc: widget.messageBloc,
-                        data: widget.data,
-                        uid: widget.uid,
-                        scrollController: _scrollController,
-                      )
-                    ],
-                  ),
+                    _makeListMessage(
+                      messageBloc: widget.messageBloc,
+                      widget: widget,
+                      uid: widget.uid,
+                      scrollController: _scrollController,
+                    ),
+                    //make botton bar textBox Chat
+                    //data is chat list info
+                    _makeBottonMessage(
+                      messageBloc: widget.messageBloc,
+                      data: widget.data,
+                      uid: widget.uid,
+                      scrollController: _scrollController,
+                    )
+                  ],
                 ),
               ),
             );

@@ -279,22 +279,22 @@ class CardPost extends StatelessWidget {
                 InkWell(
                     onTap: () {
                       if (uid == modelsPost[i].uid.toString()) {
-                        if (ModalRoute.of(context).settings.name != null) {
-                          pageNaviagtorChageBloc
-                              .add(onPageChangeEvent(pageNumber: 2));
-                        }
+                        // if (ModalRoute.of(context).settings.name != null) {
+                        pageNaviagtorChageBloc
+                            .add(onPageChangeEvent(pageNumber: 2));
+                        // }
                         //current user click
                         //call page changeBloc for change page
                       } else {
                         // go to profile user that post
                         print("other user id :${modelsPost[i].uid}");
-                        if (ModalRoute.of(context).settings.name != null) {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => RequestFriend(
-                              userId: modelsPost[i].uid,
-                            ),
-                          ));
-                        }
+                        // if (ModalRoute.of(context).settings.name != null) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => RequestFriend(
+                            userId: modelsPost[i].uid,
+                          ),
+                        ));
+                        // }
                       }
                     },
                     child: FutureBuilder<DocumentSnapshot>(
