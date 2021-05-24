@@ -17,7 +17,7 @@ class EditProfileModel {
       this.backgroundImage = ""});
 
   EditProfileModel.fromJson(Map json)
-      : email = json['email'] ?? "",
+      : email = json != null ? json['email'] ?? "" : "",
         imageProfile = json['imageProfile'],
         nickName = json['nickName'],
         uid = json['uid'],

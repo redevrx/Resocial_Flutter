@@ -10,6 +10,7 @@ import 'package:socialapp/chat/bloc/messageBloc/message_bloc.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_event.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_state.dart';
 import 'package:socialapp/chat/models/chat/chat_model.dart';
+import 'package:socialapp/utils/utils.dart';
 import 'package:socialapp/widgets/models/choice.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -245,7 +246,7 @@ class _makeCardMessageState extends State<makeCardMessage> {
                   print("click remove message ${value}");
                 } else {
                   print("can not remove message");
-                  Scaffold.of(context).showSnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Can not remove Message")));
                 }
               }
@@ -471,7 +472,7 @@ class _makeAppBarChat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-      width: MediaQuery.of(context).size.width * 1,
+      width: double.maxFinite,
       decoration: BoxDecoration(
           color: Color(0xFF6583F3),
           boxShadow: [
@@ -484,7 +485,6 @@ class _makeAppBarChat extends StatelessWidget {
           borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(42.0),
               bottomRight: Radius.circular(42.0))),
-      height: MediaQuery.of(context).size.height * .17,
       child: Column(
         children: [
           //make padding top
@@ -678,9 +678,7 @@ class _makeProfileAndName extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.0),
               child: data.image == null || data.image.isEmpty
                   ? FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      image:
-                          "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")
+                      placeholder: kTransparentImage, image: PersonURL)
                   : FadeInImage.memoryNetwork(
                       width: 42.0,
                       height: 42.0,

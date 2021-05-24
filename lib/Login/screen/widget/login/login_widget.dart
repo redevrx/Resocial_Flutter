@@ -3,6 +3,7 @@ import 'package:socialapp/Login/bloc/events/login_evevt.dart';
 import 'package:socialapp/Login/bloc/login_bloc.dart';
 import 'package:socialapp/Login/bloc/states/login_state.dart';
 import 'package:socialapp/localizations/languages.dart';
+import 'package:socialapp/utils/utils.dart';
 import 'package:socialapp/widgets/cardBackground/item_card_shape_v2.dart';
 // import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -16,21 +17,26 @@ class buttonLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      elevation: 8.0,
+    return ElevatedButton(
+      style: ButtonStyle(
+          elevation: MaterialStateProperty.all<double>(8.0),
+          shape:
+              MaterialStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0),
+          ))),
       child: Text(
         "${AppLocalizations.of(context).translate("btnLogin")}",
         style: Theme.of(context).textTheme.headline6.apply(color: Colors.white),
       ),
-      textColor: Colors.white,
-      color: Color(0xFF0D8E53).withOpacity(.65),
-      shape: new RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(30.0),
-      ),
+      // textColor: Colors.white,
+      // color: Color(0xFF0D8E53).withOpacity(.65),
+
       onPressed: () {
         // final data = LoginModel(txtEmail.text, txtPassword.text);
         FocusScope.of(context).unfocus();
         loginBloc.add(onLogin(null));
+        //
+        onLoadingDialog(context);
       },
     );
   }
@@ -46,13 +52,14 @@ class buttonToSignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlineButton(
+    return OutlinedButton(
       child: Text(
         "${AppLocalizations.of(context).translate("btnSingUp")}",
         style: Theme.of(context).textTheme.headline6.apply(color: Colors.white),
       ),
-      borderSide: BorderSide(color: Color(0xFF0D8E53)),
-      shape: StadiumBorder(),
+      style: ButtonStyle(
+          shape: MaterialStateProperty.all<OutlinedBorder>(StadiumBorder())),
+      // borderSide: BorderSide(color: Color(0xFF0D8E53)),
       onPressed: () {
         // Navigator.of(context).pushNamed('/signUp');
         loginBloc.add(onOpenSignUp());
@@ -80,8 +87,11 @@ class textPassword extends StatelessWidget {
               loginBloc.add(onPasswordChange(password: password)),
           onSubmitted: (value) {
             // final data = LoginModel(state.email.value, state.password.value);
-            FocusScope.of(context).unfocus();
-            loginBloc.add(onLogin(null));
+            if (value.length >= 6) {
+              FocusScope.of(context).unfocus();
+              loginBloc.add(onLogin(null));
+              onLoadingDialog(context);
+            }
           },
           autofocus: false,
           obscureText: true,

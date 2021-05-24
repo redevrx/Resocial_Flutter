@@ -3,6 +3,7 @@ import 'package:socialapp/Login/bloc/events/login_evevt.dart';
 import 'package:socialapp/Login/bloc/login_bloc.dart';
 import 'package:socialapp/Login/bloc/states/login_state.dart';
 import 'package:socialapp/localizations/languages.dart';
+import 'package:socialapp/utils/utils.dart';
 
 class buttonToLogin extends StatelessWidget {
   final LoginBloc bloc;
@@ -16,8 +17,7 @@ class buttonToLogin extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
         data: ThemeData(primaryColor: Colors.red),
-        child: OutlineButton(
-          highlightedBorderColor: Colors.red,
+        child: OutlinedButton(
           child: Text(
             "${AppLocalizations.of(context).translate("btnLogin")}",
             style: Theme.of(context)
@@ -28,8 +28,11 @@ class buttonToLogin extends StatelessWidget {
           onPressed: () {
             bloc.add(onOpenLogin());
           },
-          borderSide: BorderSide(color: Colors.red),
-          shape: StadiumBorder(),
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all<OutlinedBorder>(StadiumBorder()),
+              side: MaterialStateBorderSide.resolveWith((states) {
+                BorderSide(color: Colors.red);
+              })),
         ));
   }
 }
@@ -56,8 +59,12 @@ class textPasswordCm extends StatelessWidget {
           child: Container(
             child: TextField(
               onSubmitted: (value) {
-                FocusScope.of(context).unfocus();
-                loginBloc.add(onSignUp(null));
+                if (value.isNotEmpty && value.length >= 6) {
+                  FocusScope.of(context).unfocus();
+                  loginBloc.add(onSignUp(null));
+
+                  onLoadingDialog(context);
+                }
               },
               onChanged: (cmPassword) =>
                   loginBloc.add(onCmPasswordChange(cmPassword: cmPassword)),

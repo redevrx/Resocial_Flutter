@@ -176,7 +176,8 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
         FirebaseStorage.instance.ref().child("Profile Image/Backgrounds");
     final uploadTask = _sRef.child("${uid}" + ".jpg").putFile(event.image);
 
-    var url = await uploadTask.snapshot.ref.getDownloadURL();
+    final task = await uploadTask;
+    var url = await task.ref.getDownloadURL();
 
     final it = await updateUserImageBackground(uid, url.toString());
 

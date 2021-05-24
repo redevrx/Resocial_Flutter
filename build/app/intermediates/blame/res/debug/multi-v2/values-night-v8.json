@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Tutotials\\Flutter\\Projects\\Flutter_Resocial_app\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
+            "outputFile": "D:\\Tutotials\\Flutter\\Projects\\socialapp\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
             "map": [
                 {
-                    "source": "D:\\Tutotials\\Flutter\\Projects\\Flutter_Resocial_app\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "D:\\Tutotials\\Flutter\\Projects\\socialapp\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

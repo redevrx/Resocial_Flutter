@@ -25,73 +25,77 @@ class widgetShowRequest extends StatelessWidget {
 
     return Container(
       height: constraints.maxHeight * .85,
-      child: ListView.builder(
-        itemCount: list.length,
-        itemBuilder: (context, i) {
-          return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    ClipOval(
-                      child: Image.network(
-                        "${list[i].imageProfile}",
-                        fit: BoxFit.cover,
-                        width: 90.0,
-                        height: 90.0,
+      child: list.length == 0
+          ? Center(
+              child: Text("Not Request"),
+            )
+          : ListView.builder(
+              itemCount: list.length,
+              itemBuilder: (context, i) {
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
+                    child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          ClipOval(
+                            child: Image.network(
+                              "${list[i].imageProfile}",
+                              fit: BoxFit.cover,
+                              width: 90.0,
+                              height: 90.0,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 16.0,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "${list[i].userName}",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    decorationThickness: 4.0,
+                                    fontSize: 22.0,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              SizedBox(
+                                height: 12.0,
+                              ),
+                              (list[i].result == "send")
+                                  ? //make ui cancel friend
+
+                                  _buildRowAccept(i)
+                                  // widget_accept_friend(
+                                  //     friendManageBloc: friendManagerBloc,
+                                  //     uid: list[i].uid,
+                                  //     type: "request page",
+                                  //     i: i,
+                                  //   )
+                                  : (list[i].result == "success")
+                                      ? Text("Success")
+                                      :
+                                      //make ui accept friend
+                                      _buildRowCancel(i),
+                              // widget_request_friend(
+                              //     friendManageBloc: friendManagerBloc,
+                              //     uid: list[i].uid,
+                              //     type: "request page",
+                              //     i: i,
+                              //   ),
+                            ],
+                          )
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      width: 16.0,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "${list[i].userName}",
-                          style: TextStyle(
-                              color: Colors.black,
-                              decorationThickness: 4.0,
-                              fontSize: 22.0,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        SizedBox(
-                          height: 12.0,
-                        ),
-                        (list[i].result == "send")
-                            ? //make ui cancel friend
-
-                            _buildRowAccept(i)
-                            // widget_accept_friend(
-                            //     friendManageBloc: friendManagerBloc,
-                            //     uid: list[i].uid,
-                            //     type: "request page",
-                            //     i: i,
-                            //   )
-                            : (list[i].result == "success")
-                                ? Text("Success")
-                                :
-                                //make ui accept friend
-                                _buildRowCancel(i),
-                        // widget_request_friend(
-                        //     friendManageBloc: friendManagerBloc,
-                        //     uid: list[i].uid,
-                        //     type: "request page",
-                        //     i: i,
-                        //   ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
   }
 

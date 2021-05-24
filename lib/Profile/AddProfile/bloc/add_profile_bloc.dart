@@ -76,7 +76,9 @@ class AddProfileBloc extends Bloc<AddProfileEvent, AddProfileState> {
       final uploadTask = mRef.child("${uid}" + ".jpg").putFile(data.image);
 
       //download image url
-      var dowurl = await uploadTask.snapshot.ref.getDownloadURL();
+      final task = await uploadTask;
+      var dowurl = await task.ref.getDownloadURL();
+      // var dowurl = await uploadTask.snapshot.ref.getDownloadURL();
       var url = dowurl.toString();
 
       //update user info

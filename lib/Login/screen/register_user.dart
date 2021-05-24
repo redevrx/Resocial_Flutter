@@ -7,6 +7,7 @@ import 'package:socialapp/Login/screen/widget/login/login_widget.dart';
 import 'package:socialapp/Login/screen/widget/register/register_widget.dart';
 import 'package:socialapp/Profile/AddProfile/screen/add_info_profile.dart';
 import 'package:socialapp/localizations/languages.dart';
+import 'package:socialapp/utils/utils.dart';
 import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'package:socialapp/widgets/cardBackground/item_card_shape_v2.dart';
 import 'package:flutter/material.dart';
@@ -80,9 +81,9 @@ class signUpScreen extends StatelessWidget {
                     builder: (context, state) {
                       if (state is onShowProgressDialog) {
                         return CircularProgressIndicator();
-                      } else if (state is onLoingFaield) {
+                      } else if (state is onCreateAccountFaield) {
                         print("onLoginFailed :" + state.toString());
-                        return Text(state.data);
+                        return Text(state.error);
                       } else {
                         return Container();
                       }
@@ -248,11 +249,16 @@ class signUpScreen extends StatelessWidget {
                                   }
                                   if (state is onCreateAccountSuccessfully) {
                                     print("onLogin :" + state.data.toString());
-
                                     //
-
+                                    //clsoe dialog
+                                    Navigator.of(context).pop();
+                                    //
                                     Navigator.pushNamedAndRemoveUntil(
                                         context, "/addProfile", (r) => false);
+                                  }
+                                  if (state is onCreateAccountFaield) {
+                                    //close dialog
+                                    Navigator.of(context).pop();
                                   }
                                 },
                                 child: Container(),
@@ -307,12 +313,17 @@ class buttonSignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
+    return ElevatedButton(
       child: Text("${AppLocalizations.of(context).translate("btnSingUp")}"),
-      elevation: 8.0,
-      textColor: Colors.white.withOpacity(.9),
-      color: Colors.red,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+          elevation: MaterialStateProperty.all(8.0),
+          shape: MaterialStateProperty.all<OutlinedBorder>(
+              RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)))),
+
+      // textColor: Colors.white.withOpacity(.9),
+      // color: Colors.red,
       onPressed: () {
         // print("on Register on work");
         // final data = SignUpModel(email, userName, password, passwordCm);
@@ -320,6 +331,8 @@ class buttonSignUp extends StatelessWidget {
         //user register click
         FocusScope.of(context).unfocus();
         bloc.add(onSignUp(null));
+
+        onLoadingDialog(context);
       },
     );
   }

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Tutotials\\Flutter\\Projects\\Flutter_Resocial_app\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "outputFile": "D:\\Tutotials\\Flutter\\Projects\\socialapp\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Kasem Saikhuedong\\.gradle\\caches\\transforms-2\\files-2.1\\6eb14f512292913515d869914807ad40\\play-services-base-17.1.0\\res\\values\\values.xml",
@@ -23,23 +23,6 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Kasem Saikhuedong\\.gradle\\caches\\transforms-2\\files-2.1\\69a64e3a1ac539e54b4ab47d427402c3\\jetified-play-services-basement-17.1.1\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "4,7",
-                        "startColumns": "0,0",
-                        "startOffsets": "238,401",
-                        "endColumns": "63,166",
-                        "endOffsets": "301,567"
-                    },
-                    "to": {
-                        "startLines": "92,103",
-                        "startColumns": "4,4",
-                        "startOffsets": "5792,7022",
-                        "endColumns": "67,166",
-                        "endOffsets": "5855,7184"
-                    }
-                },
-                {
                     "source": "C:\\Users\\Kasem Saikhuedong\\.gradle\\caches\\transforms-2\\files-2.1\\bc86e617542cd4dc1b0d64de0dce3c84\\full-sdk-2.9.4\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -57,7 +40,24 @@
                     }
                 },
                 {
-                    "source": "D:\\Tutotials\\Flutter\\Projects\\Flutter_Resocial_app\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "source": "C:\\Users\\Kasem Saikhuedong\\.gradle\\caches\\transforms-2\\files-2.1\\052b46c207b3f691541b6688ae2d2c80\\jetified-firebase-messaging-21.0.1\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "178",
+                        "endColumns": "77",
+                        "endOffsets": "255"
+                    },
+                    "to": {
+                        "startLines": "115",
+                        "startColumns": "4",
+                        "startOffsets": "8560",
+                        "endColumns": "81",
+                        "endOffsets": "8637"
+                    }
+                },
+                {
+                    "source": "D:\\Tutotials\\Flutter\\Projects\\socialapp\\android\\app\\src\\main\\res\\values\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
@@ -76,54 +76,20 @@
                     }
                 },
                 {
-                    "source": "D:\\Tutotials\\Flutter\\Projects\\Flutter_Resocial_app\\build\\app\\generated\\res\\google-services\\debug\\values\\values.xml",
+                    "source": "C:\\Users\\Kasem Saikhuedong\\.gradle\\caches\\transforms-2\\files-2.1\\0deb5f53aadc7500cf306d639f7f4381\\jetified-play-services-basement-17.1.1\\res\\values\\values.xml",
                     "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,199,310,392,496,605,725,825",
-                        "endColumns": "143,110,81,103,108,119,99,76",
-                        "endOffsets": "194,305,387,491,600,720,820,897"
+                        "startLines": "4,7",
+                        "startColumns": "0,0",
+                        "startOffsets": "238,401",
+                        "endColumns": "63,166",
+                        "endOffsets": "301,567"
                     },
                     "to": {
-                        "startLines": "114,116,117,118,119,120,121,122",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "8416,8642,8753,8835,8939,9048,9168,9268",
-                        "endColumns": "143,110,81,103,108,119,99,76",
-                        "endOffsets": "8555,8748,8830,8934,9043,9163,9263,9340"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Kasem Saikhuedong\\.gradle\\caches\\transforms-2\\files-2.1\\1a905ef8b53cf6836c0f64437cb6a346\\jetified-firebase-messaging-21.0.1\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "178",
-                        "endColumns": "77",
-                        "endOffsets": "255"
-                    },
-                    "to": {
-                        "startLines": "115",
-                        "startColumns": "4",
-                        "startOffsets": "8560",
-                        "endColumns": "81",
-                        "endOffsets": "8637"
-                    }
-                },
-                {
-                    "source": "D:\\Tutotials\\Flutter\\Projects\\Flutter_Resocial_app\\android\\app\\src\\main\\res\\values\\string.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "0",
-                        "startOffsets": "53",
-                        "endColumns": "96",
-                        "endOffsets": "149"
-                    },
-                    "to": {
-                        "startLines": "113",
-                        "startColumns": "4",
-                        "startOffsets": "8315",
-                        "endColumns": "100",
-                        "endOffsets": "8411"
+                        "startLines": "92,103",
+                        "startColumns": "4,4",
+                        "startOffsets": "5792,7022",
+                        "endColumns": "67,166",
+                        "endOffsets": "5855,7184"
                     }
                 },
                 {
@@ -160,6 +126,40 @@
                         "startOffsets": "1068,1157,1228,2767,2820,2873,2926,5732,10196,10372,10494,10756,10951",
                         "endColumns": "88,70,72,52,52,52,52,59,65,121,60,65,66",
                         "endOffsets": "1152,1223,1296,2815,2868,2921,2974,5787,10257,10489,10550,10817,11013"
+                    }
+                },
+                {
+                    "source": "D:\\Tutotials\\Flutter\\Projects\\socialapp\\android\\app\\src\\main\\res\\values\\string.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "0",
+                        "startOffsets": "53",
+                        "endColumns": "96",
+                        "endOffsets": "149"
+                    },
+                    "to": {
+                        "startLines": "113",
+                        "startColumns": "4",
+                        "startOffsets": "8315",
+                        "endColumns": "100",
+                        "endOffsets": "8411"
+                    }
+                },
+                {
+                    "source": "D:\\Tutotials\\Flutter\\Projects\\socialapp\\build\\app\\generated\\res\\google-services\\debug\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,199,310,392,496,605,725,825",
+                        "endColumns": "143,110,81,103,108,119,99,76",
+                        "endOffsets": "194,305,387,491,600,720,820,897"
+                    },
+                    "to": {
+                        "startLines": "114,116,117,118,119,120,121,122",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "8416,8642,8753,8835,8939,9048,9168,9268",
+                        "endColumns": "143,110,81,103,108,119,99,76",
+                        "endOffsets": "8555,8748,8830,8934,9043,9163,9263,9340"
                     }
                 }
             ]

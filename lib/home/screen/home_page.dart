@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socialapp/Login/bloc/login_bloc.dart';
+import 'package:socialapp/Login/screen/login_page.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/screen/user_profile.dart';
 import 'package:socialapp/Profile/colorBloc/bloc_color.dart';
@@ -36,10 +37,10 @@ class _fechPage extends State<HomePage> {
   //Bar Item use in bittin bar naviagator
   final List<BarItem> barIitems = [
     BarItem("Home", Icons.home, Color(0xFF498AEF)),
-    BarItem("Notify", Icons.notifications_active, Colors.pinkAccent),
+    BarItem("Notify", Icons.notifications_active, Color(0xFF498AEF)),
     //BarItem("Search", Icons.search, Colors.yellow.shade900),
-    BarItem("Profile", Icons.person_outline, Colors.teal),
-    BarItem("Setting", Icons.menu, Colors.black)
+    BarItem("Profile", Icons.person_outline, Color(0xFF498AEF)),
+    BarItem("Setting", Icons.menu, Color(0xFF498AEF))
   ];
 
   PageNaviagtorChageBloc pageBloc;
@@ -54,7 +55,10 @@ class _fechPage extends State<HomePage> {
     try {
       FirebaseAuth.instance.authStateChanges().listen((user) async {
         if (user == null) {
-          Navigator.pushNamedAndRemoveUntil(context, "/login", (r) => false);
+          // Navigator.pushNamedAndRemoveUntil(context, "/login", (r) => false);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (_) => LoginScreen()),
+              (route) => false);
         } else {
           //
 

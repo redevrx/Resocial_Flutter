@@ -78,7 +78,7 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
     if (result) {
       yield onCreateAccountSuccessfully("signIn Success");
     } else {
-      yield onLoingFaield("Error Not Access Your Email..");
+      yield onLogingFaield("Error Not Access Your Email..");
     }
   }
 
@@ -89,7 +89,7 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
     if (result) {
       yield onCreateAccountSuccessfully("signIn Success");
     } else {
-      yield onLoingFaield("Error Not Access Your Email..");
+      yield onLogingFaield("Error Not Access Your Email..");
     }
   }
 
@@ -165,11 +165,11 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
           yield onCreateAccountSuccessfully("${use.uid.toString()}");
         }
       } else {
-        yield onLoingFaield("Create Account Failed.. password 8 char");
+        yield onCreateAccountFaield("Create Account Failed.. password 8 char");
       }
     } else {
       // password invaid return failed
-      yield onLoingFaield("Create Account Failed.. password 8 char");
+      yield onCreateAccountFaield("Create Account Failed.. password 8 char");
     }
   }
 
@@ -201,7 +201,7 @@ class LoginBloc extends Bloc<LoginEvevt, LoginState> {
       await _sharedPreferences.remove("password");
       yield onLoginSuccessfully("Login Successfully..");
     } else {
-      yield onLoingFaield("Password invalid");
+      yield onLogingFaield("Password invalid");
     }
   }
 

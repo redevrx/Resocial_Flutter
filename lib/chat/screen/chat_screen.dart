@@ -13,6 +13,7 @@ import 'package:socialapp/chat/bloc/messageBloc/message_bloc.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_event.dart';
 import 'package:socialapp/chat/bloc/messageBloc/message_state.dart';
 import 'package:socialapp/localizations/app_localizations.dart';
+import 'package:socialapp/utils/utils.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/event/edit_profile_event.dart';
@@ -240,7 +241,7 @@ class _chatScreenState extends State<chatScreen> with TickerProviderStateMixin {
   }
 }
 
-var friendModel = List<FrindsModel>();
+List<FrindsModel> friendModel = [];
 
 class makeListFriend extends StatelessWidget {
   const makeListFriend({
@@ -422,8 +423,7 @@ class makeCardProfile extends StatelessWidget {
                                       data.imageProfile.isEmpty
                                   ? FadeInImage.memoryNetwork(
                                       placeholder: kTransparentImage,
-                                      image:
-                                          "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")
+                                      image: PersonURL)
                                   : FadeInImage.memoryNetwork(
                                       width: 80,
                                       height: 80,
@@ -692,9 +692,7 @@ class _makeChatListInfoCard extends StatelessWidget {
                       child: chatListInfo[index].image == null ||
                               chatListInfo[index].image.isEmpty
                           ? FadeInImage.memoryNetwork(
-                              placeholder: kTransparentImage,
-                              image:
-                                  "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")
+                              placeholder: kTransparentImage, image: PersonURL)
                           : FadeInImage.memoryNetwork(
                               width: 50.0,
                               height: 50.0,
@@ -1051,7 +1049,7 @@ class _bottomBarState extends State<bottomBar> {
                                                                                 kTransparentImage,
                                                                             image: friendModel[i].imageProfile.isNotEmpty
                                                                                 ? friendModel[i].imageProfile
-                                                                                : "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")),
+                                                                                : PersonURL)),
                                                                   ),
                                                                   //show user name
                                                                   Text(friendModel[
@@ -1135,7 +1133,7 @@ class _bottomBarState extends State<bottomBar> {
                                                                                 kTransparentImage,
                                                                             image: listFreindGroupChat[i].imageProfile.isNotEmpty
                                                                                 ? listFreindGroupChat[i].imageProfile
-                                                                                : "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")),
+                                                                                : PersonURL)),
                                                                   ),
                                                                   //show user name
                                                                   Text(listFreindGroupChat[
@@ -1414,9 +1412,7 @@ class _makeUserIcon extends StatelessWidget {
               child: state.data.imageProfile == null ||
                       state.data.imageProfile.isEmpty
                   ? FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      image:
-                          "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")
+                      placeholder: kTransparentImage, image: PersonURL)
                   : FadeInImage.memoryNetwork(
                       width: 42.0,
                       height: 42.0,

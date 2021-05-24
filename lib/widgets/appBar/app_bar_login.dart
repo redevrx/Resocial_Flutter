@@ -32,7 +32,7 @@ class AppBarCustom extends StatelessWidget {
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(50.0),
                 bottomRight: Radius.circular(50.0))), // Yellow
-        height: widgetSize,
+        height: MediaQuery.of(context).size.height / 5.2,
         // (kIsWeb) ? 90 : widgetSize,
         width: double.infinity,
         child: Padding(

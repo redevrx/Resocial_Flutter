@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Tutotials\\Flutter\\Projects\\Flutter_Resocial_app\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rAU\\values-en-rAU.xml",
+            "outputFile": "D:\\Tutotials\\Flutter\\Projects\\socialapp\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rAU\\values-en-rAU.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Kasem Saikhuedong\\.gradle\\caches\\transforms-2\\files-2.1\\20524ebcfbfb226395d832f3856e6cf1\\core-1.3.1\\res\\values-en-rAU\\values-en-rAU.xml",

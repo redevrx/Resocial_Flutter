@@ -80,7 +80,7 @@ class loginScreen extends StatelessWidget {
                       if (state is onShowProgressDialog) {
                         print("show dialog");
                         return CircularProgressIndicator();
-                      } else if (state is onLoingFaield) {
+                      } else if (state is onLogingFaield) {
                         return Text(state.data);
                       } else {
                         return Container();
@@ -178,6 +178,9 @@ class loginScreen extends StatelessWidget {
                                     }));
                                   } else if (state is onLoginSuccessfully) {
                                     print(state.toString());
+                                    //clsoe dialog
+                                    Navigator.of(context).pop();
+                                    //
                                     Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
                                           builder: (context) => HomePage(
@@ -189,11 +192,13 @@ class loginScreen extends StatelessWidget {
                                   } else if (state
                                       is onCreateAccountSuccessfully) {
                                     print("onLogin :" + state.data.toString());
-
                                     //
 
                                     Navigator.pushNamedAndRemoveUntil(
                                         context, "/addProfile", (r) => false);
+                                  } else if (state is onLogingFaield) {
+                                    //clsoe dialog
+                                    Navigator.of(context).pop();
                                   }
                                 },
                                 child: Container(),
@@ -214,7 +219,7 @@ class loginScreen extends StatelessWidget {
   Padding _buildPaddingButton(LoginBloc loginBloc) {
     // double center = MediaQuery.of(context).size.width * .5;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 46.0, vertical: 43.0),
+      padding: const EdgeInsets.symmetric(horizontal: 46.0, vertical: 46.0),
       child: Column(
         children: [
           Row(
@@ -232,8 +237,8 @@ class loginScreen extends StatelessWidget {
           ),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 100.0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
                   onTap: () => loginBloc.add(onLoginWithGoogle()),
@@ -250,19 +255,17 @@ class loginScreen extends StatelessWidget {
                 SizedBox(
                   width: 32.0,
                 ),
-                Expanded(
-                  child: InkWell(
-                    // onTap: () => loginBloc.add(onLoginWithFacebook()),
-                    child: Container(
-                        width: 42.0,
-                        height: 42.0,
-                        padding: const EdgeInsets.all(4.0),
-                        child: ClipRRect(
-                          child: Image.asset(
-                            "assets/icons/facebook.png",
-                          ),
-                        )),
-                  ),
+                InkWell(
+                  // onTap: () => loginBloc.add(onLoginWithFacebook()),
+                  child: Container(
+                      width: 42.0,
+                      height: 42.0,
+                      padding: const EdgeInsets.all(4.0),
+                      child: ClipRRect(
+                        child: Image.asset(
+                          "assets/icons/facebook.png",
+                        ),
+                      )),
                 ),
               ],
             ),

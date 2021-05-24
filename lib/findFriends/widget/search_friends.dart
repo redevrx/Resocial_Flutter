@@ -3,6 +3,8 @@ import 'package:socialapp/Profile/EditPtofile/screen/user_profile.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'dart:async';
 
+import 'package:socialapp/utils/utils.dart';
+
 //create search box
 class SearchFriends extends StatelessWidget {
   final BoxConstraints constraints;
@@ -81,8 +83,7 @@ class SearchFriends extends StatelessWidget {
                                 image: DecorationImage(
                                   image: list[i].imageProfile == null ||
                                           list[i].imageProfile.isEmpty
-                                      ? NetworkImage(
-                                          "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")
+                                      ? NetworkImage(PersonURL)
                                       : NetworkImage("${list[i].imageProfile}"),
                                   fit: BoxFit.cover,
                                 )),

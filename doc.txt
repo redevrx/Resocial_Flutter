@@ -1,10 +1,10 @@
 there are bug like
  -bug show notify chat 
- -remove comment and edit
+ -*remove comment and edit
  -add shared image with message
  - group freind notify
-   - disable request notify
-   - disable like notify 
+   - *disable request notify
+   - *disable like notify 
   -error other profile user status error text is null or emtry
 
     
@@ -12,7 +12,7 @@ there are bug like
 
 new feature 
  *blok user in other profile
- -block user in search friend page
+ -*block user in search friend page
  -comment with image
  -post multi image
  -post vdo

@@ -267,10 +267,14 @@ class MessageRepository {
           _messageModel = i.map((e) => ChatModel.fromJson3(e)).toList();
           // _messageModel.sort((a, b) => a.time.compareTo('$time'));
           // ..sort((a, b) => b['time'].compareTo(a['time']));
-          _messageController.add(_messageModel);
+          _messageController
+            ..sink
+            ..add(_messageModel);
         } else {
           _messageModel = [];
-          _messageController.add([]);
+          _messageController
+            ..sink
+            ..add([]);
         }
 
         // Map<dynamic, dynamic>.from(message.snapshot.value).forEach((k, v) {
@@ -294,10 +298,14 @@ class MessageRepository {
           _messageModel = i.map((e) => ChatModel.fromJson3(e)).toList();
           // _messageModel.sort((a, b) => a.time.compareTo('$time'));
           // ..sort((a, b) => b['time'].compareTo(a['time']));
-          _messageController.add(_messageModel);
+          _messageController
+            ..sink
+            ..add(_messageModel);
         } else {
           _messageModel = [];
-          _messageController.add([]);
+          _messageController
+            ..sink
+            ..add([]);
         }
 
         // Map<dynamic, dynamic>.from(message.snapshot.value).forEach((k, v) {

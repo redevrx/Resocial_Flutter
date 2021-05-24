@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:socialapp/comments/screen/comments.dart';
 import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/showFriend/screen/show_friend.dart';
+import 'package:socialapp/utils/utils.dart';
 
 import '../exportNotify.dart';
 
@@ -22,11 +25,12 @@ class NotifyCard extends StatelessWidget {
           secondaryBackground: Container(
             height: 95.0,
             decoration: BoxDecoration(
-                color: model.getTypeNotify() == "new feed"
-                    ? Colors.blueAccent
-                    : (model.getTypeNotify() == "comment")
-                        ? Colors.greenAccent
-                        : Colors.pinkAccent,
+                // color: model.getTypeNotify() == "new feed"
+                //     ? Colors.blueAccent
+                //     : (model.getTypeNotify() == "comment")
+                //         ? Colors.greenAccent
+                //         : Colors.pinkAccent,
+                color: Colors.pinkAccent,
                 borderRadius: BorderRadius.circular(12.0)),
             child: Icon(
               Icons.remove_circle_outline,
@@ -119,18 +123,20 @@ class NotifyCard extends StatelessWidget {
                             height: 90.0,
                             width: MediaQuery.of(context).size.width * 1,
                             decoration: BoxDecoration(
-                                color: model.getTypeNotify() == "new feed"
-                                    ? Colors.blueAccent.withOpacity(.6)
-                                    : (model.getTypeNotify() == "comment")
-                                        ? Colors.greenAccent.withOpacity(.6)
-                                        : Colors.pinkAccent.withOpacity(.6),
+                                // color: model.getTypeNotify() == "new feed"
+                                //     ? Colors.blueAccent.withOpacity(.6)
+                                //     : (model.getTypeNotify() == "comment")
+                                //         ? Colors.greenAccent.withOpacity(.6)
+                                //         : Colors.pinkAccent.withOpacity(.6),
+                                color: Colors.blue,
                                 boxShadow: [
                                   BoxShadow(
-                                      color: model.getTypeNotify() == "new feed"
-                                          ? Colors.blueAccent
-                                          : (model.getTypeNotify() == "comment")
-                                              ? Colors.greenAccent
-                                              : Colors.pinkAccent,
+                                      // color: model.getTypeNotify() == "new feed"
+                                      //     ? Colors.blueAccent
+                                      //     : (model.getTypeNotify() == "comment")
+                                      //         ? Colors.greenAccent
+                                      //         : Colors.pinkAccent,
+                                      color: Colors.blueAccent,
                                       blurRadius: 4,
                                       offset: Offset(.5, .5),
                                       spreadRadius: .1)
@@ -173,6 +179,7 @@ class NotifyCard extends StatelessWidget {
                                                   "assets/icons/like_up.png",
                                                   width: 30.0,
                                                   scale: 1.0,
+                                                  color: Colors.blue,
                                                   fit: BoxFit.cover,
                                                 ),
                                   // child: Text(
@@ -220,17 +227,18 @@ class NotifyCard extends StatelessWidget {
                 // card profile info and time post
                 //show time that make like or create post
                 Positioned(
-                    bottom: 0.0,
-                    right: 32.0,
-                    left: 32.0,
-                    child: Card(
-                      elevation: 22.0,
-                      clipBehavior: Clip.antiAlias,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(22.0)),
+                  bottom: 0.0,
+                  right: 32.0,
+                  left: 32.0,
+                  child: ClipRRect(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
                       child: Container(
                         height: 50.0,
                         width: 240.0,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(.25),
+                            borderRadius: BorderRadius.circular(22.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -255,8 +263,7 @@ class NotifyCard extends StatelessWidget {
                                       image: DecorationImage(
                                         image: model.profileUrl == null ||
                                                 model.profileUrl.isEmpty
-                                            ? NetworkImage(
-                                                "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")
+                                            ? NetworkImage(PersonURL.toString())
                                             : NetworkImage(
                                                 // '${userDetail[0].imageProfile}'
                                                 model.profileUrl.toString()),
@@ -283,7 +290,9 @@ class NotifyCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                    ))
+                    ),
+                  ),
+                )
               ],
             ),
           )),

@@ -25,124 +25,137 @@ class widgetShowAllfreind extends StatelessWidget {
       },
       child: Container(
         height: constraints.maxHeight * .85,
-        child: ListView.builder(
-          itemCount: list.length,
-          itemBuilder: (context, i) {
-            //friendManagerBloc.add(onCheckStatusFrinds(uid: state.list[i].uid));
-            return InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => RequestFriend(
-                    userId: list[i].uid,
-                  ),
-                ));
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      ClipOval(
-                        child: Image.network(
-                          "${list[i].imageProfile}",
-                          fit: BoxFit.cover,
-                          width: 90.0,
-                          height: 90.0,
+        child: list.length == 0
+            ? Center(
+                child: Text("You not have freinds"),
+              )
+            : ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (context, i) {
+                  //friendManagerBloc.add(onCheckStatusFrinds(uid: state.list[i].uid));
+                  return InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => RequestFriend(
+                          userId: list[i].uid,
                         ),
-                      ),
-                      SizedBox(
-                        width: 16.0,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "${list[i].userName}",
-                            style: TextStyle(
-                                color: Colors.black,
-                                decorationThickness: 4.0,
-                                fontSize: 22.0,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 6.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            ClipOval(
+                              child: Image.network(
+                                "${list[i].imageProfile}",
+                                fit: BoxFit.cover,
+                                width: 90.0,
+                                height: 90.0,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 16.0,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Tooltip(
-                                  message: "Remove Freind",
-                                  padding: EdgeInsets.all(20),
-                                  margin: EdgeInsets.all(20),
-                                  showDuration: Duration(seconds: 10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue.withOpacity(0.9),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(4)),
-                                  ),
-                                  textStyle: TextStyle(color: Colors.black12),
-                                  preferBelow: true,
-                                  verticalOffset: 20,
-                                  child: MaterialButtonX(
-                                    message: "R",
-                                    width: 80.0,
-                                    height: 32.0,
-                                    color: Colors.redAccent.withOpacity(.89),
-                                    icon: Icons.remove_circle_outline,
-                                    iconSize: 22.0,
-                                    radius: 32.0,
-                                    onClick: () async {
-                                      // request friends data and show
-
-                                      await _showRemoveFreindDialog(context,
-                                          friendManageBloc, list[i].uid);
-
-                                      friendBloc.add(onLoadFriendUserClick());
-                                    },
-                                  ),
+                                Text(
+                                  "${list[i].userName}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      decorationThickness: 4.0,
+                                      fontSize: 22.0,
+                                      fontWeight: FontWeight.w400),
                                 ),
-                                SizedBox(
-                                  width: 32.0,
-                                ),
-                                Tooltip(
-                                  message: "Block Freind",
-                                  padding: EdgeInsets.all(20),
-                                  margin: EdgeInsets.all(20),
-                                  showDuration: Duration(seconds: 10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue.withOpacity(0.9),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(4)),
-                                  ),
-                                  textStyle: TextStyle(color: Colors.black12),
-                                  preferBelow: true,
-                                  verticalOffset: 20,
-                                  child: MaterialButtonX(
-                                    message: "B",
-                                    width: 80.0,
-                                    height: 32.0,
-                                    color: Colors.red.withOpacity(.89),
-                                    icon: Icons.block_rounded,
-                                    iconSize: 22.0,
-                                    radius: 32.0,
-                                    onClick: () async {
-                                      await _showBlockFreindDialog(context);
-                                    },
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 6.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Tooltip(
+                                        message: "Remove Freind",
+                                        padding: EdgeInsets.all(20),
+                                        margin: EdgeInsets.all(20),
+                                        showDuration: Duration(seconds: 10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.blue.withOpacity(0.9),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(4)),
+                                        ),
+                                        textStyle:
+                                            TextStyle(color: Colors.black12),
+                                        preferBelow: true,
+                                        verticalOffset: 20,
+                                        child: MaterialButtonX(
+                                          message: "R",
+                                          width: 80.0,
+                                          height: 32.0,
+                                          color:
+                                              Colors.redAccent.withOpacity(.89),
+                                          icon: Icons.remove_circle_outline,
+                                          iconSize: 22.0,
+                                          radius: 32.0,
+                                          onClick: () async {
+                                            // request friends data and show
+
+                                            await _showRemoveFreindDialog(
+                                                context,
+                                                friendManageBloc,
+                                                list[i].uid);
+
+                                            friendBloc
+                                                .add(onLoadFriendUserClick());
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 32.0,
+                                      ),
+                                      Tooltip(
+                                        message: "Block Freind",
+                                        padding: EdgeInsets.all(20),
+                                        margin: EdgeInsets.all(20),
+                                        showDuration: Duration(seconds: 10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.blue.withOpacity(0.9),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(4)),
+                                        ),
+                                        textStyle:
+                                            TextStyle(color: Colors.black12),
+                                        preferBelow: true,
+                                        verticalOffset: 20,
+                                        child: MaterialButtonX(
+                                          message: "B",
+                                          width: 80.0,
+                                          height: 32.0,
+                                          color: Colors.red.withOpacity(.89),
+                                          icon: Icons.block_rounded,
+                                          iconSize: 22.0,
+                                          radius: 32.0,
+                                          onClick: () async {
+                                            await _showBlockFreindDialog(
+                                                context);
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
-        ),
       ),
     );
   }

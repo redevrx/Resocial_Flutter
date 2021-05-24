@@ -1,10 +1,27 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Tutotials\\Flutter\\Projects\\Flutter_Resocial_app\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-pt-rPT\\values-pt-rPT.xml",
+            "outputFile": "D:\\Tutotials\\Flutter\\Projects\\socialapp\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-pt-rPT\\values-pt-rPT.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Kasem Saikhuedong\\.gradle\\caches\\transforms-2\\files-2.1\\1a905ef8b53cf6836c0f64437cb6a346\\jetified-firebase-messaging-21.0.1\\res\\values-pt-rPT\\values.xml",
+                    "source": "C:\\Users\\Kasem Saikhuedong\\.gradle\\caches\\transforms-2\\files-2.1\\0deb5f53aadc7500cf306d639f7f4381\\jetified-play-services-basement-17.1.1\\res\\values-pt-rPT\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "251",
+                        "endColumns": "203",
+                        "endOffsets": "454"
+                    },
+                    "to": {
+                        "startLines": "10",
+                        "startColumns": "4",
+                        "startOffsets": "1294",
+                        "endColumns": "203",
+                        "endOffsets": "1493"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Kasem Saikhuedong\\.gradle\\caches\\transforms-2\\files-2.1\\052b46c207b3f691541b6688ae2d2c80\\jetified-firebase-messaging-21.0.1\\res\\values-pt-rPT\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -52,23 +69,6 @@
                         "startOffsets": "105,212,407,537,647,874,1004,1156,1498,1745,1855,2056,2189,2407,2615,2713,2812",
                         "endColumns": "106,194,129,109,226,129,151,137,246,109,200,132,217,207,97,98,115",
                         "endOffsets": "207,402,532,642,869,999,1151,1289,1740,1850,2051,2184,2402,2610,2708,2807,2923"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Kasem Saikhuedong\\.gradle\\caches\\transforms-2\\files-2.1\\69a64e3a1ac539e54b4ab47d427402c3\\jetified-play-services-basement-17.1.1\\res\\values-pt-rPT\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "251",
-                        "endColumns": "203",
-                        "endOffsets": "454"
-                    },
-                    "to": {
-                        "startLines": "10",
-                        "startColumns": "4",
-                        "startOffsets": "1294",
-                        "endColumns": "203",
-                        "endOffsets": "1493"
                     }
                 }
             ]

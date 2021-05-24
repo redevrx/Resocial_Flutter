@@ -67,7 +67,7 @@ class _notifyScreen extends State<NotifyScreen> {
                 AppBarCustom(
                   widgetSize: 150,
                   title: "${AppLocalizations.of(context).translate("appName")}",
-                  titleColor: widget.bodyColor,
+                  titleColor: Color(0xFF498AEF),
                   status: "home page",
                 ),
                 //make bloc notify

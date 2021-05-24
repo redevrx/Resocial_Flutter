@@ -11,6 +11,7 @@ import 'package:socialapp/textMore/bloc/text_more_bloc.dart';
 import 'package:socialapp/textMore/export/export.dart';
 import 'package:socialapp/userPost/bloc/post_bloc.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
+import 'package:socialapp/utils/utils.dart';
 
 //comment post  page
 class Comments extends StatelessWidget {
@@ -212,14 +213,14 @@ class _CommentsState extends State<_Comments> {
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
-                                  image: NetworkImage(state.comments[index]
-                                                  .imageProfile ==
-                                              null ||
-                                          state.comments[index].imageProfile
-                                              .toString()
-                                              .isEmpty
-                                      ? "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg"
-                                      : state.comments[index].imageProfile),
+                                  image: NetworkImage(
+                                      state.comments[index].imageProfile ==
+                                                  null ||
+                                              state.comments[index].imageProfile
+                                                  .toString()
+                                                  .isEmpty
+                                          ? PersonURL
+                                          : state.comments[index].imageProfile),
                                   fit: BoxFit.cover,
                                 )),
                           ),

@@ -6,6 +6,7 @@ import 'package:socialapp/Profile/AddProfile/bloc/add_profile_bloc.dart';
 import 'package:socialapp/Profile/AddProfile/bloc/event/add_profile_event.dart';
 import 'package:socialapp/Profile/AddProfile/bloc/state/add_profile_state.dart';
 import 'package:socialapp/localizations/app_localizations.dart';
+import 'package:socialapp/utils/utils.dart';
 import 'package:socialapp/widgets/appBar/app_bar_login.dart';
 import 'package:socialapp/widgets/cardBackground/item_card_shape_v2.dart';
 import 'dart:io';
@@ -174,11 +175,16 @@ class addProfile extends StatelessWidget {
                 BlocListener<AddProfileBloc, AddProfileState>(
                   listener: (context, state) {
                     if (state is onSaveAddProfileFailed) {
+                      //clsoe dialog
+                      Navigator.of(context).pop();
                       print(state.data);
                     } else if (state is onSaveAddprofileDialog) {
                       print(state.toString());
                     } else if (state is onSaveAddProfileSuccessfully) {
                       print(state.data);
+                      //clsoe dialog
+                      Navigator.of(context).pop();
+                      //
                       Navigator.pushNamedAndRemoveUntil(
                           context, "/home", (r) => false);
                     }
@@ -254,7 +260,7 @@ class addProfile extends StatelessWidget {
       borderRadius: BorderRadius.circular(20.0),
       child: state == null
           ? Image.network(
-              "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
+              Example_Profile,
               height: 150,
               width: 150,
               fit: BoxFit.fill,
@@ -307,12 +313,15 @@ class addProfile extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      RaisedButton(
-                          elevation: 8.0,
-                          clipBehavior: Clip.none,
-                          color: Color(0xFFFF2D55),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0)),
+                      ElevatedButton(
+                          style: ButtonStyle(
+                              elevation: MaterialStateProperty.all(8.0),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Color(0xFFFF2D55)),
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(30.0)))),
                           onPressed: () {
                             //call
                             checkCameraPermission(context, profileBloc);
@@ -324,12 +333,15 @@ class addProfile extends StatelessWidget {
                                 .headline6
                                 .apply(color: Colors.white.withOpacity(.75)),
                           )),
-                      RaisedButton(
-                          elevation: 8.0,
-                          clipBehavior: Clip.none,
-                          color: Color(0xFFFF2D55),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0)),
+                      ElevatedButton(
+                          style: ButtonStyle(
+                              elevation: MaterialStateProperty.all(8.0),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Color(0xFFFF2D55)),
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(30.0)))),
                           onPressed: () {
                             //call
                             checkGalleryPermission(context, profileBloc);
@@ -382,17 +394,20 @@ class buttonSaveAddprofile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          RaisedButton(
-              elevation: 8.0,
-              clipBehavior: Clip.none,
-              color: Color(0xFFFF2D55),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0)),
+          ElevatedButton(
+              style: ButtonStyle(
+                  elevation: MaterialStateProperty.all(8.0),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0))),
+                  backgroundColor:
+                      MaterialStateProperty.all(Color(0xFFFF2D55))),
               onPressed: () {
                 // print(data.nickName + " : " + data.status);
                 //call  onSaveAddprofile for save user info data
                 bloc.add(onSaveAddprofile(null));
                 FocusScope.of(context).unfocus();
+
+                onLoadingDialog(context);
               },
               child: Text(
                 "${AppLocalizations.of(context).translate('btnSave')}",
@@ -420,7 +435,14 @@ class textNickName extends StatelessWidget {
       padding: const EdgeInsets.only(left: 32.0, right: 32.0),
       child: Container(
         child: TextField(
-          onSubmitted: (value) => profileBloc.add(onSaveAddprofile(null)),
+          onSubmitted: (value) {
+            if (value != null && value.length >= 6) {
+              profileBloc.add(onSaveAddprofile(null));
+              Focus.of(context).unfocus();
+
+              onLoadingDialog(context);
+            }
+          },
           onChanged: (nickName) =>
               profileBloc.add(onNickNameChange(nickName: nickName)),
           decoration: InputDecoration(
@@ -465,7 +487,7 @@ class textUserStatus extends StatelessWidget {
           onChanged: (userStatus) =>
               profileBloc.add(onUserStatusChange(userStatus: userStatus)),
           keyboardType: TextInputType.multiline,
-          maxLengthEnforced: true,
+          maxLines: null,
           maxLength: 50,
           decoration: InputDecoration(
               hintText:

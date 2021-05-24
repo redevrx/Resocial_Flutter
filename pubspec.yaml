@@ -64,7 +64,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  bloc_test: ^7.1.0
 
 # flutter_icons:
 #   android: "launcher_icon"

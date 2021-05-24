@@ -178,7 +178,7 @@ class FeedRepository {
 
         print('all feed legnth service :${allFeed.length}');
 
-        _feedController.add(allFeed);
+        _feedController..sink.add(allFeed);
 
         // Save the last document from the results only if it's the current last page
         if (currentPage == models.length - 1) {
@@ -255,7 +255,9 @@ class FeedRepository {
 
       print('all feed onwer user legnth service :${allFeed.length}');
 
-      streamControllerOnwerUser.add(allFeed);
+      streamControllerOnwerUser
+        ..sink
+        ..add(allFeed);
 
       // Save the last document from the results only if it's the current last page
       if (currentPage == onwerListFeed.length - 1) {

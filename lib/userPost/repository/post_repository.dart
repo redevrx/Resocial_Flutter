@@ -184,8 +184,9 @@ class PostRepository {
 
       //save image to data storage
       final uploadTask = _mRefFile.child(key).putFile(image);
+      final task = await uploadTask;
 
-      String url = await uploadTask.snapshot.ref.getDownloadURL();
+      String url = await task.ref.getDownloadURL();
 
       //make map to json
       mapBody["uid"] = uid;

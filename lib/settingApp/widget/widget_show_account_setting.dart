@@ -189,8 +189,8 @@ class _widgetShowAccountSettingState extends State<widgetShowAccountSetting> {
                       } catch (e) {
                         print("login error :$e");
 
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, "/login", (r) => false);
+                        // Navigator.pushNamedAndRemoveUntil(
+                        //     context, "/login", (r) => false);
                       }
                     },
                   )

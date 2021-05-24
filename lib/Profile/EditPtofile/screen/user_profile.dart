@@ -25,6 +25,7 @@ import 'package:socialapp/localizations/languages.dart';
 import 'package:socialapp/textMore/bloc/text_more_bloc.dart';
 import 'package:socialapp/userPost/bloc/post_bloc.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
+import 'package:socialapp/utils/utils.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 // create bloc provider
@@ -518,8 +519,7 @@ class _stackImageProfile extends StatelessWidget {
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: (imageBackground == null || imageBackground.isEmpty
-                    ? NetworkImage(
-                        "https://firebasestorage.googleapis.com/v0/b/flutter-resocial.appspot.com/o/room-with-concrete-floor-smoke-background_9083-2991.jpg?alt=media&token=68342126-20a2-4aa8-8968-58b5b51ef760")
+                    ? NetworkImage(PersonURL)
                     : NetworkImage("${imageBackground.trim()}")),
                 fit: BoxFit.cover),
             color: bodyColor.withOpacity(.15),
@@ -1156,12 +1156,15 @@ Future<void> _customDialog(BuildContext context, bool _fromTop,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      RaisedButton(
-                          elevation: 8.0,
-                          clipBehavior: Clip.none,
-                          color: Color(0xFFFF2D55),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0)),
+                      ElevatedButton(
+                          style: ButtonStyle(
+                              elevation: MaterialStateProperty.all(8.0),
+                              shape: MaterialStateProperty.all<OutlinedBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(30.0))),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Color(0xFFFF2D55))),
                           onPressed: () {
                             _checkCamerPermission(
                                 context, editProfileBloc, type);
@@ -1173,12 +1176,19 @@ Future<void> _customDialog(BuildContext context, bool _fromTop,
                                 .headline6
                                 .apply(color: Colors.white.withOpacity(.75)),
                           )),
-                      RaisedButton(
-                          elevation: 8.0,
-                          clipBehavior: Clip.none,
-                          color: Color(0xFFFF2D55),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0)),
+                      ElevatedButton(
+                          style: ButtonStyle(
+                              elevation: MaterialStateProperty.all(8.0),
+                              shape: MaterialStateProperty.all<OutlinedBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(30.0))),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Color(0xFFFF2D55))),
+                          // elevation: 8.0,
+                          // clipBehavior: Clip.none,
+                          // color: Color(0xFFFF2D55),
+
                           onPressed: () {
                             _checkGalleryPermission(
                                 context, editProfileBloc, type);

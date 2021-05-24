@@ -51,10 +51,16 @@ class onCreateAccountSuccessfully extends LoginState {
   String toString() => "uid :${data}";
 }
 
-class onLoingFaield extends LoginState {
+class onCreateAccountFaield extends LoginState {
+  final String error;
+
+  onCreateAccountFaield(this.error);
+}
+
+class onLogingFaield extends LoginState {
   final String data;
 
-  onLoingFaield(this.data);
+  onLogingFaield(this.data);
   @override
   String toString() => "${data}";
 }

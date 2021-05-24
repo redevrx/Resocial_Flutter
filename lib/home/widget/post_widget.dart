@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +16,7 @@ import 'package:socialapp/likes/export/export_like.dart';
 import 'package:socialapp/shared/shared_app.dart';
 import 'package:socialapp/textMore/export/export.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
+import 'package:socialapp/utils/utils.dart';
 
 class CardPost extends StatelessWidget {
   CardPost(
@@ -27,12 +30,14 @@ class CardPost extends StatelessWidget {
       this.modelsPost,
       this.editProfileBloc,
       this.uid,
-      this.pageNaviagtorChageBloc})
+      this.pageNaviagtorChageBloc,
+      this.lastIndex})
       : super(key: key);
 
   final TextMoreBloc textMoreBloc;
   final BoxConstraints constraints;
   final int i;
+  final int lastIndex;
   final LikeBloc likeBloc;
   final MyFeedBloc myFeedBloc;
   final PostBloc postBloc;
@@ -51,7 +56,7 @@ class CardPost extends StatelessWidget {
     }
     return ClipRRect(
       child: Container(
-        margin: EdgeInsets.only(top: 22.0),
+        margin: EdgeInsets.only(top: 22.0, bottom: lastIndex == i ? 32.0 : 0.0),
         width: double.infinity,
         height: (modelsPost[i].body != null && modelsPost[i].type != "image")
             ? 260.0
@@ -61,7 +66,10 @@ class CardPost extends StatelessWidget {
             //make container like comment shared
 
             Positioned(
-              left: 16.0,
+              left: 10.0,
+              top: (modelsPost[i].body != null && modelsPost[i].type != "image")
+                  ? 0.0
+                  : 62.0,
               bottom:
                   (modelsPost[i].body != null && modelsPost[i].type != "image")
                       ? 16.0
@@ -262,186 +270,189 @@ class CardPost extends StatelessWidget {
     );
   }
 
-  Padding _build_user_info_ui(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(28.0),
-        ),
-        elevation: 4.0,
-        clipBehavior: Clip.antiAlias,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Row(
-              children: [
-                InkWell(
-                    onTap: () {
-                      if (uid == modelsPost[i].uid.toString()) {
-                        // if (ModalRoute.of(context).settings.name != null) {
-                        pageNaviagtorChageBloc
-                            .add(onPageChangeEvent(pageNumber: 2));
-                        // }
-                        //current user click
-                        //call page changeBloc for change page
-                      } else {
-                        // go to profile user that post
-                        print("other user id :${modelsPost[i].uid}");
-                        // if (ModalRoute.of(context).settings.name != null) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => RequestFriend(
-                            userId: modelsPost[i].uid,
-                          ),
-                        ));
-                        // }
-                      }
-                    },
-                    child: FutureBuilder<DocumentSnapshot>(
-                      future: modelsPost[i].getUserDetail(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return CircularProgressIndicator();
+  ClipRRect _build_user_info_ui(BuildContext context) {
+    return ClipRRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+        child: Container(
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+              color: modelsPost[i].type != "image"
+                  ? Colors.black.withOpacity(.1)
+                  : Colors.white.withOpacity(.23),
+              borderRadius: BorderRadius.circular(16.0)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Row(
+                children: [
+                  InkWell(
+                      onTap: () {
+                        if (uid == modelsPost[i].uid.toString()) {
+                          // if (ModalRoute.of(context).settings.name != null) {
+                          pageNaviagtorChageBloc
+                              .add(onPageChangeEvent(pageNumber: 2));
+                          // }
+                          //current user click
+                          //call page changeBloc for change page
                         } else {
-                          return Row(
-                            children: <Widget>[
-                              Container(
-                                height: 45.0,
-                                width: 45.0,
-                                margin: EdgeInsets.all(4.0),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          offset: Offset(.5, .5),
-                                          blurRadius: 0.5,
-                                          color: Colors.black.withOpacity(.15),
-                                          spreadRadius: .5)
-                                    ],
-                                    //shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: snapshot.data
-                                                      .get("imageProfile") ==
-                                                  null ||
-                                              snapshot.data
-                                                  .get("imageProfile")
-                                                  .toString()
-                                                  .isEmpty
-                                          ? NetworkImage(
-                                              "https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg")
-                                          : NetworkImage(
-                                              // '${userDetail[0].imageProfile}'
-                                              snapshot.data
-                                                  .get("imageProfile")
-                                                  .toString(),
-                                            ),
-                                      fit: BoxFit.cover,
-                                    )),
-                              ),
-                              SizedBox(
-                                width: 6.0,
-                              ),
-                              Text(
-                                snapshot.data.get("user").toString(),
-                                //"${details[i].userName}",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.0),
-                              ),
-                            ],
-                          );
+                          // go to profile user that post
+                          print("other user id :${modelsPost[i].uid}");
+                          // if (ModalRoute.of(context).settings.name != null) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => RequestFriend(
+                              userId: modelsPost[i].uid,
+                            ),
+                          ));
+                          // }
                         }
                       },
-                    )),
-              ],
-            ),
-            //make popup menu setting post
-            //-edit
-            //-remove
-            PopupMenuButton<dynamic>(
-                child: Icon(Icons.more_horiz),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0)),
-                onSelected: (value) {
-                  if (value == 'Remove') {
-                    if (uid == modelsPost[i].uid) {
-                      myFeedBloc.add(onRemoveItemUpdateUI(
-                        postModel: modelsPost,
-                      ));
-                      postBloc.add(onRemoveItemClikc(
-                          postId: modelsPost[i].postId.toString()));
-                      modelsPost.removeAt(i);
-                      //details.removeAt(i);
-                      // likeResult.removeAt(i);
-                      print(value);
+                      child: FutureBuilder<DocumentSnapshot>(
+                        future: modelsPost[i].getUserDetail(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return CircularProgressIndicator();
+                          } else {
+                            return Row(
+                              children: <Widget>[
+                                Container(
+                                  height: 45.0,
+                                  width: 45.0,
+                                  margin: EdgeInsets.all(4.0),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50.0),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            offset: Offset(.5, .5),
+                                            blurRadius: 0.5,
+                                            color:
+                                                Colors.black.withOpacity(.15),
+                                            spreadRadius: .5)
+                                      ],
+                                      //shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        image: snapshot.data
+                                                        .get("imageProfile") ==
+                                                    null ||
+                                                snapshot.data
+                                                    .get("imageProfile")
+                                                    .toString()
+                                                    .isEmpty
+                                            ? NetworkImage(PersonURL.toString())
+                                            : NetworkImage(
+                                                // '${userDetail[0].imageProfile}'
+                                                snapshot.data
+                                                    .get("imageProfile")
+                                                    .toString(),
+                                              ),
+                                        fit: BoxFit.cover,
+                                      )),
+                                ),
+                                SizedBox(
+                                  width: 6.0,
+                                ),
+                                Text(
+                                  snapshot.data.get("user").toString(),
+                                  //"${details[i].userName}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0),
+                                ),
+                              ],
+                            );
+                          }
+                        },
+                      )),
+                ],
+              ),
+              //make popup menu setting post
+              //-edit
+              //-remove
+              PopupMenuButton<dynamic>(
+                  child: Icon(Icons.more_horiz),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0)),
+                  onSelected: (value) {
+                    if (value == 'Remove') {
+                      if (uid == modelsPost[i].uid) {
+                        myFeedBloc.add(onRemoveItemUpdateUI(
+                          postModel: modelsPost,
+                        ));
+                        postBloc.add(onRemoveItemClikc(
+                            postId: modelsPost[i].postId.toString()));
+                        modelsPost.removeAt(i);
+                        //details.removeAt(i);
+                        // likeResult.removeAt(i);
+                        print(value);
+                      } else {
+                        print('this user not have permission remove this post');
+                      }
                     } else {
-                      print('this user not have permission remove this post');
+                      if (uid == modelsPost[i].uid) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => EditPost(
+                            postModel: modelsPost[i],
+                          ),
+                        ));
+                        print(value);
+                      } else {
+                        print('this user not have permission edit this post');
+                      }
                     }
-                  } else {
-                    if (uid == modelsPost[i].uid) {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => EditPost(
-                          postModel: modelsPost[i],
-                        ),
-                      ));
-                      print(value);
-                    } else {
-                      print('this user not have permission edit this post');
-                    }
-                  }
-                },
-                itemBuilder: (context) => [
-                      PopupMenuItem(
-                        value: choices[0].title,
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              width: 35,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.green.withOpacity(.25)),
-                              child: Icon(
-                                choices[0].icon,
-                                color: Colors.green,
+                  },
+                  itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: choices[0].title,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                width: 35,
+                                height: 35,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.green.withOpacity(.25)),
+                                child: Icon(
+                                  choices[0].icon,
+                                  color: Colors.green,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 8.0,
-                            ),
-                            Text('${choices[0].title}'),
-                          ],
-                        ),
-                      ),
-                      PopupMenuDivider(
-                        height: 1.5,
-                      ),
-                      PopupMenuItem(
-                        value: choices[1].title,
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              width: 35,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.redAccent.withOpacity(.25)),
-                              child: Icon(
-                                choices[1].icon,
-                                color: Colors.red,
+                              SizedBox(
+                                width: 8.0,
                               ),
-                            ),
-                            SizedBox(
-                              width: 8.0,
-                            ),
-                            Text('${choices[1].title}'),
-                          ],
+                              Text('${choices[0].title}'),
+                            ],
+                          ),
                         ),
-                      )
-                    ]),
-            // Icon(Icons.more_horiz)
-          ],
+                        PopupMenuDivider(
+                          height: 1.5,
+                        ),
+                        PopupMenuItem(
+                          value: choices[1].title,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                width: 35,
+                                height: 35,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.redAccent.withOpacity(.25)),
+                                child: Icon(
+                                  choices[1].icon,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 8.0,
+                              ),
+                              Text('${choices[1].title}'),
+                            ],
+                          ),
+                        )
+                      ]),
+              // Icon(Icons.more_horiz)
+            ],
+          ),
         ),
       ),
     );
@@ -537,30 +548,60 @@ class CardPost extends StatelessWidget {
 
   ///
 
-  InkWell _build_comment_ui(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Comments(
-            uid: uid,
-            i: i,
-            postModels: modelsPost,
-            //postModels: modelsPost[i],
+  Padding _build_comment_ui(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 14),
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => Comments(
+              uid: uid,
+              i: i,
+              postModels: modelsPost,
+              //postModels: modelsPost[i],
+            ),
+          ));
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          decoration: int.parse(modelsPost[i].commentCount) == 0 ||
+                  int.parse(modelsPost[i].commentCount) <= 0
+              ? null
+              : BoxDecoration(
+                  color: Colors.blueAccent,
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(50, 50),
+                        color: Colors.blue.withOpacity(.23),
+                        blurRadius: 27,
+                        spreadRadius: .5)
+                  ],
+                  borderRadius: BorderRadius.circular(10.0)),
+          child: Column(
+            children: <Widget>[
+              Icon(
+                Icons.comment,
+                color: int.parse(modelsPost[i].commentCount) == 0 ||
+                        int.parse(modelsPost[i].commentCount) <= 0
+                    ? Colors.blueAccent
+                    : Colors.white,
+                size: 28.0,
+              ),
+              SizedBox(
+                height: 4.0,
+              ),
+              Text(
+                "${modelsPost[i].commentCount}",
+                style: Theme.of(context).textTheme.headline6.copyWith(
+                    color: int.parse(modelsPost[i].commentCount) == 0 ||
+                            int.parse(modelsPost[i].commentCount) <= 0
+                        ? null
+                        : Colors.white,
+                    fontSize: 16.0),
+              ),
+            ],
           ),
-        ));
-      },
-      child: Column(
-        children: <Widget>[
-          Icon(
-            Icons.add_comment_rounded,
-            color: Colors.blueAccent,
-            size: 28.0,
-          ),
-          SizedBox(
-            width: 4.0,
-          ),
-          Text("${modelsPost[i].commentCount}"),
-        ],
+        ),
       ),
     );
   }
@@ -621,67 +662,90 @@ class make_like_ui extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        // likeBloc
-        if (modelsPost[i].likeResults["${uid}"] == uid) {
-          //
-          if (int.parse(modelsPost[i].likesCount) <= 0) {
-            modelsPost[i].likesCount = "0";
-            modelsPost[i].likeResults['${uid}'] = null;
+    return Padding(
+      padding: const EdgeInsets.only(right: 14),
+      child: InkWell(
+        onTap: () {
+          // likeBloc
+          if (modelsPost[i].likeResults["${uid}"] == uid) {
+            //
+            if (int.parse(modelsPost[i].likesCount) <= 0) {
+              modelsPost[i].likesCount = "0";
+              modelsPost[i].likeResults['${uid}'] = null;
+            } else {
+              modelsPost[i].likesCount =
+                  (int.parse(modelsPost[i].likesCount) - 1).toString();
+              modelsPost[i].likeResults['${uid}'] = null;
+            }
+            //
+            //unlike
+            likeBloc.add(onLikeClick(
+                postId: modelsPost[i].postId,
+                statusLike: 'un',
+                onwerId: modelsPost[i].uid));
           } else {
-            modelsPost[i].likesCount =
-                (int.parse(modelsPost[i].likesCount) - 1).toString();
-            modelsPost[i].likeResults['${uid}'] = null;
-          }
-          //
-          //unlike
-          likeBloc.add(onLikeClick(
-              postId: modelsPost[i].postId,
-              statusLike: 'un',
-              onwerId: modelsPost[i].uid));
-        } else {
-          //like
+            //like
 
-          //
-          if (int.parse(modelsPost[i].likesCount) == 0) {
-            modelsPost[i].likesCount = "1";
-            modelsPost[i].likeResults['${uid}'] = uid;
-          } else {
-            modelsPost[i].likesCount =
-                (int.parse(modelsPost[i].likesCount) + 1).toString();
-            modelsPost[i].likeResults['${uid}'] = uid;
+            //
+            if (int.parse(modelsPost[i].likesCount) == 0) {
+              modelsPost[i].likesCount = "1";
+              modelsPost[i].likeResults['${uid}'] = uid;
+            } else {
+              modelsPost[i].likesCount =
+                  (int.parse(modelsPost[i].likesCount) + 1).toString();
+              modelsPost[i].likeResults['${uid}'] = uid;
+            }
+
+            likeBloc.add(onLikeClick(
+                postId: modelsPost[i].postId,
+                statusLike: 'like',
+                onwerId: modelsPost[i].uid));
           }
 
-          likeBloc.add(onLikeClick(
-              postId: modelsPost[i].postId,
-              statusLike: 'like',
-              onwerId: modelsPost[i].uid));
-        }
-
-        // likeBloc
-        //   .add(onCheckLikeClick(postId: modelsPost));
-      },
-      child: Column(
-        children: <Widget>[
-          Container(
-              height: 35.0,
-              width: 35.0,
-              decoration: BoxDecoration(
-                  // color: modelsPost[i].getUserLikePost(uid)
-                  //     ? Colors.pinkAccent.withOpacity(.6)
-                  //     : Colors.transparent,
-                  borderRadius: BorderRadius.circular(20.0)),
-              child: modelsPost[i].likeResults[uid] == uid
-                  ? Image.asset("assets/icons/like_up.png")
-                  : Image.asset(
-                      "assets/icons/like.png",
-                    )),
-          SizedBox(
-            width: 4.0,
+          // likeBloc
+          //   .add(onCheckLikeClick(postId: modelsPost));
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 8),
+          decoration: modelsPost[i].likeResults[uid] == uid
+              ? BoxDecoration(
+                  color: Colors.blueAccent,
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(50, 50),
+                        color: Colors.blue.withOpacity(.23),
+                        blurRadius: 27,
+                        spreadRadius: .5)
+                  ],
+                  borderRadius: BorderRadius.circular(10.0))
+              : null,
+          child: Column(
+            children: <Widget>[
+              Container(
+                  height: 35.0,
+                  width: 35.0,
+                  child: Image.asset(
+                    "assets/icons/like.png",
+                    color: modelsPost[i].likeResults[uid] == uid
+                        ? Colors.white
+                        : Colors.black,
+                    width: 4,
+                    height: 4,
+                  )),
+              SizedBox(
+                width: 4.0,
+              ),
+              Text(
+                "${modelsPost[i].likesCount}",
+                style: Theme.of(context).textTheme.headline6.copyWith(
+                    fontSize: 16.0,
+                    color: modelsPost[i].likeResults[uid] == uid
+                        ? Colors.white
+                        : Colors.black),
+              )
+            ],
           ),
-          Text("${modelsPost[i].likesCount}")
-        ],
+        ),
       ),
     );
   }

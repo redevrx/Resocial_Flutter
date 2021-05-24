@@ -238,6 +238,7 @@ class _homePage extends State<homePage> with TickerProviderStateMixin {
                                       likeBloc.add(onLikeResultPostClick());
                                     },
                                     child: ListView.builder(
+                                      physics: BouncingScrollPhysics(),
                                       controller: _scrollController,
                                       // semanticChildCount: state.models.length,
                                       itemCount: state.models.length,
@@ -254,6 +255,7 @@ class _homePage extends State<homePage> with TickerProviderStateMixin {
                                           textMoreBloc: textMoreBloc,
                                           constraints: constraints,
                                           uid: uid,
+                                          lastIndex: state.models.length + 1,
                                           i: i,
                                           likeBloc: likeBloc,
                                           modelsPost: state.models,
@@ -308,7 +310,7 @@ class _homePage extends State<homePage> with TickerProviderStateMixin {
                                       likeBloc.add(onLikeResultPostClick());
                                     },
                                     child: ListView.builder(
-                                      physics: ScrollPhysics(),
+                                      physics: BouncingScrollPhysics(),
                                       controller: _scrollController,
                                       // semanticChildCount: state.models.length,
                                       itemCount: state.models.length,
@@ -326,6 +328,7 @@ class _homePage extends State<homePage> with TickerProviderStateMixin {
                                           constraints: constraints,
                                           uid: uid,
                                           i: i,
+                                          lastIndex: state.models.length + 1,
                                           likeBloc: likeBloc,
                                           modelsPost: state.models,
                                           myFeedBloc: myFeedBloc,

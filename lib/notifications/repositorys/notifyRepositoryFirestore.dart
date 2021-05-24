@@ -21,15 +21,21 @@ class NotifyRepositoryFirestore implements NotifyRepository {
   @override
   Stream<String> getCounterNotify() {
     print("load counter notify uid:${uid}");
-    return _mRefCounter
-        .collection("Notifications")
-        .doc("${uid}")
-        .collection("counter")
-        .doc("counter")
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.get("counter").toString();
-    });
+    try {
+      return _mRefCounter
+          .collection("Notifications")
+          .doc("${uid}")
+          .collection("counter")
+          .doc("counter")
+          .snapshots()
+          .map((snapshot) {
+        if (snapshot != null) {
+          return snapshot.get("counter").toString();
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
