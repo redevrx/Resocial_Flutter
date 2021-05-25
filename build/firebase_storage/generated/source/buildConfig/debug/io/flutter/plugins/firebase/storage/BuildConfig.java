@@ -17,5 +17,5 @@ public final class BuildConfig {
   public static final String VERSION_NAME = "";
   // Fields from default config.
   public static final String LIBRARY_NAME = "flutter-fire-gcs";
-  public static final String LIBRARY_VERSION = "8.0.0";
+  public static final String LIBRARY_VERSION = "8.1.0";
 }

@@ -13,13 +13,17 @@ import 'dart:async';
 import 'package:socialapp/likes/export/export_like.dart';
 import 'package:socialapp/textMore/export/export.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
+import 'package:socialapp/utils/utils.dart';
 
 class ProfileRequestFriend extends StatelessWidget {
   final Color bodyColor;
   //this uid is uid of post not uid of current user
   final String uid;
-  const ProfileRequestFriend({Key key, this.bodyColor, this.uid})
-      : super(key: key);
+  const ProfileRequestFriend({
+    Key key,
+    this.bodyColor,
+    this.uid,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +102,7 @@ class ProfileRequestFriend extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            // using uid of curent user that login
                             stackUserPost(
                               constraints: constraints,
                               editProfileBloc: editProfileBloc,
@@ -188,9 +193,9 @@ class stackUserPost extends StatefulWidget {
 
 class _stackUserPost extends State<stackUserPost> {
   //get current user id use for check like post
-  void _getUid() async {
+  Future<void> _getUid() async {
     final _pref = await SharedPreferences.getInstance();
-    _uid = _pref.getString("uid");
+    _uid = _pref.getString("uid") ?? "";
   }
 
   void _onScroll() {
@@ -222,9 +227,6 @@ class _stackUserPost extends State<stackUserPost> {
   void initState() {
     // TODO: implement initState
 
-    //
-    _getUid();
-
     super.initState();
     _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
     likeBloc = BlocProvider.of<LikeBloc>(context);
@@ -235,9 +237,13 @@ class _stackUserPost extends State<stackUserPost> {
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+
+    //
+    await _getUid();
+
     //load like bloc
     likeBloc.add(onLikeResultPostClick());
     //load this user feed
@@ -307,7 +313,7 @@ class _stackUserPost extends State<stackUserPost> {
                         // print(state.models[i].uid.toString());
                         return CardPost(
                           pageNaviagtorChageBloc: widget.pageNaviagtorChageBloc,
-                          uid: widget.uid,
+                          uid: _uid,
                           textMoreBloc: textMoreBloc,
                           constraints: widget.constraints,
                           i: i,
@@ -356,7 +362,7 @@ class _stackUserPost extends State<stackUserPost> {
                         // print(state.models[i].uid.toString());
                         return CardPost(
                           pageNaviagtorChageBloc: widget.pageNaviagtorChageBloc,
-                          uid: widget.uid,
+                          uid: _uid,
                           textMoreBloc: textMoreBloc,
                           constraints: widget.constraints,
                           i: i,
@@ -400,10 +406,9 @@ class _stackImageProfile extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: imageBackground != null
-                    ? NetworkImage("${imageBackground}")
-                    : NetworkImage(
-                        "https://images.squarespace-cdn.com/content/v1/565283a3e4b06ed63ea5f928/1573329464437-AYNV09QNC9AJ8LEJYKUF/ke17ZwdGBToddI8pDm48kIgmuMEC901mgcRVhwO2tjd7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UW3OvbWG8zSNfhp_QhpAPt4lu4BYsFrUKCQ_LKpfT2_FaHwHiHCbTxCLo3H57L5Cyw/blank-profile-picture-973460_1280.jpg"),
+                image: imageBackground.isEmpty || imageBackground == null
+                    ? NetworkImage(PersonURL)
+                    : NetworkImage("${imageBackground}"),
                 fit: BoxFit.cover),
             color: bodyColor.withOpacity(.15),
             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(55.0))),
@@ -422,7 +427,9 @@ class _stackImageProfile extends StatelessWidget {
                   child: ClipOval(
                     clipBehavior: Clip.antiAlias,
                     child: Image.network(
-                      "${imageProfile}",
+                      imageProfile.isEmpty || imageProfile == null
+                          ? PersonURL
+                          : "${imageProfile}",
                       width: 100.0,
                       height: 100.0,
                       fit: BoxFit.cover,
@@ -1091,7 +1098,7 @@ Future<void> _showDiaogConfrimDel(
             height: 180,
             margin: EdgeInsets.only(top: 100, left: 12, right: 12, bottom: 50),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(42.0),
+                borderRadius: BorderRadius.circular(28.0),
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
@@ -1121,14 +1128,16 @@ Future<void> _showDiaogConfrimDel(
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          RaisedButton(
+                          ElevatedButton(
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            elevation: 8.0,
-                            color: Colors.red,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0)),
+                            style: ElevatedButton.styleFrom(
+                              elevation: 8.0,
+                              primary: Colors.green,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0)),
+                            ),
                             child: Text(
                               "Cancel",
                               style: TextStyle(
@@ -1138,17 +1147,19 @@ Future<void> _showDiaogConfrimDel(
                           SizedBox(
                             width: 32.0,
                           ),
-                          RaisedButton(
+                          ElevatedButton(
                             onPressed: () {
                               friendManageBloc.add(onRemoveFriendClick(
                                 data: uid,
                               ));
                               Navigator.of(context).pop();
                             },
-                            elevation: 8.0,
-                            color: Colors.green,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0)),
+                            style: ElevatedButton.styleFrom(
+                              elevation: 8.0,
+                              primary: Colors.red,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0)),
+                            ),
                             child: Text(
                               "Yes",
                               style: TextStyle(

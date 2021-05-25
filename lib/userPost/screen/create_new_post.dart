@@ -20,6 +20,8 @@ import 'package:socialapp/userPost/widget/widget_show_image.dart';
 import 'package:socialapp/userPost/widget/widget_show_user_detail.dart';
 import 'dart:async';
 
+import 'package:socialapp/utils/utils.dart';
+
 class CreatePost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -213,6 +215,9 @@ class __CreatePostState extends State<_CreatePost> {
                     listener: (context, state) {
                       if (state is onPostSuccessful) {
                         // Navigator.of(context).pushNamed('/home');
+                        //close dialog
+                        Navigator.of(context).pop();
+                        //
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                               builder: (context) => HomePage(
@@ -220,6 +225,10 @@ class __CreatePostState extends State<_CreatePost> {
                               ),
                             ),
                             (route) => false);
+                      }
+                      if (state is onPostFailed) {
+                        //close dialog
+                        Navigator.of(context).pop();
                       }
                     },
                     child: Container(),
@@ -267,6 +276,8 @@ class __CreatePostState extends State<_CreatePost> {
                           iconSize: 30.0,
                           radius: 46.0,
                           onClick: () {
+                            onLoadingDialog(context);
+                            //
                             postBloc.add(onUserPost(
                               uid: uid,
                             ));

@@ -19,25 +19,23 @@ import 'package:socialapp/userPost/export/export_new_post.dart';
 import 'package:socialapp/utils/utils.dart';
 
 class CardPost extends StatelessWidget {
-  CardPost(
-      {Key key,
-      this.textMoreBloc,
-      this.constraints,
-      this.i,
-      this.likeBloc,
-      this.myFeedBloc,
-      this.postBloc,
-      this.modelsPost,
-      this.editProfileBloc,
-      this.uid,
-      this.pageNaviagtorChageBloc,
-      this.lastIndex})
-      : super(key: key);
+  CardPost({
+    Key key,
+    this.textMoreBloc,
+    this.constraints,
+    this.i,
+    this.likeBloc,
+    this.myFeedBloc,
+    this.postBloc,
+    this.modelsPost,
+    this.editProfileBloc,
+    this.uid,
+    this.pageNaviagtorChageBloc,
+  }) : super(key: key);
 
   final TextMoreBloc textMoreBloc;
   final BoxConstraints constraints;
   final int i;
-  final int lastIndex;
   final LikeBloc likeBloc;
   final MyFeedBloc myFeedBloc;
   final PostBloc postBloc;
@@ -56,7 +54,11 @@ class CardPost extends StatelessWidget {
     }
     return ClipRRect(
       child: Container(
-        margin: EdgeInsets.only(top: 22.0, bottom: lastIndex == i ? 32.0 : 0.0),
+        margin: EdgeInsets.only(
+          top: modelsPost[i].type == "image" && modelsPost[i].body != null
+              ? 36.0
+              : 22.0,
+        ),
         width: double.infinity,
         height: (modelsPost[i].body != null && modelsPost[i].type != "image")
             ? 260.0
@@ -69,7 +71,9 @@ class CardPost extends StatelessWidget {
               left: 10.0,
               top: (modelsPost[i].body != null && modelsPost[i].type != "image")
                   ? 0.0
-                  : 62.0,
+                  : modelsPost[i].body == null || modelsPost[i].body.isEmpty
+                      ? 0.0
+                      : 62.0,
               bottom:
                   (modelsPost[i].body != null && modelsPost[i].type != "image")
                       ? 16.0
@@ -177,42 +181,40 @@ class CardPost extends StatelessWidget {
                         ],
                       ),
                     ))
-                :
-                //type card 300 image
-                //make card content show message or image of this post
-                Positioned(
-                    left: 54.0,
-                    right: 6.0,
-                    top: 0.0,
-                    child: Container(
-                      // height: 300,
-                      // decoration: BoxDecoration(
-                      //     color: Colors.white,
-                      //     borderRadius: BorderRadius.circular(16.0),
-                      //     boxShadow: [
-                      //       BoxShadow(
-                      //           color: Colors.black12,
-                      //           blurRadius: 22.0,
-                      //           offset: Offset(0.5, 0.5),
-                      //           spreadRadius: .5)
-                      //     ]),
-                      child: Column(
-                        children: [
-                          //make container show text more
-
-                          BlocBuilder<TextMoreBloc, TextMoreState>(
-                              builder: (context, state) {
-                            if (state is onTextMoreResult) {
-                              //show message top on card
-                              return _build_show_message_ui(state, 18.0);
-                            }
-                          }),
-                          modelsPost[i].type == "image"
+                : modelsPost[i].body == null || modelsPost[i].body.isEmpty
+                    ? Positioned(
+                        left: 54.0,
+                        right: 6.0,
+                        top: 0.0,
+                        child: Container(
+                          child: modelsPost[i].type == "image"
                               ? _build_card_image_ui(context)
                               : Container(),
-                        ],
-                      ),
-                    )),
+                        ),
+                      )
+                    //type card 300 image
+                    //make card content show message or image of this post
+                    : Positioned(
+                        left: 54.0,
+                        right: 6.0,
+                        top: 0.0,
+                        child: Container(
+                          child: Column(
+                            children: [
+                              //make container show text more
+                              BlocBuilder<TextMoreBloc, TextMoreState>(
+                                  builder: (context, state) {
+                                if (state is onTextMoreResult) {
+                                  //show message top on card
+                                  return _build_show_message_ui(state, 16.0);
+                                }
+                              }),
+                              modelsPost[i].type == "image"
+                                  ? _build_card_image_ui(context)
+                                  : Container(),
+                            ],
+                          ),
+                        )),
 
             //make show user info
             (modelsPost[i].body != null && modelsPost[i].type != "image")
@@ -239,29 +241,53 @@ class CardPost extends StatelessWidget {
                       return Container();
                     }),
                   )
-                : Positioned(
-                    left: 68.0,
-                    right: 22.0,
-                    bottom: 0.0,
-                    child: BlocBuilder<EditProfileBloc, EditProfileState>(
-                        builder: (context, state) {
-                      //make row container user detail
-                      //bloc read user details
-                      if (state is onLoadUserSuccessfully) {
-                        return _build_user_info_ui(context);
-                      }
-                      if (state is onShowDialog) {
-                        return Container();
-                      }
-                      if (state is onEditFailed) {
-                        return Center(
-                            child: Container(
-                          child: Text("${state.data.toString()}"),
-                        ));
-                      }
-                      return Container();
-                    }),
-                  )
+                : modelsPost[i].body == null || modelsPost[i].body.isEmpty
+                    ? Positioned(
+                        left: 68.0,
+                        right: 22.0,
+                        bottom: 36.0,
+                        child: BlocBuilder<EditProfileBloc, EditProfileState>(
+                            builder: (context, state) {
+                          //make row container user detail
+                          //bloc read user details
+                          if (state is onLoadUserSuccessfully) {
+                            return _build_user_info_ui(context);
+                          }
+                          if (state is onShowDialog) {
+                            return Container();
+                          }
+                          if (state is onEditFailed) {
+                            return Center(
+                                child: Container(
+                              child: Text("${state.data.toString()}"),
+                            ));
+                          }
+                          return Container();
+                        }),
+                      )
+                    : Positioned(
+                        left: 68.0,
+                        right: 22.0,
+                        bottom: 0.0,
+                        child: BlocBuilder<EditProfileBloc, EditProfileState>(
+                            builder: (context, state) {
+                          //make row container user detail
+                          //bloc read user details
+                          if (state is onLoadUserSuccessfully) {
+                            return _build_user_info_ui(context);
+                          }
+                          if (state is onShowDialog) {
+                            return Container();
+                          }
+                          if (state is onEditFailed) {
+                            return Center(
+                                child: Container(
+                              child: Text("${state.data.toString()}"),
+                            ));
+                          }
+                          return Container();
+                        }),
+                      )
 
             //
           ],
@@ -579,14 +605,24 @@ class CardPost extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0)),
           child: Column(
             children: <Widget>[
-              Icon(
-                Icons.comment,
+              Image.asset(
+                "assets/icons/comment_icon.png",
                 color: int.parse(modelsPost[i].commentCount) == 0 ||
                         int.parse(modelsPost[i].commentCount) <= 0
                     ? Colors.blueAccent
                     : Colors.white,
-                size: 28.0,
+                scale: 1,
+                width: 28,
+                height: 28,
               ),
+              // Icon(
+              //   Icons.comment,
+              //   color: int.parse(modelsPost[i].commentCount) == 0 ||
+              //           int.parse(modelsPost[i].commentCount) <= 0
+              //       ? Colors.blueAccent
+              //       : Colors.white,
+              //   size: 28.0,
+              // ),
               SizedBox(
                 height: 4.0,
               ),
@@ -619,28 +655,34 @@ class make_shared_ui extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () async {
-        var shared = SharedApp();
-        if (modelsPost[i].type == 'image') {
-          await shared.sharedImage(
-              context, modelsPost[i].image, modelsPost[i].body);
-        } else {
-          await shared.sharedText(context, modelsPost[i].body);
-        }
-      },
-      child: Column(
-        children: <Widget>[
-          Icon(
-            Icons.ios_share,
-            size: 28.0,
-            color: Colors.blueAccent,
+    return Padding(
+      padding: const EdgeInsets.only(right: 14),
+      child: InkWell(
+        onTap: () async {
+          var shared = SharedApp();
+          if (modelsPost[i].type == 'image') {
+            await shared.sharedImage(
+                context, modelsPost[i].image, modelsPost[i].body);
+          } else {
+            await shared.sharedText(context, modelsPost[i].body);
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          child: Column(
+            children: <Widget>[
+              Icon(
+                Icons.ios_share,
+                size: 28.0,
+                color: Colors.blueAccent,
+              ),
+              SizedBox(
+                width: 6.0,
+              ),
+              // Text('Share')
+            ],
           ),
-          SizedBox(
-            width: 4.0,
-          ),
-          // Text('Share')
-        ],
+        ),
       ),
     );
   }

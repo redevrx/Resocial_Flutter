@@ -203,7 +203,8 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     final _sRef = FirebaseStorage.instance.ref().child("Profile Image/Images");
     final uploadTask = _sRef.child("${uid}" + ".jpg").putFile(event.image);
 
-    var url = await uploadTask.snapshot.ref.getDownloadURL();
+    var task = await uploadTask;
+    var url = await task.ref.getDownloadURL();
 
     var it = await updateUserinfo(uid, url.toString());
 

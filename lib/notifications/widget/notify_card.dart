@@ -20,7 +20,7 @@ class NotifyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 6.0),
+      margin: EdgeInsets.only(bottom: 12.0),
       child: Dismissible(
           secondaryBackground: Container(
             height: 95.0,

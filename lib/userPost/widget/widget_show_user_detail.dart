@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/models/EditProfileModel.dart';
-
+import 'package:socialapp/utils/utils.dart';
 
 class widgetShowUserDetail extends StatelessWidget {
   final EditProfileModel model;
   const widgetShowUserDetail({
-    Key key, this.model,
+    Key key,
+    this.model,
   }) : super(key: key);
 
   @override
@@ -23,7 +24,9 @@ class widgetShowUserDetail extends StatelessWidget {
               children: <Widget>[
                 ClipOval(
                   child: Image.network(
-                    "${model.imageProfile}",
+                    model.imageProfile == null || model.imageProfile.isEmpty
+                        ? PersonURL
+                        : "${model.imageProfile}",
                     fit: BoxFit.cover,
                     width: 50.0,
                     height: 50.0,

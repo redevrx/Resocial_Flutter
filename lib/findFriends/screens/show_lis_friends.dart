@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socialapp/utils/utils.dart';
 import '../eport/export_friend.dart';
 
 class AllUser extends StatelessWidget {
@@ -70,7 +71,7 @@ class allFriends extends StatelessWidget {
                       }
                       return Container();
                     },
-                  )
+                  ),
                 ],
               ),
             ),

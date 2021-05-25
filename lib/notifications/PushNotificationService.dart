@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:async';
@@ -12,19 +13,15 @@ class PushNotificationService {
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   final showNotify = ShowNotifyService();
 
-  Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
-    if (message.containsKey('data')) {
-      // Handle data message
-      final dynamic data = message['data'];
-    }
-
-    if (message.containsKey('notification')) {
-      // Handle notification message
-      final dynamic notification = message['notification'];
-    }
-
-    // Or do other work.
-    print("onBackgriundMessage");
+  Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
+    await Firebase.initializeApp().whenComplete(() {
+      if (message.notification.title == "chat") {
+        showNotify.showNotifyMessage(message.notification);
+      } else {
+        //post notidy
+        showNotify.showNotifyPost(message.notification);
+      }
+    });
   }
 
   Future initialise() async {
@@ -70,26 +67,8 @@ class PushNotificationService {
     //create notify ios and android
     showNotify.initialNotify();
 
-    //this event will work while open
-    FirebaseMessaging.onMessage.listen((message) {
-      if (message.notification.title == "chat") {
-        showNotify.showNotifyMessage(message.notification);
-      } else {
-        //post notidy
-        // print('notifications');
-        showNotify.showNotifyPost(message.notification);
-      }
-    });
-
     //this event will wok close app
-    // FirebaseMessaging.onBackgroundMessage((message) {
-    //   if (message.data["title"].toString() == "chat") {
-    //     showNotify.showNotifyMessage(message.data);
-    //   } else {
-    //     //post notidy
-    //     showNotify.showNotifyPost(message.data);
-    //   }
-    // },);
+    FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
 
     //this event will work when user click
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
@@ -104,6 +83,18 @@ class PushNotificationService {
         //go to home page
       }
     });
+
+    //this event will work while open
+    FirebaseMessaging.onMessage.listen((message) {
+      if (message.notification.title == "chat") {
+        showNotify.showNotifyMessage(message.notification);
+      } else {
+        //post notidy
+        // print('notifications');
+        showNotify.showNotifyPost(message.notification);
+      }
+    });
+
     //notification and go to app
     //check data from notification
     //and give go that screen ?

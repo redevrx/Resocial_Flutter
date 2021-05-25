@@ -8,7 +8,7 @@ class PostModel {
   String date;
   String time;
   String image;
-  dynamic likeResults;
+  Map likeResults;
   String likesCount;
   String postId;
   String uid;

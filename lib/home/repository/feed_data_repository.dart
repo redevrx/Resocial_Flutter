@@ -34,13 +34,13 @@ class FeedRepository {
   }
 
   Future<List<String>> onCheckUserLikePost(
-      List<DocumentSnapshot> postId) async {
+      List<DocumentSnapshot<Map>> postId) async {
     List<String> result = [];
 
     //  print('I :${i}');
     //db
     final _mRef = FirebaseFirestore.instance;
-    final _mAuth = await FirebaseAuth.instance.currentUser;
+    final _mAuth = FirebaseAuth.instance.currentUser;
     final uid = _mAuth.uid.toString();
 
     for (int i = 0; i < postId.length; i++) {
@@ -170,7 +170,7 @@ class FeedRepository {
         if (pageExists) {
           models[currentPage] = feed;
         } else {
-          models.add(feed);
+          models..add(feed);
         }
         //  // Concatenate the full list to be shown
         var allFeed = models.fold<List<PostModel>>(
@@ -178,7 +178,9 @@ class FeedRepository {
 
         print('all feed legnth service :${allFeed.length}');
 
-        _feedController..sink.add(allFeed);
+        _feedController
+          ..sink
+          ..add(allFeed);
 
         // Save the last document from the results only if it's the current last page
         if (currentPage == models.length - 1) {
@@ -246,7 +248,7 @@ class FeedRepository {
       if (pageExists) {
         onwerListFeed[currentPage] = feedOnwer;
       } else {
-        onwerListFeed.add(feedOnwer);
+        onwerListFeed..add(feedOnwer);
       }
 
       //  // Concatenate the full list to be shown

@@ -14,13 +14,12 @@ class widgetGetMessage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
-        height: 140.0,
         child: TextFormField(
           onChanged: (message) =>
               postBloc.add(onMessagePostChange(message: message)),
           keyboardType: TextInputType.multiline,
-          //  maxLength: 100,
-          maxLines: 120,
+          maxLines: null,
+          minLines: 4,
           initialValue: oldMessage ?? "",
           showCursor: true,
           decoration: InputDecoration(

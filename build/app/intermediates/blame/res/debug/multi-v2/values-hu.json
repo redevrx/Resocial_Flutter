@@ -4,20 +4,20 @@
             "outputFile": "D:\\Tutotials\\Flutter\\Projects\\socialapp\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-hu\\values-hu.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Kasem Saikhuedong\\.gradle\\caches\\transforms-2\\files-2.1\\052b46c207b3f691541b6688ae2d2c80\\jetified-firebase-messaging-21.0.1\\res\\values-hu\\values.xml",
+                    "source": "C:\\Users\\Kasem Saikhuedong\\.gradle\\caches\\transforms-2\\files-2.1\\ad4c3e0296ecadcad31a20efb890b07a\\jetified-firebase-messaging-22.0.0\\res\\values-hu\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
                         "startOffsets": "207",
-                        "endColumns": "99",
-                        "endOffsets": "306"
+                        "endColumns": "69",
+                        "endOffsets": "276"
                     },
                     "to": {
                         "startLines": "20",
                         "startColumns": "4",
                         "startOffsets": "3022",
-                        "endColumns": "103",
-                        "endOffsets": "3121"
+                        "endColumns": "73",
+                        "endOffsets": "3091"
                     }
                 },
                 {
@@ -66,9 +66,9 @@
                     "to": {
                         "startLines": "21",
                         "startColumns": "4",
-                        "startOffsets": "3126",
+                        "startOffsets": "3096",
                         "endColumns": "100",
-                        "endOffsets": "3222"
+                        "endOffsets": "3192"
                     }
                 }
             ]

@@ -255,7 +255,7 @@ class _homePage extends State<homePage> with TickerProviderStateMixin {
                                           textMoreBloc: textMoreBloc,
                                           constraints: constraints,
                                           uid: uid,
-                                          lastIndex: state.models.length + 1,
+
                                           i: i,
                                           likeBloc: likeBloc,
                                           modelsPost: state.models,
@@ -328,7 +328,7 @@ class _homePage extends State<homePage> with TickerProviderStateMixin {
                                           constraints: constraints,
                                           uid: uid,
                                           i: i,
-                                          lastIndex: state.models.length + 1,
+
                                           likeBloc: likeBloc,
                                           modelsPost: state.models,
                                           myFeedBloc: myFeedBloc,

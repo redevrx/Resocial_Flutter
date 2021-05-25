@@ -141,15 +141,15 @@ class build_list_notify extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context).size.height * .75,
       width: double.infinity,
-      child: new ListView(
-        children: itemsNotify.map((model) {
-          //card notify list
+      child: new ListView.builder(
+        itemCount: itemsNotify.length,
+        itemBuilder: (context, index) {
           return NotifyCard(
-            model: model,
+            model: itemsNotify[index],
             notifyBloc: notifyBloc,
             myFeedBloc: myFeedBloc,
           );
-        }).toList(),
+        },
       ),
     );
   }

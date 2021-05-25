@@ -21,7 +21,10 @@ class RequestFriend extends StatelessWidget {
   //uid this is id of post
   final String userId;
 
-  const RequestFriend({Key key, this.userId}) : super(key: key);
+  const RequestFriend({
+    Key key,
+    this.userId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -7,12 +7,13 @@ import 'package:socialapp/home/export/export_file.dart';
 
 class LikeRepository {
   Future<List<String>> onCheckUserLikePost(
-      List<DocumentSnapshot> postId) async {
-    List<String> result = List();
+      List<DocumentSnapshot<Map>> postId) async {
+    List<String> result = [];
 
     //  print('I :${i}');
     final _mAuth = await FirebaseAuth.instance.currentUser;
     final uid = await _mAuth.uid.toString();
+
     //db
     final _mRef = FirebaseFirestore.instance;
 
