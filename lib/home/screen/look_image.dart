@@ -7,15 +7,18 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:socialapp/home/bloc/download_cubit.dart';
+import 'package:socialapp/home/widget/post_widget.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class LookImage extends StatelessWidget {
-  final String imageUrl;
+  final List urls;
+  final List urlsType;
   final int i;
 
-  const LookImage({Key key, @required this.imageUrl = "", this.i})
+  const LookImage({Key key, @required this.urls = null, this.urlsType, this.i})
       : super(key: key);
 
-  Future checkStoragePermission(BuildContext context, String imageUrl) async {
+  Future checkStoragePermission(BuildContext context, List imageUrl) async {
     var storage = await Permission.storage;
 
     if (await storage.status.isDenied) {
@@ -28,11 +31,11 @@ class LookImage extends StatelessWidget {
 
     if (await storage.status.isGranted) {
       //downloadImage(imageUrl);
-      downloadImage(context, imageUrl);
+      downloadImage(context, urls);
     }
   }
 
-  Future<void> downloadImage(BuildContext context, String imageUrl) async {
+  Future<void> downloadImage(BuildContext context, List imageUrl) async {
     var path = "";
     if (Platform.isAndroid) {
       print("android");
@@ -53,22 +56,25 @@ class LookImage extends StatelessWidget {
       }
     }
 
-    var response = await http.Client().get(Uri.parse(imageUrl));
-    File file = new File(join(path + "/resocial", "image${i}.png"));
-    await file.writeAsBytesSync(response.bodyBytes);
-    print('object :${file}');
+    for (int i = 0; i < urls.length; i++) {
+      // var response = await http.Client().get(Uri.parse(imageUrl));
+      var response = await http.Client().get(Uri.parse(urls[i]));
+      File file = new File(join(path + "/resocial", "image${i}.png"));
+      file.writeAsBytesSync(response.bodyBytes);
+      print('object :${file}');
 
-    onShowDownloadDialog(context);
-    Future.delayed(Duration(seconds: 2), () {
-      Navigator.pop(context);
-      context.bloc<DownloadCubit>().onDownloadSuccess();
-    });
-    //print(object)
+      onShowDownloadDialog(context);
+      Future.delayed(Duration(seconds: 2), () {
+        Navigator.pop(context);
+        context.read<DownloadCubit>().onDownloadSuccess();
+      });
+      //print(object)
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    print('image : $i' + imageUrl);
+    // print('image : $i' + urls);
     return BlocProvider(
       create: (context) => DownloadCubit(DownloadState.onNormalDwonlaod),
       child: Scaffold(
@@ -85,7 +91,7 @@ class LookImage extends StatelessWidget {
                       case DownloadState.onNormalDwonlaod:
                         return InkWell(
                             onTap: () {
-                              checkStoragePermission(context, imageUrl);
+                              checkStoragePermission(context, urls);
                               context.read<DownloadCubit>().onClickDownload();
                             },
                             child: Icon(
@@ -100,7 +106,7 @@ class LookImage extends StatelessWidget {
                       case DownloadState.onDownloadSuccess:
                         return InkWell(
                             onTap: () {
-                              checkStoragePermission(context, imageUrl);
+                              checkStoragePermission(context, urls);
                               context.read<DownloadCubit>().onClickDownload();
                             },
                             child: Icon(
@@ -160,7 +166,11 @@ class LookImage extends StatelessWidget {
               )
             ],
           ),
-          body: _widgetShowImage(i: i, imageUrl: imageUrl)
+          body: _widgetShowImage(
+            i: i,
+            urls: urls,
+            urlsType: urlsType,
+          )
           // Draggable(
           //     data: 'drag image',
           //     onDragStarted: () {
@@ -266,9 +276,11 @@ class LookImage extends StatelessWidget {
 
 class _widgetShowImage extends StatelessWidget {
   final int i;
-  final String imageUrl;
+  final List urls;
+  final List urlsType;
 
-  const _widgetShowImage({Key key, this.i, this.imageUrl}) : super(key: key);
+  const _widgetShowImage({Key key, this.i, this.urls, @required this.urlsType})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     // final TransformationController controller = TransformationController();
@@ -276,11 +288,27 @@ class _widgetShowImage extends StatelessWidget {
       child: ClipRect(
         child: InteractiveViewer(
             maxScale: 20.0,
-            child: Image.network(
-              imageUrl,
-              fit: BoxFit.cover,
-              height: MediaQuery.of(context).size.height * .4,
+            child: Container(
+              // height: MediaQuery.of(context).size.height * .4,
               width: MediaQuery.of(context).size.width * 1,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: urls.length,
+                itemBuilder: (context, index) {
+                  return urlsType[index] == "video"
+                      ? PlayVideoList(
+                          fulScreen: true,
+                          urls: urls[index],
+                        )
+                      : FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
+                          image: urls[index],
+                          fit: BoxFit.cover,
+                          // height: MediaQuery.of(context).size.height * .4,
+                          width: MediaQuery.of(context).size.width * 1,
+                        );
+                },
+              ),
             )),
       ),
     );

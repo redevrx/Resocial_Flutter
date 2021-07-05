@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,17 +19,31 @@ import 'dart:async';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'localizations/languages.dart';
+
 // import 'package:workmanager/workmanager.dart';
+Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
+  await Firebase.initializeApp().whenComplete(() {
+    if (message.notification.title == "chat") {
+      // showNotify.showNotifyMessage(message.notification);
+    } else {
+      //post notidy
+      // showNotify.showNotifyPost(message.notification);
+    }
+  });
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //this event will wok close app
   await Firebase.initializeApp().whenComplete(() async {
+    final notifyService = new PushNotificationService();
     print('Firebase Initial Complete');
-    final notifyService = PushNotificationService();
     await notifyService.initialise();
     notifyService.getDeviceToken();
   });
   //
+  FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
+  // notifyService.initBackground();
 
   if (kIsWeb) {
     // Disable persistence on web platforms

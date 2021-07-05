@@ -25,7 +25,7 @@ class widget_like_ui extends StatelessWidget {
 
         if (postModels[i].getUserLikePost(uid)) {
           //un like
-          await likeBloc.add(onLikeClick(
+          await likeBloc.add(OnLikeClick(
               postId: postModels[i].postId,
               statusLike: 'un',
               onwerId: postModels[i].uid));
@@ -36,7 +36,7 @@ class widget_like_ui extends StatelessWidget {
           postModels[i].likeResults['${uid}'] = null;
         } else {
           //like
-          await likeBloc.add(onLikeClick(
+          await likeBloc.add(OnLikeClick(
               postId: postModels[i].postId,
               statusLike: 'like',
               onwerId: postModels[i].uid));

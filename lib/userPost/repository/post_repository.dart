@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:socialapp/userPost/models/file_model..dart';
 
 class PostRepository {
   //update user post
@@ -45,7 +47,7 @@ class PostRepository {
         print('update post image');
 
         final _mRefFile =
-            FirebaseStorage.instance.ref().child("Post Image").child("Images");
+            FirebaseStorage.instance.ref().child("Post File").child("Files");
 
         //save image to data storage
         final uploadTask = _mRefFile.child(postId).putFile(image);
@@ -127,7 +129,7 @@ class PostRepository {
   Future<void> removePost(String postId) async {
     final _mRef = FirebaseFirestore.instance;
     final _mRefFile =
-        FirebaseStorage.instance.ref().child("Post Image").child("Images");
+        FirebaseStorage.instance.ref().child("Post File").child("Files");
 
     try {
       await _mRefFile
@@ -159,15 +161,22 @@ class PostRepository {
 // post wuth message not image |check|
 //if there is giav upload image to firebase storage before
 //and make save content post to firestore
-  Future<String> onCreatePost(String uid, String message, File image) async {
+  Future<String> onCreatePost(
+    String uid,
+    String message,
+    List<FileModel> files,
+  ) async {
     bool va = false;
     String result = "";
 
     final _mRef = FirebaseFirestore.instance;
-    final _mRefFile =
-        FirebaseStorage.instance.ref().child("Post Image").child("Images");
-
+    //
     final key = _mRef.collection("Post").doc().id;
+    final _mRefFile = FirebaseStorage.instance
+        .ref()
+        .child("Post File")
+        .child("Files")
+        .child(key);
     Map mapBody = HashMap<String, dynamic>();
 
     //get date time
@@ -179,20 +188,44 @@ class PostRepository {
     // String mTime = time.format(dateTime);
 
     //check user post with message or image
-    if (image != null) {
+    if (files != null) {
       //post message with image
 
-      //save image to data storage
-      final uploadTask = _mRefFile.child(key).putFile(image);
-      final task = await uploadTask;
+      //keep url of image or video
+      List<String> urls = [];
+      List<String> urlsType = [];
 
-      String url = await task.ref.getDownloadURL();
+      print("upload total files is :${files.length}");
+
+      //save image to data storage
+      for (int i = 0; i < files.length; i++) {
+        //upload for image or video files
+        final uploadTask = _mRefFile
+            .child("${new Random.secure().nextDouble()}" +
+                "${files[i].getTypeFile() ? 'video' : 'image'}" +
+                key)
+            .putFile(files[i].getFile());
+        final task = await uploadTask;
+
+        urls.add(await task.ref.getDownloadURL());
+
+        if (!files[i].getTypeFile()) {
+          //keep url image file in list
+          urlsType.add("image");
+          // String url = await task.ref.getDownloadURL();
+        } else {
+          //keep url image file in list
+          urlsType.add("video");
+          // String url = await task.ref.getDownloadURL();
+        }
+      }
 
       //make map to json
       mapBody["uid"] = uid;
       mapBody["postId"] = key;
       mapBody["body"] = message;
-      mapBody["image"] = "${url}";
+      mapBody["urls"] = urls;
+      mapBody["urlsType"] = urlsType;
       mapBody['date'] = date;
       mapBody['time'] = time;
       mapBody['type'] = 'image';
@@ -212,7 +245,8 @@ class PostRepository {
       mapBody["uid"] = uid;
       mapBody["postId"] = key;
       mapBody["body"] = message;
-      mapBody["image"] = "";
+      mapBody["image"] = [];
+      mapBody["video"] = [];
       mapBody['date'] = date;
       mapBody['time'] = time;
       mapBody['type'] = 'message';

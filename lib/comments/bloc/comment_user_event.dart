@@ -3,26 +3,39 @@ import 'package:socialapp/home/export/export_file.dart';
 
 abstract class CommentEvent {}
 
-class onAddCommentClick extends CommentEvent {
+class OnAddCommentClick extends CommentEvent {
   final String message;
   final PostModel postModel;
   final List<CommentModel> comments;
 
-  onAddCommentClick({this.comments, this.message, this.postModel});
+  OnAddCommentClick({this.comments, this.message, this.postModel});
 }
 
-class onLoadComments extends CommentEvent {
+class OnLoadComments extends CommentEvent {
   final String postId;
 
-  onLoadComments({this.postId});
+  OnLoadComments({this.postId});
 }
 
-class onEditComment extends CommentEvent {}
+class OnEditComment extends CommentEvent {}
 
-class onLoadedComment extends CommentEvent {
+class OnLoadedComment extends CommentEvent {
   final List<CommentModel> commentModel;
 
-  onLoadedComment({this.commentModel});
+  OnLoadedComment({this.commentModel});
 }
 
-class onDisponseComment extends CommentEvent {}
+class OnUpdateComment extends CommentEvent {
+  List<CommentModel> comments;
+  int index;
+  String body;
+  OnUpdateComment({this.comments, this.index, this.body});
+}
+
+class OnRemoveComment extends CommentEvent {
+  List<CommentModel> comments;
+  int index;
+  OnRemoveComment({this.comments, this.index});
+}
+
+class OnDisponseComment extends CommentEvent {}

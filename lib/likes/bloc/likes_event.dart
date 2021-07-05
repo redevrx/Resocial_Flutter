@@ -3,23 +3,23 @@ import 'package:socialapp/home/export/export_file.dart';
 
 abstract class LikeEvent {}
 
-class onLikeClick extends LikeEvent {
+class OnLikeClick extends LikeEvent {
   final String postId;
   final String statusLike;
   final String onwerId;
 
-  onLikeClick({this.statusLike, this.postId, this.onwerId});
+  OnLikeClick({this.statusLike, this.postId, this.onwerId});
 }
 
-class onCheckLikeClick extends LikeEvent {
+class OnCheckLikeClick extends LikeEvent {
   final List<DocumentSnapshot> postId;
-  onCheckLikeClick({this.postId});
+  OnCheckLikeClick({this.postId});
 }
 
-class onCehckOneLike extends LikeEvent {
+class OnCehckOneLike extends LikeEvent {
   final String id;
 
-  onCehckOneLike({this.id});
+  OnCehckOneLike({this.id});
 }
 
-class onLikeResultPostClick extends LikeEvent {}
+class OnLikeResultPostClick extends LikeEvent {}

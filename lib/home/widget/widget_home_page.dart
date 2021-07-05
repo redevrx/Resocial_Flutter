@@ -53,7 +53,7 @@ class _homePage extends State<homePage> with TickerProviderStateMixin {
     //event load my feed
     // if (uid.isNotEmpty) {
     myFeedBloc.add(onLoadMyFeedClick());
-    likeBloc.add(onLikeResultPostClick());
+    likeBloc.add(OnLikeResultPostClick());
     editProfileBloc.add(loadFriendProfilePost());
     // }
   }
@@ -235,7 +235,7 @@ class _homePage extends State<homePage> with TickerProviderStateMixin {
                                       //event load my feed
                                       // GetTableList.add(true);
                                       myFeedBloc.add(onLoadMyFeedClick());
-                                      likeBloc.add(onLikeResultPostClick());
+                                      likeBloc.add(OnLikeResultPostClick());
                                     },
                                     child: ListView.builder(
                                       physics: BouncingScrollPhysics(),
@@ -307,7 +307,7 @@ class _homePage extends State<homePage> with TickerProviderStateMixin {
                                       //event load my feed
                                       // GetTableList.add(true);
                                       myFeedBloc.add(onLoadMyFeedClick());
-                                      likeBloc.add(onLikeResultPostClick());
+                                      likeBloc.add(OnLikeResultPostClick());
                                     },
                                     child: ListView.builder(
                                       physics: BouncingScrollPhysics(),
@@ -508,7 +508,7 @@ class postWithImage extends StatelessWidget {
                   // likes bloc
                   BlocBuilder<LikeBloc, LikeState>(
                     builder: (context, state) {
-                      if (state is onCheckLikesResult) {
+                      if (state is OnCheckLikesResult) {
                         print("on onCheckLikesResult");
                         //var likeResult = state.likeResult[i];
                         return _make_like_ui(
@@ -517,7 +517,7 @@ class postWithImage extends StatelessWidget {
                             modelsPost: modelsPost,
                             likeBloc: likeBloc);
                       }
-                      if (state is onLikesResult) {
+                      if (state is OnLikesResult) {
                         print("on onLikesResult");
                         return _make_like_ui(
                             uid: uid,
@@ -525,7 +525,7 @@ class postWithImage extends StatelessWidget {
                             modelsPost: modelsPost,
                             likeBloc: likeBloc);
                       }
-                      if (state is onLikeProgress) {
+                      if (state is OnLikeProgress) {
                         // not working
                         print("on onLikeProgress");
                         return _make_like_ui(
@@ -534,7 +534,7 @@ class postWithImage extends StatelessWidget {
                             modelsPost: modelsPost,
                             likeBloc: likeBloc);
                       }
-                      if (state is onLikeResultPost) {
+                      if (state is OnLikeResultPost) {
                         print("on onLikeResultPost");
                         return _make_like_ui(
                             uid: uid,
@@ -599,17 +599,30 @@ class postWithImage extends StatelessWidget {
               print('Look image');
 
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    LookImage(imageUrl: modelsPost[i].image, i: i),
+                builder: (context) => LookImage(
+                  urls: modelsPost[i].urls,
+                  i: i,
+                  urlsType: modelsPost[i].urlsType,
+                ),
               ));
             },
-            child: Hero(
-              tag: "look${i}",
-              child: Image.network(
-                '${modelsPost[i].image}',
-                fit: BoxFit.cover,
-                width: MediaQuery.of(context).size.width * 1,
-                height: 320.0,
+            child: Container(
+              height: 320.0,
+              child: ListView.builder(
+                itemCount: modelsPost[i].urls.length,
+                itemBuilder: (context, index) {
+                  return modelsPost[i].urlsType[i] == "video"
+                      ? Container()
+                      : Hero(
+                          tag: "look${i}",
+                          child: Image.network(
+                            '${modelsPost[i].urls[i]}',
+                            fit: BoxFit.cover,
+                            width: MediaQuery.of(context).size.width * 1,
+                            height: 320.0,
+                          ),
+                        );
+                },
               ),
             )));
   }
@@ -750,7 +763,7 @@ class postWithImage extends StatelessWidget {
                     myFeedBloc.add(onRemoveItemUpdateUI(
                       postModel: modelsPost,
                     ));
-                    postBloc.add(onRemoveItemClikc(
+                    postBloc.add(OnRemoveItemClikc(
                         postId: modelsPost[i].postId.toString()));
                     modelsPost.removeAt(i);
                     //details.removeAt(i);
@@ -844,8 +857,8 @@ class _make_shared_ui extends StatelessWidget {
       onTap: () async {
         var shared = SharedApp();
         if (modelsPost[i].type == 'image') {
-          await shared.sharedImage(
-              context, modelsPost[i].image, modelsPost[i].body);
+          // await shared.sharedImage(
+          //     context, modelsPost[i].image, modelsPost[i].body);
         } else {
           await shared.sharedText(context, modelsPost[i].body);
         }
@@ -888,7 +901,7 @@ class _make_like_ui extends StatelessWidget {
         print('like result post :${i}');
         if (modelsPost[i].getUserLikePost(uid)) {
           //unlike
-          await likeBloc.add(onLikeClick(
+          await likeBloc.add(OnLikeClick(
               postId: modelsPost[i].postId,
               statusLike: 'un',
               onwerId: modelsPost[i].uid));
@@ -898,7 +911,7 @@ class _make_like_ui extends StatelessWidget {
         } else {
           //like
           print("post id :${modelsPost[i].postId}");
-          await likeBloc.add(onLikeClick(
+          await likeBloc.add(OnLikeClick(
               postId: modelsPost[i].postId,
               statusLike: 'like',
               onwerId: modelsPost[i].uid));

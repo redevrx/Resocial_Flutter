@@ -13,6 +13,8 @@ import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
 import 'dart:async';
 
+import 'package:socialapp/utils/utils.dart';
+
 class EditPost extends StatelessWidget {
   final PostModel postModel;
   const EditPost({Key key, this.postModel}) : super(key: key);
@@ -40,7 +42,7 @@ class _EditPost extends StatefulWidget {
 
 class __EditPostState extends State<_EditPost> {
   //image url from old post
-  String url = '';
+  List urls;
 
   EditProfileBloc editProfileBloc;
   PostBloc postBloc;
@@ -50,7 +52,7 @@ class __EditPostState extends State<_EditPost> {
     editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
     postBloc = BlocProvider.of<PostBloc>(context);
     //set message body to edit text
-    url = widget.postModel.image;
+    urls = widget.postModel.urls;
 
     super.initState();
   }
@@ -80,7 +82,7 @@ class __EditPostState extends State<_EditPost> {
 
   //check camera or gallery permission grant
   Future<void> _checkGalleryPermission(PostBloc postBloc) async {
-    var gallery = await Permission.storage;
+    var gallery = Permission.storage;
 
     if (await gallery.status.isDenied) {
       //not grant
@@ -100,7 +102,7 @@ class __EditPostState extends State<_EditPost> {
   }
 
   Future<void> _checkCameraPermission(PostBloc postBloc) async {
-    var camera = await Permission.camera;
+    var camera = Permission.camera;
 
     if (await camera.status.isDenied) {
       //not grant
@@ -124,8 +126,8 @@ class __EditPostState extends State<_EditPost> {
 
     if (file != null) {
       // _image = File(arg.path);
-      postBloc.add(omImageFilePostChange(imageFile: File(file.path)));
-      url = "";
+      postBloc.add(OnImageFilePostChange(file: File(file.path)));
+      urls = null;
     }
   }
 
@@ -134,8 +136,8 @@ class __EditPostState extends State<_EditPost> {
 
     if (file != null) {
       // _image = File(arg.path);
-      postBloc.add(omImageFilePostChange(imageFile: File(file.path)));
-      url = "";
+      postBloc.add(OnImageFilePostChange(file: File(file.path)));
+      urls = null;
     }
   }
 
@@ -170,13 +172,13 @@ class __EditPostState extends State<_EditPost> {
                 //3 make post bloc post status
                 BlocBuilder<PostBloc, StatePost>(
                   builder: (context, state) {
-                    if (state is onPostProgress) {
+                    if (state is OnPostProgress) {
                       return Container(
                           child: Center(
                         child: CircularProgressIndicator(),
                       ));
                     }
-                    if (state is onPostFailed) {
+                    if (state is OnPostFailed) {
                       return Container(
                           child: Center(
                         child: Text(
@@ -185,7 +187,7 @@ class __EditPostState extends State<_EditPost> {
                         ),
                       ));
                     }
-                    if (state is onPostSuccessful) {
+                    if (state is OnPostSuccessful) {
                       // Navigator.of(context).pop();
                       return Container(
                           child: Center(
@@ -198,8 +200,12 @@ class __EditPostState extends State<_EditPost> {
                 //4. check bloc event navigator
                 BlocListener<PostBloc, StatePost>(
                   listener: (context, state) {
-                    if (state is onPostSuccessful) {
+                    if (state is OnPostSuccessful) {
                       // Navigator.of(context).pushNamed('/home');
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    }
+                    if (state is OnPostFailed) {
                       Navigator.of(context).pop();
                     }
                   },
@@ -226,15 +232,15 @@ class __EditPostState extends State<_EditPost> {
                         // buildWhen: (previous, current) => previous.imageFile != current.imageFIle,
                         cubit: postBloc,
                         builder: (context, state) {
-                          if (state is onImageFilePostChangeState) {
+                          if (state is OnImageFilePostChangeState) {
                             return widgetShowImage(
-                              image: state.imageFile,
-                              url: "",
+                              files: state.pathFiles,
+                              urls: null,
                             );
                           }
                           return widgetShowImage(
-                            image: null,
-                            url: widget.postModel.image,
+                            files: null,
+                            urls: widget.postModel.urls,
                           );
                         },
                       ),
@@ -254,7 +260,7 @@ class __EditPostState extends State<_EditPost> {
                               onClick: () {
                                 // update user post
                                 print('updating post....');
-                                postBloc.add(onUpdatePostClick(
+                                postBloc.add(OnUpdatePostClick(
                                     type: widget.postModel.type,
                                     postId: widget.postModel.postId,
                                     uid: widget.postModel.uid,
@@ -262,9 +268,13 @@ class __EditPostState extends State<_EditPost> {
                                     //url == model url
                                     //if select new image give
                                     //url == ""
-                                    url: url,
+                                    //wait edit uild
+                                    // url: url,
                                     commentCount: widget.postModel.commentCount,
                                     likeCount: widget.postModel.likesCount));
+
+                                onLoadingDialog(context,
+                                    message: "Editing Post");
                               },
                             )
                             //_buildFloatingActionButtonPost(postBloc),

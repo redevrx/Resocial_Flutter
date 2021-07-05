@@ -306,8 +306,8 @@ class FriensManageRepo {
     bool it1, it2 = false;
     var result = "";
 
-    final _mAuth = await FirebaseAuth.instance.currentUser;
-    final uid = await _mAuth.uid.toString();
+    final _mAuth = FirebaseAuth.instance.currentUser;
+    final uid = _mAuth.uid.toString();
 
     final _mRefUser = FirebaseFirestore.instance;
     final _mRefFriend = FirebaseFirestore.instance;

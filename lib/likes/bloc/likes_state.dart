@@ -1,19 +1,21 @@
-abstract class LikeState{}
-class onLikesResult extends LikeState
-{
+abstract class LikeState {}
+
+class OnLikesResult extends LikeState {
   final bool likeResult;
 
-  onLikesResult({this.likeResult});
+  OnLikesResult({this.likeResult});
   @override
-  String toString()=> "${this.likeResult}";
+  String toString() => "${this.likeResult}";
 }
-class onCheckLikesResult extends LikeState
-{
+
+class OnCheckLikesResult extends LikeState {
   final List<String> likeResult;
 
-  onCheckLikesResult({this.likeResult});
+  OnCheckLikesResult({this.likeResult});
   @override
-  String toString()=> "${this.likeResult}";
+  String toString() => "${this.likeResult}";
 }
-class onLikeProgress extends LikeState{}
-class onLikeResultPost extends LikeState{}
+
+class OnLikeProgress extends LikeState {}
+
+class OnLikeResultPost extends LikeState {}

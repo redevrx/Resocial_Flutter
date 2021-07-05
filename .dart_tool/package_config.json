@@ -536,6 +536,24 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "video_player",
+      "rootUri": "file:///D:/Programs/ProgrammingLanguage/dart-sdk/flutter/.pub-cache/hosted/pub.dartlang.org/video_player-2.1.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "video_player_platform_interface",
+      "rootUri": "file:///D:/Programs/ProgrammingLanguage/dart-sdk/flutter/.pub-cache/hosted/pub.dartlang.org/video_player_platform_interface-4.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "video_player_web",
+      "rootUri": "file:///D:/Programs/ProgrammingLanguage/dart-sdk/flutter/.pub-cache/hosted/pub.dartlang.org/video_player_web-2.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "win32",
       "rootUri": "file:///D:/Programs/ProgrammingLanguage/dart-sdk/flutter/.pub-cache/hosted/pub.dartlang.org/win32-2.0.0",
       "packageUri": "lib/",
@@ -554,7 +572,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-05-25T05:59:29.415850Z",
+  "generated": "2021-07-05T04:16:28.165460Z",
   "generator": "pub",
-  "generatorVersion": "2.13.0"
+  "generatorVersion": "2.13.4"
 }

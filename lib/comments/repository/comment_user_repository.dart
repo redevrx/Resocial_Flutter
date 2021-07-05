@@ -52,10 +52,12 @@ class CommentRepository {
     var now = DateTime.now();
     var time = DateFormat('H:m:s').format(now);
     var day = DateFormat('yyyy-MM-dd').format(now);
+    String commentId = _mRef.collection("comments").doc().id;
 
     Map<String, dynamic> mapBody = HashMap();
     //comment detail
-    mapBody['commentId'] = postModel.postId;
+    mapBody['postId'] = postModel.postId;
+    mapBody['commentId'] = commentId;
     mapBody['body'] = message.trim();
     mapBody['time'] = '${time}';
     mapBody['day'] = '${day}';
@@ -69,7 +71,7 @@ class CommentRepository {
         .collection('comments')
         .doc(postModel.postId)
         .collection('comments')
-        .doc(uid + time + day)
+        .doc(commentId)
         .set(mapBody)
         .then((value) => result = true)
         .catchError((e) => result = false);
@@ -142,6 +144,37 @@ class CommentRepository {
         });
       }
     });
+  }
+
+  Future<bool> updateComment(
+      String postId, String commentId, String message) async {
+    final _mRef = FirebaseFirestore.instance.collection("comments");
+    // CommentModel model = CommentModel();
+
+    // await _mRef
+    //     .doc(postId)
+    //     .collection("comments")
+    //     .doc(commentId)
+    //     .get()
+    //     .then((value) {
+    //   model = CommentModel.fromJson(value.data());
+    // }).catchError((e) {
+    //   print("laod comment info for update error :" + e);
+    // });
+
+    //update comment
+    // model.body = message;
+
+    await _mRef
+        .doc(postId)
+        .collection("comments")
+        .doc(commentId)
+        .update({"body": message})
+        .then((value) => true)
+        .catchError((e) {
+          print("laod comment info for update error :" + e);
+          return false;
+        });
   }
 
   Future sendNotifyTOFriend(
@@ -217,5 +250,49 @@ class CommentRepository {
       //     .doc("counter")
       //     .set({'counter': c += 1});
     }
+  }
+
+//remove comment
+  Future<bool> removeComment(String postId, String commentId) async {
+    final mRef = FirebaseFirestore.instance.collection("comments");
+    print("starting remove comment");
+    return await mRef
+        .doc(postId)
+        .collection("comments")
+        .doc(commentId)
+        .delete()
+        .then((value) {
+      unCountComment(postId);
+      return true;
+    }).catchError((e) {
+      print("remove comment user in post Id error :" + e);
+      return false;
+    });
+  }
+
+  Future<void> unCountComment(String postId) async {
+    final _mRef = FirebaseFirestore.instance;
+
+    int commentCount = 0;
+
+//get old comment count
+    await _mRef.collection("Post").doc(postId).get().then((value) {
+      final data = value.data()['commentCount'];
+      if (data != null && data != "") {
+        commentCount = int.parse(data);
+      } else {
+        commentCount = 0;
+      }
+    }).catchError((e) {
+      print("get comment count error :" + e);
+    });
+
+    //update new comment
+    await _mRef
+        .collection('Post')
+        .doc(postId)
+        .update({'commentCount': '${commentCount - 1}'})
+        .then((value) => print('value : Comment Success'))
+        .catchError((e) => print(e));
   }
 }

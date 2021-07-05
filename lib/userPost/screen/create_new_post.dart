@@ -57,7 +57,7 @@ class __CreatePostState extends State<_CreatePost> {
   //if user grant give open gallery
   //and select image
   Future _checkGalleryPermission(PostBloc postBloc) async {
-    final gallery = await Permission.storage;
+    final gallery = Permission.storage;
 
     //check grant
     if (await gallery.status.isDenied) {
@@ -84,7 +84,7 @@ class __CreatePostState extends State<_CreatePost> {
   //if user grant give open camara
   //and select image
   Future _checkCameraPermission(PostBloc postBloc) async {
-    final camera = await Permission.camera;
+    final camera = Permission.camera;
 
     //check user grant permission
     if (await camera.status.isDenied) {
@@ -103,26 +103,26 @@ class __CreatePostState extends State<_CreatePost> {
     if (await camera.status.isGranted) {
       //user permission grant
       //open gallery and get camera
-      await _pickCamera(postBloc);
+      await _pickVideo(postBloc);
     }
   }
 
 //get image from gallery
   Future _pickGallery(PostBloc postBloc) async {
     var arg = await ImagePicker().getImage(source: ImageSource.gallery);
-    //_image = arg;
     if (arg != null) {
       // _image = File(arg.path);
-      postBloc.add(omImageFilePostChange(imageFile: File(arg.path)));
+      postBloc.add(OnImageFilePostChange(file: File(arg.path)));
     }
   }
 
 //get image from camara
-  Future _pickCamera(PostBloc postBloc) async {
-    var arg = await ImagePicker().getImage(source: ImageSource.camera);
+  Future _pickVideo(PostBloc postBloc) async {
+    var arg = await ImagePicker().getVideo(source: ImageSource.gallery);
     if (arg != null) {
       // _image = File(arg.path);
-      postBloc.add(omImageFilePostChange(imageFile: File(arg.path)));
+      print("path video file :${arg.path}");
+      postBloc.add(OnImageFilePostChange(file: File(arg.path)));
     }
   }
 
@@ -185,13 +185,13 @@ class __CreatePostState extends State<_CreatePost> {
                   //- error show status error
                   BlocBuilder<PostBloc, StatePost>(
                     builder: (context, state) {
-                      if (state is onPostProgress) {
+                      if (state is OnPostProgress) {
                         return Container(
                             child: Center(
                           child: CircularProgressIndicator(),
                         ));
                       }
-                      if (state is onPostFailed) {
+                      if (state is OnPostFailed) {
                         return Container(
                             child: Center(
                           child: Text(
@@ -200,7 +200,7 @@ class __CreatePostState extends State<_CreatePost> {
                           ),
                         ));
                       }
-                      if (state is onPostSuccessful) {
+                      if (state is OnPostSuccessful) {
                         // Navigator.of(context).pop();
                         return Container(
                             child: Center(
@@ -213,7 +213,7 @@ class __CreatePostState extends State<_CreatePost> {
                   //check bloc event navigator
                   BlocListener<PostBloc, StatePost>(
                     listener: (context, state) {
-                      if (state is onPostSuccessful) {
+                      if (state is OnPostSuccessful) {
                         // Navigator.of(context).pushNamed('/home');
                         //close dialog
                         Navigator.of(context).pop();
@@ -226,7 +226,7 @@ class __CreatePostState extends State<_CreatePost> {
                             ),
                             (route) => false);
                       }
-                      if (state is onPostFailed) {
+                      if (state is OnPostFailed) {
                         //close dialog
                         Navigator.of(context).pop();
                       }
@@ -250,15 +250,15 @@ class __CreatePostState extends State<_CreatePost> {
                     // buildWhen: (previous, current) => previous.imageFile != current.imageFIle,
                     cubit: postBloc,
                     builder: (context, state) {
-                      if (state is onImageFilePostChangeState) {
+                      if (state is OnImageFilePostChangeState) {
                         return widgetShowImage(
-                          image: state.imageFile,
-                          url: "",
+                          files: state.pathFiles,
+                          urls: null,
                         );
                       }
                       return widgetShowImage(
-                        image: null,
-                        url: "",
+                        files: null,
+                        urls: null,
                       );
                     },
                   ),
@@ -278,7 +278,7 @@ class __CreatePostState extends State<_CreatePost> {
                           onClick: () {
                             onLoadingDialog(context);
                             //
-                            postBloc.add(onUserPost(
+                            postBloc.add(OnUserPost(
                               uid: uid,
                             ));
                           },
@@ -326,7 +326,7 @@ class __CreatePostState extends State<_CreatePost> {
               children: <Widget>[
                 IconButton(
                     icon: Icon(
-                      Icons.add_a_photo,
+                      Icons.video_collection_outlined,
                       size: 30.0,
                       color: Colors.red.withOpacity(.85),
                     ),

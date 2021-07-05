@@ -164,7 +164,7 @@ class FeedRepository {
     feedRequest.snapshots(includeMetadataChanges: true).listen((snapshot) {
       if (snapshot.docs.isNotEmpty) {
         var feed =
-            snapshot.docs.map((model) => PostModel.fromJson(model)).toList();
+            snapshot.docs.map((model) => PostModel.fromJson2(model)).toList();
         bool pageExists = currentPage < models.length;
 
         if (pageExists) {

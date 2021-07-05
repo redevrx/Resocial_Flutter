@@ -1,14 +1,11 @@
 there are bug like
- -bug show notify chat 
- -*remove comment and edit
- -add shared image with message
+edit user post here onUpdatePost url map
+ -*comment edit not add this feature
+ - * upload imutli image and video but in post screen
+ method select image and video
  - group freind notify
    - *disable request notify
-   - *disable like notify 
-  -error other profile user status error text is null or emtry
-
-    
-      
+   - *disable like notify
 
 new feature 
  *blok user in other profile

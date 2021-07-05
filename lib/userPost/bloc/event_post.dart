@@ -1,16 +1,18 @@
 import 'dart:io';
 
+import 'package:socialapp/userPost/models/file_model..dart';
+
 abstract class EventPost {}
 
-class onUserPost extends EventPost {
+class OnUserPost extends EventPost {
   final String uid;
   final String message;
-  final File image;
+  final List<FileModel> files;
 
-  onUserPost({this.message = "", this.image = null, this.uid = ""});
+  OnUserPost({this.message = "", this.files = null, this.uid = ""});
 }
 
-class onUpdatePostClick extends EventPost {
+class OnUpdatePostClick extends EventPost {
   final String url;
   final String uid;
   final String postId;
@@ -20,7 +22,7 @@ class onUpdatePostClick extends EventPost {
   final File image;
   final String type;
 
-  onUpdatePostClick(
+  OnUpdatePostClick(
       {this.type,
       this.commentCount,
       this.likeCount,
@@ -31,19 +33,19 @@ class onUpdatePostClick extends EventPost {
       this.image = null});
 }
 
-class onRemoveItemClikc extends EventPost {
+class OnRemoveItemClikc extends EventPost {
   final String postId;
-  onRemoveItemClikc({this.postId});
+  OnRemoveItemClikc({this.postId});
 }
 
-class onMessagePostChange extends EventPost {
+class OnMessagePostChange extends EventPost {
   final String message;
 
-  onMessagePostChange({this.message});
+  OnMessagePostChange({this.message});
 }
 
-class omImageFilePostChange extends EventPost {
-  final File imageFile;
+class OnImageFilePostChange extends EventPost {
+  final File file;
 
-  omImageFilePostChange({this.imageFile});
+  OnImageFilePostChange({this.file});
 }

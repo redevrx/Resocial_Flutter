@@ -9,19 +9,19 @@ import 'package:socialapp/likes/repository/likes_repository.dart';
 class LikeBloc extends Bloc<LikeEvent, LikeState> {
   LikeRepository repository;
 
-  LikeBloc(LikeRepository repository) : super(onLikeProgress()) {
+  LikeBloc(LikeRepository repository) : super(OnLikeProgress()) {
     this.repository = repository;
   }
 
   @override
   Stream<LikeState> mapEventToState(LikeEvent event) async* {
-    if (event is onLikeClick) {
+    if (event is OnLikeClick) {
       // user like or unlike
       // yield onLikeProgress();
-      yield onLikesResult(likeResult: false);
+      yield OnLikesResult(likeResult: false);
       await onClickLike(event);
     }
-    if (event is onCheckLikeClick) {
+    if (event is OnCheckLikeClick) {
       // check user like this post or not like this post
       // yield onLikeProgress();
 
@@ -37,11 +37,11 @@ class LikeBloc extends Bloc<LikeEvent, LikeState> {
 // {
 //    print('${i}:${result[i]}');
 // }
-        yield onCheckLikesResult(likeResult: result);
+        yield OnCheckLikesResult(likeResult: result);
       }
     }
 
-    if (event is onCehckOneLike) {
+    if (event is OnCehckOneLike) {
       // user like or unlike
       //yield onLikeProgress();
 
@@ -52,20 +52,20 @@ class LikeBloc extends Bloc<LikeEvent, LikeState> {
         //true is user click action unlike success
         //false is user click like post  success
         print('onCehckOneLike like click :${result}');
-        yield onLikesResult(likeResult: result);
+        yield OnLikesResult(likeResult: result);
       }
     }
-    if (event is onLikeResultPostClick) {
+    if (event is OnLikeResultPostClick) {
       // yield onLikeProgress();
 
       // Future.delayed(Duration(milliseconds: 700));
-      yield onLikeResultPost();
+      yield OnLikeResultPost();
     }
   }
 
   //make like or unlike
 
-  Future<void> onClickLike(onLikeClick event) async {
+  Future<void> onClickLike(OnLikeClick event) async {
     bool result;
     result =
         await repository.onLike(event.postId, event.statusLike, event.onwerId);

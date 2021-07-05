@@ -54,6 +54,7 @@ dependencies:
   # flutter_facebook_auth: "^1.0.0"
   agora_rtc_engine: ^1.0.8
   modal_bottom_sheet: ^2.0.0
+  video_player: ^2.1.6
   # flutter_launcher_icons: "^0.7.3"
   
   # The following adds the Cupertino Icons font to your application.

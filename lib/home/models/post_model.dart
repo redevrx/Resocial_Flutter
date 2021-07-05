@@ -7,7 +7,8 @@ class PostModel {
   String commentCount;
   String date;
   String time;
-  String image;
+  List urls;
+  List urlsType;
   Map likeResults;
   String likesCount;
   String postId;
@@ -21,7 +22,8 @@ class PostModel {
     this.likeResults,
     this.date,
     this.time,
-    this.image,
+    this.urls,
+    this.urlsType,
     this.likesCount,
     this.postId,
     this.uid,
@@ -33,7 +35,8 @@ class PostModel {
         commentCount = json.get("commentCount"),
         date = json.get("date"),
         time = json.get("time"),
-        image = json.get("image"),
+        urls = json.get("urls"),
+        urlsType = json.get("urlsType"),
         likeResults = json.get("likeResult"),
         likesCount = json.get("likesCount"),
         postId = json.get("postId"),
@@ -45,7 +48,8 @@ class PostModel {
         commentCount = json.get("commentCount"),
         date = json.get("date"),
         time = json.get("time"),
-        image = json.get("image"),
+        urls = json.get("urls"),
+        urlsType = json.get("urlsType"),
         likeResults = json.get("likeResult"),
         likesCount = json.get("likesCount"),
         postId = json.get("postId"),
@@ -128,7 +132,8 @@ class PostModel {
       'likeResult': likeResults,
       'date': date,
       'time': time,
-      'image': image,
+      'urls': urls,
+      'urlsType': urlsType,
       'likesCount': likesCount,
       'postId': postId,
       'uid': uid,

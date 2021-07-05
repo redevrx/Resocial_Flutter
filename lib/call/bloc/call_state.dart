@@ -19,6 +19,5 @@ class OnCallStreamSuccess extends CallState {
 
   OnCallStreamSuccess({this.callModel});
   @override
-  // TODO: implement props
   List<Object> get props => [this.callModel];
 }

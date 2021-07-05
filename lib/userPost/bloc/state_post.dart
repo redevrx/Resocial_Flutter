@@ -2,21 +2,21 @@ import 'dart:io';
 
 abstract class StatePost {}
 
-class onPostProgress extends StatePost {}
+class OnPostProgress extends StatePost {}
 
-class onPostInitial extends StatePost {}
+class OnPostInitial extends StatePost {}
 
-class onPostSuccessful extends StatePost {}
+class OnPostSuccessful extends StatePost {}
 
-class onPostFailed extends StatePost {}
+class OnPostFailed extends StatePost {}
 
-class onImageFilePostChangeState extends StatePost {
-  final File imageFile;
+class OnImageFilePostChangeState extends StatePost {
+  final List<String> pathFiles;
 
-  onImageFilePostChangeState({this.imageFile});
+  OnImageFilePostChangeState({this.pathFiles});
   @override
   String toString() {
     // TODO: implement toString
-    return "image path :${this.imageFile.path}";
+    return "image path :${this.pathFiles}";
   }
 }

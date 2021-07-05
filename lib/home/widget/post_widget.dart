@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,6 +18,8 @@ import 'package:socialapp/shared/shared_app.dart';
 import 'package:socialapp/textMore/export/export.dart';
 import 'package:socialapp/userPost/export/export_new_post.dart';
 import 'package:socialapp/utils/utils.dart';
+import 'package:transparent_image/transparent_image.dart';
+import 'package:video_player/video_player.dart';
 
 class CardPost extends StatelessWidget {
   CardPost({
@@ -90,7 +93,7 @@ class CardPost extends StatelessWidget {
                     // likes bloc
                     BlocBuilder<LikeBloc, LikeState>(
                       builder: (context, state) {
-                        if (state is onCheckLikesResult) {
+                        if (state is OnCheckLikesResult) {
                           print("on onCheckLikesResult");
                           //var likeResult = state.likeResult[i];
                           return make_like_ui(
@@ -99,7 +102,7 @@ class CardPost extends StatelessWidget {
                               modelsPost: modelsPost,
                               likeBloc: likeBloc);
                         }
-                        if (state is onLikesResult) {
+                        if (state is OnLikesResult) {
                           print("on onLikesResult");
                           return make_like_ui(
                               uid: uid,
@@ -107,7 +110,7 @@ class CardPost extends StatelessWidget {
                               modelsPost: modelsPost,
                               likeBloc: likeBloc);
                         }
-                        if (state is onLikeProgress) {
+                        if (state is OnLikeProgress) {
                           // not working
                           print("on onLikeProgress");
                           return make_like_ui(
@@ -116,7 +119,7 @@ class CardPost extends StatelessWidget {
                               modelsPost: modelsPost,
                               likeBloc: likeBloc);
                         }
-                        if (state is onLikeResultPost) {
+                        if (state is OnLikeResultPost) {
                           print("on onLikeResultPost");
                           return make_like_ui(
                               uid: uid,
@@ -216,6 +219,17 @@ class CardPost extends StatelessWidget {
                           ),
                         )),
 
+//show ui is multi image view
+            modelsPost[i].type == "image"
+                ? Positioned(
+                    right: 16.0,
+                    top: 8.0,
+                    child: Icon(
+                      Icons.copy,
+                      size: 28.0,
+                    ),
+                  )
+                : Container(),
             //make show user info
             (modelsPost[i].body != null && modelsPost[i].type != "image")
                 ? Positioned(
@@ -395,7 +409,7 @@ class CardPost extends StatelessWidget {
               //make popup menu setting post
               //-edit
               //-remove
-              PopupMenuButton<dynamic>(
+              PopupMenuButton<String>(
                   child: Icon(Icons.more_horiz),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0)),
@@ -405,7 +419,7 @@ class CardPost extends StatelessWidget {
                         myFeedBloc.add(onRemoveItemUpdateUI(
                           postModel: modelsPost,
                         ));
-                        postBloc.add(onRemoveItemClikc(
+                        postBloc.add(OnRemoveItemClikc(
                             postId: modelsPost[i].postId.toString()));
                         modelsPost.removeAt(i);
                         //details.removeAt(i);
@@ -492,22 +506,29 @@ class CardPost extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
-        onTap: () {
-          //user click look image
-          print('Look image');
+          onTap: () {
+            //user click look image
+            print('Look image');
 
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                LookImage(imageUrl: modelsPost[i].image, i: i),
-          ));
-        },
-        child: Image.network(
-          '${modelsPost[i].image}',
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: 250.0,
-        ),
-      ),
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => LookImage(
+                urls: modelsPost[i].urls,
+                i: i,
+                urlsType: modelsPost[i].urlsType,
+              ),
+            ));
+          },
+          child: modelsPost[i].urlsType[i] == "video"
+              ? PlayVideoList(
+                  urls: modelsPost[i].urls[i],
+                )
+              : FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image: '${modelsPost[i].urls[0]}',
+                  fit: BoxFit.contain,
+                  height: 250.0,
+                  width: double.maxFinite,
+                )),
     );
   }
   //
@@ -643,6 +664,126 @@ class CardPost extends StatelessWidget {
   }
 }
 
+class PlayVideoList extends StatefulWidget {
+  PlayVideoList(
+      {Key key,
+      this.urls,
+      this.file,
+      this.height = 300.0,
+      this.fulScreen = false})
+      : super(key: key);
+  final String urls;
+  final File file;
+  final double height;
+  final bool fulScreen;
+
+  @override
+  _PlayVideoListState createState() => _PlayVideoListState();
+}
+
+class _PlayVideoListState extends State<PlayVideoList> {
+  VideoPlayerController _controller;
+  Future<void> _initializeVideoPlayerFuture;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    _controller = widget.file == null
+        ? VideoPlayerController.network(widget.urls,
+            videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true))
+        : VideoPlayerController.asset(widget.file.path);
+
+    _initializeVideoPlayerFuture = _controller.initialize();
+    _controller.addListener(_checkVideoPlayStop);
+    super.initState();
+  }
+
+  _checkVideoPlayStop() {
+    if (_controller.value.position == _controller.value.duration) {
+      setState(() {
+        _controller.pause();
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: widget.fulScreen ? null : widget.height,
+        child: FutureBuilder(
+          future: _initializeVideoPlayerFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return InkWell(
+                onTap: () {
+                  setState(() {
+                    _controller.value.isPlaying
+                        ? _controller.pause()
+                        : _controller.play();
+                  });
+                },
+                child: Stack(
+                  children: [
+                    widget.fulScreen ? fullScreenVideo() : nomalVideo(),
+                    _controller.value.isPlaying
+                        ? Container()
+                        : Align(
+                            alignment: Alignment.center,
+                            child: FloatingActionButton(
+                              onPressed: () {
+                                setState(() {
+                                  _controller.value.isPlaying
+                                      ? _controller.pause()
+                                      : _controller.play();
+                                });
+                              },
+                              child: Icon(
+                                _controller.value.isPlaying
+                                    ? Icons.pause
+                                    : Icons.play_arrow,
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ));
+  }
+
+  Center nomalVideo() {
+    return Center(
+        child: AspectRatio(
+      aspectRatio: 3 / 2,
+      child: VideoPlayer(_controller),
+    ));
+  }
+
+  Center fullScreenVideo() {
+    return Center(
+      child: FittedBox(
+        fit: BoxFit.cover,
+        child: SizedBox(
+          width: _controller.value.aspectRatio,
+          height: 1,
+          child: VideoPlayer(_controller),
+        ),
+      ),
+    );
+  }
+}
+
 class make_shared_ui extends StatelessWidget {
   const make_shared_ui({
     Key key,
@@ -661,8 +802,8 @@ class make_shared_ui extends StatelessWidget {
         onTap: () async {
           var shared = SharedApp();
           if (modelsPost[i].type == 'image') {
-            await shared.sharedImage(
-                context, modelsPost[i].image, modelsPost[i].body);
+            // await shared.sharedImage(
+            //     context, modelsPost[i].image, modelsPost[i].body);
           } else {
             await shared.sharedText(context, modelsPost[i].body);
           }
@@ -721,7 +862,7 @@ class make_like_ui extends StatelessWidget {
             }
             //
             //unlike
-            likeBloc.add(onLikeClick(
+            likeBloc.add(OnLikeClick(
                 postId: modelsPost[i].postId,
                 statusLike: 'un',
                 onwerId: modelsPost[i].uid));
@@ -738,7 +879,7 @@ class make_like_ui extends StatelessWidget {
               modelsPost[i].likeResults['${uid}'] = uid;
             }
 
-            likeBloc.add(onLikeClick(
+            likeBloc.add(OnLikeClick(
                 postId: modelsPost[i].postId,
                 statusLike: 'like',
                 onwerId: modelsPost[i].uid));

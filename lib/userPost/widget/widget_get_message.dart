@@ -16,7 +16,7 @@ class widgetGetMessage extends StatelessWidget {
       child: Container(
         child: TextFormField(
           onChanged: (message) =>
-              postBloc.add(onMessagePostChange(message: message)),
+              postBloc.add(OnMessagePostChange(message: message)),
           keyboardType: TextInputType.multiline,
           maxLines: null,
           minLines: 4,

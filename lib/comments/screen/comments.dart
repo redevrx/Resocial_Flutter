@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_buttonx/materialButtonX.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/edit_profile_bloc.dart';
 import 'package:socialapp/Profile/EditPtofile/bloc/event/edit_profile_event.dart';
+import 'package:socialapp/Profile/EditPtofile/screen/user_profile.dart';
 import 'package:socialapp/comments/export/export_comment.dart';
 import 'package:socialapp/home/export/export_file.dart';
 import 'package:socialapp/comments/widget/widget_card_comments.dart';
@@ -94,8 +96,8 @@ class _CommentsState extends State<_Comments> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     //commentCount = int.parse(widget.postModels.commentCount);
-    likeBloc.add(onLikeResultPostClick());
-    commentBloc.add(onLoadComments(postId: widget.postModels[widget.i].postId));
+    likeBloc.add(OnLikeResultPostClick());
+    commentBloc.add(OnLoadComments(postId: widget.postModels[widget.i].postId));
     editProfileBloc.add(loadFriendProfilePost());
     // print(message.length);
   }
@@ -105,7 +107,7 @@ class _CommentsState extends State<_Comments> {
     // TODO: implement dispose
     //free memory from stream connection
     //database
-    commentBloc.add(onDisponseComment());
+    commentBloc.add(OnDisponseComment());
 
     //freem memory from text controller
     txtComment.dispose();
@@ -140,14 +142,14 @@ class _CommentsState extends State<_Comments> {
                   //make comment
                   BlocBuilder<CommentBloc, CommentState>(
                     builder: (context, state) {
-                      if (state is onCommentProgress) {
+                      if (state is OnCommentProgress) {
                         return Container(
                           child: Center(
                             child: CircularProgressIndicator(),
                           ),
                         );
                       }
-                      if (state is onAddCommentSuccess) {
+                      if (state is OnAddCommentSuccess) {
                         //if there add comment give refresh page
                         //by call onLoadComments()
                         //tuture will use stream for build
@@ -157,10 +159,11 @@ class _CommentsState extends State<_Comments> {
                         // commentBloc.add(onLoadComments(
                         //     postId: widget.postModels[widget.i].postId));
                       }
-                      if (state is onLoadCommentSuccess) {
+                      if (state is OnLoadCommentSuccess) {
                         //print access event onLoadCommentSuccess
                         //add comment bloc
-                        return buildContainerComment(constraints, state);
+                        return buildContainerComment(
+                            constraints, state, widget.uid, commentBloc);
                       }
                       return Container();
                     },
@@ -174,8 +177,8 @@ class _CommentsState extends State<_Comments> {
     );
   }
 
-  Container buildContainerComment(
-      BoxConstraints constraints, onLoadCommentSuccess state) {
+  Container buildContainerComment(BoxConstraints constraints,
+      OnLoadCommentSuccess state, String uid, CommentBloc commentBloc) {
     var message = '';
     return Container(
       height: constraints.maxHeight * .6,
@@ -194,83 +197,15 @@ class _CommentsState extends State<_Comments> {
           ),
           Expanded(
             child: ListView.builder(
-              reverse: false,
-              physics: ScrollPhysics(),
               itemCount: state.comments.length,
               itemBuilder: (context, index) {
-                return Container(
-                    //make user detail ,user comment
-                    child: Column(
-                  children: <Widget>[
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Container(
-                            height: 35.0,
-                            width: 35.0,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                      state.comments[index].imageProfile ==
-                                                  null ||
-                                              state.comments[index].imageProfile
-                                                  .toString()
-                                                  .isEmpty
-                                          ? PersonURL
-                                          : state.comments[index].imageProfile),
-                                  fit: BoxFit.cover,
-                                )),
-                          ),
-                        ),
-                        //make user Name
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 4.0, top: 4.0, right: 0.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(18.0),
-                                color: Colors.grey.withOpacity(.25)),
-                            child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16.0, right: 16.0, top: 8.0),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        '${state.comments[index].userName}',
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      //message len 32 not over
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 2.0, bottom: 4.0),
-                                        child: Text(
-                                          '${state.comments[index].body}',
-                                          overflow: TextOverflow.fade,
-                                          softWrap: false,
-                                          maxLines: 100,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ));
+                return CommentDetailItems(
+                  index: index,
+                  comments: state.comments,
+                  currentUid: uid,
+                  commentBloc: commentBloc,
+                  txtComment: txtComment,
+                );
               },
             ),
           ),
@@ -305,15 +240,14 @@ class _CommentsState extends State<_Comments> {
                         onSubmitted: (value) {
                           // commentCount += 1;
                           FocusScope.of(context).unfocus();
-                          commentBloc.add(onAddCommentClick(
+                          commentBloc.add(OnAddCommentClick(
                               message: message,
                               postModel: widget.postModels[widget.i]));
                           message = "";
                           txtComment.clear();
                         },
                         keyboardType: TextInputType.multiline,
-                        decoration:
-                            InputDecoration(hintText: 'Enter Comments 32 char'),
+                        decoration: InputDecoration(hintText: 'Enter ....'),
                       ),
                     ),
                   ],
@@ -324,7 +258,7 @@ class _CommentsState extends State<_Comments> {
                     onTap: () {
                       FocusScope.of(context).unfocus();
                       // commentCount += 1;
-                      commentBloc.add(onAddCommentClick(
+                      commentBloc.add(OnAddCommentClick(
                           message: message,
                           postModel: widget.postModels[widget.i]));
                       message = "";
@@ -340,4 +274,272 @@ class _CommentsState extends State<_Comments> {
       ),
     );
   }
+}
+
+class CommentDetailItems extends StatelessWidget {
+  const CommentDetailItems(
+      {Key key,
+      this.comments,
+      this.index,
+      this.currentUid,
+      this.commentBloc,
+      this.txtComment})
+      : super(key: key);
+  final List<CommentModel> comments;
+  final int index;
+  final String currentUid;
+  final CommentBloc commentBloc;
+  final TextEditingController txtComment;
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<String>(
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+        onSelected: (selected) {
+          if (selected.contains("remove") &&
+              uid.contains(comments[index].uid)) {
+            // remove comment
+            //check user id  as onwer comment right ?
+            dialogRemoveComment(context, false,
+                comments: comments, index: index, commentBloc: commentBloc);
+          }
+          if (selected.contains("edit")) {
+            // txtComment.text = comments[index].body;
+            // txtComment.
+            // commentBloc.add(OnUpdateComment(comments: comments, index: index));
+          } else {
+            //close popup or user not permission remove comment
+            print("close popup or user not permission remove comment");
+          }
+        },
+        itemBuilder: (context) => [
+              PopupMenuItem(
+                value: "remove",
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.redAccent.withOpacity(.25)),
+                      child: Icon(
+                        Icons.remove,
+                        color: Colors.red,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8.0,
+                    ),
+                    Text('Remove'),
+                  ],
+                ),
+              ),
+              PopupMenuDivider(
+                height: 1.5,
+              ),
+              PopupMenuItem(
+                value: "edit",
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.green.withOpacity(.25)),
+                      child: Icon(
+                        Icons.edit_attributes_rounded,
+                        color: Colors.green,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8.0,
+                    ),
+                    Text('Edit'),
+                  ],
+                ),
+              ),
+              PopupMenuDivider(
+                height: 1.5,
+              ),
+              PopupMenuItem(
+                value: "exit",
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey.withOpacity(.25)),
+                      child: Icon(
+                        Icons.exit_to_app,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8.0,
+                    ),
+                    Text('Exit'),
+                  ],
+                ),
+              )
+            ],
+        child: Container(
+          //make user detail ,user comment
+          child: SingleChildScrollView(
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Container(
+                    height: 35.0,
+                    width: 35.0,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              comments[index].imageProfile == null ||
+                                      comments[index]
+                                          .imageProfile
+                                          .toString()
+                                          .isEmpty
+                                  ? PersonURL
+                                  : comments[index].imageProfile),
+                          fit: BoxFit.cover,
+                        )),
+                  ),
+                ),
+                //make user Name
+                Container(
+                  width: comments[index].body.length < 20
+                      ? null
+                      : MediaQuery.of(context).size.width * 0.8,
+                  margin:
+                      const EdgeInsets.only(left: 4.0, top: 4.0, right: 0.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 4.0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.0),
+                      color: Colors.grey.withOpacity(.25)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        '${comments[index].userName}',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      //message len 32 not over
+
+                      Text(
+                        '${comments[index].body}',
+                        overflow: TextOverflow.visible,
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
+  }
+}
+
+Future<void> dialogRemoveComment(BuildContext context, bool _fromTop,
+    {List<CommentModel> comments, int index, CommentBloc commentBloc}) async {
+  return showGeneralDialog(
+    barrierLabel: "",
+    barrierDismissible: true,
+    barrierColor: Colors.black.withOpacity(0.5),
+    transitionDuration: Duration(milliseconds: 700),
+    context: context,
+    pageBuilder: (context, animation, secondaryAnimation) {
+      return Align(
+        alignment: _fromTop ? Alignment.topCenter : Alignment.bottomCenter,
+        child: Container(
+          height: MediaQuery.of(context).size.height * .15,
+          child: SizedBox.expand(
+            child: Column(
+              children: <Widget>[
+                //make text show you remove this comment sure ?
+                SizedBox(
+                  height: 16.0,
+                ),
+                Text(
+                  "You want remove comment sure ?",
+                  style: Theme.of(context).textTheme.headline6.copyWith(
+                      color: Colors.black, fontWeight: FontWeight.normal),
+                  textAlign: TextAlign.center,
+                ),
+                Spacer(),
+                // make button  no and  remove
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    children: [
+                      Material(
+                        child: MaterialButtonX(
+                          color: Colors.green,
+                          height: 40.0,
+                          width: 120.0,
+                          iconSize: 22.0,
+                          icon: Icons.exit_to_app,
+                          message: "Exit",
+                          radius: 80.0,
+                          onClick: () {
+                            //close dialog
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                      Spacer(),
+                      Material(
+                        child: MaterialButtonX(
+                          color: Colors.redAccent,
+                          height: 40.0,
+                          width: 120.0,
+                          iconSize: 22.0,
+                          icon: Icons.remove,
+                          message: "Remove",
+                          radius: 80.0,
+                          onClick: () {
+                            //remove comment
+                            commentBloc.add(OnRemoveComment(
+                                comments: comments, index: index));
+
+                            //close dialog
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          margin: EdgeInsets.symmetric(horizontal: 32.0, vertical: 32.0),
+          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(28),
+          ),
+        ),
+      );
+    },
+    transitionBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(
+        position: Tween(begin: Offset(0, _fromTop ? -1 : 1), end: Offset(0, 0))
+            .animate(animation),
+        child: child,
+      );
+    },
+  );
 }

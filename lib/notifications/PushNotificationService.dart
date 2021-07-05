@@ -13,15 +13,29 @@ class PushNotificationService {
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   final showNotify = ShowNotifyService();
 
+  // Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
+  //   await Firebase.initializeApp().whenComplete(() {
+  //     if (message.notification.title == "chat") {
+  //       showNotify.showNotifyMessage(message.notification);
+  //     } else {
+  //       //post notidy
+  //       showNotify.showNotifyPost(message.notification);
+  //     }
+  //   });
+  // }
   Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     await Firebase.initializeApp().whenComplete(() {
       if (message.notification.title == "chat") {
-        showNotify.showNotifyMessage(message.notification);
+        // showNotify.showNotifyMessage(message.notification);
       } else {
         //post notidy
-        showNotify.showNotifyPost(message.notification);
+        // showNotify.showNotifyPost(message.notification);
       }
     });
+  }
+
+  void initBackground() {
+    FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
   }
 
   Future initialise() async {
@@ -68,7 +82,7 @@ class PushNotificationService {
     showNotify.initialNotify();
 
     //this event will wok close app
-    FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
+    // FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
 
     //this event will work when user click
     FirebaseMessaging.onMessageOpenedApp.listen((message) {

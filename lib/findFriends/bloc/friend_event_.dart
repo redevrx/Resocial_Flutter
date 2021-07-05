@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:socialapp/chat/bloc/chatBloc/chat_bloc.dart';
-import 'package:socialapp/chat/models/chat/chat_list_info.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'package:socialapp/findFriends/models/findFriendResult_model.dart';
 

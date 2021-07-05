@@ -245,7 +245,7 @@ class _stackUserPost extends State<stackUserPost> {
     await _getUid();
 
     //load like bloc
-    likeBloc.add(onLikeResultPostClick());
+    likeBloc.add(OnLikeResultPostClick());
     //load this user feed
     widget.myFeedBloc
         .add(onLoadUserFeedClick(uid: widget.uid, refeshPage: false));
@@ -299,7 +299,7 @@ class _stackUserPost extends State<stackUserPost> {
                       // GetTableList.add(true);
                       widget.myFeedBloc.add(onLoadUserFeedClick(
                           from: "profile", refeshPage: false));
-                      likeBloc.add(onLikeResultPostClick());
+                      likeBloc.add(OnLikeResultPostClick());
                     },
                     child: ListView.builder(
                       physics: ScrollPhysics(),
@@ -348,7 +348,7 @@ class _stackUserPost extends State<stackUserPost> {
                       // GetTableList.add(true);
                       widget.myFeedBloc.add(onLoadUserFeedClick(
                           from: "profile", refeshPage: false));
-                      likeBloc.add(onLikeResultPostClick());
+                      likeBloc.add(OnLikeResultPostClick());
                     },
                     child: ListView.builder(
                       physics: ScrollPhysics(),
