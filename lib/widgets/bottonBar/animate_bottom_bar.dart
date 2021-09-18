@@ -64,7 +64,7 @@ class _AnimationBottomBarState extends State<AnimationBottomBar>
   }
 
   List<Widget> _buildBarItems(NotifyBloc notifyBloc) {
-    List<Widget> _barItems = List();
+    List<Widget> _barItems = [];
     for (int i = 0; i < widget.barItems.length; i++) {
       BarItem item = widget.barItems[i];
 

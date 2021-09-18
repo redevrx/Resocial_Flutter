@@ -26,7 +26,7 @@ Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
     if (message.notification.title == "chat") {
       // showNotify.showNotifyMessage(message.notification);
     } else {
-      //post notidy
+      //post notify
       // showNotify.showNotifyPost(message.notification);
     }
   });
@@ -49,7 +49,7 @@ void main() async {
     // Disable persistence on web platforms
     await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
   }
-  if (USE_FIRESTORE_EMULATOR) {
+  if (userFirestoreEmulator) {
     FirebaseFirestore.instance.settings = Settings(persistenceEnabled: false);
   }
 
@@ -57,7 +57,7 @@ void main() async {
   runApp(MyApp());
 }
 
-bool USE_FIRESTORE_EMULATOR = false;
+bool userFirestoreEmulator = false;
 
 class MyApp extends StatefulWidget {
   MyApp({Key key}) : super(key: key);

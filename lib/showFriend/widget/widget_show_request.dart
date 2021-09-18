@@ -4,6 +4,8 @@ import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'package:socialapp/findFriends/models/findFriendResult_model.dart';
 import 'dart:async';
 
+import 'package:socialapp/utils/utils.dart';
+
 class widgetShowRequest extends StatelessWidget {
   const widgetShowRequest({
     Key key,
@@ -43,7 +45,9 @@ class widgetShowRequest extends StatelessWidget {
                         children: <Widget>[
                           ClipOval(
                             child: Image.network(
-                              "${list[i].imageProfile}",
+                              list[i].imageProfile + "" == "$PersonURL"
+                                  ? ""
+                                  : "{list[i].imageProfile}",
                               fit: BoxFit.cover,
                               width: 90.0,
                               height: 90.0,

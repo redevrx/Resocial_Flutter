@@ -3,6 +3,8 @@ import 'package:material_buttonx/materialButtonX.dart';
 import 'package:socialapp/findFriends/eport/export_friend.dart';
 import 'dart:async';
 
+import 'package:socialapp/utils/utils.dart';
+
 class widgetShowAllfreind extends StatelessWidget {
   const widgetShowAllfreind({
     Key key,
@@ -50,7 +52,9 @@ class widgetShowAllfreind extends StatelessWidget {
                           children: <Widget>[
                             ClipOval(
                               child: Image.network(
-                                "${list[i].imageProfile}",
+                                list[i].imageProfile + "" == ""
+                                    ? "$PersonURL"
+                                    : "${list[i].imageProfile}",
                                 fit: BoxFit.cover,
                                 width: 90.0,
                                 height: 90.0,

@@ -7,6 +7,7 @@ import 'package:socialapp/call/model/call_model.dart';
 import 'package:socialapp/call/repository/call_repository.dart';
 import 'package:socialapp/call/screen/call_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:socialapp/utils/utils.dart';
 
 class CallAgoraRepository implements CallRepository {
   //database path
@@ -93,8 +94,8 @@ class CallAgoraRepository implements CallRepository {
     String tokenCall = "";
 
     await http.Client()
-        .get(Uri.parse(
-            "http://192.168.1.42:8080/resocial/api/v1/generate/token?channelName=$channelName&uid=0&role=publisher&expireTime=3600"))
+        .get(Uri.parse(TOKEN_URL +
+            'token?channelName=$channelName&uid=0&role=publisher&expireTime=3600'))
         .then((token) {
       Map t = jsonDecode(token.body);
       tokenCall = t['token'];
@@ -105,7 +106,7 @@ class CallAgoraRepository implements CallRepository {
     await mRef.doc("$senderId").get().then((info) {
       senderName = info["user"].toString();
       senderPic = info['imageProfile'].toString().isEmpty
-          ? 'https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg'
+          ? CALL_ICON_USER
           : '${info['imageProfile']}';
     }).catchError((e) {
       senderName = "";
@@ -116,7 +117,7 @@ class CallAgoraRepository implements CallRepository {
     await mRef.doc("$receiverId").get().then((info) {
       receiverName = info["user"].toString();
       receiverPic = info['imageProfile'].toString().isEmpty
-          ? 'https://img.favpng.com/20/11/12/computer-icons-user-profile-png-favpng-0UAKKCpRRsMj5NaiELzw1pV7L.jpg'
+          ? CALL_ICON_USER
           : '${info['imageProfile']}';
     }).catchError((e) {
       receiverName = "";

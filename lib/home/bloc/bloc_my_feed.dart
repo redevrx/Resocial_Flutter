@@ -120,7 +120,7 @@ class MyFeedBloc extends Bloc<EventMyFeed, StateMyFeed> {
   Future<void> close() async {
     // TODO: implement close
     _streamSubscription?.cancel();
-    await repository.close();
+    repository.close();
     return super.close();
   }
 }

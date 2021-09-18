@@ -16,14 +16,15 @@ class PostRepository {
   //step 2 check post not have image
   //step 3 re post with content
   Future<String> onUpdatePost(
-      String uid,
+      {String uid,
       String message,
-      File image,
-      String url,
+      List<String> filePosts,
+      List<String> urlTypes,
+      List<String> removeFiles,
       String postId,
       String like,
       String comment,
-      String type) async {
+      String type}) async {
     bool va = false;
     String result = "";
     final _mRef = FirebaseFirestore.instance;
@@ -39,26 +40,68 @@ class PostRepository {
     // String mTime = time.format(dateTime);
 
     //check type update image or message
-    if (type == 'image') {
+    if (filePosts != null) {
       //image
       //check user update image
-      if (image != null && url.isEmpty) {
+      if (filePosts != null && urlTypes != null) {
         // user update image
-        print('update post image');
 
+        print('update post image');
         final _mRefFile =
             FirebaseStorage.instance.ref().child("Post File").child("Files");
 
-        //save image to data storage
-        final uploadTask = _mRefFile.child(postId).putFile(image);
+        //defind
+        List<String> urls = [];
+        List<String> types = [];
 
-        String urlImage = await uploadTask.snapshot.ref.getDownloadURL();
+        //remove file
+        for (int i = 0; i < removeFiles.length; i++) {
+          // _mRefFile.child(removeFiles[i]).delete();
+          // print("remove file from path :${removeFiles[i]}");
+          await FirebaseStorage.instance
+              .refFromURL(removeFiles[i])
+              .delete()
+              .then((value) => print("remove file success"))
+              .catchError((e) => print("remove file error $e"));
+        }
+
+        //remove url path and type file
+        await _mRef
+            .collection("Post")
+            .doc(postId)
+            .update({"urls": [], "urlsType": []});
+
+        //upload new file to storage
+        for (int i = 0; i < filePosts.length; i++) {
+          if (urlTypes[i] != "image_url" && urlTypes[i] != "video_url") {
+            //upload new
+            final uploadTask = _mRefFile
+                .child(postId)
+                .child("${new Random.secure().nextDouble()}" + postId)
+                .putFile(File(filePosts[i]));
+            final task = await uploadTask;
+
+            //add url and type
+            urls.add(await task.ref.getDownloadURL());
+            types.add(urlTypes[i] != "image" ? "video_url" : "image_url");
+          } else {
+            //new old file and type
+            urls.add(filePosts[i]);
+            types.add(urlTypes[i] != "image_url" ? "video_url" : "image_url");
+          }
+        }
+
+        ///old  version
+        // final uploadTask = _mRefFile.child(postId).putFile(image);
+
+        // String urlImage = await uploadTask.snapshot.ref.getDownloadURL();
 
         //make map to json
         mapBody["uid"] = uid;
         mapBody["postId"] = postId;
         mapBody["body"] = message;
-        mapBody["image"] = "${urlImage}";
+        mapBody["urls"] = urls;
+        mapBody["urlsType"] = types;
         mapBody['date'] = date;
         mapBody['time'] = time;
         mapBody['type'] = 'image';
@@ -67,26 +110,6 @@ class PostRepository {
 
         await _mRef.collection("Post").doc(postId).update(mapBody).then((_) {
           print("Update post successful..");
-
-          va = true;
-        });
-      } else {
-        // user not update image
-        print('not update post image');
-        //make map to json
-        mapBody["uid"] = uid;
-        mapBody["postId"] = postId;
-        mapBody["body"] = message;
-        mapBody["image"] = "${url}";
-        mapBody['date'] = date;
-        mapBody['time'] = time;
-        mapBody['type'] = 'image';
-        mapBody['likesCount'] = "${like}";
-        mapBody['commentCount'] = "${comment}";
-
-        await _mRef.collection("Post").doc(postId).update(mapBody).then((_) {
-          print("Update post successful..");
-
           va = true;
         });
       }
@@ -97,7 +120,8 @@ class PostRepository {
       mapBody["uid"] = uid;
       mapBody["postId"] = postId;
       mapBody["body"] = message;
-      mapBody["image"] = "";
+      mapBody["urls"] = [];
+      mapBody["urlsType"] = [];
       mapBody['date'] = date;
       mapBody['time'] = time;
       mapBody['type'] = 'message';
@@ -211,11 +235,11 @@ class PostRepository {
 
         if (!files[i].getTypeFile()) {
           //keep url image file in list
-          urlsType.add("image");
+          urlsType.add("image_url");
           // String url = await task.ref.getDownloadURL();
         } else {
           //keep url image file in list
-          urlsType.add("video");
+          urlsType.add("video_url");
           // String url = await task.ref.getDownloadURL();
         }
       }
@@ -245,8 +269,8 @@ class PostRepository {
       mapBody["uid"] = uid;
       mapBody["postId"] = key;
       mapBody["body"] = message;
-      mapBody["image"] = [];
-      mapBody["video"] = [];
+      mapBody["urls"] = [];
+      mapBody["urlsType"] = [];
       mapBody['date'] = date;
       mapBody['time'] = time;
       mapBody['type'] = 'message';

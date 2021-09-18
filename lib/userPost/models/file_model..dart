@@ -27,7 +27,7 @@ class FileModel {
   File getFile() => File(this.file.path);
 }
 
-enum FileType { FILE_IMAGE, FILE_VIDEO }
+enum FileType { FILE_IMAGE, FILE_VIDEO, FILE_IMAGE_URL, FILE_VIDEO_URL }
 
 extension FileTypeExtension on FileType {
   String get getType {
@@ -36,6 +36,10 @@ extension FileTypeExtension on FileType {
         return "image";
       case FileType.FILE_VIDEO:
         return "video";
+      case FileType.FILE_VIDEO_URL:
+        return "video_url";
+      case FileType.FILE_IMAGE_URL:
+        return "image_url";
       default:
         return "";
     }

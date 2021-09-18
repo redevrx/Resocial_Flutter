@@ -42,7 +42,8 @@ class _EditPost extends StatefulWidget {
 
 class __EditPostState extends State<_EditPost> {
   //image url from old post
-  List urls;
+  List urls = [];
+  List urlTypes = [];
 
   EditProfileBloc editProfileBloc;
   PostBloc postBloc;
@@ -52,7 +53,9 @@ class __EditPostState extends State<_EditPost> {
     editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
     postBloc = BlocProvider.of<PostBloc>(context);
     //set message body to edit text
-    urls = widget.postModel.urls;
+    urls = widget.postModel.urls == null ? [] : widget.postModel.urls;
+    urlTypes =
+        widget.postModel.urlsType == null ? [] : widget.postModel.urlsType;
 
     super.initState();
   }
@@ -126,18 +129,24 @@ class __EditPostState extends State<_EditPost> {
 
     if (file != null) {
       // _image = File(arg.path);
-      postBloc.add(OnImageFilePostChange(file: File(file.path)));
-      urls = null;
+      postBloc.add(OnImageFilePostChange(
+          file: File(file.path),
+          urls: urls,
+          urlTypes: urlTypes,
+          type: "image"));
     }
   }
 
   Future<void> _pickCamera(PostBloc postBloc) async {
-    final file = await ImagePicker().getImage(source: ImageSource.camera);
+    final file = await ImagePicker().getVideo(source: ImageSource.gallery);
 
     if (file != null) {
       // _image = File(arg.path);
-      postBloc.add(OnImageFilePostChange(file: File(file.path)));
-      urls = null;
+      postBloc.add(OnImageFilePostChange(
+          file: File(file.path),
+          urls: urls,
+          urlTypes: urlTypes,
+          type: "video"));
     }
   }
 
@@ -233,14 +242,27 @@ class __EditPostState extends State<_EditPost> {
                         cubit: postBloc,
                         builder: (context, state) {
                           if (state is OnImageFilePostChangeState) {
-                            return widgetShowImage(
-                              files: state.pathFiles,
-                              urls: null,
+                            //update url and type
+                            return WidgetShowImage(
+                              urls: state.urls,
+                              urlsType: state.urlTypes,
+                              editPost: true,
+                              postBloc: postBloc,
                             );
                           }
-                          return widgetShowImage(
-                            files: null,
-                            urls: widget.postModel.urls,
+                          if (state is OnImageFileRemoveChangeState) {
+                            return WidgetShowImage(
+                              editPost: true,
+                              postBloc: postBloc,
+                              urls: state.urls,
+                              urlsType: state.urlTypes,
+                            );
+                          }
+                          return WidgetShowImage(
+                            urls: urls,
+                            urlsType: urlTypes,
+                            editPost: true,
+                            postBloc: postBloc,
                           );
                         },
                       ),
@@ -299,9 +321,9 @@ class __EditPostState extends State<_EditPost> {
   @override
   void dispose() {
     // _enableRatation();
+    super.dispose();
     _enableRatation();
     editProfileBloc.add(onDisponscEditProfile());
-    super.dispose();
   }
 
   _portraitModeOnly() {

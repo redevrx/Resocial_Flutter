@@ -12,11 +12,19 @@ class OnPostFailed extends StatePost {}
 
 class OnImageFilePostChangeState extends StatePost {
   final List<String> pathFiles;
+  List urls;
+  List urlTypes;
 
-  OnImageFilePostChangeState({this.pathFiles});
+  OnImageFilePostChangeState({this.pathFiles, this.urls, this.urlTypes});
   @override
   String toString() {
-    // TODO: implement toString
     return "image path :${this.pathFiles}";
   }
+}
+
+class OnImageFileRemoveChangeState extends StatePost {
+  final List urls;
+  final List urlTypes;
+
+  OnImageFileRemoveChangeState({this.urls, this.urlTypes});
 }

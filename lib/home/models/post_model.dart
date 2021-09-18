@@ -48,12 +48,12 @@ class PostModel {
         commentCount = json.get("commentCount"),
         date = json.get("date"),
         time = json.get("time"),
-        urls = json.get("urls"),
-        urlsType = json.get("urlsType"),
+        type = json.get("type"),
+        urls = (json.get("type") == "image") ? json.get("urls") : null,
+        urlsType = (json.get("type") == "image") ? json.get("urlsType") : null,
         likeResults = json.get("likeResult"),
         likesCount = json.get("likesCount"),
         postId = json.get("postId"),
-        type = json.get("type"),
         uid = json.get("uid");
 
   Future<String> getUID() async {

@@ -499,37 +499,39 @@ class CardPost extends StatelessWidget {
   } //
 //
 
-  Card _build_card_image_ui(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: InkWell(
-          onTap: () {
-            //user click look image
-            print('Look image');
+  AspectRatio _build_card_image_ui(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 3 / 2,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: InkWell(
+            onDoubleTap: () {
+              //user click look image
+              print('Look image');
 
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => LookImage(
-                urls: modelsPost[i].urls,
-                i: i,
-                urlsType: modelsPost[i].urlsType,
-              ),
-            ));
-          },
-          child: modelsPost[i].urlsType[i] == "video"
-              ? PlayVideoList(
-                  urls: modelsPost[i].urls[i],
-                )
-              : FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
-                  image: '${modelsPost[i].urls[0]}',
-                  fit: BoxFit.contain,
-                  height: 250.0,
-                  width: double.maxFinite,
-                )),
-    );
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => LookImage(
+                  urls: modelsPost[i].urls,
+                  i: i,
+                  urlsType: modelsPost[i].urlsType,
+                ),
+              ));
+            },
+            child: modelsPost[i].urlsType[0] == "video_url"
+                ? PlayVideoList(
+              urls: modelsPost[i].urls[0],
+            )
+                : FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: '${modelsPost[i].urls[0]}',
+              fit: BoxFit.contain,
+              height: 250.0,
+              width: double.maxFinite,
+            )),
+      ));
   }
   //
 
@@ -667,8 +669,8 @@ class CardPost extends StatelessWidget {
 class PlayVideoList extends StatefulWidget {
   PlayVideoList(
       {Key key,
-      this.urls,
-      this.file,
+      this.urls = null,
+      this.file = null,
       this.height = 300.0,
       this.fulScreen = false})
       : super(key: key);

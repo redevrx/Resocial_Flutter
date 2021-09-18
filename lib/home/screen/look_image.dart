@@ -166,10 +166,12 @@ class LookImage extends StatelessWidget {
               )
             ],
           ),
-          body: _widgetShowImage(
-            i: i,
-            urls: urls,
-            urlsType: urlsType,
+          body: Center(
+            child: _widgetShowImage(
+              i: i,
+              urls: urls,
+              urlsType: urlsType,
+            ),
           )
           // Draggable(
           //     data: 'drag image',
@@ -284,33 +286,33 @@ class _widgetShowImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final TransformationController controller = TransformationController();
-    return Center(
-      child: ClipRect(
-        child: InteractiveViewer(
-            maxScale: 20.0,
-            child: Container(
-              // height: MediaQuery.of(context).size.height * .4,
-              width: MediaQuery.of(context).size.width * 1,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: urls.length,
-                itemBuilder: (context, index) {
-                  return urlsType[index] == "video"
-                      ? PlayVideoList(
-                          fulScreen: true,
-                          urls: urls[index],
-                        )
-                      : FadeInImage.memoryNetwork(
-                          placeholder: kTransparentImage,
-                          image: urls[index],
-                          fit: BoxFit.cover,
-                          // height: MediaQuery.of(context).size.height * .4,
-                          width: MediaQuery.of(context).size.width * 1,
-                        );
-                },
-              ),
-            )),
-      ),
+    return AspectRatio(
+      aspectRatio: 2 / 2,
+        child: ClipRect(
+          child: InteractiveViewer(
+              maxScale: 20.0,
+              child: Container(
+                // height: MediaQuery.of(context).size.height * .4,
+                width: MediaQuery.of(context).size.width * 1,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: urls.length,
+                  itemBuilder: (context, index) {
+                    return urlsType[index] == "video"
+                        ? PlayVideoList(
+                            fulScreen: true,
+                            urls: urls[index],
+                          )
+                        : FadeInImage.memoryNetwork(
+                            placeholder: kTransparentImage,
+                            image: urls[index],
+                            fit: BoxFit.cover,
+                            width: MediaQuery.of(context).size.width * 1,
+                          );
+                  },
+                ),
+              )),
+        ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:socialapp/userPost/models/file_model..dart';
 
 abstract class EventPost {}
@@ -46,6 +47,20 @@ class OnMessagePostChange extends EventPost {
 
 class OnImageFilePostChange extends EventPost {
   final File file;
+  List urlTypes = [];
+  List urls = [];
+  final String type;
 
-  OnImageFilePostChange({this.file});
+  OnImageFilePostChange(
+      {this.file, this.urlTypes, this.urls, @required this.type});
+}
+
+class OnImageFileRemoveChange extends EventPost {
+  final int indexRemove;
+  List urlTypes = [];
+  List urls = [];
+  final String type;
+
+  OnImageFileRemoveChange(
+      {this.indexRemove, this.urlTypes, this.urls, @required this.type});
 }

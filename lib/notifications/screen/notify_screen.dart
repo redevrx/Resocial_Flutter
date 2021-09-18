@@ -39,15 +39,12 @@ class _notifyScreen extends State<NotifyScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-
     notifyBloc.add(LoadNotifications());
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     notifyBloc.add(Disponse());
     _enableRotation();
     super.dispose();

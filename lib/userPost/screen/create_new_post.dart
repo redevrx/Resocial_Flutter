@@ -43,6 +43,8 @@ class _CreatePost extends StatefulWidget {
 class __CreatePostState extends State<_CreatePost> {
   EditProfileBloc editProfileBloc;
   PostBloc postBloc;
+  List urls = [];
+  List urlTypes = [];
 
   //uid of current user that login
   var uid = '';
@@ -112,7 +114,8 @@ class __CreatePostState extends State<_CreatePost> {
     var arg = await ImagePicker().getImage(source: ImageSource.gallery);
     if (arg != null) {
       // _image = File(arg.path);
-      postBloc.add(OnImageFilePostChange(file: File(arg.path)));
+      postBloc.add(OnImageFilePostChange(
+          file: File(arg.path), urlTypes: urlTypes, urls: urls, type: "image"));
     }
   }
 
@@ -122,14 +125,13 @@ class __CreatePostState extends State<_CreatePost> {
     if (arg != null) {
       // _image = File(arg.path);
       print("path video file :${arg.path}");
-      postBloc.add(OnImageFilePostChange(file: File(arg.path)));
+      postBloc.add(OnImageFilePostChange(
+          file: File(arg.path), urlTypes: urlTypes, urls: urls, type: "video"));
     }
   }
 
   @override
   void initState() {
-    // TODO: implement initState
-
     editProfileBloc = BlocProvider.of<EditProfileBloc>(context);
     postBloc = BlocProvider.of<PostBloc>(context);
 
@@ -145,7 +147,6 @@ class __CreatePostState extends State<_CreatePost> {
 
     //get uid
     _getUid();
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
 
@@ -251,14 +252,28 @@ class __CreatePostState extends State<_CreatePost> {
                     cubit: postBloc,
                     builder: (context, state) {
                       if (state is OnImageFilePostChangeState) {
-                        return widgetShowImage(
-                          files: state.pathFiles,
-                          urls: null,
+                        urls = state.urls;
+                        urlTypes = state.urlTypes;
+                        return WidgetShowImage(
+                          editPost: true,
+                          postBloc: postBloc,
+                          urls: state.urls,
+                          urlsType: state.urlTypes,
                         );
                       }
-                      return widgetShowImage(
-                        files: null,
+                      if (state is OnImageFileRemoveChangeState) {
+                        urls = state.urls;
+                        urlTypes = state.urlTypes;
+                        return WidgetShowImage(
+                          editPost: true,
+                          postBloc: postBloc,
+                          urls: state.urls,
+                          urlsType: state.urlTypes,
+                        );
+                      }
+                      return WidgetShowImage(
                         urls: null,
+                        urlsType: null,
                       );
                     },
                   ),
