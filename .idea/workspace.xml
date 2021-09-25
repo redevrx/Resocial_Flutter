@@ -5,37 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41a4c511-c2aa-412d-be41-d99831b01739" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config_subset" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/package_config_subset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.dart_tool/version" beforeDir="false" afterPath="$PROJECT_DIR$/.dart_tool/version" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/app/outputs/flutter-apk/app.apk" beforeDir="false" afterPath="$PROJECT_DIR$/build/app/outputs/flutter-apk/app.apk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/app/outputs/flutter-apk/app.apk.sha1" beforeDir="false" afterPath="$PROJECT_DIR$/build/app/outputs/flutter-apk/app.apk.sha1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc.txt" beforeDir="false" afterPath="$PROJECT_DIR$/doc.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/call/repository/call_agora_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/call/repository/call_agora_repository.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/chat/bloc/chatBloc/chat_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/chat/bloc/chatBloc/chat_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/editPost/screen/edit_user_post.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/editPost/screen/edit_user_post.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated_plugin_registrant.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated_plugin_registrant.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/home/bloc/bloc_my_feed.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/bloc/bloc_my_feed.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/home/models/post_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/models/post_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/home/screen/look_image.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/screen/look_image.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/home/widget/post_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/home/widget/post_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/notifications/screen/notify_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/notifications/screen/notify_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/showFriend/widget/widget_show_all_freind.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/showFriend/widget/widget_show_all_freind.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/showFriend/widget/widget_show_request.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/showFriend/widget/widget_show_request.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/userPost/bloc/event_post.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/userPost/bloc/event_post.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/userPost/bloc/post_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/userPost/bloc/post_bloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/userPost/bloc/state_post.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/userPost/bloc/state_post.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/userPost/models/file_model..dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/userPost/models/file_model..dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/userPost/repository/post_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/userPost/repository/post_repository.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/userPost/screen/create_new_post.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/userPost/screen/create_new_post.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/userPost/widget/widget_show_image.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/userPost/widget/widget_show_image.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/utils/utils.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/utils.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/bottonBar/animate_bottom_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/bottonBar/animate_bottom_bar.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
